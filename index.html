@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <meta name="keywords" content="">
+  <meta name="description" content="">
+  <title>Loading...</title>
+  <link rel="stylesheet" href="lib/layui/css/layui.css">
+  <link rel="stylesheet" href="admin/css/index.css">
+</head>
+<body>
+  <div class="layui-admin-wrapper">
+    <div class="layui-sidebar-overlay" id="sidebarOverlay"></div>
+
+    <aside class="layui-sidebar" id="sidebar">
+      <div class="layui-sidebar-logo">
+        <div class="layui-logo-icon">
+          <i class="layui-icon layui-icon-loading" id="logoIcon"></i>
+        </div>
+        <span class="layui-logo-text" id="logoText">Loading...</span>
+      </div>
+      <nav class="layui-sidebar-menu" id="sidebarMenu"></nav>
+      <div class="layui-sidebar-footer">
+        <button class="collapse-btn" aria-label="收起菜单">
+          <i class="layui-icon layui-icon-shrink-right"></i>
+        </button>
+      </div>
+    </aside>
+
+    <div class="layui-submenu-panel" id="submenuPanel">
+      <div class="layui-submenu-panel-header">
+        <div class="layui-submenu-panel-title" id="submenuPanelTitle"></div>
+      </div>
+      <div class="layui-submenu-panel-content" id="submenuPanelContent"></div>
+    </div>
+
+    <div class="layui-dropdown-menu-panel-wrapper" id="dropdownMenuPanelWrapper">
+      <div class="layui-dropdown-menu-panel" id="dropdownMenuPanel">
+        <div id="dropdownMenuContent"></div>
+      </div>
+    </div>
+
+    <button class="layui-mobile-menu-fab" id="mobileMenuFab" aria-label="菜单">
+      <i class="layui-icon layui-icon-spread-left"></i>
+    </button>
+
+    <main class="layui-main-wrapper" id="mainWrapper">
+      <header class="layui-topbar">
+        <div class="layui-topbar-left">
+          <div class="layui-breadcrumb">
+            <span>首页</span>
+            <span class="layui-breadcrumb-sep">/</span>
+            <span class="layui-breadcrumb-current" id="currentPageName">控制台</span>
+          </div>
+        </div>
+        <div class="layui-topbar-right">
+          <div class="layui-topbar-btn-group">
+            <button class="layui-topbar-btn" id="reloadBtn" aria-label="刷新页面" title="刷新页面">
+              <i class="layui-icon layui-icon-refresh"></i>
+            </button>
+            <button class="layui-topbar-btn" id="fullscreenBtn" aria-label="全屏" title="全屏">
+              <i class="layui-icon layui-icon-screen-full"></i>
+            </button>
+            <div class="layui-topbar-btn" style="position: relative;">
+              <button class="layui-topbar-btn" id="notificationBtn" aria-label="通知" style="width: 36px; height: 36px;">
+                <i class="layui-icon layui-icon-notice"></i>
+                <span class="badge"></span>
+              </button>
+              <div class="layui-notification-dropdown" id="notificationDropdown">
+                <div class="layui-notification-header">
+                  <span class="layui-notification-title">通知消息</span>
+                  <span class="layui-notification-mark" id="markAllRead">全部已读</span>
+                </div>
+                <div class="layui-notification-content" id="notificationList"></div>
+              </div>
+            </div>
+            <button class="layui-topbar-btn" id="themeBtn" aria-label="主题配置" title="主题配置">
+              <i class="layui-icon layui-icon-set"></i>
+            </button>
+          </div>
+
+          <div class="layui-user-dropdown-wrapper">
+            <div class="layui-user-dropdown" id="userDropdown">
+              <div class="layui-user-avatar">管</div>
+              <div class="layui-user-info">
+                <span class="layui-user-name">管理员</span>
+                <span class="layui-user-role">超级管理员</span>
+              </div>
+            </div>
+            <div class="layui-user-dropdown-menu" id="userDropdownMenu">
+              <div class="layui-user-menu-item" data-action="settings">
+                <i class="layui-icon layui-icon-set"></i>
+                资料设置
+              </div>
+              <div class="layui-user-menu-item danger" data-action="logout">
+                <i class="layui-icon layui-icon-logout"></i>
+                注销登录
+              </div>
+            </div>
+          </div>
+        </div>
+      </header>
+
+      <div class="layui-tabs-container" id="tabsContainer">
+        <button class="layui-tabs-scroll-btn" id="scrollLeftBtn" aria-label="向左滚动">
+          <i class="layui-icon layui-icon-left"></i>
+        </button>
+        <div class="layui-tabs-bar" id="tabsBar"></div>
+        <button class="layui-tabs-scroll-btn" id="scrollRightBtn" aria-label="向右滚动">
+          <i class="layui-icon layui-icon-right"></i>
+        </button>
+        <div class="layui-tabs-actions">
+          <button class="layui-tabs-actions-btn" id="tabsActionsBtn" aria-label="标签操作">
+            <i class="layui-icon layui-icon-more-vertical"></i>
+          </button>
+          <div class="layui-tabs-dropdown" id="tabsDropdown">
+            <button class="tabs-dropdown-item" data-action="refreshCurrent">
+              <i class="layui-icon layui-icon-refresh"></i>刷新当前
+            </button>
+            <div class="layui-tabs-dropdown-divider"></div>
+            <button class="tabs-dropdown-item" data-action="closeCurrent">
+              <i class="layui-icon layui-icon-close"></i>关闭当前
+            </button>
+            <button class="tabs-dropdown-item" data-action="closeOther">
+              <i class="layui-icon layui-icon-unlink"></i>关闭其他
+            </button>
+            <div class="layui-tabs-dropdown-divider"></div>
+            <button class="tabs-dropdown-item danger" data-action="closeAll">
+              <i class="layui-icon layui-icon-delete"></i>关闭全部
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <div class="layui-content-wrapper" id="contentWrapper"></div>
+    </main>
+  </div>
+
+  <div class="layui-theme-panel-overlay" id="themePanelOverlay"></div>
+
+  <div class="layui-theme-config-panel" id="themeConfigPanel">
+    <div class="layui-theme-panel-header">
+      <div class="layui-theme-panel-title">
+        <i class="layui-icon layui-icon-set"></i>主题配置
+      </div>
+      <button class="layui-theme-panel-close" id="themePanelClose" aria-label="关闭">
+        <i class="layui-icon layui-icon-close"></i>
+      </button>
+    </div>
+    <div class="layui-theme-panel-body">
+      <div class="preview-tip">
+        <i class="layui-icon layui-icon-about"></i>
+        <span>修改配置后需点击保存才能生效</span>
+      </div>
+
+      <div class="config-section">
+        <div class="config-section-title">外观模式</div>
+        <div class="layui-theme-mode-switch">
+          <button class="layui-theme-mode-btn active" data-mode="light">
+            <i class="layui-icon layui-icon-light"></i>白天
+          </button>
+          <button class="layui-theme-mode-btn" data-mode="dark">
+            <i class="layui-icon layui-icon-moon"></i>黑夜
+          </button>
+        </div>
+      </div>
+
+      <!-- <div class="config-section">
+        <div class="config-section-title">语言设置</div>
+        <div class="lang-options">
+          <div class="lang-option active" data-lang="zh-CN">简体中文</div>
+          <div class="lang-option" data-lang="zh-TW">繁體中文</div>
+          <div class="lang-option" data-lang="en">English</div>
+        </div>
+      </div> -->
+
+      <div class="config-section">
+        <div class="config-section-title">主题颜色</div>
+        <div class="color-options">
+          <div class="color-option active" style="background: #16baaa;" data-color="#16baaa"></div>
+          <div class="color-option" style="background: #16b777;" data-color="#16b777"></div>
+          <div class="color-option" style="background: #1e9fff;" data-color="#1e9fff"></div>
+          <div class="color-option" style="background: #ff5722;" data-color="#ff5722"></div>
+          <div class="color-option" style="background: #ffb800;" data-color="#ffb800"></div>
+          <div class="color-option" style="background: #a233c6;" data-color="#a233c6"></div>
+        </div>
+      </div>
+
+      <div class="config-section">
+        <div class="config-section-title">框体布局</div>
+        <div class="layout-options">
+          <div class="layout-option active" data-layout="double">
+            <div class="layout-option-icon">
+              <div class="layout-icon-submenu"></div>
+              <div class="layout-content">
+                <div class="layout-tabs"></div>
+                <div class="layout-body"></div>
+              </div>
+            </div>
+            <div class="layout-option-label">双列菜单</div>
+          </div>
+          <div class="layout-option" data-layout="dropdown">
+            <div class="layout-option-icon">
+              <div class="layout-content">
+                <div class="layout-tabs"></div>
+                <div class="layout-body"></div>
+              </div>
+            </div>
+            <div class="layout-option-label">下拉菜单</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="config-section">
+        <div class="config-section-title">功能开关</div>
+        <div class="config-item">
+          <div class="config-item-label-wrapper">
+            <span class="config-item-label">标签页栏</span>
+            <span class="config-item-desc">显示/隐藏多标签页导航</span>
+          </div>
+          <label class="toggle-switch">
+            <input type="checkbox" id="tabsToggle" checked>
+            <span class="toggle-slider"></span>
+          </label>
+        </div>
+        <div class="config-item">
+          <div class="config-item-label-wrapper">
+            <span class="config-item-label">标签页记忆</span>
+            <span class="config-item-desc">刷新页面后恢复已打开标签页</span>
+          </div>
+          <label class="toggle-switch">
+            <input type="checkbox" id="rememberTabsToggle" checked>
+            <span class="toggle-slider"></span>
+          </label>
+        </div>
+        <div class="config-item">
+          <div class="config-item-label-wrapper">
+            <span class="config-item-label">菜单手风琴</span>
+            <span class="config-item-desc">展开一个菜单时自动收起其他</span>
+          </div>
+          <label class="toggle-switch">
+            <input type="checkbox" id="accordionToggle">
+            <span class="toggle-slider"></span>
+          </label>
+        </div>
+        <div class="config-item">
+          <div class="config-item-label-wrapper">
+            <span class="config-item-label">水印</span>
+            <span class="config-item-desc">在内容区域显示用户水印</span>
+          </div>
+          <label class="toggle-switch">
+            <input type="checkbox" id="watermarkToggle" checked>
+            <span class="toggle-slider"></span>
+          </label>
+        </div>
+      </div>
+
+      <div class="config-section">
+        <div class="config-section-title">页面动画</div>
+        <div class="config-item">
+          <div class="config-item-label-wrapper">
+            <span class="config-item-label">切换效果</span>
+            <span class="config-item-desc">页面切换时的动画效果</span>
+          </div>
+          <select class="theme-config-select" id="pageAnimationSelect">
+            <option value="fadeIn">渐显</option>
+            <option value="slideDown">顶部往下</option>
+            <option value="slideLeft">从右往左</option>
+            <option value="slideRight">从左往右</option>
+          </select>
+        </div>
+      </div>
+    </div>
+    <div class="layui-theme-panel-footer">
+      <button class="layui-theme-btn layui-theme-btn-secondary" id="resetThemeBtn">
+        <i class="layui-icon layui-icon-refresh"></i>重置
+      </button>
+      <button class="layui-theme-btn layui-theme-btn-primary" id="saveThemeBtn">
+        <i class="layui-icon layui-icon-ok"></i>保存
+      </button>
+    </div>
+  </div>
+
+  <div class="layui-toast" id="toast">
+    <i class="layui-icon layui-icon-ok-circle layui-toast-icon"></i>
+    <span id="toastText">保存成功</span>
+  </div>
+
+  <script src="lib/layui/layui.js"></script>
+  <script src="admin/js/index.js"></script>
+</body>
+</html>

@@ -1,0 +1,62 @@
+/**
+ * LayUI 按钮样式重置
+ */
+
+/* 基础按钮样式 */
+.layui-btn {
+  border-radius: 5px;
+}
+
+/* 默认按钮 */
+.layui-btn-default {
+  background: transparent;
+  border-color: var(--border);
+  color: var(--text-secondary);
+}
+
+.layui-btn-default:hover {
+  border-color: var(--accent);
+  color: var(--accent);
+  background: transparent;
+}
+
+/* 按钮组 */
+.layui-btn-group .layui-btn {
+  margin-right: 2px;
+  border-radius: 0;
+}
+
+.layui-btn-group .layui-btn:first-child {
+  border-radius: 5px 0 0 5px;
+}
+
+.layui-btn-group .layui-btn:last-child {
+  border-radius: 0 5px 5px 0;
+  margin-right: 0;
+}
+
+/* 深色模式 */
+[data-theme="dark"] .layui-btn {
+  border-color: rgba(255, 255, 255, 0.1);
+  color: rgba(255, 255, 255, 0.6);
+  background: transparent;
+}
+
+[data-theme="dark"] .layui-btn:hover,
+[data-theme="dark"] .layui-btn.active {
+  border-color: var(--accent);
+  color: var(--accent);
+  background: transparent;
+}
+
+[data-theme="dark"] .layui-btn-default {
+  background: transparent;
+  border-color: rgba(255, 255, 255, 0.1);
+  color: rgba(255, 255, 255, 0.6);
+}
+
+[data-theme="dark"] .layui-btn-default:hover {
+  border-color: var(--accent);
+  color: var(--accent);
+  background: transparent;
+}

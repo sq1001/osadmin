@@ -1,0 +1,31 @@
+/**
+ * LayUI 表格主题颜色适配
+ * 仅覆盖颜色相关属性
+ */
+
+/* 表格行hover */
+.layui-table tr:hover {
+  background-color: var(--accent-light);
+}
+
+/* 分页当前页 */
+.layui-laypage .layui-laypage-curr .layui-laypage-em {
+  background-color: var(--accent);
+}
+
+/* 分页hover */
+.layui-laypage a:hover {
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
+/* 表格排序激活 */
+.layui-table-sort .layui-table-sort-asc.layui-sort-active,
+.layui-table-sort .layui-table-sort-desc.layui-sort-active {
+  color: var(--accent);
+}
+
+/* 深色模式 */
+[data-theme="dark"] .layui-table th {
+  background-color: rgba(0, 0, 0, 0.2);
+}

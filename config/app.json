@@ -1,0 +1,85 @@
+{
+  "name": "OSADMIN",
+  "version": "1.0.0",
+  "description": "基于layui原生管理后台系统",
+  "site": {
+    "name": "OSADMIN",
+    "title": "OSADMIN",
+    "logo": "favicon.ico",
+    "keywords": "OSADMIN",
+    "description": "OSADMIN 轻量化原生管理后台"
+  },
+  "router": {
+    "mode": "hash",
+    "base": "/"
+  },
+  "theme": {
+    "defaultMode": "light",
+    "defaultColor": "#16baaa",
+    "defaultLayout": "double",
+    "tabsVisible": true,
+    "rememberTabs": true,
+    "accordion": false,
+    "pageAnimation": "fadeIn"
+  },
+  "watermark": {
+    "enabled": true,
+    "text": "OSADMIN 1.0.0",
+    "fontSize": 14,
+    "color": "rgba(0, 0, 0, 0.08)",
+    "rotate": -22,
+    "gapX": 100,
+    "gapY": 100
+  },
+  "lang": {
+    "default": "zh-CN",
+    "list": [
+      { "code": "zh-CN", "name": "简体中文" },
+      { "code": "zh-TW", "name": "繁體中文" },
+      { "code": "en", "name": "English" }
+    ]
+  },
+  "colors": {
+    "#16baaa": { "hover": "#14a090", "rgb": "22, 186, 170" },
+    "#16b777": { "hover": "#12a066", "rgb": "22, 183, 119" },
+    "#1e9fff": { "hover": "#1a8fe6", "rgb": "30, 159, 255" },
+    "#ff5722": { "hover": "#e64a19", "rgb": "255, 87, 34" },
+    "#ffb800": { "hover": "#e6a600", "rgb": "255, 184, 0" },
+    "#a233c6": { "hover": "#8e2db0", "rgb": "162, 51, 198" }
+  },
+  "sidebar": {
+    "width": 220,
+    "collapsedWidth": 64,
+    "submenuWidth": 180
+  },
+  "topbar": {
+    "height": 50
+  },
+  "tabs": {
+    "height": 40,
+    "maxTabs": 20
+  },
+  "storage": {
+    "themeKey": "themeConfig",
+    "tabsKey": "tabsState",
+    "langKey": "langConfig"
+  },
+  "menu": {
+    "selectId": 0,
+    "url": "config/menu.json",
+    "method": "GET",
+    "async": true
+  },
+  "permission": {
+    "enabled": true,
+    "url": "view/data/permission.json",
+    "method": "GET",
+    "cache": true
+  },
+  "notification": {
+    "enabled": true,
+    "url": "view/data/notifications.json",
+    "method": "GET",
+    "cache": false
+  }
+}

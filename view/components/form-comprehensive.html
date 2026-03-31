@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>综合表单</title>
+  <link rel="stylesheet" href="admin/css/extends/resetForm.css">
+</head>
+<body>
+<div class="page-content has-footer">
+  <div class="demo-header">
+    <h3 class="demo-title">综合表单示例</h3>
+  </div>
+
+  <div class="layui-card search-card">
+    <div class="layui-card-body">
+      <form class="layui-form top-search-from" lay-filter="searchForm">
+        <div class="layui-form-item">
+          <label class="layui-form-label">UID</label>
+          <div class="layui-input-block">
+            <input type="number" name="uid" placeholder="请输入UID" class="layui-input">
+          </div>
+        </div>
+
+        <div class="layui-form-item">
+          <label class="layui-form-label">用户名</label>
+          <div class="layui-input-block">
+            <input type="text" name="username" placeholder="请输入用户名" class="layui-input">
+          </div>
+        </div>
+
+        <div class="layui-form-item">
+          <label class="layui-form-label">昵称</label>
+          <div class="layui-input-block">
+            <input type="text" name="nickname" placeholder="请输入昵称" class="layui-input">
+          </div>
+        </div>
+
+        <div class="layui-form-item">
+          <label class="layui-form-label">邮箱</label>
+          <div class="layui-input-block">
+            <input type="text" name="email" placeholder="请输入邮箱" class="layui-input">
+          </div>
+        </div>
+
+        <div class="layui-form-item">
+          <label class="layui-form-label">等级</label>
+          <div class="layui-input-block">
+            <input type="number" name="level" placeholder="请输入等级" class="layui-input">
+          </div>
+        </div>
+
+        <div class="layui-form-item">
+          <label class="layui-form-label">余额(元)</label>
+          <div class="layui-input-block">
+            <input type="number" name="balance" placeholder="请输入余额" class="layui-input">
+          </div>
+        </div>
+
+        <div class="layui-form-item">
+          <label class="layui-form-label">登录时间</label>
+          <div class="layui-input-block">
+            <div class="date-range">
+              <input type="text" autocomplete="off" name="last_login_at[]" id="last_login_at-start" class="layui-input" placeholder="开始时间">
+              <span class="date-separator">至</span>
+              <input type="text" autocomplete="off" name="last_login_at[]" id="last_login_at-end" class="layui-input" placeholder="结束时间">
+            </div>
+          </div>
+        </div>
+
+        <div class="layui-form-item">
+          <label class="layui-form-label">登录IP</label>
+          <div class="layui-input-block">
+            <input type="text" name="last_login_ip" placeholder="请输入登录IP" class="layui-input">
+          </div>
+        </div>
+
+        <div class="layui-form-item form-actions">
+          <label class="layui-form-label"></label>
+          <div class="layui-input-block">
+            <button class="layui-btn layui-btn-md" lay-submit lay-filter="table-query">
+              <i class="layui-icon layui-icon-search"></i>查询
+            </button>
+            <button type="reset" class="layui-btn layui-btn-md layui-btn-primary">
+              <i class="layui-icon layui-icon-refresh"></i>重置
+            </button>
+          </div>
+        </div>
+        <div class="toggle-btn">
+          <a class="layui-hide">展开<i class="layui-icon layui-icon-down"></i></a>
+          <a class="layui-hide">收起<i class="layui-icon layui-icon-up"></i></a>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <div class="layui-card">
+    <form class="layui-form" lay-filter="mainForm">
+      <div class="mainBox">
+        <div class="main-container">
+          <div class="form-section">
+            <div class="form-section-header">
+              <span class="form-section-title">基本信息</span>
+            </div>
+            <div class="form-section-body">
+              <div class="layui-form-item">
+                <label class="layui-form-label required">名称</label>
+                <div class="layui-input-block">
+                  <input type="text" name="name" placeholder="请输入名称" required lay-verify="required" class="layui-input">
+                </div>
+              </div>
+
+              <div class="layui-form-item">
+                <label class="layui-form-label required">开通成本</label>
+                <div class="layui-input-block">
+                  <input type="number" name="cost" min="0" max="100" step="1" lay-verify="required|number" placeholder="请输入开通成本" class="layui-input">
+                  <div class="layui-form-mid layui-word-aux">范围 0-100</div>
+                </div>
+              </div>
+
+              <div class="layui-form-item">
+                <label class="layui-form-label required">专业版返利</label>
+                <div class="layui-input-block">
+                  <input type="number" name="pro_rebate" min="0" max="100" step="1" lay-verify="required|number" placeholder="请输入专业版返利" class="layui-input">
+                  <div class="layui-form-mid layui-word-aux">范围 0-100</div>
+                </div>
+              </div>
+
+              <div class="layui-form-item">
+                <label class="layui-form-label required">旗舰版返利</label>
+                <div class="layui-input-block">
+                  <input type="number" name="ultimate_rebate" min="0" max="100" step="1" lay-verify="required|number" placeholder="请输入旗舰版返利" class="layui-input">
+                  <div class="layui-form-mid layui-word-aux">范围 0-100</div>
+                </div>
+              </div>
+
+              <div class="layui-form-item">
+                <label class="layui-form-label required">启用状态</label>
+                <div class="layui-input-block">
+                  <input type="checkbox" name="status" value="1" lay-skin="switch" lay-text="开启|关闭" checked>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="form-footer-placeholder"></div>
+
+      <div class="bottom">
+        <div class="button-container">
+          <button type="submit" class="layui-btn layui-btn-md" lay-submit lay-filter="save">
+            <i class="layui-icon layui-icon-ok"></i>提交
+          </button>
+          <button type="reset" class="layui-btn layui-btn-md layui-btn-primary">
+            <i class="layui-icon layui-icon-refresh"></i>重置
+          </button>
+        </div>
+      </div>
+    </form>
+  </div>
+  <script src="admin/js/extends/searchForm.js"></script>
+  <script>
+  layui.use(['form', 'layer', 'laydate'], function() {
+    var form = layui.form;
+    var layer = layui.layer;
+    var laydate = layui.laydate;
+    var $ = layui.$;
+
+    laydate.render({
+      elem: '#last_login_at-start',
+      type: 'datetime'
+    });
+
+    laydate.render({
+      elem: '#last_login_at-end',
+      type: 'datetime'
+    });
+
+    form.on('submit(table-query)', function(data) {
+      console.log('查询条件：', data.field);
+      return false;
+    });
+
+    form.on('submit(save)', function(data) {
+      layer.msg('提交成功', { icon: 1 });
+      console.log('表单数据：', data.field);
+      return false;
+    });
+  });
+  </script>
+</div>
+</body>
+</html>

@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>表格组件</title>
+</head>
+<body>
+<div class="page-content">
+  <div class="demo-header">
+    <h3 class="demo-title">表格组件</h3>
+    <p class="demo-desc">Layui 表格组件的完整示例，包含数据表格、分页、排序、工具栏等功能</p>
+  </div>
+
+  <div class="layui-card">
+    <div class="layui-card-header">
+      <span class="layui-card-title">基础数据表格</span>
+    </div>
+    <div class="layui-card-body" style="padding: 0;">
+      <table id="demoTable" lay-filter="demoTable"></table>
+    </div>
+  </div>
+
+  <div class="layui-card" style="margin-top: 16px;">
+    <div class="layui-card-header">
+      <span class="layui-card-title">带工具栏表格</span>
+    </div>
+    <div class="layui-card-body" style="padding: 0;">
+      <script type="text/html" id="toolbarDemo">
+        <div class="layui-btn-container">
+          <button class="layui-btn layui-btn-sm" lay-event="add"><i class="layui-icon layui-icon-addition"></i> 新增</button>
+          <button class="layui-btn layui-btn-sm layui-btn-normal" lay-event="update"><i class="layui-icon layui-icon-edit"></i> 编辑</button>
+          <button class="layui-btn layui-btn-sm layui-btn-danger" lay-event="delete"><i class="layui-icon layui-icon-delete"></i> 删除</button>
+        </div>
+      </script>
+      <table id="toolbarTable" lay-filter="toolbarTable"></table>
+    </div>
+  </div>
+</div>
+
+<script type="text/html" id="statusTpl">
+  <input type="checkbox" name="status" value="{{d.id}}" lay-skin="switch" lay-text="启用|禁用" lay-filter="statusSwitch" {{ d.status == 1 ? 'checked' : '' }}>
+</script>
+
+<script type="text/html" id="operateTpl">
+  <a class="layui-btn layui-btn-xs" lay-event="edit"><i class="layui-icon layui-icon-edit"></i>编辑</a>
+  <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del"><i class="layui-icon layui-icon-delete"></i>删除</a>
+</script>
+
+<style>
+.demo-header {
+  margin-bottom: 16px;
+}
+.demo-title {
+  font-size: 18px;
+  font-weight: 600;
+  color: var(--text-primary);
+  margin-bottom: 4px;
+}
+.demo-desc {
+  font-size: 13px;
+  color: var(--text-muted);
+}
+[data-theme="dark"] .layui-table-view {
+  border-color: var(--border);
+}
+[data-theme="dark"] .layui-table th {
+  background: var(--bg-content);
+  border-color: var(--border);
+  color: var(--text-secondary);
+}
+[data-theme="dark"] .layui-table td {
+  border-color: var(--border);
+  color: var(--text-primary);
+}
+[data-theme="dark"] .layui-table tbody tr:hover {
+  background: rgba(var(--accent-rgb), 0.05);
+}
+[data-theme="dark"] .layui-table-page {
+  border-color: var(--border);
+}
+[data-theme="dark"] .layui-table-page .layui-laypage a,
+[data-theme="dark"] .layui-table-page .layui-laypage span {
+  background: var(--card-bg);
+  border-color: var(--border);
+  color: var(--text-secondary);
+}
+[data-theme="dark"] .layui-table-page .layui-laypage a:hover {
+  color: var(--accent);
+}
+[data-theme="dark"] .layui-table-page .layui-laypage .layui-laypage-curr .layui-laypage-em {
+  background: var(--accent);
+}
+[data-theme="dark"] .layui-table-tool {
+  background: var(--bg-content);
+  border-color: var(--border);
+}
+</style>
+
+<script>
+layui.use(['table', 'layer'], function() {
+  var table = layui.table;
+  var layer = layui.layer;
+
+  var mockData = [];
+  for (var i = 1; i <= 50; i++) {
+    mockData.push({
+      id: i,
+      username: '用户' + i,
+      email: 'user' + i + '@example.com',
+      role: ['管理员', '编辑', '用户'][Math.floor(Math.random() * 3)],
+      status: Math.random() > 0.3 ? 1 : 0,
+      createTime: '2024-0' + (Math.floor(Math.random() * 9) + 1) + '-' + (Math.floor(Math.random() * 28) + 1)
+    });
+  }
+
+  table.render({
+    elem: '#demoTable',
+    data: mockData,
+    page: true,
+    limit: 10,
+    limits: [10, 20, 30, 50],
+    cols: [[
+      { type: 'checkbox', fixed: 'left' },
+      { field: 'id', title: 'ID', width: 80, sort: true, fixed: 'left' },
+      { field: 'username', title: '用户名', width: 120 },
+      { field: 'email', title: '邮箱', width: 200 },
+      { field: 'role', title: '角色', width: 100 },
+      { field: 'status', title: '状态', width: 100, templet: '#statusTpl' },
+      { field: 'createTime', title: '创建时间', width: 150, sort: true },
+      { title: '操作', width: 150, fixed: 'right', templet: '#operateTpl' }
+    ]],
+    skin: 'line',
+    even: true
+  });
+
+  table.render({
+    elem: '#toolbarTable',
+    toolbar: '#toolbarDemo',
+    defaultToolbar: ['filter', 'exports', 'print'],
+    data: mockData.slice(0, 20),
+    page: true,
+    limit: 10,
+    cols: [[
+      { type: 'checkbox', fixed: 'left' },
+      { field: 'id', title: 'ID', width: 80, sort: true },
+      { field: 'username', title: '用户名', width: 120 },
+      { field: 'email', title: '邮箱', width: 200 },
+      { field: 'role', title: '角色', width: 100 },
+      { field: 'status', title: '状态', width: 100, templet: '#statusTpl' },
+      { field: 'createTime', title: '创建时间', width: 150, sort: true }
+    ]],
+    skin: 'line',
+    even: true
+  });
+
+  table.on('toolbar(toolbarTable)', function(obj) {
+    var checkStatus = table.checkStatus(obj.config.id);
+    var data = checkStatus.data;
+
+    switch (obj.event) {
+      case 'add':
+        layer.msg('新增操作');
+        break;
+      case 'update':
+        if (data.length === 0) {
+          layer.msg('请选择一行数据');
+        } else if (data.length > 1) {
+          layer.msg('只能编辑一行数据');
+        } else {
+          layer.msg('编辑：' + JSON.stringify(data[0]));
+        }
+        break;
+      case 'delete':
+        if (data.length === 0) {
+          layer.msg('请选择要删除的数据');
+        } else {
+          layer.confirm('确定删除选中的 ' + data.length + ' 条数据吗？', function(index) {
+            layer.close(index);
+            layer.msg('删除成功');
+          });
+        }
+        break;
+    }
+  });
+
+  table.on('tool(toolbarTable)', function(obj) {
+    var data = obj.data;
+
+    switch (obj.event) {
+      case 'edit':
+        layer.msg('编辑：' + data.username);
+        break;
+      case 'del':
+        layer.confirm('确定删除该用户吗？', function(index) {
+          obj.del();
+          layer.close(index);
+          layer.msg('删除成功');
+        });
+        break;
+    }
+  });
+});
+</script>
+</body>
+</html>

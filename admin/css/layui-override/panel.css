@@ -1,0 +1,13 @@
+/**
+ * LayUI 面板主题适配
+ */
+
+/* 面板 */
+ .layui-panel {
+    border-radius: 10px;
+}
+
+/* 卡片 */
+.layui-card {
+    border-radius: 10px;
+}

@@ -1,0 +1,435 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>日期时间组件</title>
+</head>
+<body>
+<div class="page-content">
+  <div class="demo-header">
+    <h3 class="demo-title">Laydate 日期时间组件</h3>
+    <p class="demo-desc">Layui 日期时间组件，支持日期选择、时间选择、范围选择、快捷选项等功能</p>
+  </div>
+
+  <div class="layui-card">
+    <div class="layui-card-header">
+      <span class="layui-card-title">基础用法</span>
+    </div>
+    <div class="layui-card-body">
+      <div class="layui-form">
+        <div class="layui-form-item">
+          <div class="layui-inline">
+            <label class="layui-form-label">日期选择</label>
+            <div class="layui-input-inline">
+              <input type="text" class="layui-input" id="date-basic" placeholder="yyyy-MM-dd">
+            </div>
+          </div>
+          <div class="layui-inline">
+            <label class="layui-form-label">年份选择</label>
+            <div class="layui-input-inline">
+              <input type="text" class="layui-input" id="date-year" placeholder="yyyy">
+            </div>
+          </div>
+          <div class="layui-inline">
+            <label class="layui-form-label">月份选择</label>
+            <div class="layui-input-inline">
+              <input type="text" class="layui-input" id="date-month" placeholder="yyyy-MM">
+            </div>
+          </div>
+          <div class="layui-inline">
+            <label class="layui-form-label">时间选择</label>
+            <div class="layui-input-inline">
+              <input type="text" class="layui-input" id="date-time" placeholder="HH:mm:ss">
+            </div>
+          </div>
+          <div class="layui-inline">
+            <label class="layui-form-label">日期时间</label>
+            <div class="layui-input-inline">
+              <input type="text" class="layui-input" id="date-datetime" placeholder="yyyy-MM-dd HH:mm:ss">
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="layui-card">
+    <div class="layui-card-header">
+      <span class="layui-card-title">范围选择</span>
+    </div>
+    <div class="layui-card-body">
+      <div class="layui-form">
+        <div class="layui-form-item">
+          <div class="layui-inline">
+            <label class="layui-form-label">日期范围</label>
+            <div class="layui-input-inline" style="width: 100px;">
+              <input type="text" class="layui-input" id="date-range-start" placeholder="开始日期">
+            </div>
+            <div class="layui-form-mid">-</div>
+            <div class="layui-input-inline" style="width: 100px;">
+              <input type="text" class="layui-input" id="date-range-end" placeholder="结束日期">
+            </div>
+          </div>
+          <div class="layui-inline">
+            <label class="layui-form-label">年月范围</label>
+            <div class="layui-input-inline">
+              <input type="text" class="layui-input" id="date-range-month" placeholder=" - ">
+            </div>
+          </div>
+          <div class="layui-inline">
+            <label class="layui-form-label">时间范围</label>
+            <div class="layui-input-inline">
+              <input type="text" class="layui-input" id="date-range-time" placeholder=" - ">
+            </div>
+          </div>
+          <div class="layui-inline">
+            <label class="layui-form-label">日期时间范围</label>
+            <div class="layui-input-inline">
+              <input type="text" class="layui-input" id="date-range-datetime" placeholder=" - ">
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="layui-card">
+    <div class="layui-card-header">
+      <span class="layui-card-title">快捷选项</span>
+    </div>
+    <div class="layui-card-body">
+      <div class="layui-form">
+        <div class="layui-form-item">
+          <div class="layui-inline">
+            <label class="layui-form-label">日期快捷</label>
+            <div class="layui-input-inline">
+              <input type="text" class="layui-input" id="date-shortcut" placeholder="yyyy-MM-dd">
+            </div>
+          </div>
+          <div class="layui-inline">
+            <label class="layui-form-label">日期范围快捷</label>
+            <div class="layui-input-inline">
+              <input type="text" class="layui-input" id="date-shortcut-range" placeholder=" - ">
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="layui-card">
+    <div class="layui-card-header">
+      <span class="layui-card-title">自定义格式</span>
+    </div>
+    <div class="layui-card-body">
+      <div class="layui-form">
+        <div class="layui-form-item">
+          <div class="layui-inline">
+            <label class="layui-form-label">中文格式</label>
+            <div class="layui-input-inline">
+              <input type="text" class="layui-input" id="date-format-cn" placeholder="yyyy年MM月dd日">
+            </div>
+          </div>
+          <div class="layui-inline">
+            <label class="layui-form-label">斜杠格式</label>
+            <div class="layui-input-inline">
+              <input type="text" class="layui-input" id="date-format-slash" placeholder="dd/MM/yyyy">
+            </div>
+          </div>
+          <div class="layui-inline">
+            <label class="layui-form-label">紧凑格式</label>
+            <div class="layui-input-inline">
+              <input type="text" class="layui-input" id="date-format-compact" placeholder="yyyyMMdd">
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="layui-card">
+    <div class="layui-card-header">
+      <span class="layui-card-title">限制可选日期</span>
+    </div>
+    <div class="layui-card-body">
+      <div class="layui-form">
+        <div class="layui-form-item">
+          <div class="layui-inline">
+            <label class="layui-form-label">前后7天</label>
+            <div class="layui-input-inline">
+              <input type="text" class="layui-input" id="date-limit-days" placeholder="yyyy-MM-dd">
+            </div>
+          </div>
+          <div class="layui-inline">
+            <label class="layui-form-label">限定范围</label>
+            <div class="layui-input-inline">
+              <input type="text" class="layui-input" id="date-limit-range" placeholder="yyyy-MM-dd">
+            </div>
+          </div>
+          <div class="layui-inline">
+            <label class="layui-form-label">禁用周末</label>
+            <div class="layui-input-inline">
+              <input type="text" class="layui-input" id="date-limit-weekend" placeholder="yyyy-MM-dd">
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="layui-card">
+    <div class="layui-card-header">
+      <span class="layui-card-title">节日标注</span>
+    </div>
+    <div class="layui-card-body">
+      <div class="layui-form">
+        <div class="layui-form-item">
+          <div class="layui-inline">
+            <label class="layui-form-label">公历节日</label>
+            <div class="layui-input-inline">
+              <input type="text" class="layui-input" id="date-calendar" placeholder="yyyy-MM-dd">
+            </div>
+          </div>
+          <div class="layui-inline">
+            <label class="layui-form-label">自定义标注</label>
+            <div class="layui-input-inline">
+              <input type="text" class="layui-input" id="date-mark" placeholder="yyyy-MM-dd">
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="layui-card">
+    <div class="layui-card-header">
+      <span class="layui-card-title">主题风格</span>
+    </div>
+    <div class="layui-card-body">
+      <div class="layui-form">
+        <div class="layui-form-item">
+          <div class="layui-inline">
+            <label class="layui-form-label">墨绿主题</label>
+            <div class="layui-input-inline">
+              <input type="text" class="layui-input" id="date-theme-molv" placeholder="yyyy-MM-dd">
+            </div>
+          </div>
+          <div class="layui-inline">
+            <label class="layui-form-label">自定义颜色</label>
+            <div class="layui-input-inline">
+              <input type="text" class="layui-input" id="date-theme-color" placeholder="yyyy-MM-dd">
+            </div>
+          </div>
+          <div class="layui-inline">
+            <label class="layui-form-label">格子主题</label>
+            <div class="layui-input-inline">
+              <input type="text" class="layui-input" id="date-theme-grid" placeholder="yyyy-MM-dd">
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<style>
+.demo-header {
+  margin-bottom: 16px;
+}
+.demo-title {
+  font-size: 18px;
+  font-weight: 600;
+  color: var(--text-primary);
+  margin-bottom: 4px;
+}
+.demo-desc {
+  font-size: 13px;
+  color: var(--text-muted);
+}
+.layui-card {
+  margin-bottom: 16px;
+}
+.layui-form-label {
+  width: 100px;
+}
+.layui-input-block {
+  margin-left: 130px;
+}
+[data-theme="dark"] .layui-laydate {
+  background: var(--card-bg);
+  border-color: var(--border);
+}
+[data-theme="dark"] .layui-laydate-header i,
+[data-theme="dark"] .layui-laydate-header span {
+  color: var(--text-primary);
+}
+[data-theme="dark"] .layui-laydate-content th {
+  color: var(--text-secondary);
+}
+[data-theme="dark"] .layui-laydate-content td {
+  color: var(--text-primary);
+}
+[data-theme="dark"] .layui-laydate-content td.layui-disabled {
+  color: var(--text-muted);
+}
+[data-theme="dark"] .layui-laydate-footer {
+  border-top-color: var(--border);
+}
+[data-theme="dark"] .layui-laydate-footer span {
+  color: var(--text-secondary);
+}
+[data-theme="dark"] .layui-laydate .layui-laydate-shortcut {
+  border-right-color: var(--border);
+}
+[data-theme="dark"] .layui-laydate-shortcut li:hover {
+  background: var(--bg-content);
+}
+</style>
+
+<script>
+layui.use(['laydate', 'layer'], function() {
+  var laydate = layui.laydate;
+  var layer = layui.layer;
+
+  laydate.render({
+    elem: '#date-basic'
+  });
+
+  laydate.render({
+    elem: '#date-year',
+    type: 'year'
+  });
+
+  laydate.render({
+    elem: '#date-month',
+    type: 'month'
+  });
+
+  laydate.render({
+    elem: '#date-time',
+    type: 'time'
+  });
+
+  laydate.render({
+    elem: '#date-datetime',
+    type: 'datetime'
+  });
+
+  laydate.render({
+    elem: '#date-range-start'
+  });
+  laydate.render({
+    elem: '#date-range-end'
+  });
+
+  laydate.render({
+    elem: '#date-range-month',
+    type: 'month',
+    range: true
+  });
+
+  laydate.render({
+    elem: '#date-range-time',
+    type: 'time',
+    range: true
+  });
+
+  laydate.render({
+    elem: '#date-range-datetime',
+    type: 'datetime',
+    range: true
+  });
+
+  laydate.render({
+    elem: '#date-shortcut',
+    shortcuts: [
+      { text: '昨天', value: function() { var d = new Date(); d.setDate(d.getDate() - 1); return d; } },
+      { text: '今天', value: function() { return new Date(); } },
+      { text: '明天', value: function() { var d = new Date(); d.setDate(d.getDate() + 1); return d; } },
+      { text: '上周', value: function() { var d = new Date(); d.setDate(d.getDate() - 7); return d; } },
+      { text: '下周', value: function() { var d = new Date(); d.setDate(d.getDate() + 7); return d; } }
+    ]
+  });
+
+  laydate.render({
+    elem: '#date-shortcut-range',
+    range: true,
+    shortcuts: [
+      { text: '最近7天', value: function() { var d = new Date(); d.setDate(d.getDate() - 7); return [d, new Date()]; } },
+      { text: '最近30天', value: function() { var d = new Date(); d.setDate(d.getDate() - 30); return [d, new Date()]; } },
+      { text: '本月', value: function() { var d = new Date(); return [new Date(d.getFullYear(), d.getMonth(), 1), new Date(d.getFullYear(), d.getMonth() + 1, 0)]; } },
+      { text: '上月', value: function() { var d = new Date(); return [new Date(d.getFullYear(), d.getMonth() - 1, 1), new Date(d.getFullYear(), d.getMonth(), 0)]; } }
+    ]
+  });
+
+  laydate.render({
+    elem: '#date-format-cn',
+    format: 'yyyy年MM月dd日'
+  });
+
+  laydate.render({
+    elem: '#date-format-slash',
+    format: 'dd/MM/yyyy'
+  });
+
+  laydate.render({
+    elem: '#date-format-compact',
+    format: 'yyyyMMdd'
+  });
+
+  laydate.render({
+    elem: '#date-limit-days',
+    min: -7,
+    max: 7
+  });
+
+  laydate.render({
+    elem: '#date-limit-range',
+    min: '2024-01-01',
+    max: '2024-12-31'
+  });
+
+  laydate.render({
+    elem: '#date-limit-weekend',
+    disabledDate: function(date, type) {
+      var day = date.getDay();
+      return day === 0 || day === 6;
+    }
+  });
+
+  laydate.render({
+    elem: '#date-calendar',
+    calendar: true
+  });
+
+  laydate.render({
+    elem: '#date-mark',
+    mark: {
+      '0-1-1': '元旦',
+      '0-2-14': '情人节',
+      '0-3-8': '妇女节',
+      '0-5-1': '劳动节',
+      '0-6-1': '儿童节',
+      '0-10-1': '国庆节',
+      '0-12-25': '圣诞节'
+    }
+  });
+
+  laydate.render({
+    elem: '#date-theme-molv',
+    theme: 'molv'
+  });
+
+  laydate.render({
+    elem: '#date-theme-color',
+    theme: '#16baaa'
+  });
+
+  laydate.render({
+    elem: '#date-theme-grid',
+    theme: 'grid'
+  });
+});
+</script>
+</body>
+</html>

@@ -1,0 +1,348 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Toast提示</title>
+</head>
+<body>
+<div class="page-content">
+  <div class="demo-header">
+    <h3 class="demo-title">Toast 提示示例</h3>
+    <p class="demo-desc">本页面演示 Toast 组件的使用方法，支持多种类型、位置和自定义配置</p>
+  </div>
+
+  <div class="demo-grid">
+    <div class="layui-card">
+      <div class="layui-card-header">
+        <span class="layui-card-title">消息类型</span>
+      </div>
+      <div class="layui-card-body">
+        <div class="btn-group">
+          <button class="layui-btn" id="successBtn">
+            <i class="layui-icon layui-icon-ok-circle"></i> 成功提示
+          </button>
+          <button class="layui-btn layui-btn-danger" id="errorBtn">
+            <i class="layui-icon layui-icon-close-fill"></i> 错误提示
+          </button>
+          <button class="layui-btn layui-btn-warm" id="warningBtn">
+            <i class="layui-icon layui-icon-tips"></i> 警告提示
+          </button>
+          <button class="layui-btn layui-btn-normal" id="infoBtn">
+            <i class="layui-icon layui-icon-about"></i> 信息提示
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <div class="layui-card">
+      <div class="layui-card-header">
+        <span class="layui-card-title">显示位置</span>
+      </div>
+      <div class="layui-card-body">
+        <div class="btn-group">
+          <button class="layui-btn" id="posRT">右上角</button>
+          <button class="layui-btn layui-btn-normal" id="posRB">右下角</button>
+          <button class="layui-btn layui-btn-warm" id="posLT">左上角</button>
+          <button class="layui-btn layui-btn-danger" id="posLB">左下角</button>
+          <button class="layui-btn" id="posTC">顶部居中</button>
+          <button class="layui-btn" id="posBC">底部居中</button>
+          <button class="layui-btn" id="posLC">左侧居中</button>
+          <button class="layui-btn" id="posRC">右侧居中</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="layui-card">
+      <div class="layui-card-header">
+        <span class="layui-card-title">持续时间</span>
+      </div>
+      <div class="layui-card-body">
+        <div class="btn-group">
+          <button class="layui-btn" id="shortDuration">短时间 (1.5s)</button>
+          <button class="layui-btn layui-btn-normal" id="normalDuration">正常 (3s)</button>
+          <button class="layui-btn layui-btn-warm" id="longDuration">长时间 (5s)</button>
+          <button class="layui-btn layui-btn-danger" id="noAutoClose">不自动关闭</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="layui-card">
+      <div class="layui-card-header">
+        <span class="layui-card-title">加载状态</span>
+      </div>
+      <div class="layui-card-body">
+        <div class="btn-group">
+          <button class="layui-btn" id="loadingBtn">
+            <i class="layui-icon layui-icon-loading layui-anim layui-anim-rotate layui-anim-loop"></i> 加载中
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <div class="layui-card">
+      <div class="layui-card-header">
+        <span class="layui-card-title">自定义配置</span>
+      </div>
+      <div class="layui-card-body">
+        <div class="btn-group">
+          <button class="layui-btn" id="customTitle">自定义标题</button>
+          <button class="layui-btn layui-btn-normal" id="customIcon">自定义图标</button>
+          <button class="layui-btn layui-btn-warm" id="customClass">自定义样式</button>
+          <button class="layui-btn layui-btn-danger" id="noCloseBtn">无关闭按钮</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="layui-card">
+      <div class="layui-card-header">
+        <span class="layui-card-title">多条消息</span>
+      </div>
+      <div class="layui-card-body">
+        <div class="btn-group">
+          <button class="layui-btn" id="multiBtn">
+            <i class="layui-icon layui-icon-list"></i> 连续弹出多条
+          </button>
+          <button class="layui-btn layui-btn-danger" id="closeAllBtn">
+            <i class="layui-icon layui-icon-close"></i> 关闭所有
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <div class="layui-card layui-col-md12">
+      <div class="layui-card-header">
+        <span class="layui-card-title">回调函数</span>
+      </div>
+      <div class="layui-card-body">
+        <div class="btn-group">
+          <button class="layui-btn" id="callbackBtn">显示后回调</button>
+          <button class="layui-btn layui-btn-normal" id="cancelCallbackBtn">关闭前回调</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="demo-code">
+    <h4 class="demo-code-title">使用示例</h4>
+    <pre class="layui-code" lay-options="{title: 'JavaScript'}">
+// 基本用法
+toast.success('操作成功！');
+toast.error('操作失败！');
+toast.warning('警告信息');
+toast.info('提示信息');
+
+// 显示位置
+toast.show('内容', { offset: 'rt' });  // 右上角
+toast.show('内容', { offset: 'rb' });  // 右下角
+toast.show('内容', { offset: 'lt' });  // 左上角
+toast.show('内容', { offset: 'lb' });  // 左下角
+toast.show('内容', { offset: 'tc' });  // 顶部居中
+toast.show('内容', { offset: 'bc' });  // 底部居中
+toast.show('内容', { offset: 'lc' });  // 左侧居中
+toast.show('内容', { offset: 'rc' });  // 右侧居中
+
+// 自定义配置
+toast.show('自定义内容', {
+  title: '自定义标题',
+  icon: 'success',
+  time: 3000,
+  offset: 'rt',
+  closable: true,
+  success: function(id, elem) {
+    console.log('Toast已显示:', id);
+  },
+  cancel: function(id, elem) {
+    console.log('Toast即将关闭:', id);
+    return true;
+  }
+});
+
+// 加载状态
+var loadId = toast.loading('加载中...');
+setTimeout(function() {
+  toast.close(loadId);
+}, 2000);
+
+// 关闭所有
+toast.clear();</pre>
+  </div>
+</div>
+
+<style>
+.demo-header {
+  margin-bottom: 16px;
+}
+.demo-title {
+  font-size: 18px;
+  font-weight: 600;
+  color: var(--text-primary);
+  margin-bottom: 4px;
+}
+.demo-desc {
+  font-size: 13px;
+  color: var(--text-muted);
+}
+.demo-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 16px;
+  margin-bottom: 16px;
+}
+@media (max-width: 992px) {
+  .demo-grid {
+    grid-template-columns: 1fr;
+  }
+}
+.btn-group {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+.demo-code {
+  margin-top: 16px;
+}
+.demo-code-title {
+  font-size: 14px;
+  font-weight: 600;
+  margin-bottom: 10px;
+}
+.layui-code {
+  border-radius: 8px;
+}
+</style>
+
+<script>
+layui.use(['toastMod', 'layer'], function() {
+  var toast = layui.toastMod;
+  var layer = layui.layer;
+  var $ = layui.$;
+
+  $('#successBtn').on('click', function() {
+    toast.success('操作成功！');
+  });
+
+  $('#errorBtn').on('click', function() {
+    toast.error('操作失败，请重试！');
+  });
+
+  $('#warningBtn').on('click', function() {
+    toast.warning('请注意，这是一条警告信息！');
+  });
+
+  $('#infoBtn').on('click', function() {
+    toast.info('这是一条提示信息！');
+  });
+
+  $('#posRT').on('click', function() {
+    toast.info('右上角提示', { offset: 'rt' });
+  });
+
+  $('#posRB').on('click', function() {
+    toast.info('右下角提示', { offset: 'rb' });
+  });
+
+  $('#posLT').on('click', function() {
+    toast.info('左上角提示', { offset: 'lt' });
+  });
+
+  $('#posLB').on('click', function() {
+    toast.info('左下角提示', { offset: 'lb' });
+  });
+
+  $('#posTC').on('click', function() {
+    toast.info('顶部居中提示', { offset: 'tc' });
+  });
+
+  $('#posBC').on('click', function() {
+    toast.info('底部居中提示', { offset: 'bc' });
+  });
+
+  $('#posLC').on('click', function() {
+    toast.info('左侧居中提示', { offset: 'lc' });
+  });
+
+  $('#posRC').on('click', function() {
+    toast.info('右侧居中提示', { offset: 'rc' });
+  });
+
+  $('#shortDuration').on('click', function() {
+    toast.info('这是一条短时间提示', { time: 1500 });
+  });
+
+  $('#normalDuration').on('click', function() {
+    toast.info('这是一条正常时间提示', { time: 3000 });
+  });
+
+  $('#longDuration').on('click', function() {
+    toast.info('这是一条长时间提示', { time: 5000 });
+  });
+
+  $('#noAutoClose').on('click', function() {
+    toast.info('这条消息不会自动关闭，请手动关闭', { time: 0 });
+  });
+
+  $('#loadingBtn').on('click', function() {
+    var loadId = toast.loading('加载中...');
+    setTimeout(function() {
+      toast.close(loadId);
+      toast.success('加载完成！');
+    }, 2000);
+  });
+
+  $('#customTitle').on('click', function() {
+    toast.show('这是自定义内容', { title: '自定义标题' });
+  });
+
+  $('#customIcon').on('click', function() {
+    toast.show('自定义图标', {
+      title: '自定义',
+      icon: '<i class="layui-icon layui-icon-star" style="color: #ffb800; font-size: 22px;"></i>'
+    });
+  });
+
+  $('#customClass').on('click', function() {
+    toast.success('自定义样式类', { className: 'toast-success' });
+  });
+
+  $('#noCloseBtn').on('click', function() {
+    toast.info('没有关闭按钮', { closable: false, time: 3000 });
+  });
+
+  $('#multiBtn').on('click', function() {
+    toast.success('第一条消息', { offset: 'rt' });
+    setTimeout(function() { toast.info('第二条消息', { offset: 'rt' }); }, 300);
+    setTimeout(function() { toast.warning('第三条消息', { offset: 'rt' }); }, 600);
+  });
+
+  $('#closeAllBtn').on('click', function() {
+    toast.clear();
+  });
+
+  $('#callbackBtn').on('click', function() {
+    toast.success('显示后会在控制台输出日志', {
+      success: function(id, elem) {
+        console.log('Toast已显示, ID:', id);
+        layer.msg('Toast已显示');
+      }
+    });
+  });
+
+  $('#cancelCallbackBtn').on('click', function() {
+    toast.warning('关闭前会询问是否确认关闭', {
+      cancel: function(id, elem) {
+        layer.confirm('确定要关闭吗？', {
+          btn: ['确定', '取消'],
+          icon: 3
+        }, function(index) {
+          layer.close(index);
+          return true;
+        });
+        return false;
+      },
+      time: 0
+    });
+  });
+});
+</script>
+</body>
+</html>

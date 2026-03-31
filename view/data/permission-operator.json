@@ -1,0 +1,18 @@
+{
+  "code": 0,
+  "msg": "success",
+  "data": [
+    "dashboard-view",
+    "user-view",
+    "order-view",
+    "order-process",
+    "product-view",
+    "finance-view"
+  ],
+  "userInfo": {
+    "id": 2,
+    "username": "operator",
+    "role": "运营人员",
+    "description": "仅拥有查看和处理订单权限"
+  }
+}

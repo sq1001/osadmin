@@ -1,0 +1,52 @@
+/**
+ * LayUI 表单元素主题颜色适配
+ * 仅覆盖颜色相关属性
+ */
+
+/* 输入框聚焦 */
+.layui-input:focus,
+.layui-textarea:focus {
+  border-color: var(--accent) !important;
+}
+
+/* 选择框选中项 */
+.layui-form-select dl dd.layui-this {
+  background-color: var(--accent-light) !important;
+  color: var(--accent) !important;
+}
+
+/* 复选框 - primary风格 */
+.layui-form-checked[lay-skin="primary"] i {
+  border-color: var(--accent) !important;
+  background-color: var(--accent) !important;
+}
+
+/* 复选框 - 默认风格 */
+.layui-form-checked {
+  border-color: var(--accent) !important;
+  /* background-color: var(--accent) !important; */
+}
+
+/* 开关 */
+.layui-form-onswitch {
+  border-color: var(--accent) !important;
+  background-color: var(--accent) !important;
+}
+
+/* 单选框 */
+.layui-form-radio > i:hover,
+.layui-form-radioed > i {
+  color: var(--accent) !important;
+}
+
+/* 深色模式 */
+[data-theme="dark"] .layui-input,
+[data-theme="dark"] .layui-textarea {
+  background-color: rgba(0, 0, 0, 0.2);
+  border-color: var(--border);
+}
+
+[data-theme="dark"] .layui-form-select dl {
+  background-color: var(--card-bg);
+  border-color: var(--border);
+}

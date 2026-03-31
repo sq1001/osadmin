@@ -1,0 +1,688 @@
+/**
+ * 主题样式文件
+ * 深色模式和主题配置面板样式
+ */
+
+[data-theme="dark"] {
+  --bg-content: #0f1419;
+  --card-bg: #1a2332;
+  --text-primary: #f1f5f9;
+  --text-secondary: #94a3b8;
+  --text-muted: #64748b;
+  --border: #2d3a4f;
+  --bg-sidebar: #0d1117;
+  --bg-sidebar-hover: #161b22;
+}
+
+[data-theme="dark"] .layui-sidebar {
+  border-right-color: rgba(255, 255, 255, 0.05);
+}
+
+[data-theme="dark"] .layui-topbar {
+  background: var(--card-bg);
+  border-bottom-color: var(--border);
+}
+
+[data-theme="dark"] .layui-tabs-container {
+  background: var(--card-bg);
+  border-bottom-color: var(--border);
+}
+
+[data-theme="dark"] .tab-item {
+  background: var(--bg-content);
+  border-color: var(--border);
+}
+
+[data-theme="dark"] .tab-item:hover,
+[data-theme="dark"] .tab-item.active {
+  background: var(--card-bg);
+}
+
+[data-theme="dark"] .layui-theme-config-panel {
+  background: var(--card-bg);
+}
+
+[data-theme="dark"] .layui-theme-panel-header {
+  border-bottom-color: var(--border);
+}
+
+[data-theme="dark"] .preview-tip {
+  background: rgba(var(--accent-rgb), 0.15);
+}
+
+[data-theme="dark"] .layui-user-dropdown-menu {
+  background: var(--card-bg);
+  border-color: var(--border);
+}
+
+[data-theme="dark"] .layui-theme-mode-switch {
+  background: var(--bg-content);
+}
+
+[data-theme="dark"] .layui-theme-mode-btn.active {
+  background: var(--card-bg);
+}
+
+[data-theme="dark"] .layout-option {
+  border-color: var(--border);
+  background: transparent;
+}
+
+[data-theme="dark"] .layout-option.active {
+  background: var(--accent-light);
+  border-color: var(--accent);
+}
+
+[data-theme="dark"] .config-item {
+  border-bottom-color: var(--border);
+}
+
+[data-theme="dark"] .layui-theme-btn-secondary {
+  background: var(--bg-content);
+  border-color: var(--border);
+}
+
+[data-theme="dark"] .layui-notification-dropdown {
+  background: var(--card-bg);
+  border-color: var(--border);
+}
+
+[data-theme="dark"] .layui-notification-item:hover {
+  background: var(--bg-content);
+}
+
+[data-theme="dark"] .layui-tabs-dropdown {
+  background: var(--card-bg);
+  border-color: var(--border);
+}
+
+[data-theme="dark"] .tabs-dropdown-item:hover {
+  background: var(--bg-content);
+}
+
+.layui-notification-dropdown {
+  position: absolute;
+  top: 100%;
+  right: 0;
+  width: 280px;
+  background: var(--card-bg);
+  border-radius: 8px;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.15);
+  border: 1px solid var(--border);
+  margin-top: 4px;
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(-8px);
+  transition: all 0.15s ease;
+  z-index: 1000;
+}
+
+.layui-notification-dropdown .layui-notification-content {
+  max-height: 50vh;
+  overflow-y: auto;
+  overflow-x: hidden;
+  scrollbar-gutter: stable;
+}
+
+.layui-notification-dropdown.show {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0);
+}
+
+.layui-notification-header {
+  padding: 12px;
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.layui-notification-title {
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.layui-notification-mark {
+  font-size: 11px;
+  color: var(--accent);
+  cursor: pointer;
+}
+
+.layui-notification-item {
+  padding: 10px 12px;
+  border-bottom: 1px solid var(--border);
+  cursor: pointer;
+  transition: background 0.15s ease;
+}
+
+.layui-notification-item:hover {
+  background: var(--bg-content);
+}
+
+.layui-notification-item:last-child {
+  border-bottom: none;
+}
+
+.layui-notification-item.unread {
+  background: var(--bg-content);
+}
+
+.layui-notification-item.unread::before {
+  content: '';
+  position: absolute;
+  left: 8px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 6px;
+  height: 6px;
+  background: var(--accent);
+  border-radius: 50%;
+}
+
+.layui-notification-item.unread .layui-notification-item-title {
+  padding-left: 12px;
+  margin-bottom: 2px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.layui-notification-item.unread .layui-notification-item-time {
+  padding-left: 12px;
+}
+
+.layui-notification-item {
+  position: relative;
+}
+
+.layui-notification-empty {
+  padding: 40px 20px;
+  text-align: center;
+  color: var(--text-muted);
+}
+
+.layui-notification-empty i {
+  font-size: 32px;
+  display: block;
+  margin-bottom: 8px;
+  opacity: 0.5;
+}
+
+.layui-notification-empty span {
+  font-size: 12px;
+}
+
+.layui-notification-item-title {
+  font-size: 12px;
+  color: var(--text-primary);
+  margin-bottom: 2px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.layui-notification-item-time {
+  font-size: 10px;
+  color: var(--text-muted);
+}
+
+.layui-theme-config-panel {
+  position: fixed;
+  top: 0;
+  right: -320px;
+  width: 320px;
+  height: 100vh;
+  background: var(--card-bg);
+  border-left: 1px solid var(--border);
+  box-shadow: -4px 0 24px rgba(0, 0, 0, 0.1);
+  z-index: 2000;
+  transition: right 0.3s ease;
+  display: flex;
+  flex-direction: column;
+}
+
+.layui-theme-config-panel.show {
+  right: 0;
+}
+
+.layui-theme-panel-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16px 20px;
+  border-bottom: 1px solid var(--border);
+  flex-shrink: 0;
+}
+
+.layui-theme-panel-title {
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--text-primary);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.layui-theme-panel-title .layui-icon {
+  color: var(--accent);
+  font-size: 18px;
+}
+
+.layui-theme-panel-close {
+  width: 28px;
+  height: 28px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: none;
+  background: transparent;
+  border-radius: 6px;
+  color: var(--text-muted);
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.layui-theme-panel-close:hover {
+  background: var(--bg-content);
+  color: var(--text-primary);
+}
+
+.layui-theme-panel-close .layui-icon {
+  font-size: 16px;
+}
+
+.layui-theme-panel-body {
+  flex: 1;
+  overflow-y: auto;
+  scrollbar-gutter: stable;
+  padding: 20px;
+}
+
+.layui-theme-panel-body::-webkit-scrollbar {
+  width: 4px;
+}
+
+.layui-theme-panel-body::-webkit-scrollbar-thumb {
+  background: var(--border);
+  border-radius: 4px;
+}
+
+.layui-theme-panel-body::-webkit-scrollbar-thumb:hover {
+  background: var(--text-muted);
+}
+
+.layui-theme-panel-footer {
+  padding: 16px 20px;
+  border-top: 1px solid var(--border);
+  flex-shrink: 0;
+  display: flex;
+  gap: 12px;
+  background: var(--card-bg);
+}
+
+.layui-theme-btn {
+  flex: 1;
+  height: 40px;
+  border: none;
+  border-radius: 8px;
+  font-size: 13px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.15s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+}
+
+.layui-theme-btn .layui-icon {
+  font-size: 16px;
+}
+
+.layui-theme-btn-primary {
+  background: linear-gradient(135deg, var(--accent), var(--accent-hover));
+  color: #fff;
+  box-shadow: 0 2px 8px rgba(var(--accent-rgb), 0.3);
+}
+
+.layui-theme-btn-primary:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(var(--accent-rgb), 0.4);
+}
+
+.layui-theme-btn-secondary {
+  background: var(--bg-content);
+  color: var(--text-secondary);
+  border: 1px solid var(--border);
+}
+
+.layui-theme-btn-secondary:hover {
+  background: var(--border);
+  color: var(--text-primary);
+}
+
+.preview-tip {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 10px 12px;
+  background: rgba(var(--accent-rgb), 0.08);
+  border-radius: 6px;
+  margin-bottom: 16px;
+  font-size: 12px;
+  color: var(--accent);
+}
+
+.preview-tip .layui-icon {
+  font-size: 14px;
+  flex-shrink: 0;
+}
+
+.config-section {
+  margin-bottom: 24px;
+}
+
+.config-section:last-child {
+  margin-bottom: 0;
+}
+
+.config-section-title {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--text-primary);
+  margin-bottom: 12px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.config-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 0;
+  border-bottom: 1px solid var(--border);
+}
+
+.config-item:last-child {
+  border-bottom: none;
+}
+
+.config-item-label {
+  font-size: 13px;
+  color: var(--text-secondary);
+}
+
+.config-item-label-wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.config-item-desc {
+  font-size: 11px;
+  color: var(--text-muted);
+}
+
+.toggle-switch {
+  position: relative;
+  width: 44px;
+  height: 24px;
+  cursor: pointer;
+}
+
+.toggle-switch input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.toggle-slider {
+  position: absolute;
+  inset: 0;
+  background: var(--border);
+  border-radius: 12px;
+  transition: all 0.2s ease;
+}
+
+.toggle-slider::before {
+  content: '';
+  position: absolute;
+  width: 18px;
+  height: 18px;
+  left: 3px;
+  top: 3px;
+  background: #fff;
+  border-radius: 50%;
+  transition: all 0.2s ease;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+}
+
+.toggle-switch input:checked + .toggle-slider {
+  background: var(--accent);
+}
+
+.toggle-switch input:checked + .toggle-slider::before {
+  transform: translateX(20px);
+}
+
+.layout-options {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+
+.layout-option {
+  padding: 12px;
+  border: 2px solid var(--border);
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  text-align: center;
+}
+
+.layout-option:hover {
+  border-color: var(--text-muted);
+}
+
+.layout-option.active {
+  border-color: var(--accent);
+  background: var(--accent-light);
+}
+
+.layout-option-icon {
+  width: 48px;
+  height: 36px;
+  margin: 0 auto 8px;
+  background: var(--bg-content);
+  border-radius: 4px;
+  position: relative;
+  display: flex;
+  align-items: flex-start;
+  padding: 4px;
+}
+
+.layout-option-icon::before {
+  content: '';
+  width: 8px;
+  height: 100%;
+  background: var(--border);
+  border-radius: 2px 0 0 2px;
+}
+
+.layout-option-icon .layout-content {
+  flex: 1;
+  margin-left: 2px;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.layout-option-icon .layout-tabs {
+  height: 4px;
+  background: var(--accent);
+  border-radius: 1px;
+  opacity: 0.5;
+}
+
+.layout-option-icon .layout-body {
+  flex: 1;
+  background: var(--border);
+  opacity: 0.3;
+  border-radius: 1px;
+}
+
+.layout-option[data-layout="double"] .layout-icon-submenu {
+  position: absolute;
+  left: 10px;
+  top: 4px;
+  width: 8px;
+  height: calc(100% - 8px);
+  background: var(--accent);
+  opacity: 0.3;
+  border-radius: 1px;
+}
+
+.layout-option-label {
+  font-size: 12px;
+  color: var(--text-secondary);
+}
+
+.layout-option.active .layout-option-label {
+  color: var(--accent);
+  font-weight: 500;
+}
+
+.color-options {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.color-option {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  position: relative;
+  border: 2px solid transparent;
+}
+
+.color-option:hover {
+  transform: scale(1.1);
+}
+
+.color-option.active {
+  border-color: var(--text-primary);
+}
+
+.color-option.active::before {
+  content: '✓';
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 14px;
+  font-weight: bold;
+  color: #fff;
+  z-index: 1;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+}
+
+.layui-theme-mode-switch {
+  display: flex;
+  background: var(--bg-content);
+  border-radius: 8px;
+  padding: 4px;
+}
+
+.layui-theme-mode-btn {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  padding: 10px 12px;
+  border: none;
+  background: transparent;
+  border-radius: 6px;
+  font-size: 12px;
+  color: var(--text-muted);
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.layui-theme-mode-btn:hover {
+  color: var(--text-secondary);
+}
+
+.layui-theme-mode-btn.active {
+  background: var(--card-bg);
+  color: var(--accent);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.layui-theme-mode-btn .layui-icon {
+  font-size: 16px;
+}
+
+.layui-theme-panel-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.3);
+  z-index: 1999;
+  opacity: 0;
+  visibility: hidden;
+  transition: all 0.3s ease;
+}
+
+.layui-theme-panel-overlay.show {
+  opacity: 1;
+  visibility: visible;
+}
+
+.layui-toast {
+  position: fixed;
+  top: 20px;
+  left: 50%;
+  transform: translateX(-50%) translateY(-100px);
+  background: var(--card-bg);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 12px 20px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.15);
+  z-index: 3000;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 13px;
+  color: var(--text-primary);
+  opacity: 0;
+  transition: all 0.3s ease;
+}
+
+.layui-toast.show {
+  opacity: 1;
+  transform: translateX(-50%) translateY(0);
+}
+
+.layui-toast.success {
+  border-color: var(--success);
+}
+
+.layui-toast.success .layui-toast-icon {
+  color: var(--success);
+}
+
+.layui-toast-icon {
+  font-size: 18px;
+}
+
+@media (max-width: 768px) {
+  .layui-theme-config-panel {
+    width: 100%;
+    right: -100%;
+  }
+}

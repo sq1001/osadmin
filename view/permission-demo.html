@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>权限管理示例 - OSADMIN</title>
+</head>
+<body>
+  <div class="layui-container" style="padding: 20px;">
+    <div class="layui-card">
+      <div class="layui-card-header">
+        <h2>权限管理示例</h2>
+      </div>
+      <div class="layui-card-body">
+        
+        <fieldset class="layui-elem-field">
+          <legend>1. 权限配置 (app.json)</legend>
+          <div class="layui-field-box">
+            <pre class="layui-code">
+{
+  "permission": {
+    "enabled": true,           // 是否启用权限
+    "url": "/app/admin/rule/permission",  // 权限接口地址
+    "method": "GET",           // 请求方法
+    "cache": true              // 是否缓存
+  }
+}
+            </pre>
+          </div>
+        </fieldset>
+
+        <fieldset class="layui-elem-field" style="margin-top: 20px;">
+          <legend>2. HTML 权限控制示例</legend>
+          <div class="layui-field-box">
+            <p style="margin-bottom: 15px; color: #666;">
+              使用 permission 属性控制元素显示，默认隐藏，有权限才显示
+            </p>
+            
+            <div style="margin-bottom: 20px; padding: 15px; background: #f8f8f8; border-radius: 4px;">
+              <h4 style="margin-bottom: 10px;">用户管理权限示例：</h4>
+              <button permission="user-view" class="layui-btn layui-btn-sm">查看用户</button>
+              <button permission="user-add" class="layui-btn layui-btn-sm layui-btn-normal">添加用户</button>
+              <button permission="user-edit" class="layui-btn layui-btn-sm layui-btn-warm">编辑用户</button>
+              <button permission="user-delete" class="layui-btn layui-btn-sm layui-btn-danger">删除用户</button>
+            </div>
+
+            <div style="margin-bottom: 20px; padding: 15px; background: #f8f8f8; border-radius: 4px;">
+              <h4 style="margin-bottom: 10px;">订单管理权限示例：</h4>
+              <button permission="order-view" class="layui-btn layui-btn-sm">查看订单</button>
+              <button permission="order-process" class="layui-btn layui-btn-sm layui-btn-normal">处理订单</button>
+              <button permission="order-refund" class="layui-btn layui-btn-sm layui-btn-warm">退款处理</button>
+            </div>
+
+            <div style="padding: 15px; background: #f8f8f8; border-radius: 4px;">
+              <h4 style="margin-bottom: 10px;">系统管理权限示例：</h4>
+              <button permission="system-config" class="layui-btn layui-btn-sm">系统配置</button>
+              <button permission="system-log" class="layui-btn layui-btn-sm layui-btn-normal">查看日志</button>
+              <button permission="system-backup" class="layui-btn layui-btn-sm layui-btn-warm">数据备份</button>
+            </div>
+          </div>
+        </fieldset>
+
+        <fieldset class="layui-elem-field" style="margin-top: 20px;">
+          <legend>3. JavaScript API 使用示例</legend>
+          <div class="layui-field-box">
+            <pre class="layui-code">
+// 方式1: 通过 OSLAY 全局对象
+OSLAY.ready(function(modules) {
+  var permission = modules.permission;
+  
+  // 检查单个权限
+  if (permission.hasPermission('user-edit')) {
+    console.log('有编辑用户权限');
+  }
+  
+  // 判断是否超级管理员
+  if (permission.isSuper()) {
+    console.log('超级管理员，拥有所有权限');
+  }
+  
+  // 获取所有权限列表
+  var permissions = permission.getPermissions();
+  console.log('当前用户权限:', permissions);
+  
+  // 重新加载权限
+  permission.reload().then(function() {
+    console.log('权限重新加载成功');
+  });
+});
+
+// 方式2: 直接使用 LayUI
+layui.use(['permissionModule'], function() {
+  var permission = layui.permissionModule;
+  
+  // 自定义配置初始化（可选）
+  permission.init({
+    url: '/custom/permission/api',
+    cache: false
+  }).then(function() {
+    console.log('权限初始化成功');
+  });
+  
+  // 权限检查
+  if (permission.hasPermission('admin')) {
+    // 显示管理员功能
+  }
+});
+
+// 方式3: 在页面中动态检查权限
+function checkAndShowElement() {
+  var permission = OSLAY.getModule('permission');
+  
+  if (permission && permission.hasPermission('special-feature')) {
+    document.getElementById('specialFeature').style.display = 'block';
+  }
+}
+            </pre>
+          </div>
+        </fieldset>
+
+        <fieldset class="layui-elem-field" style="margin-top: 20px;">
+          <legend>4. 实时权限状态</legend>
+          <div class="layui-field-box" id="permissionStatus">
+            <p style="color: #999;">加载中...</p>
+          </div>
+        </fieldset>
+
+        <fieldset class="layui-elem-field" style="margin-top: 20px;">
+          <legend>5. 权限测试工具</legend>
+          <div class="layui-field-box">
+            <div class="layui-form">
+              <div class="layui-form-item">
+                <label class="layui-form-label">权限代码</label>
+                <div class="layui-input-inline" style="width: 300px;">
+                  <input type="text" id="permissionInput" placeholder="输入权限代码，如: user-edit" class="layui-input">
+                </div>
+                <button class="layui-btn" id="checkPermissionBtn">检查权限</button>
+              </div>
+            </div>
+            <div id="checkResult" style="margin-top: 10px;"></div>
+          </div>
+        </fieldset>
+
+      </div>
+    </div>
+  </div>
+
+  <script>
+  // 等待系统初始化完成
+  OSLAY.ready(function(modules) {
+    var permission = modules.permission;
+    
+    // 显示权限状态
+    var statusHtml = '<div style="padding: 15px; background: #f8f8f8; border-radius: 4px;">';
+    statusHtml += '<p><strong>初始化状态:</strong> ' + (permission.initialized ? '✅ 已初始化' : '❌ 未初始化') + '</p>';
+    statusHtml += '<p><strong>超级管理员:</strong> ' + (permission.isSuper() ? '✅ 是' : '❌ 否') + '</p>';
+    statusHtml += '<p><strong>权限数量:</strong> ' + permission.getPermissions().length + ' 个</p>';
+    statusHtml += '<p><strong>权限列表:</strong><br>' + permission.getPermissions().join(', ') + '</p>';
+    statusHtml += '</div>';
+    
+    document.getElementById('permissionStatus').innerHTML = statusHtml;
+    
+    // 权限检查测试
+    document.getElementById('checkPermissionBtn').addEventListener('click', function() {
+      var code = document.getElementById('permissionInput').value.trim();
+      if (!code) {
+        layer.msg('请输入权限代码', { icon: 2 });
+        return;
+      }
+      
+      var hasPermission = permission.hasPermission(code);
+      var resultHtml = '<div style="padding: 10px; margin-top: 10px; border-radius: 4px; background: ' + 
+                       (hasPermission ? '#e8f5e9; color: #2e7d32;' : '#ffebee; color: #c62828;') + '">';
+      resultHtml += '<strong>' + code + '</strong>: ' + (hasPermission ? '✅ 有权限' : '❌ 无权限');
+      resultHtml += '</div>';
+      
+      document.getElementById('checkResult').innerHTML = resultHtml;
+    });
+    
+    // 回车键检查
+    document.getElementById('permissionInput').addEventListener('keypress', function(e) {
+      if (e.key === 'Enter') {
+        document.getElementById('checkPermissionBtn').click();
+      }
+    });
+  });
+  </script>
+</body>
+</html>

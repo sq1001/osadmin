@@ -1,0 +1,24 @@
+/**
+ * LayUI 导航主题颜色适配
+ * 仅覆盖颜色相关属性
+ */
+
+/* 导航选中 */
+.layui-nav .layui-this a {
+  color: var(--accent);
+}
+
+.layui-nav .layui-this::after {
+  background-color: var(--accent);
+}
+
+/* 子菜单选中 */
+.layui-nav-child dd.layui-this a {
+  background-color: var(--accent-light);
+  color: var(--accent);
+}
+
+/* 面包屑hover */
+.layui-breadcrumb a:hover {
+  color: var(--accent);
+}

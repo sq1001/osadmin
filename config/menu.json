@@ -1,0 +1,167 @@
+[
+  {
+    "id": 0,
+    "code": "view/dashboard",
+    "title": "控制台",
+    "icon": "layui-icon-console",
+    "href": "view/dashboard.html",
+    "closable": false,
+    "children": null
+  },
+  {
+    "id": 1,
+    "code": "products",
+    "title": "商品管理",
+    "icon": "layui-icon-app",
+    "badge": null,
+    "children": [
+      { "id": 10, "code": "view/product-list", "title": "商品列表", "icon": "layui-icon-list", "href": "view/product-list.html" },
+      { "id": 11, "code": "view/product-add", "title": "添加商品", "icon": "layui-icon-addition", "href": "view/product-add.html" },
+      { "id": 12, "code": "view/product-category", "title": "分类管理", "icon": "layui-icon-note", "href": "view/product-category.html" },
+      { "id": 13, "code": "view/product-stock", "title": "库存管理", "icon": "layui-icon-box", "href": "view/product-stock.html" }
+    ]
+  },
+  {
+    "id": 2,
+    "code": "orders",
+    "title": "订单管理",
+    "icon": "layui-icon-form",
+    "badge": 12,
+    "children": [
+      { "id": 20, "code": "view/order-list", "title": "全部订单", "icon": "layui-icon-list", "href": "view/order-list.html" },
+      { "id": 21, "code": "view/order-pending", "title": "待付款", "icon": "layui-icon-diamond", "href": "view/order-pending.html" },
+      { "id": 22, "code": "view/order-shipping", "title": "待发货", "icon": "layui-icon-cart", "href": "view/order-shipping.html" },
+      { "id": 23, "code": "view/order-refund", "title": "退款管理", "icon": "layui-icon-refresh", "href": "view/order-refund.html" }
+    ]
+  },
+  {
+    "id": 3,
+    "code": "users",
+    "title": "用户管理",
+    "icon": "layui-icon-user",
+    "children": [
+      { "id": 30, "code": "view/user-list", "title": "用户列表", "icon": "layui-icon-username", "href": "view/user-list.html" },
+      { "id": 31, "code": "view/user-level", "title": "会员等级", "icon": "layui-icon-rate", "href": "view/user-level.html" },
+      { "id": 32, "code": "view/user-feedback", "title": "用户反馈", "icon": "layui-icon-reply-fill", "href": "view/user-feedback.html" }
+    ]
+  },
+  {
+    "id": 4,
+    "code": "view/analytics",
+    "title": "数据分析",
+    "icon": "layui-icon-chart-screen",
+    "href": "view/analytics.html",
+    "closable": true,
+    "children": null
+  },
+  {
+    "id": 5,
+    "code": "view/finance",
+    "title": "财务报表",
+    "icon": "layui-icon-rmb",
+    "href": "view/finance.html",
+    "closable": true,
+    "children": null
+  },
+  {
+    "id": 6,
+    "code": "marketing",
+    "title": "营销中心",
+    "icon": "layui-icon-location",
+    "children": [
+      { "id": 60, "code": "view/marketing-coupon", "title": "优惠券管理", "icon": "layui-icon-diamond", "href": "view/marketing-coupon.html" },
+      { "id": 61, "code": "view/marketing-activity", "title": "活动管理", "icon": "layui-icon-chart", "href": "view/marketing-activity.html" },
+      { "id": 62, "code": "view/marketing-banner", "title": "广告位管理", "icon": "layui-icon-picture", "href": "view/marketing-banner.html" }
+    ]
+  },
+  {
+    "id": 7,
+    "code": "system",
+    "title": "系统管理",
+    "icon": "layui-icon-set",
+    "children": [
+      {
+        "id": 70,
+        "code": "system/permission",
+        "title": "权限管理",
+        "icon": "layui-icon-auz",
+        "children": [
+          { "id": 700, "code": "view/system/permission-role", "title": "角色管理", "icon": "layui-icon-username", "href": "view/system/permission-role.html" },
+          { "id": 701, "code": "view/system/permission-menu", "title": "菜单管理", "icon": "layui-icon-menu-fill", "href": "view/system/permission-menu.html" },
+          { 
+            "id": 702,
+            "code": "system/permission/user",
+            "title": "用户权限",
+            "icon": "layui-icon-user",
+            "children": [
+              { "id": 7020, "code": "view/system/user-permission-list", "title": "权限列表", "icon": "layui-icon-list", "href": "view/system/user-permission-list.html" },
+              { "id": 7021, "code": "view/system/user-permission-assign", "title": "权限分配", "icon": "layui-icon-edit", "href": "view/system/user-permission-assign.html" }
+            ]
+          }
+        ]
+      },
+      {
+        "id": 71,
+        "code": "system/monitor",
+        "title": "系统监控",
+        "icon": "layui-icon-chart",
+        "children": [
+          { "id": 710, "code": "view/system/monitor-server", "title": "服务器监控", "icon": "layui-icon-engine", "href": "view/system/monitor-server.html" },
+          { "id": 711, "code": "view/system/monitor-log", "title": "操作日志", "icon": "layui-icon-log", "href": "view/system/monitor-log.html" },
+          { 
+            "id": 712,
+            "code": "system/monitor/online",
+            "title": "在线用户",
+            "icon": "layui-icon-group",
+            "children": [
+              { "id": 7120, "code": "view/system/online-user-list", "title": "在线列表", "icon": "layui-icon-list", "href": "view/system/online-user-list.html" },
+              { "id": 7121, "code": "view/system/online-user-force", "title": "强制下线", "icon": "layui-icon-close", "href": "view/system/online-user-force.html" }
+            ]
+          }
+        ]
+      },
+      {
+        "id": 72,
+        "code": "system/config",
+        "title": "系统配置",
+        "icon": "layui-icon-set",
+        "children": [
+          { "id": 720, "code": "view/system/config-basic", "title": "基础配置", "icon": "layui-icon-set", "href": "view/system/config-basic.html" },
+          { "id": 721, "code": "view/system/config-email", "title": "邮件配置", "icon": "layui-icon-email", "href": "view/system/config-email.html" },
+          { "id": 722, "code": "view/system/config-storage", "title": "存储配置", "icon": "layui-icon-database", "href": "view/system/config-storage.html" }
+        ]
+      }
+    ]
+  },
+  {
+    "id": 8,
+    "code": "components",
+    "title": "组件示例",
+    "icon": "layui-icon-component",
+    "children": [
+      { "id": 1001, "code": "view/permission-demo", "title": "权限组件", "icon": "layui-icon-chart", "href": "view/permission-demo.html" },
+      { "id": 1000, "code": "view/components/form-comprehensive", "title": "表单综合", "icon": "layui-icon-chart", "href": "view/components/form-comprehensive.html" },
+      { "id": 80, "code": "view/components/form-demo", "title": "表单组件", "icon": "layui-icon-form", "href": "view/components/form-demo.html" },
+      { "id": 81, "code": "view/components/button-demo", "title": "按钮组件", "icon": "layui-icon-slider", "href": "view/components/button-demo.html" },
+      { "id": 82, "code": "view/components/table-demo", "title": "表格组件", "icon": "layui-icon-table", "href": "view/components/table-demo.html" },
+      { "id": 83, "code": "view/components/layer-demo", "title": "弹层组件", "icon": "layui-icon-layer", "href": "view/components/layer-demo.html" },
+      { "id": 84, "code": "view/components/laydate-demo", "title": "日期时间", "icon": "layui-icon-date", "href": "view/components/laydate-demo.html" },
+      { "id": 85, "code": "view/components/dropdown-demo", "title": "下拉菜单", "icon": "layui-icon-down", "href": "view/components/dropdown-demo.html" },
+      { "id": 86, "code": "view/components/drawer-demo", "title": "抽屉弹窗", "icon": "layui-icon-shrink-right", "href": "view/components/drawer-demo.html" },
+      { "id": 87, "code": "view/components/drawer-demo1", "title": "内容区域抽屉", "icon": "layui-icon-shrink-right", "href": "view/components/drawer-demo1.html" },
+      { "id": 91, "code": "view/components/laydrawer-demo", "title": "LayDrawer抽屉", "icon": "layui-icon-shrink-right", "href": "view/components/laydrawer-demo.html" },
+      { "id": 88, "code": "view/components/echarts-demo", "title": "ECharts图表", "icon": "layui-icon-chart", "href": "view/components/echarts-demo.html" },
+      { "id": 89, "code": "view/components/xm-select-demo", "title": "多选下拉框", "icon": "layui-icon-unlink", "href": "view/components/xm-select-demo.html" },
+      { "id": 90, "code": "view/components/toast-demo", "title": "Toast提示", "icon": "layui-icon-tips", "href": "view/components/toast-demo.html" }
+    ]
+  },
+  {
+    "id": 9,
+    "code": "view/settings",
+    "title": "系统设置",
+    "icon": "layui-icon-set",
+    "href": "view/settings.html",
+    "closable": false,
+    "children": null
+  }
+]

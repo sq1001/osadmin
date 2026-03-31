@@ -1,0 +1,471 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>弹层组件</title>
+</head>
+<body>
+<div class="page-content">
+  <div class="demo-header">
+    <h3 class="demo-title">弹层组件</h3>
+    <p class="demo-desc">Layui layer 弹层组件的完整示例，包含提示框、询问框、页面层、iframe层等</p>
+  </div>
+
+  <div class="demo-grid">
+    <div class="layui-card">
+      <div class="layui-card-header">
+        <span class="layui-card-title">基础消息</span>
+      </div>
+      <div class="layui-card-body">
+        <div class="btn-group">
+          <button class="layui-btn" id="msgDefault">默认消息</button>
+          <button class="layui-btn" id="msgSuccess">成功消息</button>
+          <button class="layui-btn layui-btn-warm" id="msgWarning">警告消息</button>
+          <button class="layui-btn layui-btn-danger" id="msgError">错误消息</button>
+          <button class="layui-btn layui-btn-normal" id="msgInfo">信息消息</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="layui-card">
+      <div class="layui-card-header">
+        <span class="layui-card-title">询问框</span>
+      </div>
+      <div class="layui-card-body">
+        <div class="btn-group">
+          <button class="layui-btn" id="confirm1">确认删除</button>
+          <button class="layui-btn layui-btn-normal" id="confirm2">确认提交</button>
+          <button class="layui-btn layui-btn-warm" id="confirm3">确认操作</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="layui-card">
+      <div class="layui-card-header">
+        <span class="layui-card-title">页面层</span>
+      </div>
+      <div class="layui-card-body">
+        <div class="btn-group">
+          <button class="layui-btn" id="pageSmall">小页面</button>
+          <button class="layui-btn layui-btn-normal" id="pageMedium">中等页面</button>
+          <button class="layui-btn layui-btn-warm" id="pageLarge">大页面</button>
+          <button class="layui-btn layui-btn-danger" id="pageFull">全屏页面</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="layui-card">
+      <div class="layui-card-header">
+        <span class="layui-card-title">iframe层</span>
+      </div>
+      <div class="layui-card-body">
+        <div class="btn-group">
+          <button class="layui-btn" id="iframeSmall">小窗口</button>
+          <button class="layui-btn layui-btn-normal" id="iframeMedium">中等窗口</button>
+          <button class="layui-btn layui-btn-warm" id="iframeLarge">大窗口</button>
+          <button class="layui-btn layui-btn-danger" id="iframeFull">全屏窗口</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="layui-card">
+      <div class="layui-card-header">
+        <span class="layui-card-title">加载层</span>
+      </div>
+      <div class="layui-card-body">
+        <div class="btn-group">
+          <button class="layui-btn" id="load0">加载样式1</button>
+          <button class="layui-btn layui-btn-normal" id="load1">加载样式2</button>
+          <button class="layui-btn layui-btn-warm" id="load2">加载样式3</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="layui-card">
+      <div class="layui-card-header">
+        <span class="layui-card-title">tips层</span>
+      </div>
+      <div class="layui-card-body">
+        <div class="btn-group">
+          <button class="layui-btn" id="tips1">上边tips</button>
+          <button class="layui-btn layui-btn-normal" id="tips2">右边tips</button>
+          <button class="layui-btn layui-btn-warm" id="tips3">下边tips</button>
+          <button class="layui-btn layui-btn-danger" id="tips4">左边tips</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="layui-card">
+      <div class="layui-card-header">
+        <span class="layui-card-title">输入层</span>
+      </div>
+      <div class="layui-card-body">
+        <div class="btn-group">
+          <button class="layui-btn" id="prompt1">输入文本</button>
+          <button class="layui-btn layui-btn-normal" id="prompt2">输入密码</button>
+          <button class="layui-btn layui-btn-warm" id="prompt3">多行文本</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="layui-card">
+      <div class="layui-card-header">
+        <span class="layui-card-title">tab层</span>
+      </div>
+      <div class="layui-card-body">
+        <div class="btn-group">
+          <button class="layui-btn" id="tab">tab层</button>
+          <button class="layui-btn layui-btn-normal" id="photos">相册层</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="layui-card">
+      <div class="layui-card-header">
+        <span class="layui-card-title">通知消息</span>
+      </div>
+      <div class="layui-card-body">
+        <div class="btn-group">
+          <button class="layui-btn" id="notifySuccess">成功通知</button>
+          <button class="layui-btn layui-btn-warm" id="notifyWarning">警告通知</button>
+          <button class="layui-btn layui-btn-danger" id="notifyError">错误通知</button>
+          <button class="layui-btn layui-btn-normal" id="notifyInfo">信息通知</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="layui-card">
+      <div class="layui-card-header">
+        <span class="layui-card-title">特殊示例</span>
+      </div>
+      <div class="layui-card-body">
+        <div class="btn-group">
+          <button class="layui-btn" id="promptLayer">模态框</button>
+          <button class="layui-btn layui-btn-normal" id="offsetRB">右下角</button>
+          <button class="layui-btn layui-btn-warm" id="offsetLB">左下角</button>
+          <button class="layui-btn layui-btn-danger" id="noShade">无遮罩</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<style>
+.demo-header {
+  margin-bottom: 16px;
+}
+.demo-title {
+  font-size: 18px;
+  font-weight: 600;
+  color: var(--text-primary);
+  margin-bottom: 4px;
+}
+.demo-desc {
+  font-size: 13px;
+  color: var(--text-muted);
+}
+.demo-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 16px;
+}
+@media (max-width: 992px) {
+  .demo-grid {
+    grid-template-columns: 1fr;
+  }
+}
+.btn-group {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+</style>
+
+<script>
+layui.use(['layer'], function() {
+  var layer = layui.layer;
+  var $ = layui.$;
+
+  $('#msgDefault').on('click', function() {
+    layer.msg('这是一条默认消息');
+  });
+
+  $('#msgSuccess').on('click', function() {
+    layer.msg('操作成功！', { icon: 1 });
+  });
+
+  $('#msgWarning').on('click', function() {
+    layer.msg('请注意，这是一条警告！', { icon: 0 });
+  });
+
+  $('#msgError').on('click', function() {
+    layer.msg('操作失败，请重试！', { icon: 2 });
+  });
+
+  $('#msgInfo').on('click', function() {
+    layer.msg('这是一条提示信息', { icon: 6 });
+  });
+
+  $('#confirm1').on('click', function() {
+    layer.confirm('确定要删除这条数据吗？', {
+      icon: 3,
+      title: '删除确认',
+      btn: ['确定', '取消']
+    }, function(index) {
+      layer.close(index);
+      layer.msg('删除成功', { icon: 1 });
+    });
+  });
+
+  $('#confirm2').on('click', function() {
+    layer.confirm('确定要提交表单吗？', {
+      icon: 3,
+      title: '提交确认',
+      btn: ['提交', '取消']
+    }, function(index) {
+      layer.close(index);
+      layer.msg('提交成功', { icon: 1 });
+    });
+  });
+
+  $('#confirm3').on('click', function() {
+    layer.confirm('此操作不可撤销，确定继续吗？', {
+      icon: 0,
+      title: '操作确认',
+      btn: ['确定', '取消']
+    }, function(index) {
+      layer.close(index);
+      layer.msg('操作完成', { icon: 1 });
+    });
+  });
+
+  $('#pageSmall').on('click', function() {
+    layer.open({
+      type: 1,
+      title: '小页面层',
+      area: ['400px', '300px'],
+      content: '<div style="padding: 20px;">这是一个小页面层的内容区域</div>'
+    });
+  });
+
+  $('#pageMedium').on('click', function() {
+    layer.open({
+      type: 1,
+      title: '中等页面层',
+      area: ['600px', '400px'],
+      content: '<div style="padding: 20px;">这是一个中等页面层的内容区域<br><br>可以放置更多内容</div>'
+    });
+  });
+
+  $('#pageLarge').on('click', function() {
+    layer.open({
+      type: 1,
+      title: '大页面层',
+      area: ['800px', '500px'],
+      content: '<div style="padding: 20px;">这是一个大页面层的内容区域<br><br>适合展示更多内容</div>'
+    });
+  });
+
+  $('#pageFull').on('click', function() {
+    layer.open({
+      type: 1,
+      title: '全屏页面层',
+      area: ['100%', '100%'],
+      content: '<div style="padding: 20px;">这是一个全屏页面层的内容区域</div>'
+    });
+  });
+
+  $('#iframeSmall').on('click', function() {
+    layer.open({
+      type: 2,
+      title: '小窗口',
+      area: ['500px', '350px'],
+      content: 'https://www.baidu.com'
+    });
+  });
+
+  $('#iframeMedium').on('click', function() {
+    layer.open({
+      type: 2,
+      title: '中等窗口',
+      area: ['700px', '450px'],
+      content: 'https://www.baidu.com'
+    });
+  });
+
+  $('#iframeLarge').on('click', function() {
+    layer.open({
+      type: 2,
+      title: '大窗口',
+      area: ['900px', '550px'],
+      content: 'https://www.baidu.com'
+    });
+  });
+
+  $('#iframeFull').on('click', function() {
+    layer.open({
+      type: 2,
+      title: '全屏窗口',
+      area: ['100%', '100%'],
+      content: 'https://www.baidu.com'
+    });
+  });
+
+  $('#load0').on('click', function() {
+    var index = layer.load(0, { shade: [0.3, '#000'] });
+    setTimeout(function() {
+      layer.close(index);
+    }, 2000);
+  });
+
+  $('#load1').on('click', function() {
+    var index = layer.load(1, { shade: [0.3, '#000'] });
+    setTimeout(function() {
+      layer.close(index);
+    }, 2000);
+  });
+
+  $('#load2').on('click', function() {
+    var index = layer.load(2, { shade: [0.3, '#000'] });
+    setTimeout(function() {
+      layer.close(index);
+    }, 2000);
+  });
+
+  $('#tips1').on('click', function() {
+    layer.tips('上边提示', this, { tips: [1, '#16baaa'] });
+  });
+
+  $('#tips2').on('click', function() {
+    layer.tips('右边提示', this, { tips: [2, '#16baaa'] });
+  });
+
+  $('#tips3').on('click', function() {
+    layer.tips('下边提示', this, { tips: [3, '#16baaa'] });
+  });
+
+  $('#tips4').on('click', function() {
+    layer.tips('左边提示', this, { tips: [4, '#16baaa'] });
+  });
+
+  $('#prompt1').on('click', function() {
+    layer.prompt({ title: '请输入文本', formType: 0 }, function(value, index) {
+      layer.close(index);
+      layer.msg('你输入了：' + value);
+    });
+  });
+
+  $('#prompt2').on('click', function() {
+    layer.prompt({ title: '请输入密码', formType: 1 }, function(value, index) {
+      layer.close(index);
+      layer.msg('密码已接收');
+    });
+  });
+
+  $('#prompt3').on('click', function() {
+    layer.prompt({ title: '请输入内容', formType: 2, area: ['400px', '150px'] }, function(value, index) {
+      layer.close(index);
+      layer.msg('你输入了：' + value);
+    });
+  });
+
+  $('#tab').on('click', function() {
+    layer.tab({
+      area: ['600px', '400px'],
+      tab: [{
+        title: 'TAB1',
+        content: '内容1'
+      }, {
+        title: 'TAB2',
+        content: '内容2'
+      }, {
+        title: 'TAB3',
+        content: '内容3'
+      }]
+    });
+  });
+
+  $('#photos').on('click', function() {
+    layer.photos({
+      photos: {
+        data: [{
+          src: 'https://picsum.photos/800/600?random=1',
+          thumb: 'https://picsum.photos/200/150?random=1'
+        }, {
+          src: 'https://picsum.photos/800/600?random=2',
+          thumb: 'https://picsum.photos/200/150?random=2'
+        }, {
+          src: 'https://picsum.photos/800/600?random=3',
+          thumb: 'https://picsum.photos/200/150?random=3'
+        }]
+      },
+      anim: 5
+    });
+  });
+
+  $('#notifySuccess').on('click', function() {
+    layer.msg('操作成功！数据已保存', { icon: 1, time: 3000, offset: 't' });
+  });
+
+  $('#notifyWarning').on('click', function() {
+    layer.msg('请注意：系统即将维护', { icon: 0, time: 3000, offset: 't' });
+  });
+
+  $('#notifyError').on('click', function() {
+    layer.msg('错误：网络连接失败', { icon: 2, time: 3000, offset: 't' });
+  });
+
+  $('#notifyInfo').on('click', function() {
+    layer.msg('提示：您有3条新消息', { icon: 6, time: 3000, offset: 't' });
+  });
+
+  $('#promptLayer').on('click', function() {
+    layer.open({
+      type: 1,
+      title: '模态框示例',
+      area: ['500px', '350px'],
+      shadeClose: false,
+      content: '<div style="padding: 20px;"><p>这是一个模态框，点击遮罩不会关闭</p><br><p>适合需要用户确认的重要操作</p></div>',
+      btn: ['确定', '取消'],
+      yes: function(index) {
+        layer.close(index);
+        layer.msg('已确认');
+      }
+    });
+  });
+
+  $('#offsetRB').on('click', function() {
+    layer.open({
+      type: 1,
+      title: '右下角弹窗',
+      offset: 'rb',
+      area: ['300px', '200px'],
+      content: '<div style="padding: 15px;">这是一个右下角弹窗</div>',
+      shade: 0
+    });
+  });
+
+  $('#offsetLB').on('click', function() {
+    layer.open({
+      type: 1,
+      title: '左下角弹窗',
+      offset: 'lb',
+      area: ['300px', '200px'],
+      content: '<div style="padding: 15px;">这是一个左下角弹窗</div>',
+      shade: 0
+    });
+  });
+
+  $('#noShade').on('click', function() {
+    layer.open({
+      type: 1,
+      title: '无遮罩弹窗',
+      area: ['400px', '250px'],
+      shade: 0,
+      content: '<div style="padding: 20px;">这是一个没有遮罩层的弹窗<br><br>可以同时操作其他区域</div>'
+    });
+  });
+});
+</script>
+</body>
+</html>

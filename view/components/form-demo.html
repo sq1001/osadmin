@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>表单组件</title>
+</head>
+<body>
+<div class="page-content">
+  <div class="demo-header">
+    <h3 class="demo-title">表单组件</h3>
+    <p class="demo-desc">Layui 表单元素的完整示例，包含输入框、选择框、复选框、开关、单选框等</p>
+  </div>
+
+  <div class="demo-grid">
+    <div class="layui-card">
+      <div class="layui-card-header">
+        <span class="layui-card-title">输入框</span>
+      </div>
+      <div class="layui-card-body">
+        <form class="layui-form" lay-filter="inputForm">
+          <div class="layui-form-item">
+            <label class="layui-form-label">普通输入</label>
+            <div class="layui-input-block">
+              <input type="text" name="title" placeholder="请输入标题" class="layui-input">
+            </div>
+          </div>
+          <div class="layui-form-item">
+            <label class="layui-form-label">带图标</label>
+            <div class="layui-input-block">
+              <input type="text" name="username" placeholder="请输入用户名" class="layui-input" lay-affix="user">
+            </div>
+          </div>
+          <div class="layui-form-item">
+            <label class="layui-form-label">密码框</label>
+            <div class="layui-input-block">
+              <input type="password" name="password" placeholder="请输入密码" class="layui-input">
+            </div>
+          </div>
+          <div class="layui-form-item">
+            <label class="layui-form-label">禁用状态</label>
+            <div class="layui-input-block">
+              <input type="text" name="disabled" placeholder="禁用输入框" class="layui-input" disabled>
+            </div>
+          </div>
+          <div class="layui-form-item">
+            <label class="layui-form-label">文本域</label>
+            <div class="layui-input-block">
+              <textarea name="desc" placeholder="请输入内容" class="layui-textarea"></textarea>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <div class="layui-card">
+      <div class="layui-card-header">
+        <span class="layui-card-title">选择框</span>
+      </div>
+      <div class="layui-card-body">
+        <form class="layui-form" lay-filter="selectForm">
+          <div class="layui-form-item">
+            <label class="layui-form-label">单选下拉</label>
+            <div class="layui-input-block">
+              <select name="city" lay-verify="required">
+                <option value="">请选择城市</option>
+                <option value="0">北京</option>
+                <option value="1">上海</option>
+                <option value="2">广州</option>
+                <option value="3">深圳</option>
+                <option value="4">杭州</option>
+              </select>
+            </div>
+          </div>
+          <div class="layui-form-item">
+            <label class="layui-form-label">分组选择</label>
+            <div class="layui-input-block">
+              <select name="quiz">
+                <option value="">请选择</option>
+                <optgroup label="城市记忆">
+                  <option value="你工作的第一个城市">你工作的第一个城市</option>
+                </optgroup>
+                <optgroup label="学生时代">
+                  <option value="你的工号">你的工号</option>
+                  <option value="你最喜欢的老师">你最喜欢的老师</option>
+                </optgroup>
+              </select>
+            </div>
+          </div>
+          <div class="layui-form-item">
+            <label class="layui-form-label">搜索选择</label>
+            <div class="layui-input-block">
+              <select name="search" lay-search="">
+                <option value="">直接选择或搜索选择</option>
+                <option value="1">layer</option>
+                <option value="2">form</option>
+                <option value="3">layim</option>
+                <option value="4">element</option>
+                <option value="5">laytpl</option>
+                <option value="6">upload</option>
+                <option value="7">tree</option>
+                <option value="8">table</option>
+                <option value="9">laypage</option>
+              </select>
+            </div>
+          </div>
+          <div class="layui-form-item">
+            <label class="layui-form-label">禁用选择</label>
+            <div class="layui-input-block">
+              <select name="disabled" disabled>
+                <option value="0">禁用选择框</option>
+              </select>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <div class="layui-card">
+      <div class="layui-card-header">
+        <span class="layui-card-title">复选框</span>
+      </div>
+      <div class="layui-card-body">
+        <form class="layui-form" lay-filter="checkboxForm">
+          <div class="layui-form-item">
+            <label class="layui-form-label">默认风格</label>
+            <div class="layui-input-block">
+              <input type="checkbox" name="like[write]" title="写作">
+              <input type="checkbox" name="like[read]" title="阅读" checked>
+              <input type="checkbox" name="like[dai]" title="发呆">
+            </div>
+          </div>
+          <div class="layui-form-item">
+            <label class="layui-form-label">原始风格</label>
+            <div class="layui-input-block">
+              <input type="checkbox" name="like1[write]" lay-skin="primary" title="写作">
+              <input type="checkbox" name="like1[read]" lay-skin="primary" title="阅读" checked>
+              <input type="checkbox" name="like1[dai]" lay-skin="primary" title="发呆">
+            </div>
+          </div>
+          <div class="layui-form-item">
+            <label class="layui-form-label">禁用状态</label>
+            <div class="layui-input-block">
+              <input type="checkbox" name="disabled" title="禁用" disabled>
+              <input type="checkbox" name="disabled2" title="禁用选中" checked disabled>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <div class="layui-card">
+      <div class="layui-card-header">
+        <span class="layui-card-title">开关</span>
+      </div>
+      <div class="layui-card-body">
+        <form class="layui-form" lay-filter="switchForm">
+          <div class="layui-form-item">
+            <label class="layui-form-label">默认开关</label>
+            <div class="layui-input-block">
+              <input type="checkbox" name="switch" lay-skin="switch" lay-text="ON|OFF">
+            </div>
+          </div>
+          <div class="layui-form-item">
+            <label class="layui-form-label">选中状态</label>
+            <div class="layui-input-block">
+              <input type="checkbox" name="switch2" lay-skin="switch" lay-text="开启|关闭" checked>
+            </div>
+          </div>
+          <div class="layui-form-item">
+            <label class="layui-form-label">禁用状态</label>
+            <div class="layui-input-block">
+              <input type="checkbox" name="switch3" lay-skin="switch" disabled>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <div class="layui-card">
+      <div class="layui-card-header">
+        <span class="layui-card-title">单选框</span>
+      </div>
+      <div class="layui-card-body">
+        <form class="layui-form" lay-filter="radioForm">
+          <div class="layui-form-item">
+            <label class="layui-form-label">默认风格</label>
+            <div class="layui-input-block">
+              <input type="radio" name="sex" value="nan" title="男">
+              <input type="radio" name="sex" value="nv" title="女" checked>
+              <input type="radio" name="sex" value="other" title="保密">
+            </div>
+          </div>
+          <div class="layui-form-item">
+            <label class="layui-form-label">禁用状态</label>
+            <div class="layui-input-block">
+              <input type="radio" name="sex2" value="nan" title="男" disabled>
+              <input type="radio" name="sex2" value="nv" title="女" checked disabled>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <div class="layui-card">
+      <div class="layui-card-header">
+        <span class="layui-card-title">表单组合</span>
+      </div>
+      <div class="layui-card-body">
+        <form class="layui-form" lay-filter="combinedForm">
+          <div class="layui-form-item">
+            <label class="layui-form-label">用户名</label>
+            <div class="layui-input-block">
+              <input type="text" name="username" placeholder="请输入用户名" class="layui-input" lay-verify="required">
+            </div>
+          </div>
+          <div class="layui-form-item">
+            <label class="layui-form-label">密码</label>
+            <div class="layui-input-block">
+              <input type="password" name="password" placeholder="请输入密码" class="layui-input" lay-verify="required">
+            </div>
+          </div>
+          <div class="layui-form-item">
+            <label class="layui-form-label">角色</label>
+            <div class="layui-input-block">
+              <select name="role" lay-verify="required">
+                <option value="">请选择角色</option>
+                <option value="admin">管理员</option>
+                <option value="user">普通用户</option>
+                <option value="guest">访客</option>
+              </select>
+            </div>
+          </div>
+          <div class="layui-form-item">
+            <label class="layui-form-label">状态</label>
+            <div class="layui-input-block">
+              <input type="checkbox" name="status" lay-skin="switch" lay-text="启用|禁用" checked>
+            </div>
+          </div>
+          <div class="layui-form-item">
+            <div class="layui-input-block">
+              <button type="button" class="layui-btn" lay-submit lay-filter="formDemo">立即提交</button>
+              <button type="reset" class="layui-btn">重置</button>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+<style>
+.demo-header {
+  margin-bottom: 16px;
+}
+.demo-title {
+  font-size: 18px;
+  font-weight: 600;
+  color: var(--text-primary);
+  margin-bottom: 4px;
+}
+.demo-desc {
+  font-size: 13px;
+  color: var(--text-muted);
+}
+.demo-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 16px;
+}
+@media (max-width: 992px) {
+  .demo-grid {
+    grid-template-columns: 1fr;
+  }
+}
+.layui-form-label {
+  width: 100px;
+}
+.layui-input-block {
+  margin-left: 130px;
+}
+[data-theme="dark"] .layui-input,
+[data-theme="dark"] .layui-textarea,
+[data-theme="dark"] .layui-select {
+  background: var(--bg-content);
+  border-color: var(--border);
+  color: var(--text-primary);
+}
+[data-theme="dark"] .layui-form-select dl {
+  background: var(--card-bg);
+  border-color: var(--border);
+}
+[data-theme="dark"] .layui-form-select dl dd:hover {
+  background: var(--bg-content);
+}
+[data-theme="dark"] .layui-form-select dl dd.layui-this {
+  background: var(--accent-light);
+}
+</style>
+
+<script>
+layui.use(['form', 'layer'], function() {
+  var form = layui.form;
+  var layer = layui.layer;
+
+  form.render();
+
+  form.on('submit(formDemo)', function(data) {
+    layer.msg('表单提交成功', { icon: 1 });
+    console.log(data.field);
+    return false;
+  });
+});
+</script>
+</body>
+</html>

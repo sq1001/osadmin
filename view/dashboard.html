@@ -1,0 +1,381 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>控制台</title>
+  <link rel="stylesheet" href="/admin/css/view/dashboard.css">
+</head>
+
+<body>
+<div class="page-content">
+  <div class="welcome-card">
+    <h1 class="welcome-title">欢迎回来，管理员</h1>
+    <p class="welcome-subtitle">今天是 2024年12月15日 星期日，祝您工作愉快</p>
+    <div class="welcome-stats">
+      <div class="welcome-stat-item">
+        <div class="welcome-stat-value" data-count="128">0</div>
+        <div class="welcome-stat-label">今日订单</div>
+      </div>
+      <div class="welcome-stat-item">
+        <div class="welcome-stat-value">¥<span data-count="56420">0</span></div>
+        <div class="welcome-stat-label">今日销售额</div>
+      </div>
+      <div class="welcome-stat-item">
+        <div class="welcome-stat-value" data-count="89">0</div>
+        <div class="welcome-stat-label">新增用户</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="stats-grid">
+    <div class="stat-card">
+      <div class="stat-icon">
+        <svg viewBox="0 0 24 24"><path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 01-8 0"/></svg>
+      </div>
+      <div class="stat-value" data-count="3847">0</div>
+      <div class="stat-label">总订单数</div>
+      <div class="stat-trend up">
+        <svg viewBox="0 0 24 24"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg>
+        较上月 +12.5%
+      </div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-icon">
+        <svg viewBox="0 0 24 24"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 000 7h5a3.5 3.5 0 010 7H6"/></svg>
+      </div>
+      <div class="stat-value">¥<span data-count="892450">0</span></div>
+      <div class="stat-label">总销售额</div>
+      <div class="stat-trend up">
+        <svg viewBox="0 0 24 24"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg>
+        较上月 +8.2%
+      </div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-icon">
+        <svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87"/><path d="M16 3.13a4 4 0 010 7.75"/></svg>
+      </div>
+      <div class="stat-value" data-count="12584">0</div>
+      <div class="stat-label">注册用户</div>
+      <div class="stat-trend up">
+        <svg viewBox="0 0 24 24"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg>
+        较上月 +23.1%
+      </div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-icon">
+        <svg viewBox="0 0 24 24"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 002 1.61h9.72a2 2 0 002-1.61L23 6H6"/></svg>
+      </div>
+      <div class="stat-value" data-count="856">0</div>
+      <div class="stat-label">在售商品</div>
+      <div class="stat-trend down">
+        <svg viewBox="0 0 24 24"><polyline points="23 18 13.5 8.5 8.5 13.5 1 6"/><polyline points="17 18 23 18 23 12"/></svg>
+        较上月 -3.2%
+      </div>
+    </div>
+  </div>
+
+  <div class="charts-row">
+    <div class="card">
+      <div class="card-header">
+        <h3 class="card-title">销售趋势</h3>
+        <div class="card-actions">
+          <button class="card-btn active">本周</button>
+          <button class="card-btn">本月</button>
+          <button class="card-btn">本年</button>
+        </div>
+      </div>
+      <div class="card-body">
+        <div id="salesChart" class="chart-container"></div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-header">
+        <h3 class="card-title">商品分类占比</h3>
+      </div>
+      <div class="card-body">
+        <div class="pie-container">
+          <div id="categoryChart" class="pie-chart"></div>
+          <div class="pie-legend">
+            <div class="legend-item">
+              <div class="legend-left">
+                <div class="legend-dot" style="background: var(--accent);"></div>
+                <span class="legend-label">数码电子</span>
+              </div>
+              <span class="legend-value">35%</span>
+            </div>
+            <div class="legend-item">
+              <div class="legend-left">
+                <div class="legend-dot" style="background: #3b82f6;"></div>
+                <span class="legend-label">服装鞋帽</span>
+              </div>
+              <span class="legend-value">28%</span>
+            </div>
+            <div class="legend-item">
+              <div class="legend-left">
+                <div class="legend-dot" style="background: #f59e0b;"></div>
+                <span class="legend-label">美妆护肤</span>
+              </div>
+              <span class="legend-value">20%</span>
+            </div>
+            <div class="legend-item">
+              <div class="legend-left">
+                <div class="legend-dot" style="background: #8b5cf6;"></div>
+                <span class="legend-label">家居生活</span>
+              </div>
+              <span class="legend-value">12%</span>
+            </div>
+            <div class="legend-item">
+              <div class="legend-left">
+                <div class="legend-dot" style="background: #ef4444;"></div>
+                <span class="legend-label">其他</span>
+              </div>
+              <span class="legend-value">5%</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="data-row">
+    <div class="card">
+      <div class="card-header">
+        <h3 class="card-title">最近订单</h3>
+        <button class="card-btn">查看全部</button>
+      </div>
+      <div class="card-body" style="padding: 0;">
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th>订单号</th>
+              <th>客户</th>
+              <th>金额</th>
+              <th>状态</th>
+              <th>时间</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td class="order-id">ORD-2024-8847</td>
+              <td>
+                <div class="customer-cell">
+                  <div class="customer-avatar">张</div>张小明
+                </div>
+              </td>
+              <td>¥2,599</td>
+              <td><span class="status-badge completed">已完成</span></td>
+              <td style="color: var(--text-muted);">10分钟前</td>
+            </tr>
+            <tr>
+              <td class="order-id">ORD-2024-8846</td>
+              <td>
+                <div class="customer-cell">
+                  <div class="customer-avatar">李</div>李华
+                </div>
+              </td>
+              <td>¥899</td>
+              <td><span class="status-badge shipped">已发货</span></td>
+              <td style="color: var(--text-muted);">25分钟前</td>
+            </tr>
+            <tr>
+              <td class="order-id">ORD-2024-8845</td>
+              <td>
+                <div class="customer-cell">
+                  <div class="customer-avatar">王</div>王芳
+                </div>
+              </td>
+              <td>¥1,299</td>
+              <td><span class="status-badge pending">待付款</span></td>
+              <td style="color: var(--text-muted);">1小时前</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-header">
+        <h3 class="card-title">热销商品</h3>
+        <button class="card-btn">查看全部</button>
+      </div>
+      <div class="card-body">
+        <div class="hot-product">
+          <div class="rank-badge top1">1</div>
+          <div class="product-info">
+            <div class="product-name">iPhone 15 Pro Max</div>
+            <div class="product-category">数码电子</div>
+          </div>
+          <div class="product-sales">
+            <div class="product-sales-value">1,245</div>
+            <div class="product-sales-label">销量</div>
+          </div>
+        </div>
+        <div class="hot-product">
+          <div class="rank-badge top2">2</div>
+          <div class="product-info">
+            <div class="product-name">Air Jordan 1 高帮</div>
+            <div class="product-category">服装鞋帽</div>
+          </div>
+          <div class="product-sales">
+            <div class="product-sales-value">892</div>
+            <div class="product-sales-label">销量</div>
+          </div>
+        </div>
+        <div class="hot-product">
+          <div class="rank-badge top3">3</div>
+          <div class="product-info">
+            <div class="product-name">兰蔻小黑瓶精华</div>
+            <div class="product-category">美妆护肤</div>
+          </div>
+          <div class="product-sales">
+            <div class="product-sales-value">756</div>
+            <div class="product-sales-label">销量</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+layui.use(['echartsMod'], function() {
+  var echarts = layui.echartsMod;
+  var salesChartInstance = null;
+  var categoryChartInstance = null;
+  
+  function getChartTheme() {
+    var isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+    return {
+      backgroundColor: 'transparent',
+      textColor: isDark ? '#f1f5f9' : '#1f2937',
+      axisLineColor: isDark ? '#2d3a4f' : '#e5e7eb',
+      splitLineColor: isDark ? '#1e293b' : '#f3f4f6'
+    };
+  }
+  
+  function initSalesChart() {
+    var chartDom = document.getElementById('salesChart');
+    if (!chartDom) return;
+    if (salesChartInstance) salesChartInstance.dispose();
+    salesChartInstance = echarts.init(chartDom);
+    var theme = getChartTheme();
+    var accentColor = getComputedStyle(document.documentElement).getPropertyValue('--accent').trim() || '#16baaa';
+    
+    var option = {
+      backgroundColor: theme.backgroundColor,
+      tooltip: {
+        trigger: 'axis',
+        backgroundColor: theme.textColor === '#f1f5f9' ? '#1a2332' : '#fff',
+        textStyle: { color: theme.textColor === '#f1f5f9' ? '#f1f5f9' : '#1f2937' },
+        axisPointer: { type: 'shadow' }
+      },
+      grid: { left: '3%', right: '4%', bottom: '3%', top: '10%', containLabel: true },
+      xAxis: {
+        type: 'category',
+        data: ['周一', '周二', '周三', '周四', '周五', '周六', '周日'],
+        axisLine: { lineStyle: { color: theme.axisLineColor } },
+        axisLabel: { color: theme.textColor === '#f1f5f9' ? '#94a3b8' : '#6b7280' }
+      },
+      yAxis: {
+        type: 'value',
+        axisLine: { show: false },
+        splitLine: { lineStyle: { color: theme.splitLineColor } },
+        axisLabel: {
+          color: theme.textColor === '#f1f5f9' ? '#94a3b8' : '#6b7280',
+          formatter: '{value}k'
+        }
+      },
+      series: [{
+        data: [45, 52, 48, 61, 55, 72, 68],
+        type: 'bar',
+        barWidth: '50%',
+        itemStyle: {
+          color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
+            { offset: 0, color: accentColor },
+            { offset: 1, color: accentColor + '40' }
+          ]),
+          borderRadius: [4, 4, 0, 0]
+        },
+        emphasis: {
+          itemStyle: {
+            color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
+              { offset: 0, color: accentColor },
+              { offset: 1, color: accentColor + '60' }
+            ])
+          }
+        }
+      }]
+    };
+    salesChartInstance.setOption(option);
+  }
+  
+  function initCategoryChart() {
+    var chartDom = document.getElementById('categoryChart');
+    if (!chartDom) return;
+    if (categoryChartInstance) categoryChartInstance.dispose();
+    categoryChartInstance = echarts.init(chartDom);
+    var theme = getChartTheme();
+    var accentColor = getComputedStyle(document.documentElement).getPropertyValue('--accent').trim() || '#16baaa';
+    
+    var option = {
+      backgroundColor: theme.backgroundColor,
+      tooltip: {
+        trigger: 'item',
+        backgroundColor: theme.textColor === '#f1f5f9' ? '#1a2332' : '#fff',
+        textStyle: { color: theme.textColor === '#f1f5f9' ? '#f1f5f9' : '#1f2937' }
+      },
+      series: [{
+        type: 'pie',
+        radius: ['55%', '85%'],
+        center: ['50%', '50%'],
+        avoidLabelOverlap: false,
+        label: { show: false },
+        labelLine: { show: false },
+        data: [
+          { value: 35, name: '数码电子', itemStyle: { color: accentColor } },
+          { value: 28, name: '服装鞋帽', itemStyle: { color: '#3b82f6' } },
+          { value: 20, name: '美妆护肤', itemStyle: { color: '#f59e0b' } },
+          { value: 12, name: '家居生活', itemStyle: { color: '#8b5cf6' } },
+          { value: 5, name: '其他', itemStyle: { color: '#ef4444' } }
+        ],
+        emphasis: {
+          itemStyle: {
+            shadowBlur: 10,
+            shadowOffsetX: 0,
+            shadowColor: 'rgba(0, 0, 0, 0.5)'
+          }
+        }
+      }]
+    };
+    categoryChartInstance.setOption(option);
+  }
+  
+  function animateCounters() {
+    document.querySelectorAll('[data-count]').forEach(function(counter) {
+      var target = parseInt(counter.getAttribute('data-count'));
+      var duration = 1200;
+      var startTime = performance.now();
+      function update(currentTime) {
+        var progress = Math.min((currentTime - startTime) / duration, 1);
+        counter.textContent = Math.round(target * (1 - Math.pow(1 - progress, 3))).toLocaleString();
+        if (progress < 1) requestAnimationFrame(update);
+      }
+      requestAnimationFrame(update);
+    });
+  }
+  
+  initSalesChart();
+  initCategoryChart();
+  animateCounters();
+  
+  var resizeTimeout = null;
+  window.addEventListener('resize', function() {
+    clearTimeout(resizeTimeout);
+    resizeTimeout = setTimeout(function() {
+      if (salesChartInstance) salesChartInstance.resize();
+      if (categoryChartInstance) categoryChartInstance.resize();
+    }, 200);
+  });
+});
+</script>
+</body>
+</html>

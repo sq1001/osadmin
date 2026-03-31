@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>系统设置</title>
+</head>
+<body>
+<div class="page-content">
+  <div class="layui-card">
+    <div class="layui-card-header">基本设置</div>
+    <div class="layui-card-body">
+      <form class="layui-form" style="padding: 20px;">
+        <div class="layui-form-item">
+          <label class="layui-form-label">网站名称</label>
+          <div class="layui-input-block">
+            <input type="text" name="siteName" value="MallPro电商管理后台" class="layui-input">
+          </div>
+        </div>
+        
+        <div class="layui-form-item">
+          <label class="layui-form-label">网站Logo</label>
+          <div class="layui-input-block">
+            <button type="button" class="layui-btn">
+              <i class="layui-icon layui-icon-upload"></i>上传图片
+            </button>
+          </div>
+        </div>
+        
+        <div class="layui-form-item">
+          <label class="layui-form-label">版权信息</label>
+          <div class="layui-input-block">
+            <input type="text" name="copyright" value="© 2024 MallPro. All rights reserved." class="layui-input">
+          </div>
+        </div>
+        
+        <div class="layui-form-item">
+          <label class="layui-form-label">ICP备案号</label>
+          <div class="layui-input-block">
+            <input type="text" name="icp" placeholder="请输入ICP备案号" class="layui-input">
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+  
+  <div class="layui-card">
+    <div class="layui-card-header">邮件设置</div>
+    <div class="layui-card-body">
+      <form class="layui-form" style="padding: 20px;">
+        <div class="layui-form-item">
+          <label class="layui-form-label">SMTP服务器</label>
+          <div class="layui-input-block">
+            <input type="text" name="smtp" placeholder="smtp.example.com" class="layui-input">
+          </div>
+        </div>
+        
+        <div class="layui-form-item">
+          <label class="layui-form-label">发件人邮箱</label>
+          <div class="layui-input-block">
+            <input type="email" name="email" placeholder="noreply@example.com" class="layui-input">
+          </div>
+        </div>
+        
+        <div class="layui-form-item">
+          <div class="layui-input-block">
+            <button class="layui-btn" lay-submit>保存设置</button>
+            <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<script>
+layui.use(['form'], function() {
+  layui.form.render();
+});
+</script>
+</body>
+</html>

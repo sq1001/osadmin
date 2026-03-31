@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>下拉菜单组件</title>
+</head>
+<body>
+<div class="page-content">
+  <div class="demo-header">
+    <h3 class="demo-title">Dropdown 下拉菜单组件</h3>
+    <p class="demo-desc">Layui 2.6+ 下拉菜单组件，支持多级菜单、右键菜单、自定义内容等功能</p>
+  </div>
+
+  <div class="demo-grid">
+    <div class="layui-card">
+      <div class="layui-card-header">
+        <span class="layui-card-title">基础用法</span>
+      </div>
+      <div class="layui-card-body">
+        <div class="layui-btn-container">
+          <button class="layui-btn demo-dropdown-base">
+            <span>下拉菜单</span>
+            <i class="layui-icon layui-icon-down layui-font-12"></i>
+          </button>
+          <button class="layui-btn layui-btn-primary demo-dropdown-base">
+            <span>下拉菜单</span>
+            <i class="layui-icon layui-icon-down layui-font-12"></i>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <div class="layui-card">
+      <div class="layui-card-header">
+        <span class="layui-card-title">触发方式</span>
+      </div>
+      <div class="layui-card-body">
+        <div class="layui-btn-container">
+          <button class="layui-btn layui-btn-primary demo-dropdown-trigger" lay-options="{trigger: 'hover'}">
+            hover 触发
+            <i class="layui-icon layui-icon-down layui-font-12"></i>
+          </button>
+          <button class="layui-btn layui-btn-primary demo-dropdown-trigger" lay-options="{trigger: 'mousedown'}">
+            mousedown 触发
+            <i class="layui-icon layui-icon-down layui-font-12"></i>
+          </button>
+          <button class="layui-btn layui-btn-primary demo-dropdown-trigger" lay-options="{trigger: 'dblclick'}">
+            dblclick 双击
+            <i class="layui-icon layui-icon-circle layui-font-12"></i>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <div class="layui-card">
+      <div class="layui-card-header">
+        <span class="layui-card-title">对齐方式</span>
+      </div>
+      <div class="layui-card-body">
+        <div class="layui-btn-container">
+          <button class="layui-btn layui-btn-primary demo-dropdown-align" lay-options="{}">
+            左对齐
+            <i class="layui-icon layui-icon-down layui-font-12"></i>
+          </button>
+          <button class="layui-btn layui-btn-primary demo-dropdown-align" lay-options="{align: 'center'}">
+            居中对齐
+            <i class="layui-icon layui-icon-down layui-font-12"></i>
+          </button>
+          <button class="layui-btn layui-btn-primary demo-dropdown-align" lay-options="{align: 'right'}">
+            右对齐
+            <i class="layui-icon layui-icon-down layui-font-12"></i>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <div class="layui-card">
+      <div class="layui-card-header">
+        <span class="layui-card-title">带图标菜单</span>
+      </div>
+      <div class="layui-card-body">
+        <button class="layui-btn" id="dropdownIcon">
+          <span>更多操作</span>
+          <i class="layui-icon layui-icon-down layui-font-12"></i>
+        </button>
+      </div>
+    </div>
+
+    <div class="layui-card">
+      <div class="layui-card-header">
+        <span class="layui-card-title">多级菜单</span>
+      </div>
+      <div class="layui-card-body">
+        <button class="layui-btn" id="dropdownNested">
+          <span>多级菜单</span>
+          <i class="layui-icon layui-icon-down layui-font-12"></i>
+        </button>
+      </div>
+    </div>
+
+    <div class="layui-card">
+      <div class="layui-card-header">
+        <span class="layui-card-title">右键菜单</span>
+      </div>
+      <div class="layui-card-body">
+        <div id="dropdownContextmenu" style="height: 100px; line-height: 100px; text-align: center; background: var(--bg-content); border: 1px dashed var(--border); border-radius: 8px; cursor: pointer;">
+          <span class="layui-font-gray">在此区域单击鼠标右键</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="layui-card" style="margin-top: 16px;">
+    <div class="layui-card-header">
+      <span class="layui-card-title">自定义内容</span>
+    </div>
+    <div class="layui-card-body">
+      <button class="layui-btn" id="dropdownContent">
+        <span>自定义面板内容</span>
+        <i class="layui-icon layui-icon-list layui-font-14"></i>
+      </button>
+    </div>
+  </div>
+</div>
+
+<style>
+.demo-header {
+  margin-bottom: 16px;
+}
+.demo-title {
+  font-size: 18px;
+  font-weight: 600;
+  color: var(--text-primary);
+  margin-bottom: 4px;
+}
+.demo-desc {
+  font-size: 13px;
+  color: var(--text-muted);
+}
+.demo-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+}
+@media (max-width: 992px) {
+  .demo-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+@media (max-width: 768px) {
+  .demo-grid {
+    grid-template-columns: 1fr;
+  }
+}
+.layui-btn-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+[data-theme="dark"] .layui-dropdown dl {
+  background: var(--card-bg);
+  border-color: var(--border);
+}
+[data-theme="dark"] .layui-dropdown dl dd:hover {
+  background: var(--bg-content);
+}
+[data-theme="dark"] .layui-dropdown dl dd.layui-this {
+  background: var(--accent-light);
+  color: var(--accent);
+}
+[data-theme="dark"] .layui-dropdown dl dd.layui-disabled {
+  color: var(--text-muted);
+}
+</style>
+
+<script>
+layui.use(['dropdown', 'layer'], function() {
+  var dropdown = layui.dropdown;
+  var layer = layui.layer;
+  var $ = layui.$;
+
+  dropdown.render({
+    elem: '.demo-dropdown-base',
+    data: [
+      { title: '菜单项 1', id: 100 },
+      { title: '菜单项 2', id: 101 },
+      { title: '菜单项 3', id: 102 }
+    ],
+    click: function(obj) {
+      layer.msg('点击了：' + obj.title);
+    }
+  });
+
+  dropdown.render({
+    elem: '.demo-dropdown-trigger',
+    data: [
+      { title: '菜单项 1', id: 100 },
+      { title: '菜单项 2', id: 101 },
+      { title: '菜单项 3', id: 102 }
+    ],
+    click: function(obj) {
+      layer.msg('点击了：' + obj.title);
+    }
+  });
+
+  dropdown.render({
+    elem: '.demo-dropdown-align',
+    data: [
+      { title: '菜单项 test 111', id: 100 },
+      { title: '菜单项 test 222', id: 101 },
+      { title: '菜单项 test 333', id: 102 }
+    ],
+    click: function(obj) {
+      layer.msg('点击了：' + obj.title);
+    }
+  });
+
+  dropdown.render({
+    elem: '#dropdownIcon',
+    data: [
+      { title: '查看详情', id: 'view', templet: '<i class="layui-icon layui-icon-search"></i> {{= d.title }}' },
+      { title: '编辑', id: 'edit', templet: '<i class="layui-icon layui-icon-edit"></i> {{= d.title }}' },
+      { type: '-' },
+      { title: '复制', id: 'copy', templet: '<i class="layui-icon layui-icon-file"></i> {{= d.title }}' },
+      { title: '删除', id: 'delete', templet: '<i class="layui-icon layui-icon-delete" style="color: #ff5722;"></i> {{= d.title }}' }
+    ],
+    click: function(obj) {
+      layer.msg('操作：' + obj.title);
+    }
+  });
+
+  dropdown.render({
+    elem: '#dropdownNested',
+    data: [
+      { title: '菜单项 1', id: 100 },
+      { title: '菜单项 2', id: 101, child: [
+        { title: '菜单项 2-1', id: 1011 },
+        { title: '菜单项 2-2', id: 1012 }
+      ]},
+      { type: '-' },
+      { title: '菜单项 3', id: 102, type: 'group', child: [
+        { title: '菜单项 3-1', id: 1031 },
+        { title: '菜单项 3-2', id: 1032 },
+        { title: '菜单项 3-3', id: 1033 }
+      ]},
+      { title: '菜单项 4', id: 103 }
+    ],
+    click: function(obj) {
+      layer.msg('点击了：' + obj.title);
+    }
+  });
+
+  dropdown.render({
+    elem: '#dropdownContextmenu',
+    trigger: 'contextmenu',
+    data: [
+      { title: '刷新页面', id: 'refresh', templet: '<i class="layui-icon layui-icon-refresh"></i> {{= d.title }}' },
+      { title: '查看源代码', id: 'viewSource', templet: '<i class="layui-icon layui-icon-code"></i> {{= d.title }}' },
+      { type: '-' },
+      { title: '另存为', id: 'save', templet: '<i class="layui-icon layui-icon-download"></i> {{= d.title }}' },
+      { title: '打印', id: 'print', templet: '<i class="layui-icon layui-icon-print"></i> {{= d.title }}' },
+      { type: '-' },
+      { title: '更多操作', id: 'more', child: [
+        { title: '分享', id: 'share' },
+        { title: '收藏', id: 'favorite' },
+        { title: '举报', id: 'report' }
+      ]}
+    ],
+    click: function(obj) {
+      if (obj.id === 'refresh') {
+        location.reload();
+      } else if (obj.id === 'print') {
+        window.print();
+      } else {
+        layer.msg('操作：' + obj.title);
+      }
+    }
+  });
+
+  dropdown.render({
+    elem: '#dropdownContent',
+    content: [
+      '<div style="padding: 15px; width: 300px;">',
+        '<h4 style="margin-bottom: 10px; font-weight: 600;">自定义面板内容</h4>',
+        '<p style="color: var(--text-secondary); font-size: 13px; line-height: 1.6;">',
+          'dropdown 组件的 content 属性可以传入任意的 HTML 内容，替代默认的菜单结构，从而实现更丰富的弹出内容。',
+        '</p>',
+        '<div style="margin-top: 12px;">',
+          '<button class="layui-btn layui-btn-sm layui-btn-primary" onclick="layui.layer.msg(\'点击了确认\')">确认</button>',
+          '<button class="layui-btn layui-btn-sm" onclick="layui.layer.msg(\'点击了取消\')">取消</button>',
+        '</div>',
+      '</div>'
+    ].join(''),
+    style: 'box-shadow: 1px 1px 30px rgb(0 0 0 / 12%);'
+  });
+});
+</script>
+</body>
+</html>

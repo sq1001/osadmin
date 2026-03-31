@@ -1,0 +1,136 @@
+/**
+ * Toast 消息提示样式
+ */
+.toast {
+  position: fixed;
+  display: flex;
+  flex-wrap: nowrap;
+  gap: 10px;
+  z-index: 9999;
+}
+
+.toast-box {
+  max-width: 330px;
+  min-width: 150px;
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  padding: 14px 12px;
+  box-sizing: border-box;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  border-radius: 8px;
+  background: var(--card-bg, #fff);
+  border: 1px solid var(--border, #eee);
+  position: relative;
+  backdrop-filter: blur(5px);
+  transition: all 0.3s ease;
+}
+
+.toast.rt .toast-box,
+.toast.rb .toast-box {
+  animation: slideFromRight 0.4s ease-in-out;
+}
+
+.toast.lt .toast-box,
+.toast.lb .toast-box {
+  animation: slideFromLeft 0.4s ease-in-out;
+}
+
+@keyframes slideFromRight {
+  from {
+    transform: translateX(100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+@keyframes slideFromLeft {
+  from {
+    transform: translateX(-100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+.toast-icon {
+  flex-shrink: 0;
+  margin-right: 10px;
+}
+
+.toast-icon i {
+  font-size: 22px;
+}
+
+.toast-group {
+  flex: 1;
+  min-width: 0;
+}
+
+.toast-title {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--text-primary, #333);
+  margin-bottom: 4px;
+}
+
+.toast-content {
+  font-size: 13px;
+  color: var(--text-secondary, #666);
+  line-height: 1.5;
+  word-break: break-word;
+}
+
+.toast-close {
+  flex-shrink: 0;
+  margin-left: 10px;
+  cursor: pointer;
+  opacity: 0.5;
+  transition: opacity 0.2s;
+}
+
+.toast-close:hover {
+  opacity: 1;
+}
+
+.toast-close i {
+  font-size: 14px;
+  color: var(--text-muted, #999);
+}
+
+/* 深色主题 */
+[data-theme="dark"] .toast-box {
+  background: rgba(45, 45, 45, 0.95);
+  border-color: rgba(255, 255, 255, 0.1);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+}
+
+[data-theme="dark"] .toast-title {
+  color: #fff;
+}
+
+[data-theme="dark"] .toast-content {
+  color: rgba(255, 255, 255, 0.7);
+}
+
+/* 类型样式 */
+.toast-box.toast-success {
+  border-left: 3px solid var(--success, #16b777);
+}
+
+.toast-box.toast-error {
+  border-left: 3px solid var(--danger, #ff5722);
+}
+
+.toast-box.toast-warning {
+  border-left: 3px solid var(--warning, #ffb800);
+}
+
+.toast-box.toast-info {
+  border-left: 3px solid var(--info, #1e9fff);
+}

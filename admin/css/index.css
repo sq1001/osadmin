@@ -1,0 +1,17 @@
+/* 全局样式 */
+@import './admin.css';
+@import './theme.css';
+
+/* LayUI 扩展样式 */
+@import './extends/toast.css';
+/* @import './extends/resetForm.css'; */
+
+/* LayUI 主题颜色适配 */
+@import './layui-override/panel.css';
+@import './layui-override/form.css';
+@import './layui-override/button.css';
+@import './layui-override/table.css';
+@import './layui-override/nav.css';
+
+/* 页面样式 */
+/* @import './view/dashboard.css'; */

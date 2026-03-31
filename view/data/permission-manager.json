@@ -1,0 +1,22 @@
+{
+  "code": 0,
+  "msg": "success",
+  "data": [
+    "dashboard-view",
+    "user-view",
+    "user-add",
+    "user-edit",
+    "order-view",
+    "product-view",
+    "product-add",
+    "product-edit",
+    "marketing-coupon",
+    "marketing-activity"
+  ],
+  "userInfo": {
+    "id": 3,
+    "username": "manager",
+    "role": "业务经理",
+    "description": "拥有业务相关权限，无系统管理权限"
+  }
+}

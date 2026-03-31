@@ -1,0 +1,455 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>多选下拉框</title>
+</head>
+<body>
+<div class="page-content">
+  <div class="demo-header">
+    <h3 class="demo-title">xm-select 多选下拉框示例</h3>
+    <p class="demo-desc">本页面演示 xm-select 组件的使用方法，支持搜索、分组、远程数据等功能</p>
+  </div>
+
+  <div class="demo-grid">
+    <div class="layui-card">
+      <div class="layui-card-header">
+        <span class="layui-card-title">基础示例</span>
+      </div>
+      <div class="layui-card-body">
+        <form class="layui-form">
+          <div class="layui-form-item">
+            <label class="layui-form-label">单选模式</label>
+            <div class="layui-input-block">
+              <div id="singleSelect"></div>
+            </div>
+          </div>
+          <div class="layui-form-item">
+            <label class="layui-form-label">多选模式</label>
+            <div class="layui-input-block">
+              <div id="multiSelect"></div>
+            </div>
+          </div>
+          <div class="layui-form-item">
+            <label class="layui-form-label">禁用状态</label>
+            <div class="layui-input-block">
+              <div id="disabledSelect"></div>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <div class="layui-card">
+      <div class="layui-card-header">
+        <span class="layui-card-title">搜索功能</span>
+      </div>
+      <div class="layui-card-body">
+        <form class="layui-form">
+          <div class="layui-form-item">
+            <label class="layui-form-label">本地搜索</label>
+            <div class="layui-input-block">
+              <div id="localSearchSelect"></div>
+            </div>
+          </div>
+          <div class="layui-form-item">
+            <label class="layui-form-label">远程搜索</label>
+            <div class="layui-input-block">
+              <div id="remoteSearchSelect"></div>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <div class="layui-card">
+      <div class="layui-card-header">
+        <span class="layui-card-title">分组选择</span>
+      </div>
+      <div class="layui-card-body">
+        <form class="layui-form">
+          <div class="layui-form-item">
+            <label class="layui-form-label">部门选择</label>
+            <div class="layui-input-block">
+              <div id="groupSelect"></div>
+            </div>
+          </div>
+          <div class="layui-form-item">
+            <label class="layui-form-label">城市选择</label>
+            <div class="layui-input-block">
+              <div id="cityGroupSelect"></div>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <div class="layui-card">
+      <div class="layui-card-header">
+        <span class="layui-card-title">自定义样式</span>
+      </div>
+      <div class="layui-card-body">
+        <form class="layui-form">
+          <div class="layui-form-item">
+            <label class="layui-form-label">标签模式</label>
+            <div class="layui-input-block">
+              <div id="tagSelect"></div>
+            </div>
+          </div>
+          <div class="layui-form-item">
+            <label class="layui-form-label">下拉树</label>
+            <div class="layui-input-block">
+              <div id="treeSelect"></div>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <div class="layui-card">
+      <div class="layui-card-header">
+        <span class="layui-card-title">操作按钮</span>
+      </div>
+      <div class="layui-card-body">
+        <form class="layui-form">
+          <div class="layui-form-item">
+            <label class="layui-form-label">全选功能</label>
+            <div class="layui-input-block">
+              <div id="selectAll"></div>
+            </div>
+          </div>
+          <div class="layui-form-item">
+            <label class="layui-form-label">限制数量</label>
+            <div class="layui-input-block">
+              <div id="limitSelect"></div>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <div class="layui-card">
+      <div class="layui-card-header">
+        <span class="layui-card-title">获取值</span>
+      </div>
+      <div class="layui-card-body">
+        <form class="layui-form">
+          <div class="layui-form-item">
+            <label class="layui-form-label">选择项目</label>
+            <div class="layui-input-block">
+              <div id="getValueSelect"></div>
+            </div>
+          </div>
+          <div class="layui-form-item">
+            <div class="layui-input-block">
+              <button type="button" class="layui-btn" id="getValueBtn">获取选中值</button>
+              <button type="button" class="layui-btn" id="clearValueBtn">清空选择</button>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+<style>
+.demo-header {
+  margin-bottom: 16px;
+}
+.demo-title {
+  font-size: 18px;
+  font-weight: 600;
+  color: var(--text-primary);
+  margin-bottom: 4px;
+}
+.demo-desc {
+  font-size: 13px;
+  color: var(--text-muted);
+}
+.demo-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 16px;
+}
+@media (max-width: 992px) {
+  .demo-grid {
+    grid-template-columns: 1fr;
+  }
+}
+.layui-form-label {
+  width: 100px;
+}
+.layui-input-block {
+  margin-left: 130px;
+}
+[data-theme="dark"] .xm-select-parent .xm-select-title {
+  background: var(--bg-content);
+  border-color: var(--border);
+}
+[data-theme="dark"] .xm-select-parent .xm-select-title div {
+  color: var(--text-primary);
+}
+[data-theme="dark"] .xm-select-parent .xm-select--suffix input {
+  color: var(--text-primary);
+}
+[data-theme="dark"] .xm-select .xm-option-content {
+  color: var(--text-secondary);
+}
+[data-theme="dark"] .xm-select .xm-option.selected.hide {
+  color: var(--accent);
+}
+[data-theme="dark"] .xm-select-parent dl {
+  background: var(--card-bg);
+  border-color: var(--border);
+}
+[data-theme="dark"] .xm-select-parent dl dd:hover {
+  background: var(--bg-content);
+}
+[data-theme="dark"] .xm-select-parent dl dd.layui-this {
+  background: var(--accent-light);
+}
+[data-theme="dark"] .xm-select .xm-option .xm-option-icon {
+  border-color: var(--border);
+}
+</style>
+
+<script>
+layui.use(['xmSelectMod', 'layer'], function() {
+  var xmSelect = layui.xmSelectMod;
+  var layer = layui.layer;
+  var $ = layui.$;
+
+  xmSelect.render({
+    el: '#singleSelect',
+    name: 'single',
+    radio: true,
+    clickClose: true,
+    data: [
+      { name: '北京', value: 1 },
+      { name: '上海', value: 2 },
+      { name: '广州', value: 3 },
+      { name: '深圳', value: 4 },
+      { name: '杭州', value: 5 }
+    ]
+  });
+
+  xmSelect.render({
+    el: '#multiSelect',
+    name: 'multi',
+    data: [
+      { name: '张三', value: 1 },
+      { name: '李四', value: 2 },
+      { name: '王五', value: 3 },
+      { name: '赵六', value: 4 },
+      { name: '孙七', value: 5 }
+    ]
+  });
+
+  xmSelect.render({
+    el: '#disabledSelect',
+    name: 'disabled',
+    disabled: true,
+    data: [
+      { name: '禁用选项1', value: 1 },
+      { name: '禁用选项2', value: 2 }
+    ]
+  });
+
+  xmSelect.render({
+    el: '#localSearchSelect',
+    name: 'localSearch',
+    filterable: true,
+    data: [
+      { name: 'JavaScript', value: 1 },
+      { name: 'Python', value: 2 },
+      { name: 'Java', value: 3 },
+      { name: 'C++', value: 4 },
+      { name: 'Go', value: 5 },
+      { name: 'Rust', value: 6 },
+      { name: 'TypeScript', value: 7 }
+    ]
+  });
+
+  xmSelect.render({
+    el: '#remoteSearchSelect',
+    name: 'remoteSearch',
+    filterable: true,
+    remoteSearch: true,
+    remoteMethod: function(val, cb, showId) {
+      setTimeout(function() {
+        var data = [
+          { name: '搜索结果1 - ' + val, value: 1 },
+          { name: '搜索结果2 - ' + val, value: 2 },
+          { name: '搜索结果3 - ' + val, value: 3 }
+        ];
+        cb(data);
+      }, 500);
+    },
+    data: []
+  });
+
+  xmSelect.render({
+    el: '#groupSelect',
+    name: 'group',
+    data: [
+      {
+        name: '销售部',
+        value: 1,
+        children: [
+          { name: '张三', value: 11 },
+          { name: '李四', value: 12 },
+          { name: '王五', value: 13 }
+        ]
+      },
+      {
+        name: '技术部',
+        value: 2,
+        children: [
+          { name: '赵六', value: 21 },
+          { name: '孙七', value: 22 },
+          { name: '周八', value: 23 }
+        ]
+      },
+      {
+        name: '财务部',
+        value: 3,
+        children: [
+          { name: '吴九', value: 31 },
+          { name: '郑十', value: 32 }
+        ]
+      }
+    ]
+  });
+
+  xmSelect.render({
+    el: '#cityGroupSelect',
+    name: 'cityGroup',
+    data: [
+      {
+        name: '华东地区',
+        value: 1,
+        children: [
+          { name: '上海', value: 11 },
+          { name: '杭州', value: 12 },
+          { name: '南京', value: 13 }
+        ]
+      },
+      {
+        name: '华南地区',
+        value: 2,
+        children: [
+          { name: '广州', value: 21 },
+          { name: '深圳', value: 22 },
+          { name: '厦门', value: 23 }
+        ]
+      },
+      {
+        name: '华北地区',
+        value: 3,
+        children: [
+          { name: '北京', value: 31 },
+          { name: '天津', value: 32 }
+        ]
+      }
+    ]
+  });
+
+  xmSelect.render({
+    el: '#tagSelect',
+    name: 'tag',
+    theme: {
+      color: '#16baaa'
+    },
+    model: {
+      label: {
+        type: 'block'
+      }
+    },
+    data: [
+      { name: '前端开发', value: 1 },
+      { name: '后端开发', value: 2 },
+      { name: 'UI设计', value: 3 },
+      { name: '产品经理', value: 4 }
+    ]
+  });
+
+  xmSelect.render({
+    el: '#treeSelect',
+    name: 'tree',
+    tree: {
+      show: true,
+      strict: false
+    },
+    data: [
+      {
+        name: '一级菜单1',
+        value: 1,
+        children: [
+          { name: '二级菜单1-1', value: 11 },
+          { name: '二级菜单1-2', value: 12 }
+        ]
+      },
+      {
+        name: '一级菜单2',
+        value: 2,
+        children: [
+          { name: '二级菜单2-1', value: 21 },
+          { name: '二级菜单2-2', value: 22 }
+        ]
+      }
+    ]
+  });
+
+  xmSelect.render({
+    el: '#selectAll',
+    name: 'selectAll',
+    toolbar: {
+      show: true,
+      showIcon: false
+    },
+    data: [
+      { name: '选项1', value: 1 },
+      { name: '选项2', value: 2 },
+      { name: '选项3', value: 3 },
+      { name: '选项4', value: 4 },
+      { name: '选项5', value: 5 }
+    ]
+  });
+
+  xmSelect.render({
+    el: '#limitSelect',
+    name: 'limit',
+    max: 3,
+    data: [
+      { name: '选项1', value: 1 },
+      { name: '选项2', value: 2 },
+      { name: '选项3', value: 3 },
+      { name: '选项4', value: 4 },
+      { name: '选项5', value: 5 }
+    ]
+  });
+
+  var getValueIns = xmSelect.render({
+    el: '#getValueSelect',
+    name: 'getValue',
+    data: [
+      { name: '选项A', value: 'a' },
+      { name: '选项B', value: 'b' },
+      { name: '选项C', value: 'c' },
+      { name: '选项D', value: 'd' }
+    ]
+  });
+
+  $('#getValueBtn').on('click', function() {
+    var values = getValueIns.getValue();
+    layer.msg('选中值：' + JSON.stringify(values), { time: 3000 });
+  });
+
+  $('#clearValueBtn').on('click', function() {
+    getValueIns.setValue([]);
+    layer.msg('已清空');
+  });
+});
+</script>
+</body>
+</html>
