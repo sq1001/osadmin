@@ -139,6 +139,7 @@
     "title": "组件示例",
     "icon": "layui-icon-component",
     "children": [
+      { "id": 1002, "code": "view/resource-demo", "title": "资源加载示例", "icon": "layui-icon-template-1", "href": "view/resource-demo.html" },
       { "id": 1001, "code": "view/permission-demo", "title": "权限组件", "icon": "layui-icon-chart", "href": "view/permission-demo.html" },
       { "id": 1000, "code": "view/components/form-comprehensive", "title": "表单综合", "icon": "layui-icon-chart", "href": "view/components/form-comprehensive.html" },
       { "id": 80, "code": "view/components/form-demo", "title": "表单组件", "icon": "layui-icon-form", "href": "view/components/form-demo.html" },

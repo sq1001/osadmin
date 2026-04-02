@@ -2,7 +2,7 @@
  * 主应用模块
  * 支持id与code混合路由方案
  */
-layui.define(['jquery', 'routerModule', 'themeModule', 'sidebarComp', 'tabsComp'], function(exports) {
+layui.define(['jquery', 'routerModule', 'themeModule', 'sidebarComp', 'tabsComp', 'resourceLoader'], function(exports) {
   'use strict';
 
   var $ = layui.jquery;
@@ -10,11 +10,13 @@ layui.define(['jquery', 'routerModule', 'themeModule', 'sidebarComp', 'tabsComp'
   var theme = layui.themeModule;
   var sidebar = layui.sidebarComp;
   var tabs = layui.tabsComp;
+  var resourceLoader = layui.resourceLoader;
 
   var App = {
     initialized: false,
     appConfig: null,
     menuConfig: null,
+    resourceConfig: null,
     notificationData: [],
     currentAnimation: 'fadeIn',
     baseUrl: '',
@@ -66,40 +68,70 @@ layui.define(['jquery', 'routerModule', 'themeModule', 'sidebarComp', 'tabsComp'
 
       this.baseUrl = this.appConfig.router && this.appConfig.router.base ? this.appConfig.router.base : '/';
       
-      this.initSite();
-      
-      router.init(this.appConfig, false);
-      
-      var menuData = this.getMenuData();
-      router.registerMenu(menuData);
-      
-      theme.init(this.appConfig);
-      sidebar.init({ data: menuData || [] });
-      tabs.init(this.appConfig, menuData || []);
+      $.when(this.loadResourceConfig()).done(function() {
+        self.initSite();
+        
+        router.init(self.appConfig, false);
+        
+        var menuData = self.getMenuData();
+        router.registerMenu(menuData);
+        
+        theme.init(self.appConfig);
+        sidebar.init({ data: menuData || [] });
+        tabs.init(self.appConfig, menuData || []);
 
-      router.on('routeChange', function(routeInfo) {
-        self.handleRouteChange(routeInfo);
-      });
-
-      tabs.on('refreshTab', function(data) {
-        self.loadPageContent(data.tabId);
-      });
-
-      this.bindGlobalEvents();
-      
-      var initPath = router.getCurrentPath();
-      var initCode = initPath.replace(/^\//, '') || '';
-      var initId = router.getIdByCode(initCode);
-      
-      if (initPath === '/' || initPath === '' || !initCode) {
-        router.navigateById(selectId);
-      } else {
-        this.handleRouteChange({
-          path: initPath,
-          code: initCode,
-          id: initId
+        router.on('routeChange', function(routeInfo) {
+          self.handleRouteChange(routeInfo);
         });
-      }
+
+        tabs.on('refreshTab', function(data) {
+          self.loadPageContent(data.tabId);
+        });
+
+        self.bindGlobalEvents();
+        
+        var initPath = router.getCurrentPath();
+        var initCode = initPath.replace(/^\//, '') || '';
+        var initId = router.getIdByCode(initCode);
+        
+        if (initPath === '/' || initPath === '' || !initCode) {
+          router.navigateById(selectId);
+        } else {
+          self.handleRouteChange({
+            path: initPath,
+            code: initCode,
+            id: initId
+          });
+        }
+      });
+    },
+
+    loadResourceConfig: function() {
+      var self = this;
+      var deferred = $.Deferred();
+
+      $.ajax({
+        url: this.resolveUrl('config/resources.json'),
+        dataType: 'json',
+        cache: false
+      }).done(function(config) {
+        self.resourceConfig = config || {};
+        resourceLoader.init(self.resourceConfig);
+        if (window.OSLAY) {
+          window.OSLAY.resourceConfig = self.resourceConfig;
+        }
+        deferred.resolve();
+      }).fail(function() {
+        console.warn('[App] Failed to load resource config, using fallback mode');
+        self.resourceConfig = {};
+        resourceLoader.init({});
+        if (window.OSLAY) {
+          window.OSLAY.resourceConfig = {};
+        }
+        deferred.resolve();
+      });
+
+      return deferred.promise();
     },
 
     getMenuData: function() {
@@ -268,7 +300,7 @@ layui.define(['jquery', 'routerModule', 'themeModule', 'sidebarComp', 'tabsComp'
       var url = this.getPageUrl(pageId);
       var self = this;
       var menuData = this.getMenuData();
-      var title = this.getPageName(menuData, pageId) || ('Page ' + pageId);
+      var menuTitle = this.getPageName(menuData, pageId) || ('Page ' + pageId);
       var animation = theme.getPageAnimation();
 
       this.currentAnimation = animation;
@@ -276,22 +308,61 @@ layui.define(['jquery', 'routerModule', 'themeModule', 'sidebarComp', 'tabsComp'
 
       if (!url) {
         this.hideLoading();
-        this.showContent('<div class="page-placeholder"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="12" cy="12" r="10"/><path d="M16 16s-1.5-2-4-2-4 2-4 2"/><line x1="9" y1="9" x2="9.01" y2="9"/><line x1="15" y1="9" x2="15.01" y2="9"/></svg><div class="page-placeholder-title">' + title + '</div><div class="page-placeholder-desc">页面未找到</div></div>');
+        this.showContent('<div class="page-placeholder"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="12" cy="12" r="10"/><path d="M16 16s-1.5-2-4-2-4 2-4 2"/><line x1="9" y1="9" x2="9.01" y2="9"/><line x1="15" y1="9" x2="15.01" y2="9"/></svg><div class="page-placeholder-title">' + menuTitle + '</div><div class="page-placeholder-desc">页面未找到</div></div>');
         return;
       }
 
-      $.ajax({
-        url: url,
-        dataType: 'html',
-        cache: false
-      }).done(function(html) {
-        var content = self.extractContent(html);
-        self.hideLoading();
-        self.showContent(content);
+      var relativeUrl = this.getRelativeUrl(url);
+
+      resourceLoader.loadPageResources(relativeUrl).done(function() {
+        $.ajax({
+          url: url,
+          dataType: 'html',
+          cache: false
+        }).done(function(html) {
+          var result = self.extractContent(html);
+          self.updatePageMeta(result.pageInfo, menuTitle, relativeUrl);
+          self.hideLoading();
+          self.showContent(result.body);
+        }).fail(function() {
+          self.hideLoading();
+          self.showContent('<div class="page-placeholder"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><rect x="3" y="3" width="18" height="18" rx="2"/><line x1="9" y1="9" x2="15" y2="9"/><line x1="9" y1="13" x2="15" y2="13"/><line x1="9" y1="17" x2="12" y2="17"/></svg><div class="page-placeholder-title">' + menuTitle + '</div><div class="page-placeholder-desc">该页面正在开发中...</div></div>');
+        });
       }).fail(function() {
-        self.hideLoading();
-        self.showContent('<div class="page-placeholder"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><rect x="3" y="3" width="18" height="18" rx="2"/><line x1="9" y1="9" x2="15" y2="9"/><line x1="9" y1="13" x2="15" y2="13"/><line x1="9" y1="17" x2="12" y2="17"/></svg><div class="page-placeholder-title">' + title + '</div><div class="page-placeholder-desc">该页面正在开发中...</div></div>');
+        console.warn('[App] Some resources failed to load for:', relativeUrl);
+        $.ajax({
+          url: url,
+          dataType: 'html',
+          cache: false
+        }).done(function(html) {
+          var result = self.extractContent(html);
+          self.updatePageMeta(result.pageInfo, menuTitle, relativeUrl);
+          self.hideLoading();
+          self.showContent(result.body);
+        }).fail(function() {
+          self.hideLoading();
+          self.showContent('<div class="page-placeholder"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><rect x="3" y="3" width="18" height="18" rx="2"/><line x1="9" y1="9" x2="15" y2="9"/><line x1="9" y1="13" x2="15" y2="13"/><line x1="9" y1="17" x2="12" y2="17"/></svg><div class="page-placeholder-title">' + menuTitle + '</div><div class="page-placeholder-desc">该页面正在开发中...</div></div>');
+        });
       });
+    },
+
+    getRelativeUrl: function(url) {
+      if (!url) return url;
+      
+      var base = this.baseUrl;
+      if (base.charAt(0) === '/') {
+        base = base.substring(1);
+      }
+      
+      if (base && url.indexOf(base) === 0) {
+        url = url.substring(base.length);
+      }
+      
+      if (url.charAt(0) === '/') {
+        url = url.substring(1);
+      }
+      
+      return url;
     },
 
     showLoading: function() {
@@ -320,19 +391,122 @@ layui.define(['jquery', 'routerModule', 'themeModule', 'sidebarComp', 'tabsComp'
     },
 
     extractContent: function(html) {
-      var headMatch = html.match(/<head[^>]*>([\s\S]*?)<\/head>/i);
-      var bodyMatch = html.match(/<body[^>]*>([\s\S]*?)<\/body>/i);
+      var self = this;
+      
+      var cleanHtml = html.replace(/<!--[\s\S]*?-->/g, '');
+      
+      var headMatch = cleanHtml.match(/<head[^>]*>([\s\S]*?)<\/head>/i);
+      var bodyMatch = cleanHtml.match(/<body[^>]*>([\s\S]*?)<\/body>/i);
+      
+      var pageInfo = {
+        title: null,
+        keywords: null,
+        description: null
+      };
       
       if (headMatch) {
+        var titleMatch = headMatch[1].match(/<title[^>]*>([^<]*)<\/title>/i);
+        if (titleMatch && titleMatch[1]) {
+          pageInfo.title = titleMatch[1].trim();
+        }
+        
+        var metaKeywords = headMatch[1].match(/<meta[^>]*name=["']keywords["'][^>]*>/i);
+        if (metaKeywords) {
+          var contentMatch = metaKeywords[0].match(/content=["']([^"']*)["']/i);
+          if (contentMatch && contentMatch[1]) {
+            pageInfo.keywords = contentMatch[1].trim();
+          }
+        }
+        
+        var metaDesc = headMatch[1].match(/<meta[^>]*name=["']description["'][^>]*>/i);
+        if (metaDesc) {
+          var descMatch = metaDesc[0].match(/content=["']([^"']*)["']/i);
+          if (descMatch && descMatch[1]) {
+            pageInfo.description = descMatch[1].trim();
+          }
+        }
+        
         var links = headMatch[1].match(/<link[^>]*href="[^"]*\.css"[^>]*>/gi) || [];
         links.forEach(function(link) {
-          if (!$('head').find('link[href="' + $(link).attr('href') + '"]').length) {
-            $('head').append(link);
+          var hrefMatch = link.match(/href="([^"]+)"/i);
+          if (hrefMatch && hrefMatch[1]) {
+            var href = hrefMatch[1];
+            if (!$('head').find('link[href="' + href + '"]').length && !resourceLoader.isLoaded('css', href)) {
+              resourceLoader.loadCSS(href);
+            }
+          }
+        });
+        
+        var scripts = headMatch[1].match(/<script[^>]*src="[^"]+\.js"[^>]*><\/script>/gi) || [];
+        scripts.forEach(function(script) {
+          var srcMatch = script.match(/src="([^"]+)"/i);
+          if (srcMatch && srcMatch[1]) {
+            var src = srcMatch[1];
+            if (!$('head').find('script[src="' + src + '"]').length && !resourceLoader.isLoaded('js', src)) {
+              resourceLoader.loadJS(src);
+            }
           }
         });
       }
       
-      return bodyMatch ? bodyMatch[1] : html;
+      return {
+        body: bodyMatch ? bodyMatch[1] : cleanHtml,
+        pageInfo: pageInfo
+      };
+    },
+
+    updatePageMeta: function(pageInfo, menuTitle, relativeUrl) {
+      var site = this.appConfig.site || {};
+      var siteName = site.name || '';
+      
+      var title = pageInfo.title;
+      var keywords = pageInfo.keywords;
+      var description = pageInfo.description;
+      
+      if (!title || !keywords || !description) {
+        var pageConfig = resourceLoader.getPageConfig(relativeUrl);
+        if (pageConfig) {
+          if (!title && pageConfig.title) {
+            title = pageConfig.title;
+          }
+          if (!keywords && pageConfig.keywords) {
+            keywords = pageConfig.keywords;
+          }
+          if (!description && pageConfig.description) {
+            description = pageConfig.description;
+          }
+        }
+      }
+      
+      if (!title && menuTitle) {
+        title = menuTitle;
+      }
+      
+      if (title) {
+        if (siteName) {
+          document.title = title + ' - ' + siteName;
+        } else {
+          document.title = title;
+        }
+      }
+      
+      if (keywords) {
+        var $keywordsMeta = $('meta[name="keywords"]');
+        if ($keywordsMeta.length) {
+          $keywordsMeta.attr('content', keywords);
+        } else {
+          $('head').append('<meta name="keywords" content="' + keywords + '">');
+        }
+      }
+      
+      if (description) {
+        var $descMeta = $('meta[name="description"]');
+        if ($descMeta.length) {
+          $descMeta.attr('content', description);
+        } else {
+          $('head').append('<meta name="description" content="' + description + '">');
+        }
+      }
     },
 
     getPageUrl: function(pageId) {

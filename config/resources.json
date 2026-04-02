@@ -1,0 +1,96 @@
+{
+  "pages": {
+    "view/dashboard.html": {
+      "title": "控制台",
+      "keywords": "控制台,仪表盘,数据概览",
+      "description": "系统控制台，展示关键业务数据指标和快捷操作入口",
+      "css": [],
+      "js": []
+    },
+    "view/resource-demo.html": {
+      "title": "资源加载示例",
+      "keywords": "资源加载,按需加载,CSS,JS",
+      "description": "演示页面级资源的按需加载功能",
+      "css": ["admin/css/view/resource-demo.css"],
+      "js": [],
+      "dependencies": []
+    },
+    "/view/components/form-demo.html": {
+      "title": "表单组件",
+      "keywords": "表单,输入框,选择器,表单验证",
+      "description": "Layui表单组件使用示例，包含各类表单元素",
+      "css": ["admin/css/view/resource-demo.css"],
+      "js": [],
+      "dependencies": []
+    },
+    "view/components/table-demo.html": {
+      "title": "表格组件",
+      "keywords": "表格,数据表格,分页,排序",
+      "description": "Layui数据表格组件使用示例"
+    },
+    "view/components/echarts-demo.html": {
+      "title": "ECharts图表",
+      "keywords": "图表,ECharts,数据可视化",
+      "description": "ECharts图表组件使用示例",
+      "dependencies": ["echarts"]
+    },
+    "view/components/xm-select-demo.html": {
+      "title": "多选下拉框",
+      "keywords": "多选,下拉框,xmSelect",
+      "description": "xmSelect多选下拉框组件使用示例",
+      "dependencies": ["xmSelect"]
+    },
+    "view/product-list.html": {
+      "title": "商品列表",
+      "keywords": "商品,列表,库存,价格",
+      "description": "商品列表管理，支持搜索、筛选和批量操作"
+    },
+    "view/order-list.html": {
+      "title": "订单列表",
+      "keywords": "订单,列表,交易,状态",
+      "description": "订单列表管理，查看所有交易订单"
+    },
+    "view/user-list.html": {
+      "title": "用户列表",
+      "keywords": "用户,会员,列表,管理",
+      "description": "用户列表管理，查看和管理所有注册用户"
+    },
+    "view/analytics.html": {
+      "title": "数据分析",
+      "keywords": "数据分析,统计,报表,可视化",
+      "description": "业务数据分析报表，多维度数据可视化展示"
+    },
+    "view/system/permission-role.html": {
+      "title": "角色管理",
+      "keywords": "角色,权限,管理,RBAC",
+      "description": "系统角色权限管理，配置角色对应的菜单和操作权限"
+    },
+    "view/system/monitor-server.html": {
+      "title": "服务器监控",
+      "keywords": "服务器,监控,CPU,内存,性能",
+      "description": "实时监控服务器运行状态和性能指标"
+    }
+  },
+  "global": {
+    "css": [
+      "lib/layui/css/layui.css",
+      "admin/css/index.css"
+    ],
+    "js": [
+      "lib/layui/layui.js",
+      "admin/js/index.js"
+    ]
+  },
+  "externals": {
+    "echarts": {
+      "js": "lib/echarts/echarts.min.js",
+      "css": null,
+      "global": "echarts"
+    },
+    "xmSelect": {
+      "js": "lib/xm-select/xm-select.js",
+      "css": "lib/xm-select/xm-select.css",
+      "global": "xmSelect"
+    }
+  }
+}

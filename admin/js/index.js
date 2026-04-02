@@ -29,7 +29,7 @@
   var isReady = false;
 
   var App = {
-    version: '1.0.0',
+    version: '1.1.0',
     name: 'OS Admin',
     debug: false,
     baseUrl: baseUrl,
@@ -79,6 +79,7 @@
         routerModule: 'modules/common/router',
         themeModule: 'modules/common/theme',
         permissionModule: 'modules/common/permission',
+        resourceLoader: 'modules/common/resource-loader',
         sidebarComp: 'modules/components/sidebar',
         tabsComp: 'modules/components/tabs',
         commonMod: 'modules/extends/common',
@@ -111,6 +112,7 @@
             xmSelect: layui.xmSelectMod,
             toast: layui.toastMod,
             permission: permission,
+            resourceLoader: layui.resourceLoader,
             app: layui.appMain
           };
 
@@ -137,6 +139,7 @@
             xmSelect: layui.xmSelectMod,
             toast: layui.toastMod,
             permission: permission,
+            resourceLoader: layui.resourceLoader,
             app: layui.appMain
           };
 

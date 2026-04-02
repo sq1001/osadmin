@@ -1,0 +1,17 @@
+{
+  "code": 0,
+  "msg": "",
+  "count": 100,
+  "data": [
+    {"id": 1, "name": "iPhone 15 Pro Max", "category": "电子产品", "price": 9999, "stock": 128, "sales": 1520, "status": 1, "createTime": "2024-01-15 10:30:00"},
+    {"id": 2, "name": "MacBook Pro 14寸", "category": "电子产品", "price": 14999, "stock": 56, "sales": 890, "status": 1, "createTime": "2024-01-14 14:20:00"},
+    {"id": 3, "name": "AirPods Pro 2", "category": "电子产品", "price": 1899, "stock": 320, "sales": 3200, "status": 1, "createTime": "2024-01-13 09:15:00"},
+    {"id": 4, "name": "男士休闲夹克", "category": "服装鞋帽", "price": 299, "stock": 0, "sales": 560, "status": 0, "createTime": "2024-01-12 16:45:00"},
+    {"id": 5, "name": "女士连衣裙", "category": "服装鞋帽", "price": 459, "stock": 89, "sales": 1200, "status": 1, "createTime": "2024-01-11 11:30:00"},
+    {"id": 6, "name": "进口牛奶礼盒", "category": "食品饮料", "price": 168, "stock": 200, "sales": 890, "status": 1, "createTime": "2024-01-10 08:00:00"},
+    {"id": 7, "name": "有机坚果礼盒", "category": "食品饮料", "price": 99, "stock": 150, "sales": 2100, "status": 1, "createTime": "2024-01-09 13:20:00"},
+    {"id": 8, "name": "iPad Air", "category": "电子产品", "price": 4799, "stock": 45, "sales": 670, "status": 1, "createTime": "2024-01-08 15:40:00"},
+    {"id": 9, "name": "运动跑鞋", "category": "服装鞋帽", "price": 599, "stock": 0, "sales": 430, "status": 0, "createTime": "2024-01-07 10:10:00"},
+    {"id": 10, "name": "Apple Watch Ultra", "category": "电子产品", "price": 6299, "stock": 78, "sales": 340, "status": 1, "createTime": "2024-01-06 17:55:00"}
+  ]
+}

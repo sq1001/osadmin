@@ -14,13 +14,40 @@ layui.define(['jquery', 'themeModule', 'routerModule'], function(exports) {
   var Sidebar = {
     collapsed: false,
     currentSubmenuPanel: null,
+    currentDropdownMenu: null,
     activeDropdowns: [],
 
     init: function(config) {
       menuData = config ? (config.data || []) : [];
       this.render();
+      this.loadCollapseState();
       this.bindEvents();
       return this;
+    },
+
+    loadCollapseState: function() {
+      try {
+        var saved = localStorage.getItem('sidebarCollapsed');
+        if (saved === 'true') {
+          this.collapsed = true;
+          $('#sidebar').addClass('collapsed');
+        } else {
+          this.collapsed = false;
+          $('#sidebar').removeClass('collapsed');
+        }
+        setTimeout(function() {
+          document.documentElement.classList.remove('sidebar-collapsed-init');
+        }, 50);
+      } catch (e) {
+        this.collapsed = false;
+        document.documentElement.classList.remove('sidebar-collapsed-init');
+      }
+    },
+
+    saveCollapseState: function() {
+      try {
+        localStorage.setItem('sidebarCollapsed', this.collapsed ? 'true' : 'false');
+      } catch (e) {}
     },
 
     render: function() {
@@ -115,7 +142,7 @@ layui.define(['jquery', 'themeModule', 'routerModule'], function(exports) {
         var itemId = child.id !== undefined ? child.id : child.code;
         
         if (hasChildren) {
-          html += '<div class="nested-dropdown-item-wrapper">';
+          html += '<div class="nested-dropdown-item-wrapper" data-id="' + itemId + '">';
           html += '<a class="nested-dropdown-item" data-id="' + itemId + '" data-level="' + level + '" data-has-dropdown="true">';
           html += '<span class="menu-icon"><i class="layui-icon ' + childIcon + '"></i></span>';
           html += '<span class="menu-text">' + child.title + '</span>';
@@ -204,7 +231,9 @@ layui.define(['jquery', 'themeModule', 'routerModule'], function(exports) {
         e.preventDefault();
         var pageId = $(this).data('id');
         router.navigateById(pageId);
-        self.closeMobileSidebar();
+        if (window.innerWidth <= 768) {
+          self.closeMobileSidebar();
+        }
       });
 
       $('.collapse-btn').on('click', function() {
@@ -243,7 +272,6 @@ layui.define(['jquery', 'themeModule', 'routerModule'], function(exports) {
         router.navigateById(menuId);
         this.hideSubmenuPanel();
         this.hideDropdownMenu();
-        this.closeAllNestedDropdowns();
         return;
       }
 
@@ -254,42 +282,32 @@ layui.define(['jquery', 'themeModule', 'routerModule'], function(exports) {
         this.hideDropdownMenu();
       } else {
         if (this.collapsed) {
-          this.showDropdownMenu(menuId, $el);
+          if (this.currentDropdownMenu === menuId) {
+            this.hideDropdownMenu();
+          } else {
+            this.showDropdownMenu(menuId, $el);
+          }
           this.hideSubmenuPanel();
         } else {
-          this.toggleSubmenu($el, menuId);
+          this.toggleSubmenu($el, menuId, state);
           this.hideSubmenuPanel();
           this.hideDropdownMenu();
         }
       }
     },
 
-    toggleSubmenu: function($el, menuId) {
+    toggleSubmenu: function($el, menuId, state) {
       var wasExpanded = $el.hasClass('expanded');
-      var state = theme.getState();
       
       if (state.accordion && !wasExpanded) {
-        $('.menu-item.expanded').each(function() {
+        $('#sidebarMenu .menu-item.expanded').each(function() {
           $(this).removeClass('expanded');
           var $submenu = $(this).next('.submenu');
           if ($submenu.length) {
             $submenu.removeClass('open');
           }
         });
-        $('.submenu-item-wrapper.open').each(function() {
-          $(this).removeClass('open');
-          $(this).find('.nested-dropdown.show').removeClass('show');
-        });
-        $('.submenu-panel-group.open').each(function() {
-          $(this).removeClass('open');
-          $(this).find('.submenu-panel-dropdown.show').removeClass('show');
-          $(this).find('.menu-dropdown-arrow i').removeClass('layui-icon-up').addClass('layui-icon-down');
-        });
-        $('.dropdown-menu-group.open').each(function() {
-          $(this).removeClass('open');
-          $(this).find('.dropdown-submenu.show').removeClass('show');
-        });
-        $('.nested-dropdown-item-wrapper.open').each(function() {
+        $('#sidebarMenu .submenu-item-wrapper.open').each(function() {
           $(this).removeClass('open');
           $(this).find('.nested-dropdown.show').removeClass('show');
         });
@@ -302,7 +320,7 @@ layui.define(['jquery', 'themeModule', 'routerModule'], function(exports) {
       }
     },
 
-    showSubmenuPanel: function(menuId, $triggerEl) {
+    showSubmenuPanel: function(menuId, $triggerEl, targetPageId) {
       var menu = this.findMenu(menuId);
       if (!menu || !menu.children) return;
 
@@ -318,9 +336,12 @@ layui.define(['jquery', 'themeModule', 'routerModule'], function(exports) {
       
       this.bindSubmenuPanelEvents();
       
-      var currentId = router.getCurrentId();
+      var currentId = targetPageId || router.getCurrentId();
       if (currentId !== null) {
-        this.setActive(currentId);
+        // 直接设置激活状态，不调用setActive
+        var state = theme.getState();
+        var menuPath = this.findMenuPath(menuData, currentId);
+        this.setActiveItems(currentId, menuPath, state);
       }
     },
 
@@ -446,9 +467,11 @@ layui.define(['jquery', 'themeModule', 'routerModule'], function(exports) {
       this.currentSubmenuPanel = null;
     },
 
-    showDropdownMenu: function(menuId, $triggerEl) {
+    showDropdownMenu: function(menuId, $triggerEl, targetPageId) {
       var menu = this.findMenu(menuId);
       if (!menu || !menu.children) return;
+
+      this.currentDropdownMenu = menuId;
 
       var html = this.buildDropdownMenuContent(menu.children, 2);
 
@@ -482,6 +505,14 @@ layui.define(['jquery', 'themeModule', 'routerModule'], function(exports) {
       $wrapper.find('.layui-dropdown-menu-panel').css('max-height', maxHeight + 'px');
       
       this.bindDropdownMenuEvents();
+      
+      var currentId = targetPageId || router.getCurrentId();
+      if (currentId !== null) {
+        // 直接设置激活状态，不调用setActive
+        var state = theme.getState();
+        var menuPath = this.findMenuPath(menuData, currentId);
+        this.setActiveItems(currentId, menuPath, state);
+      }
     },
 
     buildDropdownMenuContent: function(children, level) {
@@ -534,9 +565,9 @@ layui.define(['jquery', 'themeModule', 'routerModule'], function(exports) {
 
       $('#dropdownMenuContent').off('click', '.dropdown-menu-item:not([data-has-dropdown="true"])').on('click', '.dropdown-menu-item:not([data-has-dropdown="true"])', function(e) {
         e.preventDefault();
+        e.stopPropagation();
         var pageId = $(this).data('id');
         router.navigateById(pageId);
-        self.hideDropdownMenu();
       });
 
       $('#dropdownMenuContent').off('click', '.dropdown-menu-group-title').on('click', '.dropdown-menu-group-title', function(e) {
@@ -561,6 +592,7 @@ layui.define(['jquery', 'themeModule', 'routerModule'], function(exports) {
 
     hideDropdownMenu: function() {
       $('#dropdownMenuPanelWrapper').removeClass('show');
+      this.currentDropdownMenu = null;
     },
 
     closeAllNestedDropdowns: function() {
@@ -599,6 +631,7 @@ layui.define(['jquery', 'themeModule', 'routerModule'], function(exports) {
       
       this.collapsed = !this.collapsed;
       $('#sidebar').toggleClass('collapsed', this.collapsed);
+      this.saveCollapseState();
       this.hideSubmenuPanel();
       this.hideDropdownMenu();
       this.closeAllNestedDropdowns();
@@ -637,21 +670,56 @@ layui.define(['jquery', 'themeModule', 'routerModule'], function(exports) {
       var self = this;
       var state = theme.getState();
       
+      this.collapsed = $('#sidebar').hasClass('collapsed');
+      
       var menuPath = this.findMenuPath(menuData, pageId);
+      
+      var $triggerItem = null;
+      var topItemId = null;
       
       if (menuPath.length > 0) {
         var topLevelItem = menuPath[0];
+        topItemId = topLevelItem.id !== undefined ? topLevelItem.id : topLevelItem.code;
         $('.menu-item').each(function() {
           var $item = $(this);
           var menuId = $item.data('id');
           
-          var topItemId = topLevelItem.id !== undefined ? topLevelItem.id : topLevelItem.code;
           if (menuId === topItemId) {
             $item.addClass('active');
+            $triggerItem = $item;
           }
         });
       }
 
+      var panelShown = false;
+      
+      if (state.layout === 'double' && menuPath.length > 0 && $triggerItem) {
+        if (this.currentSubmenuPanel !== topItemId) {
+          this.showSubmenuPanel(topItemId, $triggerItem, pageId);
+          panelShown = true;
+        } else {
+          this.setActiveItems(pageId, menuPath, state);
+        }
+      }
+      else if (state.layout === 'dropdown' && this.collapsed && menuPath.length > 0 && $triggerItem) {
+        var $wrapper = $('#dropdownMenuPanelWrapper');
+        var needShowDropdown = !$wrapper.hasClass('show') || this.currentDropdownMenu !== topItemId;
+        
+        if (needShowDropdown) {
+          this.showDropdownMenu(topItemId, $triggerItem, pageId);
+          panelShown = true;
+        } else {
+          this.setActiveItems(pageId, menuPath, state);
+        }
+      }
+      else {
+        this.setActiveItems(pageId, menuPath, state);
+      }
+    },
+    
+    setActiveItems: function(pageId, menuPath, state) {
+      $('.submenu-item, .submenu-panel-item, .submenu-panel-group-title, .submenu-panel-dropdown-item, .dropdown-menu-item, .dropdown-menu-group-title, .nested-dropdown-item').removeClass('active');
+      
       $('.submenu-item, .submenu-panel-item, .submenu-panel-group-title, .submenu-panel-dropdown-item, .dropdown-menu-item, .dropdown-menu-group-title, .nested-dropdown-item').each(function() {
         if ($(this).data('id') === pageId) {
           $(this).addClass('active');
@@ -670,7 +738,7 @@ layui.define(['jquery', 'themeModule', 'routerModule'], function(exports) {
         }
       }
 
-      if (menuPath.length > 2) {
+      if (menuPath.length > 1) {
         this.expandMenuPath(menuPath);
       }
     },
@@ -699,7 +767,7 @@ layui.define(['jquery', 'themeModule', 'routerModule'], function(exports) {
     },
 
     expandMenuPath: function(menuPath) {
-      for (var i = 1; i < menuPath.length - 1; i++) {
+      for (var i = 1; i < menuPath.length; i++) {
         var item = menuPath[i];
         var itemId = item.id !== undefined ? item.id : item.code;
         
@@ -709,10 +777,23 @@ layui.define(['jquery', 'themeModule', 'routerModule'], function(exports) {
           $wrapper.find('.nested-dropdown').first().addClass('show');
         }
         
+        var $nestedWrapper = $('.nested-dropdown-item-wrapper[data-id="' + itemId + '"]');
+        if ($nestedWrapper.length) {
+          $nestedWrapper.addClass('open');
+          $nestedWrapper.find('.nested-dropdown').first().addClass('show');
+        }
+        
         var $panelGroup = $('.submenu-panel-group[data-id="' + itemId + '"]');
         if ($panelGroup.length) {
           $panelGroup.addClass('open');
           $panelGroup.find('.submenu-panel-dropdown').first().addClass('show');
+          $panelGroup.find('.menu-dropdown-arrow i').removeClass('layui-icon-down').addClass('layui-icon-up');
+        }
+        
+        var $panelDropdownGroup = $('.submenu-panel-dropdown-group[data-id="' + itemId + '"]');
+        if ($panelDropdownGroup.length) {
+          $panelDropdownGroup.addClass('open');
+          $panelDropdownGroup.find('.submenu-panel-dropdown').first().addClass('show');
         }
         
         var $dropdownGroup = $('.dropdown-menu-group[data-id="' + itemId + '"]');

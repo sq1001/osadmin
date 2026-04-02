@@ -1,0 +1,21 @@
+.product-list-page .layui-card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.product-list-page .layui-card-title {
+  font-size: 16px;
+  font-weight: 500;
+}
+
+.product-list-page .layui-card-header-actions {
+  display: flex;
+  gap: 8px;
+}
+
+.product-list-page #searchForm {
+  margin-bottom: 15px;
+  padding-bottom: 15px;
+  border-bottom: 1px solid #eee;
+}

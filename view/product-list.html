@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>商品列表 - 库存管理系统</title>
+  <meta name="keywords" content="商品列表,库存管理,商品查询,SKU管理">
+  <meta name="description" content="商品列表页面，支持商品搜索、筛选、批量操作等功能，高效管理商品库存">
+  <link rel="stylesheet" href="view/css/product-list.css">
+</head>
+<body>
+  <div class="page-content">
+    <div class="layui-card">
+      <div class="layui-card-header">
+        <span class="layui-card-title">商品列表</span>
+        <div class="layui-card-header-actions">
+          <button class="layui-btn layui-btn-sm" id="addProductBtn">
+            <i class="layui-icon layui-icon-add-1"></i>添加商品
+          </button>
+          <button class="layui-btn layui-btn-sm layui-btn-primary" id="exportBtn">
+            <i class="layui-icon layui-icon-export"></i>导出
+          </button>
+        </div>
+      </div>
+      <div class="layui-card-body">
+        <div class="layui-form layui-row" id="searchForm">
+          <div class="layui-inline">
+            <label class="layui-form-label">商品名称</label>
+            <div class="layui-input-inline">
+              <input type="text" name="name" placeholder="请输入商品名称" class="layui-input">
+            </div>
+          </div>
+          <div class="layui-inline">
+            <label class="layui-form-label">商品分类</label>
+            <div class="layui-input-inline">
+              <select name="category">
+                <option value="">全部</option>
+                <option value="1">电子产品</option>
+                <option value="2">服装鞋帽</option>
+                <option value="3">食品饮料</option>
+              </select>
+            </div>
+          </div>
+          <div class="layui-inline">
+            <label class="layui-form-label">状态</label>
+            <div class="layui-input-inline">
+              <select name="status">
+                <option value="">全部</option>
+                <option value="1">上架</option>
+                <option value="0">下架</option>
+              </select>
+            </div>
+          </div>
+          <div class="layui-inline">
+            <button class="layui-btn" lay-submit lay-filter="searchForm">
+              <i class="layui-icon layui-icon-search"></i>搜索
+            </button>
+            <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+          </div>
+        </div>
+
+        <table id="productTable" lay-filter="productTable"></table>
+      </div>
+    </div>
+  </div>
+
+  <script type="text/html" id="tableToolbar">
+    <div class="layui-btn-container">
+      <button class="layui-btn layui-btn-sm" lay-event="batchAdd">批量添加</button>
+      <button class="layui-btn layui-btn-sm layui-btn-danger" lay-event="batchDel">批量删除</button>
+    </div>
+  </script>
+
+  <script type="text/html" id="tableOperate">
+    <a class="layui-btn layui-btn-xs" lay-event="edit">编辑</a>
+    <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
+  </script>
+
+  <script type="text/html" id="statusTpl">
+    {{# if(d.status === 1){ }}
+      <span class="layui-badge layui-bg-green">上架</span>
+    {{# } else { }}
+      <span class="layui-badge layui-bg-gray">下架</span>
+    {{# } }}
+  </script>
+
+  <script type="text/html" id="priceTpl">
+    <span style="color: #f40; font-weight: bold;">¥{{ d.price }}</span>
+  </script>
+
+  <script src="view/js/product-list.js"></script>
+</body>
+</html>
