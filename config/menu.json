@@ -1,5 +1,15 @@
 [
   {
+    "id": -1,
+    "code": "view/user-profile",
+    "title": "资料设置",
+    "icon": "layui-icon-user",
+    "href": "view/user-profile.html",
+    "closable": true,
+    "hidden": true,
+    "children": null
+  },
+  {
     "id": 0,
     "code": "view/dashboard",
     "title": "控制台",

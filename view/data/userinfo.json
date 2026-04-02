@@ -1,0 +1,14 @@
+{
+  "code": 0,
+  "data": {
+    "id": 1,
+    "rolename": "admin",
+    "nickname": "超级管理员测试测试测试长度",
+    "avatar": "admin/images/avatar.webp",
+    "email": null,
+    "mobile": null,
+    "isSuperAdmin": true,
+    "token": "bd193ea07c73da41daa1a7e546094405"
+  },
+  "msg": "ok"
+}

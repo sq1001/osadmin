@@ -1,6 +1,6 @@
 {
   "name": "OSADMIN",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "description": "基于layui原生管理后台系统",
   "site": {
     "name": "OSADMIN",
@@ -24,7 +24,7 @@
   },
   "watermark": {
     "enabled": true,
-    "text": "OSADMIN 1.1.0",
+    "text": "OSADMIN 1.1.1",
     "fontSize": 14,
     "color": "rgba(0, 0, 0, 0.08)",
     "rotate": -22,
@@ -79,6 +79,12 @@
   "notification": {
     "enabled": true,
     "url": "view/data/notifications.json",
+    "method": "GET",
+    "cache": false
+  },
+  "userinfo": {
+    "enabled": true,
+    "url": "view/data/userinfo.json",
     "method": "GET",
     "cache": false
   }

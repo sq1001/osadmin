@@ -1,0 +1,640 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>资料设置</title>
+</head>
+<body>
+<div class="page-content">
+  <div class="profile-container">
+    <div class="profile-sidebar">
+      <div class="profile-avatar-card">
+        <div class="profile-avatar-wrapper">
+          <img src="" alt="用户头像" id="avatarPreview" class="profile-avatar-img">
+          <div class="profile-avatar-overlay">
+            <i class="layui-icon layui-icon-upload"></i>
+            <span>更换头像</span>
+          </div>
+          <input type="file" id="avatarInput" accept="image/*" hidden>
+        </div>
+        <div class="profile-name" id="profileName">超级管理员</div>
+        <div class="profile-role" id="profileRole">admin</div>
+      </div>
+      
+      <div class="profile-menu">
+        <div class="profile-menu-item active" data-tab="basic">
+          <i class="layui-icon layui-icon-user"></i>
+          <span>基本信息</span>
+        </div>
+        <div class="profile-menu-item" data-tab="security">
+          <i class="layui-icon layui-icon-password"></i>
+          <span>安全设置</span>
+        </div>
+        <div class="profile-menu-item" data-tab="bindinfo">
+          <i class="layui-icon layui-icon-cellphone"></i>
+          <span>绑定信息</span>
+        </div>
+      </div>
+    </div>
+    
+    <div class="profile-main">
+      <div class="profile-panel active" id="panelBasic">
+        <div class="profile-panel-header">
+          <h3 class="profile-panel-title">基本信息</h3>
+          <p class="profile-panel-desc">修改个人基本信息，保存后立即生效</p>
+        </div>
+        <div class="profile-panel-body">
+          <form class="layui-form profile-form" lay-filter="basicForm">
+            <div class="layui-form-item">
+              <label class="layui-form-label">用户ID</label>
+              <div class="layui-input-block">
+                <input type="text" name="id" id="userId" class="layui-input" disabled>
+              </div>
+            </div>
+            <div class="layui-form-item">
+              <label class="layui-form-label">用户名</label>
+              <div class="layui-input-block">
+                <input type="text" name="username" id="userName" class="layui-input" disabled>
+              </div>
+            </div>
+            <div class="layui-form-item">
+              <label class="layui-form-label">昵称</label>
+              <div class="layui-input-block">
+                <input type="text" name="nickname" id="userNickname" placeholder="请输入昵称" class="layui-input" lay-verify="required">
+              </div>
+            </div>
+            <div class="layui-form-item">
+              <label class="layui-form-label">角色</label>
+              <div class="layui-input-block">
+                <input type="text" name="rolename" id="userRolename" class="layui-input" disabled>
+              </div>
+            </div>
+            <div class="layui-form-item">
+              <label class="layui-form-label">邮箱</label>
+              <div class="layui-input-block">
+                <input type="email" name="email" id="userEmail" placeholder="请输入邮箱地址" class="layui-input" lay-verify="email">
+              </div>
+            </div>
+            <div class="layui-form-item">
+              <label class="layui-form-label">个人简介</label>
+              <div class="layui-input-block">
+                <textarea name="bio" id="userBio" placeholder="介绍一下自己吧" class="layui-textarea"></textarea>
+              </div>
+            </div>
+            <div class="layui-form-item">
+              <div class="layui-input-block">
+                <button type="button" class="layui-btn" lay-submit lay-filter="saveBasic">保存修改</button>
+                <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+      
+      <div class="profile-panel" id="panelSecurity">
+        <div class="profile-panel-header">
+          <h3 class="profile-panel-title">安全设置</h3>
+          <p class="profile-panel-desc">修改登录密码，确保账号安全</p>
+        </div>
+        <div class="profile-panel-body">
+          <form class="layui-form profile-form" lay-filter="securityForm">
+            <div class="layui-form-item">
+              <label class="layui-form-label">当前密码</label>
+              <div class="layui-input-block">
+                <input type="password" name="oldPassword" placeholder="请输入当前密码" class="layui-input" lay-verify="required">
+              </div>
+            </div>
+            <div class="layui-form-item">
+              <label class="layui-form-label">新密码</label>
+              <div class="layui-input-block">
+                <input type="password" name="newPassword" placeholder="请输入新密码（6-20位）" class="layui-input" lay-verify="required|pass">
+              </div>
+            </div>
+            <div class="layui-form-item">
+              <label class="layui-form-label">确认密码</label>
+              <div class="layui-input-block">
+                <input type="password" name="confirmPassword" placeholder="请再次输入新密码" class="layui-input" lay-verify="required|confirm">
+              </div>
+            </div>
+            <div class="layui-form-item">
+              <div class="layui-input-block">
+                <button type="button" class="layui-btn" lay-submit lay-filter="savePassword">修改密码</button>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+      
+      <div class="profile-panel" id="panelBindinfo">
+        <div class="profile-panel-header">
+          <h3 class="profile-panel-title">绑定信息</h3>
+          <p class="profile-panel-desc">绑定手机号和第三方账号</p>
+        </div>
+        <div class="profile-panel-body">
+          <form class="layui-form profile-form" lay-filter="bindForm">
+            <div class="layui-form-item">
+              <label class="layui-form-label">手机号</label>
+              <div class="layui-input-block">
+                <input type="text" name="mobile" id="userMobile" placeholder="请输入手机号" class="layui-input" lay-verify="phone">
+              </div>
+            </div>
+            <div class="layui-form-item">
+              <label class="layui-form-label">验证码</label>
+              <div class="layui-input-block">
+                <div class="input-with-btn">
+                  <input type="text" name="smsCode" placeholder="请输入验证码" class="layui-input">
+                  <button type="button" class="layui-btn layui-btn-primary" id="sendSmsBtn">获取验证码</button>
+                </div>
+              </div>
+            </div>
+            <div class="layui-form-item">
+              <div class="layui-input-block">
+                <button type="button" class="layui-btn" lay-submit lay-filter="saveMobile">绑定手机</button>
+              </div>
+            </div>
+          </form>
+          
+          <div class="bind-divider">
+            <span>第三方账号绑定</span>
+          </div>
+          
+          <div class="third-party-bind">
+            <div class="bind-item">
+              <div class="bind-icon wechat">
+                <i class="layui-icon layui-icon-login-wechat"></i>
+              </div>
+              <div class="bind-info">
+                <div class="bind-name">微信</div>
+                <div class="bind-status" id="wechatStatus">未绑定</div>
+              </div>
+              <button class="layui-btn layui-btn-sm layui-btn-primary" id="bindWechat">立即绑定</button>
+            </div>
+            <div class="bind-item">
+              <div class="bind-icon qq">
+                <i class="layui-icon layui-icon-login-qq"></i>
+              </div>
+              <div class="bind-info">
+                <div class="bind-name">QQ</div>
+                <div class="bind-status" id="qqStatus">未绑定</div>
+              </div>
+              <button class="layui-btn layui-btn-sm layui-btn-primary" id="bindQq">立即绑定</button>
+            </div>
+            <div class="bind-item">
+              <div class="bind-icon weibo">
+                <i class="layui-icon layui-icon-login-weibo"></i>
+              </div>
+              <div class="bind-info">
+                <div class="bind-name">微博</div>
+                <div class="bind-status" id="weiboStatus">未绑定</div>
+              </div>
+              <button class="layui-btn layui-btn-sm layui-btn-primary" id="bindWeibo">立即绑定</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<style>
+.profile-container {
+  display: flex;
+  gap: 20px;
+  min-height: calc(100vh - 180px);
+}
+
+.profile-sidebar {
+  width: 240px;
+  flex-shrink: 0;
+}
+
+.profile-avatar-card {
+  background: var(--card-bg);
+  border-radius: 12px;
+  padding: 30px 20px;
+  text-align: center;
+  border: 1px solid var(--border);
+  margin-bottom: 12px;
+}
+
+.profile-avatar-wrapper {
+  position: relative;
+  width: 100px;
+  height: 100px;
+  margin: 0 auto 16px;
+  cursor: pointer;
+  border-radius: 50%;
+  overflow: hidden;
+}
+
+.profile-avatar-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  background: linear-gradient(135deg, var(--accent), var(--accent-hover));
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #fff;
+  font-size: 36px;
+  font-weight: 600;
+}
+
+.profile-avatar-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  color: #fff;
+  opacity: 0;
+  transition: opacity 0.2s;
+}
+
+.profile-avatar-wrapper:hover .profile-avatar-overlay {
+  opacity: 1;
+}
+
+.profile-avatar-overlay i {
+  font-size: 20px;
+  margin-bottom: 4px;
+}
+
+.profile-avatar-overlay span {
+  font-size: 12px;
+}
+
+.profile-name {
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--text-primary);
+  margin-bottom: 4px;
+}
+
+.profile-role {
+  font-size: 13px;
+  color: var(--text-muted);
+}
+
+.profile-menu {
+  background: var(--card-bg);
+  border-radius: 12px;
+  border: 1px solid var(--border);
+  overflow: hidden;
+}
+
+.profile-menu-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 14px 20px;
+  color: var(--text-secondary);
+  cursor: pointer;
+  transition: all 0.15s;
+  border-left: 3px solid transparent;
+}
+
+.profile-menu-item:hover {
+  background: var(--bg-content);
+  color: var(--text-primary);
+}
+
+.profile-menu-item.active {
+  background: var(--accent-light);
+  color: var(--accent);
+  border-left-color: var(--accent);
+}
+
+.profile-menu-item i {
+  font-size: 18px;
+}
+
+.profile-main {
+  flex: 1;
+  min-width: 0;
+}
+
+.profile-panel {
+  display: none;
+  background: var(--card-bg);
+  border-radius: 12px;
+  border: 1px solid var(--border);
+}
+
+.profile-panel.active {
+  display: block;
+}
+
+.profile-panel-header {
+  padding: 20px 24px;
+  border-bottom: 1px solid var(--border);
+}
+
+.profile-panel-title {
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--text-primary);
+  margin-bottom: 4px;
+}
+
+.profile-panel-desc {
+  font-size: 13px;
+  color: var(--text-muted);
+}
+
+.profile-panel-body {
+  padding: 24px;
+}
+
+.profile-form {
+  max-width: 500px;
+}
+
+.profile-form .layui-form-label {
+  width: 90px;
+}
+
+.profile-form .layui-input-block {
+  margin-left: 120px;
+}
+
+.input-with-btn {
+  display: flex;
+  gap: 10px;
+}
+
+.input-with-btn .layui-input {
+  flex: 1;
+}
+
+.input-with-btn .layui-btn {
+  white-space: nowrap;
+}
+
+.bind-divider {
+  display: flex;
+  align-items: center;
+  margin: 30px 0 20px;
+  color: var(--text-muted);
+  font-size: 13px;
+}
+
+.bind-divider::before,
+.bind-divider::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: var(--border);
+}
+
+.bind-divider span {
+  padding: 0 16px;
+}
+
+.third-party-bind {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.bind-item {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 16px;
+  background: var(--bg-content);
+  border-radius: 8px;
+}
+
+.bind-icon {
+  width: 44px;
+  height: 44px;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 22px;
+  color: #fff;
+}
+
+.bind-icon.wechat {
+  background: #07c160;
+}
+
+.bind-icon.qq {
+  background: #12b7f5;
+}
+
+.bind-icon.weibo {
+  background: #e6162d;
+}
+
+.bind-info {
+  flex: 1;
+}
+
+.bind-name {
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--text-primary);
+  margin-bottom: 2px;
+}
+
+.bind-status {
+  font-size: 12px;
+  color: var(--text-muted);
+}
+
+.bind-status.bound {
+  color: var(--accent);
+}
+
+@media (max-width: 768px) {
+  .profile-container {
+    flex-direction: column;
+  }
+  
+  .profile-sidebar {
+    width: 100%;
+  }
+  
+  .profile-form .layui-form-label {
+    width: 80px;
+  }
+  
+  .profile-form .layui-input-block {
+    margin-left: 110px;
+  }
+}
+</style>
+
+<script>
+layui.use(['form', 'layer', 'upload'], function() {
+  var form = layui.form;
+  var layer = layui.layer;
+  var upload = layui.upload;
+  var $ = layui.$;
+
+  var userData = null;
+
+  function loadUserData() {
+    var userinfoConfig = (window.OSLAY && window.OSLAY.appConfig && window.OSLAY.appConfig.userinfo) || {};
+    var userinfoUrl = userinfoConfig.url || 'view/data/userinfo.json';
+    var baseUrl = window.OSLAY ? window.OSLAY.baseUrl : '/';
+    
+    if (baseUrl.charAt(baseUrl.length - 1) !== '/') {
+      baseUrl += '/';
+    }
+    
+    $.ajax({
+      url: baseUrl + userinfoUrl,
+      dataType: 'json',
+      cache: false
+    }).done(function(response) {
+      if (response && response.code === 0 && response.data) {
+        userData = response.data;
+        renderUserData(userData);
+      }
+    }).fail(function() {
+      layer.msg('加载用户信息失败', { icon: 2 });
+    });
+  }
+
+  function renderUserData(data) {
+    if (!data) return;
+    
+    $('#profileName').text(data.nickname || '未设置昵称');
+    $('#profileRole').text(data.rolename || '普通用户');
+    
+    if (data.avatar) {
+      var baseUrl = window.OSLAY ? window.OSLAY.baseUrl : '/';
+      if (baseUrl.charAt(baseUrl.length - 1) !== '/') {
+        baseUrl += '/';
+      }
+      $('#avatarPreview').attr('src', baseUrl + data.avatar);
+    } else {
+      var firstChar = (data.nickname || 'U').charAt(0);
+      $('#avatarPreview').attr('src', 'data:image/svg+xml,' + encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><rect fill="' + getComputedStyle(document.documentElement).getPropertyValue('--accent').trim() + '" width="100" height="100"/><text x="50" y="50" dominant-baseline="central" text-anchor="middle" fill="#fff" font-size="40" font-weight="600">' + firstChar + '</text></svg>'));
+    }
+    
+    $('#userId').val(data.id || '');
+    $('#userName').val(data.rolename || '');
+    $('#userNickname').val(data.nickname || '');
+    $('#userRolename').val(data.isSuperAdmin ? '超级管理员' : (data.rolename || ''));
+    $('#userEmail').val(data.email || '');
+    $('#userMobile').val(data.mobile || '');
+    
+    form.render();
+  }
+
+  loadUserData();
+
+  $('.profile-menu-item').on('click', function() {
+    var tab = $(this).data('tab');
+    $('.profile-menu-item').removeClass('active');
+    $(this).addClass('active');
+    
+    $('.profile-panel').removeClass('active');
+    $('#panel' + tab.charAt(0).toUpperCase() + tab.slice(1)).addClass('active');
+  });
+
+  $('.profile-avatar-wrapper').on('click', function() {
+    $('#avatarInput').click();
+  });
+
+  $('#avatarInput').on('change', function(e) {
+    var file = e.target.files[0];
+    if (file) {
+      var reader = new FileReader();
+      reader.onload = function(e) {
+        $('#avatarPreview').attr('src', e.target.result);
+        layer.msg('头像已选择，请点击保存', { icon: 1 });
+      };
+      reader.readAsDataURL(file);
+    }
+  });
+
+  form.verify({
+    pass: function(value) {
+      if (value.length < 6 || value.length > 20) {
+        return '密码长度必须为6-20位';
+      }
+    },
+    confirm: function(value) {
+      var newPass = $('input[name="newPassword"]').val();
+      if (value !== newPass) {
+        return '两次输入的密码不一致';
+      }
+    },
+    phone: function(value) {
+      if (value && !/^1[3-9]\d{9}$/.test(value)) {
+        return '请输入正确的手机号';
+      }
+    }
+  });
+
+  form.on('submit(saveBasic)', function(data) {
+    layer.msg('基本信息保存成功', { icon: 1, time: 1500 });
+    console.log('保存基本信息:', data.field);
+    return false;
+  });
+
+  form.on('submit(savePassword)', function(data) {
+    layer.msg('密码修改成功', { icon: 1, time: 1500 });
+    console.log('修改密码:', data.field);
+    data.field.oldPassword = '';
+    data.field.newPassword = '';
+    data.field.confirmPassword = '';
+    return false;
+  });
+
+  form.on('submit(saveMobile)', function(data) {
+    layer.msg('手机绑定成功', { icon: 1, time: 1500 });
+    console.log('绑定手机:', data.field);
+    return false;
+  });
+
+  var countdown = 0;
+  $('#sendSmsBtn').on('click', function() {
+    var mobile = $('input[name="mobile"]').val();
+    if (!mobile) {
+      layer.msg('请先输入手机号', { icon: 0 });
+      return;
+    }
+    if (!/^1[3-9]\d{9}$/.test(mobile)) {
+      layer.msg('请输入正确的手机号', { icon: 0 });
+      return;
+    }
+    
+    if (countdown > 0) return;
+    
+    countdown = 60;
+    var $btn = $(this);
+    $btn.prop('disabled', true).addClass('layui-btn-disabled');
+    
+    var timer = setInterval(function() {
+      countdown--;
+      if (countdown > 0) {
+        $btn.text(countdown + 's后重发');
+      } else {
+        clearInterval(timer);
+        $btn.text('获取验证码').prop('disabled', false).removeClass('layui-btn-disabled');
+      }
+    }, 1000);
+    
+    layer.msg('验证码已发送', { icon: 1 });
+  });
+
+  $('.third-party-bind .layui-btn').on('click', function() {
+    var type = $(this).attr('id').replace('bind', '').toLowerCase();
+    layer.msg('正在跳转' + type + '绑定页面...', { icon: 1, time: 1500 });
+  });
+});
+</script>
+</body>
+</html>

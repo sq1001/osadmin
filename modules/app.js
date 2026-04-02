@@ -171,7 +171,59 @@ layui.define(['jquery', 'routerModule', 'themeModule', 'sidebarComp', 'tabsComp'
         $('#logoIcon').replaceWith('<img src="' + logoUrl + '" alt="' + (site.name || 'Logo') + '" class="layui-logo-img">');
       }
       
+      this.loadUserinfo();
       this.loadNotifications();
+    },
+
+    loadUserinfo: function() {
+      var self = this;
+      
+      var userinfoConfig = this.appConfig && this.appConfig.userinfo ? this.appConfig.userinfo : {};
+      var userinfoUrl = userinfoConfig.url || 'view/data/userinfo.json';
+      var cache = userinfoConfig.cache !== undefined ? userinfoConfig.cache : false;
+      
+      if (userinfoConfig.enabled === false) {
+        return;
+      }
+      
+      $.ajax({
+        url: this.resolveUrl(userinfoUrl),
+        dataType: 'json',
+        cache: cache
+      }).done(function(response) {
+        if (response && response.code === 0 && response.data) {
+          self.renderUserinfo(response.data);
+        }
+      }).fail(function() {
+        console.warn('[App] Failed to load userinfo');
+      });
+    },
+
+    renderUserinfo: function(data) {
+      if (!data) return;
+      
+      var $avatar = $('.layui-user-avatar');
+      var $name = $('.layui-user-name');
+      var $role = $('.layui-user-role');
+      
+      if (data.nickname) {
+        $name.text(data.nickname);
+        $name.attr('title', data.nickname);
+      }
+      
+      if (data.rolename) {
+        var roleText = data.isSuperAdmin ? '超级管理员' : data.rolename;
+        $role.text(roleText);
+        $role.attr('title', roleText);
+      }
+      
+      if (data.avatar) {
+        var avatarUrl = this.resolveUrl(data.avatar);
+        $avatar.html('<img src="' + avatarUrl + '" alt="' + (data.nickname || 'Avatar') + '">');
+      } else if (data.nickname) {
+        var firstChar = data.nickname.charAt(0);
+        $avatar.text(firstChar);
+      }
     },
 
     loadNotifications: function() {
@@ -627,6 +679,8 @@ layui.define(['jquery', 'routerModule', 'themeModule', 'sidebarComp', 'tabsComp'
             layer.close(index);
             layer.msg('已退出登录');
           });
+        } else if (action === 'settings') {
+          router.navigateByCode('view/user-profile');
         }
         $('#userDropdownMenu').removeClass('show');
       });

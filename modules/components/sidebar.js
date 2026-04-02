@@ -60,6 +60,7 @@ layui.define(['jquery', 'themeModule', 'routerModule'], function(exports) {
       var self = this;
       
       menuData.forEach(function(item) {
+        if (item.hidden) return;
         html += self.buildMenuItemHTML(item, 1);
       });
       
