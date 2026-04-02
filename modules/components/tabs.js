@@ -1,6 +1,16 @@
 /**
  * 标签页组件
  * 内部使用id标识，URL使用code
+ * 
+ * type 定义:
+ *   0 - 目录 (有 children)
+ *   1 - 菜单 (有 href)
+ * 
+ * openType 定义 (仅菜单类型有效):
+ *   _blank  - 新标签页打开
+ *   _iframe - 内嵌 iframe
+ *   _dialog - 弹窗打开
+ *   无      - 默认内部页面加载
  */
 layui.define(['jquery', 'themeModule', 'routerModule'], function(exports) {
   'use strict';
@@ -12,6 +22,7 @@ layui.define(['jquery', 'themeModule', 'routerModule'], function(exports) {
   var menuData = [];
   var pageNames = {};
   var pageClosable = {};
+  var pageInfo = {};
   var selectId = 0;
 
   var Tabs = {
@@ -30,6 +41,21 @@ layui.define(['jquery', 'themeModule', 'routerModule'], function(exports) {
       return this;
     },
 
+    isExternalUrl: function(href) {
+      if (!href) return false;
+      return href.indexOf('http://') === 0 || href.indexOf('https://') === 0 || href.indexOf('//') === 0;
+    },
+
+    getMenuItemType: function(item) {
+      if (item.type !== undefined) {
+        return item.type;
+      }
+      if (item.children && item.children.length > 0) {
+        return 0;
+      }
+      return 1;
+    },
+
     buildPageConfig: function() {
       var self = this;
       menuData.forEach(function(item) {
@@ -41,6 +67,15 @@ layui.define(['jquery', 'themeModule', 'routerModule'], function(exports) {
       if (item.id !== undefined) {
         pageNames[item.id] = item.title;
         pageClosable[item.id] = item.closable !== false;
+        
+        var itemType = this.getMenuItemType(item);
+        if (itemType === 1 && item.href) {
+          pageInfo[item.id] = {
+            href: item.href,
+            openType: item.openType || null,
+            isExternal: this.isExternalUrl(item.href)
+          };
+        }
       }
       
       if (item.children && item.children.length > 0) {
@@ -56,6 +91,10 @@ layui.define(['jquery', 'themeModule', 'routerModule'], function(exports) {
         return pageClosable[id];
       }
       return true;
+    },
+
+    getPageInfo: function(id) {
+      return pageInfo[id] || null;
     },
 
     loadTabsState: function() {

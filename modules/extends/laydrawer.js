@@ -7,7 +7,7 @@ layui.define(['layer', 'jquery'], function(exports) {
   'use strict';
 
   var layer = layui.layer;
-  var $ = layui.$;
+  var $ = layui.jquery;
 
   var drawerIndex = 0;
   var instances = {};

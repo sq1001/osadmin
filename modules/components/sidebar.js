@@ -2,13 +2,25 @@
  * 侧边栏组件
  * 支持多级菜单，大于2级统一使用下拉菜单
  * 内部使用id标识，URL使用code
+ * 
+ * type 定义:
+ *   0 - 目录 (有 children)
+ *   1 - 菜单 (有 href)
+ * 
+ * openType 定义 (仅菜单类型有效):
+ *   _blank  - 新标签页打开
+ *   _iframe - 内嵌 iframe
+ *   _dialog - 弹窗打开
+ *   无      - 默认内部页面加载
  */
-layui.define(['jquery', 'themeModule', 'routerModule'], function(exports) {
+layui.define(['jquery', 'layer', 'themeModule', 'routerModule', 'commonMod'], function(exports) {
   'use strict';
 
   var $ = layui.jquery;
   var theme = layui.themeModule;
   var router = layui.routerModule;
+  var layer = layui.layer;
+  var common = layui.commonMod;
   var menuData = null;
 
   var Sidebar = {
@@ -23,6 +35,21 @@ layui.define(['jquery', 'themeModule', 'routerModule'], function(exports) {
       this.loadCollapseState();
       this.bindEvents();
       return this;
+    },
+
+    isExternalUrl: function(href) {
+      if (!href) return false;
+      return href.indexOf('http://') === 0 || href.indexOf('https://') === 0 || href.indexOf('//') === 0;
+    },
+
+    getMenuItemType: function(item) {
+      if (item.type !== undefined) {
+        return item.type;
+      }
+      if (item.children && item.children.length > 0) {
+        return 0;
+      }
+      return 1;
     },
 
     loadCollapseState: function() {
@@ -69,11 +96,23 @@ layui.define(['jquery', 'themeModule', 'routerModule'], function(exports) {
 
     buildMenuItemHTML: function(item, level) {
       var self = this;
-      var hasChildren = item.children && item.children.length > 0;
-      var isLeaf = !hasChildren || level >= 2;
+      var itemType = this.getMenuItemType(item);
+      var isDirectory = itemType === 0;
+      var hasChildren = !isDirectory && item.children && item.children.length > 0;
       var itemId = item.id !== undefined ? item.id : item.code;
+      var isExternal = !isDirectory && item.href && this.isExternalUrl(item.href);
       
-      var html = '<div class="menu-item" data-id="' + itemId + '" data-level="' + level + '" data-has-children="' + hasChildren + '">';
+      var html = '<div class="menu-item" data-id="' + itemId + '" data-level="' + level + '" data-type="' + itemType + '"';
+      if (!isDirectory && item.href) {
+        html += ' data-href="' + item.href + '"';
+      }
+      if (item.openType) {
+        html += ' data-open-type="' + item.openType + '"';
+      }
+      if (isExternal) {
+        html += ' data-external="true"';
+      }
+      html += '>';
       html += '<span class="menu-icon"><i class="layui-icon ' + item.icon + '"></i></span>';
       html += '<span class="menu-text">' + item.title + '</span>';
       
@@ -81,17 +120,17 @@ layui.define(['jquery', 'themeModule', 'routerModule'], function(exports) {
         html += '<span class="menu-badge">' + item.badge + '</span>';
       }
       
-      if (hasChildren) {
+      if (isDirectory) {
         html += '<span class="menu-arrow"><i class="layui-icon layui-icon-right"></i></span>';
       }
       
       html += '</div>';
       
-      if (hasChildren && level < 2) {
+      if (isDirectory && level < 2) {
         html += '<div class="submenu" data-parent="' + itemId + '">';
         item.children.forEach(function(child) {
-          var childHasChildren = child.children && child.children.length > 0;
-          if (childHasChildren) {
+          var childType = self.getMenuItemType(child);
+          if (childType === 0) {
             html += self.buildSubmenuItemWithDropdown(child, level + 1);
           } else {
             html += self.buildSubmenuItemHTML(child, level + 1);
@@ -106,7 +145,20 @@ layui.define(['jquery', 'themeModule', 'routerModule'], function(exports) {
     buildSubmenuItemHTML: function(item, level) {
       var childIcon = item.icon || 'layui-icon-circle';
       var itemId = item.id !== undefined ? item.id : item.code;
-      var html = '<a class="submenu-item" data-id="' + itemId + '" data-level="' + level + '">';
+      var itemType = this.getMenuItemType(item);
+      var isExternal = item.href && this.isExternalUrl(item.href);
+      
+      var html = '<a class="submenu-item" data-id="' + itemId + '" data-level="' + level + '" data-type="' + itemType + '"';
+      if (item.href) {
+        html += ' data-href="' + item.href + '"';
+      }
+      if (item.openType) {
+        html += ' data-open-type="' + item.openType + '"';
+      }
+      if (isExternal) {
+        html += ' data-external="true"';
+      }
+      html += '>';
       html += '<span class="menu-icon"><i class="layui-icon ' + childIcon + '"></i></span>';
       html += '<span class="menu-text">' + item.title + '</span>';
       html += '</a>';
@@ -115,19 +167,27 @@ layui.define(['jquery', 'themeModule', 'routerModule'], function(exports) {
 
     buildSubmenuItemWithDropdown: function(item, level) {
       var childIcon = item.icon || 'layui-icon-circle';
-      var hasChildren = item.children && item.children.length > 0;
+      var itemType = this.getMenuItemType(item);
+      var isDirectory = itemType === 0;
       var itemId = item.id !== undefined ? item.id : item.code;
       
-      var html = '<div class="submenu-item-wrapper" data-id="' + itemId + '">';
-      html += '<a class="submenu-item submenu-item-dropdown" data-id="' + itemId + '" data-level="' + level + '" data-has-dropdown="true">';
+      var html = '<div class="submenu-item-wrapper" data-id="' + itemId + '" data-type="' + itemType + '">';
+      html += '<a class="submenu-item submenu-item-dropdown" data-id="' + itemId + '" data-level="' + level + '" data-has-dropdown="' + isDirectory + '"';
+      if (!isDirectory && item.href) {
+        html += ' data-href="' + item.href + '"';
+      }
+      if (item.openType) {
+        html += ' data-open-type="' + item.openType + '"';
+      }
+      html += '>';
       html += '<span class="menu-icon"><i class="layui-icon ' + childIcon + '"></i></span>';
       html += '<span class="menu-text">' + item.title + '</span>';
-      if (hasChildren) {
+      if (isDirectory) {
         html += '<span class="menu-dropdown-arrow"><i class="layui-icon layui-icon-right"></i></span>';
       }
       html += '</a>';
       
-      if (hasChildren) {
+      if (isDirectory) {
         html += this.buildNestedDropdownHTML(item.children, level + 1);
       }
       
@@ -136,23 +196,36 @@ layui.define(['jquery', 'themeModule', 'routerModule'], function(exports) {
     },
 
     buildNestedDropdownHTML: function(children, level) {
+      var self = this;
       var html = '<div class="nested-dropdown" data-level="' + level + '">';
       children.forEach(function(child) {
         var childIcon = child.icon || 'layui-icon-circle';
-        var hasChildren = child.children && child.children.length > 0;
+        var childType = self.getMenuItemType(child);
+        var isDirectory = childType === 0;
         var itemId = child.id !== undefined ? child.id : child.code;
+        var isExternal = !isDirectory && child.href && self.isExternalUrl(child.href);
         
-        if (hasChildren) {
-          html += '<div class="nested-dropdown-item-wrapper" data-id="' + itemId + '">';
+        if (isDirectory) {
+          html += '<div class="nested-dropdown-item-wrapper" data-id="' + itemId + '" data-type="' + childType + '">';
           html += '<a class="nested-dropdown-item" data-id="' + itemId + '" data-level="' + level + '" data-has-dropdown="true">';
           html += '<span class="menu-icon"><i class="layui-icon ' + childIcon + '"></i></span>';
           html += '<span class="menu-text">' + child.title + '</span>';
           html += '<span class="menu-dropdown-arrow"><i class="layui-icon layui-icon-right"></i></span>';
           html += '</a>';
-          html += this.buildNestedDropdownHTML(child.children, level + 1);
+          html += self.buildNestedDropdownHTML(child.children, level + 1);
           html += '</div>';
         } else {
-          html += '<a class="nested-dropdown-item" data-id="' + itemId + '" data-level="' + level + '">';
+          html += '<a class="nested-dropdown-item" data-id="' + itemId + '" data-level="' + level + '" data-type="' + childType + '"';
+          if (child.href) {
+            html += ' data-href="' + child.href + '"';
+          }
+          if (child.openType) {
+            html += ' data-open-type="' + child.openType + '"';
+          }
+          if (isExternal) {
+            html += ' data-external="true"';
+          }
+          html += '>';
           html += '<span class="menu-icon"><i class="layui-icon ' + childIcon + '"></i></span>';
           html += '<span class="menu-text">' + child.title + '</span>';
           html += '</a>';
@@ -170,16 +243,25 @@ layui.define(['jquery', 'themeModule', 'routerModule'], function(exports) {
         var $this = $(this);
         var menuId = $this.data('id');
         var level = $this.data('level');
-        var hasChildren = $this.data('has-children') === true || $this.data('has-children') === 'true';
+        var itemType = $this.data('type');
+        var href = $this.data('href');
+        var openType = $this.data('open-type');
+        var isExternal = $this.data('external') === true || $this.data('external') === 'true';
         
-        self.handleMenuClick(menuId, hasChildren, $this, level);
+        self.handleMenuClick(menuId, itemType, href, openType, isExternal, $this, level);
       });
 
       $('#sidebarMenu').on('click', '.submenu-item:not(.submenu-item-dropdown)', function(e) {
         e.stopPropagation();
         e.preventDefault();
-        var pageId = $(this).data('id');
-        router.navigateById(pageId);
+        var $this = $(this);
+        var pageId = $this.data('id');
+        var itemType = $this.data('type');
+        var href = $this.data('href');
+        var openType = $this.data('open-type');
+        var isExternal = $this.data('external') === true || $this.data('external') === 'true';
+        
+        self.handleSubmenuItemClick(pageId, itemType, href, openType, isExternal);
         self.closeMobileSidebar();
       });
 
@@ -230,8 +312,14 @@ layui.define(['jquery', 'themeModule', 'routerModule'], function(exports) {
       $('#sidebarMenu').on('click', '.nested-dropdown-item:not([data-has-dropdown="true"])', function(e) {
         e.stopPropagation();
         e.preventDefault();
-        var pageId = $(this).data('id');
-        router.navigateById(pageId);
+        var $this = $(this);
+        var pageId = $this.data('id');
+        var itemType = $this.data('type');
+        var href = $this.data('href');
+        var openType = $this.data('open-type');
+        var isExternal = $this.data('external') === true || $this.data('external') === 'true';
+        
+        self.handleSubmenuItemClick(pageId, itemType, href, openType, isExternal);
         if (window.innerWidth <= 768) {
           self.closeMobileSidebar();
         }
@@ -258,43 +346,66 @@ layui.define(['jquery', 'themeModule', 'routerModule'], function(exports) {
       });
     },
 
-    handleMenuClick: function(menuId, hasChildren, $el, level) {
-      if (window.innerWidth <= 768) {
-        if (hasChildren) {
-          this.toggleSubmenu($el, menuId);
-        } else {
-          router.navigateById(menuId);
-          this.closeMobileSidebar();
-        }
-        return;
-      }
-
-      if (!hasChildren) {
-        router.navigateById(menuId);
-        this.hideSubmenuPanel();
-        this.hideDropdownMenu();
-        return;
-      }
-
-      var state = theme.getState();
+    handleMenuClick: function(menuId, itemType, href, openType, isExternal, $el, level) {
+      var isDirectory = itemType === 0;
       
-      if (state.layout === 'double') {
-        this.showSubmenuPanel(menuId, $el);
-        this.hideDropdownMenu();
-      } else {
-        if (this.collapsed) {
-          if (this.currentDropdownMenu === menuId) {
-            this.hideDropdownMenu();
-          } else {
-            this.showDropdownMenu(menuId, $el);
-          }
-          this.hideSubmenuPanel();
-        } else {
-          this.toggleSubmenu($el, menuId, state);
-          this.hideSubmenuPanel();
-          this.hideDropdownMenu();
+      if (isDirectory) {
+        if (window.innerWidth <= 768) {
+          this.toggleSubmenu($el, menuId);
+          return;
         }
+        
+        var state = theme.getState();
+        
+        if (state.layout === 'double') {
+          this.showSubmenuPanel(menuId, $el);
+          this.hideDropdownMenu();
+        } else {
+          if (this.collapsed) {
+            if (this.currentDropdownMenu === menuId) {
+              this.hideDropdownMenu();
+            } else {
+              this.showDropdownMenu(menuId, $el);
+            }
+            this.hideSubmenuPanel();
+          } else {
+            this.toggleSubmenu($el, menuId, state);
+            this.hideSubmenuPanel();
+            this.hideDropdownMenu();
+          }
+        }
+        return;
       }
+      
+      this.handleSubmenuItemClick(menuId, itemType, href, openType, isExternal);
+      this.hideSubmenuPanel();
+      this.hideDropdownMenu();
+    },
+
+    handleSubmenuItemClick: function(pageId, itemType, href, openType, isExternal) {
+      if (itemType === 0) {
+        return;
+      }
+      
+      if (isExternal && openType === '_blank') {
+        window.open(href, '_blank');
+        return;
+      }
+      
+      if (isExternal && openType === '_dialog') {
+        layer.open({
+          type: 2,
+          title: ' ',
+          content: href,
+          closeBtn: 1,
+          area: [common.isModile()?"100%":"550px", common.isModile()?"100%":"600px"],
+          shadeClose: true,
+          maxmin: true
+        });
+        return;
+      }
+      
+      router.navigateById(pageId);
     },
 
     toggleSubmenu: function($el, menuId, state) {
@@ -352,11 +463,13 @@ layui.define(['jquery', 'themeModule', 'routerModule'], function(exports) {
       
       children.forEach(function(child) {
         var childIcon = child.icon || 'layui-icon-circle';
-        var hasChildren = child.children && child.children.length > 0;
+        var childType = self.getMenuItemType(child);
+        var isDirectory = childType === 0;
         var itemId = child.id !== undefined ? child.id : child.code;
+        var isExternal = !isDirectory && child.href && self.isExternalUrl(child.href);
         
-        if (hasChildren) {
-          html += '<div class="submenu-panel-group" data-id="' + itemId + '">';
+        if (isDirectory) {
+          html += '<div class="submenu-panel-group" data-id="' + itemId + '" data-type="' + childType + '">';
           html += '<div class="submenu-panel-item submenu-panel-group-title" data-id="' + itemId + '" data-level="' + level + '" data-has-dropdown="true">';
           html += '<span class="menu-icon"><i class="layui-icon ' + childIcon + '"></i></span>';
           html += '<span class="menu-text">' + child.title + '</span>';
@@ -365,7 +478,17 @@ layui.define(['jquery', 'themeModule', 'routerModule'], function(exports) {
           html += self.buildSubmenuPanelDropdown(child.children, level + 1);
           html += '</div>';
         } else {
-          html += '<a class="submenu-panel-item" data-id="' + itemId + '" data-level="' + level + '">';
+          html += '<a class="submenu-panel-item" data-id="' + itemId + '" data-level="' + level + '" data-type="' + childType + '"';
+          if (child.href) {
+            html += ' data-href="' + child.href + '"';
+          }
+          if (child.openType) {
+            html += ' data-open-type="' + child.openType + '"';
+          }
+          if (isExternal) {
+            html += ' data-external="true"';
+          }
+          html += '>';
           html += '<span class="menu-icon"><i class="layui-icon ' + childIcon + '"></i></span>';
           html += '<span class="menu-text">' + child.title + '</span>';
           html += '</a>';
@@ -381,11 +504,13 @@ layui.define(['jquery', 'themeModule', 'routerModule'], function(exports) {
       
       children.forEach(function(child) {
         var childIcon = child.icon || 'layui-icon-circle';
-        var hasChildren = child.children && child.children.length > 0;
+        var childType = self.getMenuItemType(child);
+        var isDirectory = childType === 0;
         var itemId = child.id !== undefined ? child.id : child.code;
+        var isExternal = !isDirectory && child.href && self.isExternalUrl(child.href);
         
-        if (hasChildren) {
-          html += '<div class="submenu-panel-dropdown-group" data-id="' + itemId + '">';
+        if (isDirectory) {
+          html += '<div class="submenu-panel-dropdown-group" data-id="' + itemId + '" data-type="' + childType + '">';
           html += '<a class="submenu-panel-dropdown-item" data-id="' + itemId + '" data-level="' + level + '" data-has-dropdown="true">';
           html += '<span class="menu-icon"><i class="layui-icon ' + childIcon + '"></i></span>';
           html += '<span class="menu-text">' + child.title + '</span>';
@@ -394,7 +519,17 @@ layui.define(['jquery', 'themeModule', 'routerModule'], function(exports) {
           html += self.buildSubmenuPanelDropdown(child.children, level + 1);
           html += '</div>';
         } else {
-          html += '<a class="submenu-panel-dropdown-item" data-id="' + itemId + '" data-level="' + level + '">';
+          html += '<a class="submenu-panel-dropdown-item" data-id="' + itemId + '" data-level="' + level + '" data-type="' + childType + '"';
+          if (child.href) {
+            html += ' data-href="' + child.href + '"';
+          }
+          if (child.openType) {
+            html += ' data-open-type="' + child.openType + '"';
+          }
+          if (isExternal) {
+            html += ' data-external="true"';
+          }
+          html += '>';
           html += '<span class="menu-icon"><i class="layui-icon ' + childIcon + '"></i></span>';
           html += '<span class="menu-text">' + child.title + '</span>';
           html += '</a>';
@@ -410,8 +545,14 @@ layui.define(['jquery', 'themeModule', 'routerModule'], function(exports) {
 
       $('#submenuPanelContent').off('click', '.submenu-panel-item:not([data-has-dropdown="true"])').on('click', '.submenu-panel-item:not([data-has-dropdown="true"])', function(e) {
         e.preventDefault();
-        var pageId = $(this).data('id');
-        router.navigateById(pageId);
+        var $this = $(this);
+        var pageId = $this.data('id');
+        var itemType = $this.data('type');
+        var href = $this.data('href');
+        var openType = $this.data('open-type');
+        var isExternal = $this.data('external') === true || $this.data('external') === 'true';
+        
+        self.handleSubmenuItemClick(pageId, itemType, href, openType, isExternal);
       });
 
       $('#submenuPanelContent').off('click', '.submenu-panel-group-title').on('click', '.submenu-panel-group-title', function(e) {
@@ -455,8 +596,14 @@ layui.define(['jquery', 'themeModule', 'routerModule'], function(exports) {
 
       $('#submenuPanelContent').off('click', '.submenu-panel-dropdown-item:not([data-has-dropdown="true"])').on('click', '.submenu-panel-dropdown-item:not([data-has-dropdown="true"])', function(e) {
         e.preventDefault();
-        var pageId = $(this).data('id');
-        router.navigateById(pageId);
+        var $this = $(this);
+        var pageId = $this.data('id');
+        var itemType = $this.data('type');
+        var href = $this.data('href');
+        var openType = $this.data('open-type');
+        var isExternal = $this.data('external') === true || $this.data('external') === 'true';
+        
+        self.handleSubmenuItemClick(pageId, itemType, href, openType, isExternal);
       });
     },
 
@@ -522,11 +669,13 @@ layui.define(['jquery', 'themeModule', 'routerModule'], function(exports) {
       
       children.forEach(function(child) {
         var childIcon = child.icon || 'layui-icon-circle';
-        var hasChildren = child.children && child.children.length > 0;
+        var childType = self.getMenuItemType(child);
+        var isDirectory = childType === 0;
         var itemId = child.id !== undefined ? child.id : child.code;
+        var isExternal = !isDirectory && child.href && self.isExternalUrl(child.href);
         
-        if (hasChildren) {
-          html += '<div class="dropdown-menu-group" data-id="' + itemId + '">';
+        if (isDirectory) {
+          html += '<div class="dropdown-menu-group" data-id="' + itemId + '" data-type="' + childType + '">';
           html += '<div class="dropdown-menu-item dropdown-menu-group-title" data-id="' + itemId + '" data-level="' + level + '" data-has-dropdown="true">';
           html += '<span class="menu-icon"><i class="layui-icon ' + childIcon + '"></i></span>';
           html += '<span class="menu-text">' + child.title + '</span>';
@@ -537,7 +686,17 @@ layui.define(['jquery', 'themeModule', 'routerModule'], function(exports) {
           html += '</div>';
           html += '</div>';
         } else {
-          html += '<a class="dropdown-menu-item" data-id="' + itemId + '" data-level="' + level + '">';
+          html += '<a class="dropdown-menu-item" data-id="' + itemId + '" data-level="' + level + '" data-type="' + childType + '"';
+          if (child.href) {
+            html += ' data-href="' + child.href + '"';
+          }
+          if (child.openType) {
+            html += ' data-open-type="' + child.openType + '"';
+          }
+          if (isExternal) {
+            html += ' data-external="true"';
+          }
+          html += '>';
           html += '<span class="menu-icon"><i class="layui-icon ' + childIcon + '"></i></span>';
           html += '<span class="menu-text">' + child.title + '</span>';
           html += '</a>';
@@ -567,8 +726,14 @@ layui.define(['jquery', 'themeModule', 'routerModule'], function(exports) {
       $('#dropdownMenuContent').off('click', '.dropdown-menu-item:not([data-has-dropdown="true"])').on('click', '.dropdown-menu-item:not([data-has-dropdown="true"])', function(e) {
         e.preventDefault();
         e.stopPropagation();
-        var pageId = $(this).data('id');
-        router.navigateById(pageId);
+        var $this = $(this);
+        var pageId = $this.data('id');
+        var itemType = $this.data('type');
+        var href = $this.data('href');
+        var openType = $this.data('open-type');
+        var isExternal = $this.data('external') === true || $this.data('external') === 'true';
+        
+        self.handleSubmenuItemClick(pageId, itemType, href, openType, isExternal);
       });
 
       $('#dropdownMenuContent').off('click', '.dropdown-menu-group-title').on('click', '.dropdown-menu-group-title', function(e) {

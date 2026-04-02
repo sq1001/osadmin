@@ -2,10 +2,10 @@
 
 ## 📋 项目概述
 
-**项目名称**: OSADMIN  
-**版本**: 1.1.0  
-**描述**: 基于 LayUI 的轻量化原生管理后台系统  
-**技术栈**: LayUI + jQuery + 原生 JavaScript  
+**项目名称**: OSADMIN\
+**版本**: 1.1.0\
+**描述**: 基于 LayUI 的轻量化原生管理后台系统\
+**技术栈**: LayUI + jQuery + 原生 JavaScript\
 **架构模式**: 模块化架构 + 配置驱动
 
 ### 核心特性
@@ -19,11 +19,11 @@
 - ✅ **组件丰富**: 封装多种常用组件
 - ✅ **响应式设计**: 适配多种屏幕尺寸
 
----
+***
 
 ## 📁 项目结构
 
-```
+```HTML
 osadmin/
 ├── admin/                    # 管理后台核心目录
 │   ├── css/                 # 样式文件
@@ -110,7 +110,7 @@ osadmin/
 └── favicon.ico              # 网站图标
 ```
 
----
+***
 
 ## 🚀 快速开始
 
@@ -123,14 +123,16 @@ osadmin/
 ### 安装步骤
 
 1. **克隆项目**
+
 ```bash
 git clone <repository-url>
 cd osadmin
 ```
 
-2. **启动本地服务器**
+1. **启动本地服务器**
 
 方式1: 使用 Python
+
 ```bash
 # Python 3
 python -m http.server 8080
@@ -140,13 +142,15 @@ python -m SimpleHTTPServer 8080
 ```
 
 方式2: 使用 Node.js
+
 ```bash
 npx http-server -p 8080
 ```
 
 方式3: 使用 VS Code Live Server 插件
 
-3. **访问系统**
+1. **访问系统**
+
 ```
 http://localhost:8080
 ```
@@ -154,10 +158,11 @@ http://localhost:8080
 ### 目录权限
 
 确保以下目录有写入权限:
+
 - `config/` - 配置文件目录
 - `view/data/` - 数据文件目录
 
----
+***
 
 ## ⚙️ 配置说明
 
@@ -249,7 +254,7 @@ http://localhost:8080
 
 #### 主题色配置
 
-```json
+```JSON
 {
   "colors": {
     "#16baaa": { 
@@ -331,14 +336,32 @@ http://localhost:8080
 ```json
 {
   "id": 1,                       // 菜单ID (唯一)
+  "type": 1,                     // 类型: 0=目录, 1=菜单
   "code": "view/dashboard",      // 菜单代码 (唯一)
   "title": "控制台",              // 菜单标题
   "icon": "layui-icon-console",  // 菜单图标
   "href": "view/dashboard.html", // 页面路径
+  "openType": "_blank",          // 打开方式 (可选，仅菜单类型有效)
   "closable": true,              // 是否可关闭
   "children": []                 // 子菜单
 }
 ```
+
+#### type 类型定义
+
+| type | 含义 | 特征 |
+|------|------|------|
+| `0` | 目录 | 有 `children` 且非空 |
+| `1` | 菜单 | 有 `href`，无 `children` 或 `children` 为空 |
+
+#### openType 打开方式 (仅菜单类型有效)
+
+| openType | 含义 | 行为 |
+|----------|------|------|
+| `_blank` | 新标签页 | `window.open(href, '_blank')` |
+| `_iframe` | 内嵌 iframe | 主页面显示 iframe |
+| `_dialog` | 弹窗 | `layer.open({ type: 2, content: href })` |
+| 无 | 默认 | 内部页面 AJAX 加载 |
 
 #### 菜单示例
 
@@ -346,21 +369,23 @@ http://localhost:8080
 [
   {
     "id": 0,
+    "type": 1,
     "code": "view/dashboard",
     "title": "控制台",
     "icon": "layui-icon-console",
     "href": "view/dashboard.html",
-    "closable": false,
-    "children": null
+    "closable": false
   },
   {
     "id": 1,
+    "type": 0,
     "code": "system",
     "title": "系统管理",
     "icon": "layui-icon-set",
     "children": [
       {
         "id": 10,
+        "type": 1,
         "code": "view/user",
         "title": "用户管理",
         "icon": "layui-icon-user",
@@ -368,10 +393,38 @@ http://localhost:8080
       },
       {
         "id": 11,
+        "type": 1,
         "code": "view/role",
         "title": "角色管理",
         "icon": "layui-icon-group",
         "href": "view/role.html"
+      }
+    ]
+  },
+  {
+    "id": 100,
+    "type": 0,
+    "code": "external-links",
+    "title": "外部链接",
+    "icon": "layui-icon-link",
+    "children": [
+      {
+        "id": 101,
+        "type": 1,
+        "code": "external/baidu",
+        "title": "百度搜索",
+        "icon": "layui-icon-search",
+        "href": "https://www.baidu.com",
+        "openType": "_blank"
+      },
+      {
+        "id": 102,
+        "type": 1,
+        "code": "external/monitor",
+        "title": "监控大屏",
+        "icon": "layui-icon-chart-screen",
+        "href": "https://monitor.example.com",
+        "openType": "_iframe"
       }
     ]
   }
@@ -380,17 +433,208 @@ http://localhost:8080
 
 #### 菜单属性说明
 
-| 属性 | 类型 | 必填 | 说明 |
-|------|------|------|------|
-| id | Number | 是 | 菜单唯一标识 |
-| code | String | 是 | 菜单代码，用于路由 |
-| title | String | 是 | 菜单显示标题 |
-| icon | String | 否 | LayUI 图标类名 |
-| href | String | 否 | 页面路径 |
-| closable | Boolean | 否 | 标签页是否可关闭，默认 true |
-| children | Array | 否 | 子菜单数组 |
+| 属性       | 类型      | 必填 | 说明               |
+| -------- | ------- | -- | ---------------- |
+| id       | Number  | 是  | 菜单唯一标识           |
+| type     | Number  | 否  | 类型: 0=目录, 1=菜单 (默认根据 children 自动判断) |
+| code     | String  | 是  | 菜单代码，用于路由        |
+| title    | String  | 是  | 菜单显示标题           |
+| icon     | String  | 否  | LayUI 图标类名       |
+| href     | String  | 否  | 页面路径 (支持外链)      |
+| openType | String  | 否  | 打开方式: `_blank`/`_iframe`/`_dialog` (仅菜单类型有效) |
+| closable | Boolean | 否  | 标签页是否可关闭，默认 true |
+| children | Array   | 否  | 子菜单数组            |
 
----
+***
+
+## 📦 资源按需加载
+
+### 功能概述
+
+系统支持页面级资源按需加载，可以在页面加载时动态注入 CSS、JS 资源，并支持动态更新页面的 title、keywords、description 等 meta 信息。
+
+### 配置文件
+
+资源配置文件位于 `config/resources.json`。
+
+#### 配置结构
+
+```json
+{
+  "pages": {
+    "view/dashboard.html": {
+      "title": "控制台",
+      "keywords": "控制台,仪表盘,数据概览",
+      "description": "系统控制台，展示关键业务数据指标",
+      "css": ["admin/css/view/dashboard.css"],
+      "js": ["admin/js/view/dashboard.js"],
+      "dependencies": ["echarts"]
+    }
+  },
+  "global": {
+    "css": ["lib/layui/css/layui.css", "admin/css/index.css"],
+    "js": ["lib/layui/layui.js", "admin/js/index.js"]
+  },
+  "externals": {
+    "echarts": {
+      "js": "lib/echarts/echarts.min.js",
+      "css": null,
+      "global": "echarts"
+    },
+    "xmSelect": {
+      "js": "lib/xm-select/xm-select.js",
+      "css": "lib/xm-select/xm-select.css",
+      "global": "xmSelect"
+    }
+  }
+}
+```
+
+#### 配置项说明
+
+| 配置项       | 类型     | 说明      |
+| --------- | ------ | ------- |
+| pages     | Object | 页面级资源配置 |
+| global    | Object | 全局资源配置  |
+| externals | Object | 外部依赖配置  |
+
+#### 页面配置属性
+
+| 属性           | 类型     | 必填 | 说明             |
+| ------------ | ------ | -- | -------------- |
+| title        | String | 否  | 页面标题，会自动拼接站点名称 |
+| keywords     | String | 否  | 页面关键词，用于 SEO   |
+| description  | String | 否  | 页面描述，用于 SEO    |
+| css          | Array  | 否  | 页面专属 CSS 文件列表  |
+| js           | Array  | 否  | 页面专属 JS 文件列表   |
+| dependencies | Array  | 否  | 依赖的外部模块列表      |
+
+### Meta 信息优先级
+
+系统支持三种方式配置页面 meta 信息，优先级从高到低：
+
+```
+页面 HTML meta  >  resources.json 配置  >  菜单 title
+```
+
+#### 方式一：页面 HTML（最高优先级）
+
+在页面 HTML 的 `<head>` 中定义：
+
+```html
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>商品列表 - 库存管理系统</title>
+  <meta name="keywords" content="商品列表,库存管理,商品查询">
+  <meta name="description" content="商品列表页面，支持商品搜索、筛选功能">
+  <link rel="stylesheet" href="view/css/product-list.css">
+</head>
+<body>
+  <div class="page-content">
+    <!-- 页面内容 -->
+  </div>
+  <script src="view/js/product-list.js"></script>
+</body>
+</html>
+```
+
+#### 方式二：resources.json 配置
+
+在资源配置文件中定义：
+
+```json
+{
+  "pages": {
+    "view/product-list.html": {
+      "title": "商品列表",
+      "keywords": "商品,列表,库存",
+      "description": "商品列表管理页面",
+      "css": ["view/css/product-list.css"],
+      "js": ["view/js/product-list.js"]
+    }
+  }
+}
+```
+
+#### 方式三：菜单 title（兜底）
+
+使用菜单配置中的 title 作为页面标题：
+
+```json
+{
+  "id": 10,
+  "title": "商品列表",
+  "href": "view/product-list.html"
+}
+```
+
+### 外部依赖管理
+
+系统支持定义外部依赖模块，可在多个页面间复用：
+
+```json
+{
+  "externals": {
+    "echarts": {
+      "js": "lib/echarts/echarts.min.js",
+      "css": null,
+      "global": "echarts"
+    }
+  }
+}
+```
+
+在页面中引用：
+
+```json
+{
+  "pages": {
+    "view/components/echarts-demo.html": {
+      "dependencies": ["echarts"]
+    }
+  }
+}
+```
+
+### API 接口
+
+#### resourceLoader 模块
+
+```javascript
+// 获取页面配置
+var pageConfig = resourceLoader.getPageConfig('view/dashboard.html');
+
+// 加载页面资源
+resourceLoader.loadPageResources('view/dashboard.html').done(function() {
+  console.log('资源加载完成');
+});
+
+// 加载单个 CSS
+resourceLoader.loadCSS('admin/css/custom.css');
+
+// 加载单个 JS
+resourceLoader.loadJS('admin/js/custom.js');
+
+// 加载依赖模块
+resourceLoader.loadDependency('echarts');
+
+// 检查资源是否已加载
+var loaded = resourceLoader.isLoaded('css', 'admin/css/custom.css');
+
+// 清除缓存
+resourceLoader.clearCache();
+```
+
+### 最佳实践
+
+1. **资源分离**: 将页面专属的 CSS/JS 放在独立的目录中
+2. **依赖复用**: 使用 externals 定义公共依赖
+3. **按需配置**: 只配置页面真正需要的资源
+4. **SEO 优化**: 为重要页面配置完整的 meta 信息
+
+***
 
 ## 🏗️ 架构设计
 
@@ -531,7 +775,7 @@ router.on('change', function(route) {
 });
 ```
 
----
+***
 
 ## 🎨 主题系统
 
@@ -605,7 +849,7 @@ theme.setColor('#16baaa');
 }
 ```
 
-2. **添加主题色**
+1. **添加主题色**
 
 ```json
 // config/app.json
@@ -619,7 +863,7 @@ theme.setColor('#16baaa');
 }
 ```
 
----
+***
 
 ## 🔐 权限系统
 
@@ -669,7 +913,7 @@ OSLAY.ready(function(modules) {
 - `view/data/permission-operator.json` - 运营人员
 - `view/data/permission-manager.json` - 业务经理
 
----
+***
 
 ## 🧩 组件开发
 
@@ -795,7 +1039,7 @@ echarts.render('chart-container', {
 });
 ```
 
----
+***
 
 ## 📦 扩展开发
 
@@ -932,7 +1176,7 @@ OSLAY.ready(function(modules) {
 });
 ```
 
----
+***
 
 ## 🎯 最佳实践
 
@@ -1103,7 +1347,7 @@ function validateForm(data) {
 // 所有数据必须在服务端验证
 ```
 
----
+***
 
 ## 🐛 调试技巧
 
@@ -1152,7 +1396,7 @@ var Module = {
 };
 ```
 
----
+***
 
 ## 📚 API 文档
 
@@ -1160,26 +1404,26 @@ var Module = {
 
 #### 属性
 
-| 属性 | 类型 | 说明 |
-|------|------|------|
-| version | String | 版本号 |
-| name | String | 应用名称 |
-| debug | Boolean | 调试模式 |
-| baseUrl | String | 基础路径 |
-| modules | Object | 模块集合 |
-| appConfig | Object | 应用配置 |
-| menuConfig | Object | 菜单配置 |
+| 属性         | 类型      | 说明   |
+| ---------- | ------- | ---- |
+| version    | String  | 版本号  |
+| name       | String  | 应用名称 |
+| debug      | Boolean | 调试模式 |
+| baseUrl    | String  | 基础路径 |
+| modules    | Object  | 模块集合 |
+| appConfig  | Object  | 应用配置 |
+| menuConfig | Object  | 菜单配置 |
 
 #### 方法
 
-| 方法 | 参数 | 返回值 | 说明 |
-|------|------|--------|------|
-| ready(callback) | Function | void | 系统就绪回调 |
-| use(modules, callback) | Array, Function | void | 加载模块 |
-| getModule(name) | String | Object | 获取模块 |
-| getConfig() | - | Object | 获取配置 |
-| getMenuConfig() | - | Object | 获取菜单配置 |
-| log(...args) | ...Any | void | 调试日志 |
+| 方法                     | 参数              | 返回值    | 说明     |
+| ---------------------- | --------------- | ------ | ------ |
+| ready(callback)        | Function        | void   | 系统就绪回调 |
+| use(modules, callback) | Array, Function | void   | 加载模块   |
+| getModule(name)        | String          | Object | 获取模块   |
+| getConfig()            | -               | Object | 获取配置   |
+| getMenuConfig()        | -               | Object | 获取菜单配置 |
+| log(...args)           | ...Any          | void   | 调试日志   |
 
 ### 权限模块 API
 
@@ -1187,28 +1431,50 @@ var Module = {
 
 ### 路由模块 API
 
-| 方法 | 参数 | 返回值 | 说明 |
-|------|------|--------|------|
-| go(path) | String | void | 跳转到指定路由 |
-| getCurrent() | - | String | 获取当前路由 |
-| on(event, callback) | String, Function | void | 监听路由事件 |
+| 方法                  | 参数               | 返回值    | 说明      |
+| ------------------- | ---------------- | ------ | ------- |
+| go(path)            | String           | void   | 跳转到指定路由 |
+| getCurrent()        | -                | String | 获取当前路由  |
+| on(event, callback) | String, Function | void   | 监听路由事件  |
 
 ### 主题模块 API
 
-| 方法 | 参数 | 返回值 | 说明 |
-|------|------|--------|------|
-| setMode(mode) | String | void | 设置主题模式 |
-| getMode() | - | String | 获取主题模式 |
-| setColor(color) | String | void | 设置主题色 |
-| getColor() | - | String | 获取主题色 |
+| 方法              | 参数     | 返回值    | 说明     |
+| --------------- | ------ | ------ | ------ |
+| setMode(mode)   | String | void   | 设置主题模式 |
+| getMode()       | -      | String | 获取主题模式 |
+| setColor(color) | String | void   | 设置主题色  |
+| getColor()      | -      | String | 获取主题色  |
 
----
+***
 
 ## 🔄 更新日志
+
+### v1.1.0 (2026-04-02)
+
+#### 新增功能
+
+- ✅ **资源按需加载**: 页面级 CSS/JS 按需加载，支持动态注入
+- ✅ **动态 Meta 信息**: 支持页面级 title、keywords、description 动态更新
+- ✅ **外部依赖管理**: 支持定义可复用的外部依赖模块
+- ✅ **多优先级配置**: 支持 HTML、JSON、菜单三种 meta 配置方式
+
+#### 功能优化
+
+- ✅ **菜单栏逻辑优化**: 完善多级菜单展开/折叠逻辑
+- ✅ **下拉菜单布局**: 优化下拉菜单布局下的菜单展开状态恢复
+- ✅ **代码整洁**: 将内联脚本外移，提高代码可维护性
+
+#### 问题修复
+
+- ✅ 修复刷新页面后菜单展开状态丢失的问题
+- ✅ 修复 nested-dropdown-item-wrapper 展开状态不正确的问题
+- ✅ 修复部分布局模式下菜单激活状态显示异常
 
 ### v1.0.0 (2026-03-31)
 
 #### 新增功能
+
 - ✅ 模块化架构设计
 - ✅ 配置驱动系统
 - ✅ 权限管理模块
@@ -1218,6 +1484,7 @@ var Module = {
 - ✅ 多种组件封装
 
 #### 核心模块
+
 - ✅ 主应用模块 (app.js)
 - ✅ 路由模块 (router.js)
 - ✅ 主题模块 (theme.js)
@@ -1226,12 +1493,13 @@ var Module = {
 - ✅ 标签页组件 (tabs.js)
 
 #### 扩展模块
+
 - ✅ ECharts 图表扩展
 - ✅ XM-Select 下拉选择
 - ✅ Toast 提示框
 - ✅ Drawer 抽屉组件
 
----
+***
 
 ## 🤝 贡献指南
 
@@ -1262,21 +1530,21 @@ test: 测试相关
 chore: 构建/工具相关
 ```
 
----
+***
 
 ## 📄 许可证
 
 本项目采用 MIT 许可证。详见 [LICENSE](LICENSE) 文件。
 
----
+***
 
 ## 📞 联系方式
 
-- 项目主页: [GitHub Repository URL]
-- 问题反馈: [GitHub Issues URL]
-- 文档地址: [Documentation URL]
+- 项目主页: \[GitHub Repository URL]
+- 问题反馈: \[GitHub Issues URL]
+- 文档地址: \[Documentation URL]
 
----
+***
 
 ## 🙏 致谢
 
@@ -1287,7 +1555,7 @@ chore: 构建/工具相关
 - [ECharts](https://echarts.apache.org/) - 数据可视化图表库
 - [XM-Select](https://gitee.com/maplemei/xm-select) - 多选解决方案
 
----
+***
 
-**最后更新时间**: 2026-03-31  
-**文档版本**: 1.0.0
+**最后更新时间**: 2026-04-02\
+**文档版本**: 1.1.0

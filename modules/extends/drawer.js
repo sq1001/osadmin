@@ -5,7 +5,7 @@
 layui.define(['jquery'], function(exports) {
   'use strict';
 
-  var $ = layui.$;
+  var $ = layui.jquery;
   var drawerIndex = 0;
   var instances = {}; // 存储所有抽屉实例
   var escHandler = null; // ESC 键事件处理器

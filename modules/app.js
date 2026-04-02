@@ -1,6 +1,16 @@
 /**
  * 主应用模块
  * 支持id与code混合路由方案
+ * 
+ * type 定义:
+ *   0 - 目录 (有 children)
+ *   1 - 菜单 (有 href)
+ * 
+ * openType 定义 (仅菜单类型有效):
+ *   _blank  - 新标签页打开
+ *   _iframe - 内嵌 iframe
+ *   _dialog - 弹窗打开
+ *   无      - 默认内部页面加载
  */
 layui.define(['jquery', 'routerModule', 'themeModule', 'sidebarComp', 'tabsComp', 'resourceLoader'], function(exports) {
   'use strict';
@@ -20,6 +30,21 @@ layui.define(['jquery', 'routerModule', 'themeModule', 'sidebarComp', 'tabsComp'
     notificationData: [],
     currentAnimation: 'fadeIn',
     baseUrl: '',
+
+    isExternalUrl: function(href) {
+      if (!href) return false;
+      return href.indexOf('http://') === 0 || href.indexOf('https://') === 0 || href.indexOf('//') === 0;
+    },
+
+    getMenuItemType: function(item) {
+      if (item.type !== undefined) {
+        return item.type;
+      }
+      if (item.children && item.children.length > 0) {
+        return 0;
+      }
+      return 1;
+    },
 
     init: function() {
       if (this.initialized) {
@@ -349,13 +374,32 @@ layui.define(['jquery', 'routerModule', 'themeModule', 'sidebarComp', 'tabsComp'
     },
 
     loadPageContent: function(pageId) {
-      var url = this.getPageUrl(pageId);
       var self = this;
       var menuData = this.getMenuData();
       var menuTitle = this.getPageName(menuData, pageId) || ('Page ' + pageId);
       var animation = theme.getPageAnimation();
 
       this.currentAnimation = animation;
+
+      var menuItem = this.getMenuItemInfo(pageId);
+      
+      if (menuItem && menuItem.type === 1 && menuItem.isExternal) {
+        if (menuItem.openType === '_iframe') {
+          this.loadIframeContent(menuItem.href, menuTitle);
+          return;
+        }
+        
+        if (menuItem.openType === '_blank') {
+          return;
+        }
+        
+        if (menuItem.openType === '_dialog') {
+          return;
+        }
+      }
+
+      var url = this.getPageUrl(pageId);
+
       this.showLoading();
 
       if (!url) {
@@ -607,6 +651,61 @@ layui.define(['jquery', 'routerModule', 'themeModule', 'sidebarComp', 'tabsComp'
       }
       
       return null;
+    },
+
+    getMenuItemInfo: function(pageId) {
+      var menuData = this.getMenuData();
+      if (!menuData) return null;
+      
+      for (var i = 0; i < menuData.length; i++) {
+        var result = this.findMenuItemInfo(menuData[i], pageId);
+        if (result) return result;
+      }
+      return null;
+    },
+
+    findMenuItemInfo: function(item, pageId) {
+      var itemId = item.id !== undefined ? item.id : item.code;
+      if (itemId === pageId) {
+        return {
+          id: item.id,
+          code: item.code,
+          title: item.title,
+          href: item.href,
+          type: this.getMenuItemType(item),
+          openType: item.openType || null,
+          isExternal: item.href ? this.isExternalUrl(item.href) : false
+        };
+      }
+      
+      if (item.children && item.children.length > 0) {
+        for (var i = 0; i < item.children.length; i++) {
+          var result = this.findMenuItemInfo(item.children[i], pageId);
+          if (result) return result;
+        }
+      }
+      
+      return null;
+    },
+
+    loadIframeContent: function(url, title) {
+      var $wrapper = $('#contentWrapper');
+      var animation = this.currentAnimation;
+      
+      $wrapper.removeClass('page-anim-fadeIn page-anim-slideDown page-anim-slideLeft page-anim-slideRight');
+      
+      var iframeId = 'iframe-' + Date.now();
+      var html = '<div class="page-content page-iframe-wrapper active page-anim-' + animation + '">';
+      html += '<iframe id="' + iframeId + '" src="' + url + '" frameborder="0" allowfullscreen></iframe>';
+      html += '</div>';
+      
+      $wrapper.html(html);
+      
+      var site = this.appConfig.site || {};
+      var siteName = site.name || '';
+      if (title) {
+        document.title = title + (siteName ? ' - ' + siteName : '');
+      }
     },
 
     bindGlobalEvents: function() {

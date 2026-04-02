@@ -1,8 +1,8 @@
 layui.define(['jquery', 'element'], function(exports) {
 	"use strict";
 
-	var MOD_NAME = 'count',
-		$ = layui.$,
+	var MOD_NAME = 'countMod',
+		$ = layui.jquery,
 		element = layui.element;
 
 	var count = new function() {
