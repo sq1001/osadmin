@@ -25,6 +25,10 @@ build/
 *.min.js
 *.min.css
 
+# 允许lib目录下的压缩文件
+!lib/**/*.min.js
+!lib/**/*.min.css
+
 # 日志文件
 logs/
 *.log
