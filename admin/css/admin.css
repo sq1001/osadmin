@@ -1130,6 +1130,10 @@ body {
   font-size: 10px;
 }
 
+.layui-tabs-bar .layui-icon {
+  all: unset;
+}
+
 .layui-tabs-actions {
   position: relative;
   flex-shrink: 0;
