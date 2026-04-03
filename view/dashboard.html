@@ -239,50 +239,34 @@
 <script>
 layui.use(['echartsMod'], function() {
   var echarts = layui.echartsMod;
-  var salesChartInstance = null;
-  var categoryChartInstance = null;
   
-  function getChartTheme() {
-    var isDark = document.documentElement.getAttribute('data-theme') === 'dark';
-    return {
-      backgroundColor: 'transparent',
-      textColor: isDark ? '#f1f5f9' : '#1f2937',
-      axisLineColor: isDark ? '#2d3a4f' : '#e5e7eb',
-      splitLineColor: isDark ? '#1e293b' : '#f3f4f6'
-    };
-  }
+  var isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+  var textColor = isDark ? '#f1f5f9' : '#1f2937';
+  var axisLineColor = isDark ? '#334155' : '#e5e7eb';
+  var splitLineColor = isDark ? '#1e293b' : '#f3f4f6';
+  var accentColor = getComputedStyle(document.documentElement).getPropertyValue('--accent').trim() || '#16baaa';
   
-  function initSalesChart() {
-    var chartDom = document.getElementById('salesChart');
-    if (!chartDom) return;
-    if (salesChartInstance) salesChartInstance.dispose();
-    salesChartInstance = echarts.init(chartDom);
-    var theme = getChartTheme();
-    var accentColor = getComputedStyle(document.documentElement).getPropertyValue('--accent').trim() || '#16baaa';
-    
-    var option = {
-      backgroundColor: theme.backgroundColor,
-      tooltip: {
-        trigger: 'axis',
-        backgroundColor: theme.textColor === '#f1f5f9' ? '#1a2332' : '#fff',
-        textStyle: { color: theme.textColor === '#f1f5f9' ? '#f1f5f9' : '#1f2937' },
-        axisPointer: { type: 'shadow' }
-      },
+  var salesChart, categoryChart;
+  
+  setTimeout(function() {
+    salesChart = echarts.init(document.getElementById('salesChart'));
+    salesChart.setOption({
+      animation: true,
+      animationDuration: 800,
+      animationEasing: 'cubicOut',
+      tooltip: { trigger: 'axis', axisPointer: { type: 'shadow' } },
       grid: { left: '3%', right: '4%', bottom: '3%', top: '10%', containLabel: true },
       xAxis: {
         type: 'category',
         data: ['周一', '周二', '周三', '周四', '周五', '周六', '周日'],
-        axisLine: { lineStyle: { color: theme.axisLineColor } },
-        axisLabel: { color: theme.textColor === '#f1f5f9' ? '#94a3b8' : '#6b7280' }
+        axisLine: { lineStyle: { color: axisLineColor } },
+        axisLabel: { color: textColor }
       },
       yAxis: {
         type: 'value',
         axisLine: { show: false },
-        splitLine: { lineStyle: { color: theme.splitLineColor } },
-        axisLabel: {
-          color: theme.textColor === '#f1f5f9' ? '#94a3b8' : '#6b7280',
-          formatter: '{value}k'
-        }
+        splitLine: { lineStyle: { color: splitLineColor } },
+        axisLabel: { color: textColor, formatter: '{value}k' }
       },
       series: [{
         data: [45, 52, 48, 61, 55, 72, 68],
@@ -294,35 +278,17 @@ layui.use(['echartsMod'], function() {
             { offset: 1, color: accentColor + '40' }
           ]),
           borderRadius: [4, 4, 0, 0]
-        },
-        emphasis: {
-          itemStyle: {
-            color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
-              { offset: 0, color: accentColor },
-              { offset: 1, color: accentColor + '60' }
-            ])
-          }
         }
       }]
-    };
-    salesChartInstance.setOption(option);
-  }
-  
-  function initCategoryChart() {
-    var chartDom = document.getElementById('categoryChart');
-    if (!chartDom) return;
-    if (categoryChartInstance) categoryChartInstance.dispose();
-    categoryChartInstance = echarts.init(chartDom);
-    var theme = getChartTheme();
-    var accentColor = getComputedStyle(document.documentElement).getPropertyValue('--accent').trim() || '#16baaa';
+    });
     
-    var option = {
-      backgroundColor: theme.backgroundColor,
-      tooltip: {
-        trigger: 'item',
-        backgroundColor: theme.textColor === '#f1f5f9' ? '#1a2332' : '#fff',
-        textStyle: { color: theme.textColor === '#f1f5f9' ? '#f1f5f9' : '#1f2937' }
-      },
+    categoryChart = echarts.init(document.getElementById('categoryChart'));
+    categoryChart.setOption({
+      animation: true,
+      animationDuration: 1000,
+      animationEasing: 'cubicOut',
+      animationDelay: 200,
+      tooltip: { trigger: 'item' },
       series: [{
         type: 'pie',
         radius: ['55%', '85%'],
@@ -336,44 +302,26 @@ layui.use(['echartsMod'], function() {
           { value: 20, name: '美妆护肤', itemStyle: { color: '#f59e0b' } },
           { value: 12, name: '家居生活', itemStyle: { color: '#8b5cf6' } },
           { value: 5, name: '其他', itemStyle: { color: '#ef4444' } }
-        ],
-        emphasis: {
-          itemStyle: {
-            shadowBlur: 10,
-            shadowOffsetX: 0,
-            shadowColor: 'rgba(0, 0, 0, 0.5)'
-          }
-        }
+        ]
       }]
-    };
-    categoryChartInstance.setOption(option);
-  }
-  
-  function animateCounters() {
-    document.querySelectorAll('[data-count]').forEach(function(counter) {
-      var target = parseInt(counter.getAttribute('data-count'));
-      var duration = 1200;
-      var startTime = performance.now();
-      function update(currentTime) {
-        var progress = Math.min((currentTime - startTime) / duration, 1);
-        counter.textContent = Math.round(target * (1 - Math.pow(1 - progress, 3))).toLocaleString();
-        if (progress < 1) requestAnimationFrame(update);
-      }
-      requestAnimationFrame(update);
     });
-  }
+  }, 50);
   
-  initSalesChart();
-  initCategoryChart();
-  animateCounters();
+  document.querySelectorAll('[data-count]').forEach(function(counter) {
+    var target = parseInt(counter.getAttribute('data-count'));
+    var duration = 1200;
+    var startTime = performance.now();
+    function update(currentTime) {
+      var progress = Math.min((currentTime - startTime) / duration, 1);
+      counter.textContent = Math.round(target * (1 - Math.pow(1 - progress, 3))).toLocaleString();
+      if (progress < 1) requestAnimationFrame(update);
+    }
+    requestAnimationFrame(update);
+  });
   
-  var resizeTimeout = null;
   window.addEventListener('resize', function() {
-    clearTimeout(resizeTimeout);
-    resizeTimeout = setTimeout(function() {
-      if (salesChartInstance) salesChartInstance.resize();
-      if (categoryChartInstance) categoryChartInstance.resize();
-    }, 200);
+    if (salesChart) salesChart.resize();
+    if (categoryChart) categoryChart.resize();
   });
 });
 </script>

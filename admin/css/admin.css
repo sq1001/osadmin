@@ -359,7 +359,22 @@ body {
 .submenu {
   max-height: 0;
   overflow: hidden;
+  overflow-y: auto;
+  scrollbar-gutter: stable;
   transition: max-height 0.25s ease;
+}
+
+.submenu::-webkit-scrollbar {
+  width: 2px;
+}
+
+.submenu::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.15);
+  border-radius: 2px;
+}
+
+.submenu::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.25);
 }
 
 .submenu.open {
@@ -1567,12 +1582,27 @@ body {
 .nested-dropdown {
   max-height: 0;
   overflow: hidden;
+  overflow-y: auto;
+  scrollbar-gutter: stable;
   transition: max-height 0.25s ease;
   margin-left: 12px;
 }
 
+.nested-dropdown::-webkit-scrollbar {
+  width: 2px;
+}
+
+.nested-dropdown::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.15);
+  border-radius: 2px;
+}
+
+.nested-dropdown::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.25);
+}
+
 .nested-dropdown.show {
-  max-height: 1000px;
+  max-height: 400px;
 }
 
 .nested-dropdown-item-wrapper {
@@ -1792,12 +1822,27 @@ body {
 .dropdown-submenu {
   max-height: 0;
   overflow: hidden;
+  overflow-y: auto;
+  scrollbar-gutter: stable;
   transition: max-height 0.25s ease;
   margin-left: 12px;
 }
 
+.dropdown-submenu::-webkit-scrollbar {
+  width: 2px;
+}
+
+.dropdown-submenu::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.15);
+  border-radius: 2px;
+}
+
+.dropdown-submenu::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.25);
+}
+
 .dropdown-submenu.show {
-  max-height: 1000px;
+  max-height: 400px;
 }
 
 [data-theme="dark"] .nested-dropdown-item:hover,

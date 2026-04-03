@@ -106,218 +106,221 @@
 layui.use(['echartsMod'], function() {
   var echarts = layui.echartsMod;
   var $ = layui.$;
+  
+  var isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+  var textColor = isDark ? '#f1f5f9' : '#1f2937';
+  var axisLineColor = isDark ? '#334155' : '#e5e7eb';
+  var splitLineColor = isDark ? '#1e293b' : '#f3f4f6';
+  var accentColor = getComputedStyle(document.documentElement).getPropertyValue('--accent').trim() || '#16baaa';
+  
   var charts = [];
-  var currentTheme = $('html').attr('data-theme') === 'dark' ? 'dark' : 'light';
-
-  function getChartTheme() {
-    return {
-      backgroundColor: 'transparent',
-      textColor: getComputedStyle(document.documentElement).getPropertyValue('--text-secondary').trim() || '#6b7280',
-      axisLineColor: getComputedStyle(document.documentElement).getPropertyValue('--border').trim() || '#e5e7eb',
-      splitLineColor: getComputedStyle(document.documentElement).getPropertyValue('--border').trim() || '#e5e7eb'
-    };
-  }
-
-  function getAccentColor() {
-    return getComputedStyle(document.documentElement).getPropertyValue('--accent').trim() || '#16baaa';
-  }
-
-  var theme = getChartTheme();
-  var accentColor = getAccentColor();
-
-  var lineChart = echarts.init(document.getElementById('lineChart'));
-  var barChart = echarts.init(document.getElementById('barChart'));
-  var pieChart = echarts.init(document.getElementById('pieChart'));
-  var radarChart = echarts.init(document.getElementById('radarChart'));
-  var areaChart = echarts.init(document.getElementById('areaChart'));
-  var gaugeChart = echarts.init(document.getElementById('gaugeChart'));
-
-  charts = [lineChart, barChart, pieChart, radarChart, areaChart, gaugeChart];
-
-  lineChart.setOption({
-    tooltip: { trigger: 'axis' },
-    grid: { left: '3%', right: '4%', bottom: '3%', containLabel: true },
-    xAxis: {
-      type: 'category',
-      boundaryGap: false,
-      data: ['周一', '周二', '周三', '周四', '周五', '周六', '周日'],
-      axisLine: { lineStyle: { color: theme.axisLineColor } },
-      axisLabel: { color: theme.textColor }
-    },
-    yAxis: {
-      type: 'value',
-      axisLine: { lineStyle: { color: theme.axisLineColor } },
-      axisLabel: { color: theme.textColor },
-      splitLine: { lineStyle: { color: theme.splitLineColor } }
-    },
-    series: [{
-      data: [820, 932, 901, 934, 1290, 1330, 1320],
-      type: 'line',
-      smooth: true,
-      itemStyle: { color: accentColor },
-      areaStyle: { color: accentColor, opacity: 0.1 }
-    }]
-  });
-
-  barChart.setOption({
-    tooltip: { trigger: 'axis' },
-    grid: { left: '3%', right: '4%', bottom: '3%', containLabel: true },
-    xAxis: {
-      type: 'category',
-      data: ['产品A', '产品B', '产品C', '产品D', '产品E'],
-      axisLine: { lineStyle: { color: theme.axisLineColor } },
-      axisLabel: { color: theme.textColor }
-    },
-    yAxis: {
-      type: 'value',
-      axisLine: { lineStyle: { color: theme.axisLineColor } },
-      axisLabel: { color: theme.textColor },
-      splitLine: { lineStyle: { color: theme.splitLineColor } }
-    },
-    series: [{
-      data: [120, 200, 150, 80, 70],
-      type: 'bar',
-      itemStyle: {
-        color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
-          { offset: 0, color: accentColor },
-          { offset: 1, color: accentColor + '66' }
-        ])
-      }
-    }]
-  });
-
-  pieChart.setOption({
-    tooltip: { trigger: 'item' },
-    legend: {
-      orient: 'vertical',
-      right: '5%',
-      top: 'center',
-      textStyle: { color: theme.textColor }
-    },
-    series: [{
-      type: 'pie',
-      radius: ['40%', '70%'],
-      center: ['40%', '50%'],
-      avoidLabelOverlap: false,
-      itemStyle: { borderRadius: 10, borderColor: 'transparent' },
-      label: { show: false },
-      emphasis: { label: { show: true, fontSize: 14, fontWeight: 'bold' } },
-      data: [
-        { value: 1048, name: '搜索引擎', itemStyle: { color: accentColor } },
-        { value: 735, name: '直接访问', itemStyle: { color: '#3b82f6' } },
-        { value: 580, name: '邮件营销', itemStyle: { color: '#f59e0b' } },
-        { value: 484, name: '联盟广告', itemStyle: { color: '#8b5cf6' } }
-      ]
-    }]
-  });
-
-  radarChart.setOption({
-    tooltip: {},
-    radar: {
-      indicator: [
-        { name: '销售', max: 6500 },
-        { name: '管理', max: 16000 },
-        { name: '技术', max: 30000 },
-        { name: '客服', max: 38000 },
-        { name: '研发', max: 52000 },
-        { name: '市场', max: 25000 }
-      ],
-      axisLine: { lineStyle: { color: theme.axisLineColor } },
-      splitLine: { lineStyle: { color: theme.splitLineColor } },
-      splitArea: { areaStyle: { color: 'transparent' } },
-      axisName: { color: theme.textColor }
-    },
-    series: [{
-      type: 'radar',
-      data: [{
-        value: [4200, 3000, 20000, 35000, 50000, 18000],
-        name: '预算分配',
-        areaStyle: { color: accentColor, opacity: 0.2 },
-        lineStyle: { color: accentColor },
-        itemStyle: { color: accentColor }
+  
+  setTimeout(function() {
+    var lineChart = echarts.init(document.getElementById('lineChart'));
+    lineChart.setOption({
+      animation: true,
+      animationDuration: 800,
+      animationEasing: 'cubicOut',
+      tooltip: { trigger: 'axis' },
+      grid: { left: '3%', right: '4%', bottom: '3%', containLabel: true },
+      xAxis: {
+        type: 'category',
+        boundaryGap: false,
+        data: ['周一', '周二', '周三', '周四', '周五', '周六', '周日'],
+        axisLine: { lineStyle: { color: axisLineColor } },
+        axisLabel: { color: textColor }
+      },
+      yAxis: {
+        type: 'value',
+        axisLine: { lineStyle: { color: axisLineColor } },
+        axisLabel: { color: textColor },
+        splitLine: { lineStyle: { color: splitLineColor } }
+      },
+      series: [{
+        data: [820, 932, 901, 934, 1290, 1330, 1320],
+        type: 'line',
+        smooth: true,
+        itemStyle: { color: accentColor },
+        areaStyle: { color: accentColor, opacity: 0.1 }
       }]
-    }]
-  });
-
-  areaChart.setOption({
-    tooltip: { trigger: 'axis' },
-    grid: { left: '3%', right: '4%', bottom: '3%', containLabel: true },
-    xAxis: {
-      type: 'category',
-      boundaryGap: false,
-      data: ['1月', '2月', '3月', '4月', '5月', '6月', '7月'],
-      axisLine: { lineStyle: { color: theme.axisLineColor } },
-      axisLabel: { color: theme.textColor }
-    },
-    yAxis: {
-      type: 'value',
-      axisLine: { lineStyle: { color: theme.axisLineColor } },
-      axisLabel: { color: theme.textColor },
-      splitLine: { lineStyle: { color: theme.splitLineColor } }
-    },
-    series: [{
-      data: [820, 932, 901, 934, 1290, 1330, 1320],
-      type: 'line',
-      smooth: true,
-      itemStyle: { color: accentColor },
-      areaStyle: {
-        color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
-          { offset: 0, color: accentColor + 'cc' },
-          { offset: 1, color: accentColor + '11' }
-        ])
-      }
-    }]
-  });
-
-  gaugeChart.setOption({
-    series: [{
-      type: 'gauge',
-      center: ['50%', '60%'],
-      startAngle: 200,
-      endAngle: -20,
-      min: 0,
-      max: 100,
-      splitNumber: 10,
-      axisLine: {
-        lineStyle: {
-          width: 20,
-          color: [
-            [0.3, '#f59e0b'],
-            [0.7, '#3b82f6'],
-            [1, accentColor]
-          ]
+    });
+    charts.push(lineChart);
+    
+    var barChart = echarts.init(document.getElementById('barChart'));
+    barChart.setOption({
+      animation: true,
+      animationDuration: 800,
+      animationEasing: 'cubicOut',
+      animationDelay: 100,
+      tooltip: { trigger: 'axis' },
+      grid: { left: '3%', right: '4%', bottom: '3%', containLabel: true },
+      xAxis: {
+        type: 'category',
+        data: ['产品A', '产品B', '产品C', '产品D', '产品E'],
+        axisLine: { lineStyle: { color: axisLineColor } },
+        axisLabel: { color: textColor }
+      },
+      yAxis: {
+        type: 'value',
+        axisLine: { lineStyle: { color: axisLineColor } },
+        axisLabel: { color: textColor },
+        splitLine: { lineStyle: { color: splitLineColor } }
+      },
+      series: [{
+        data: [120, 200, 150, 80, 70],
+        type: 'bar',
+        itemStyle: {
+          color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
+            { offset: 0, color: accentColor },
+            { offset: 1, color: accentColor + '66' }
+          ])
         }
+      }]
+    });
+    charts.push(barChart);
+    
+    var pieChart = echarts.init(document.getElementById('pieChart'));
+    pieChart.setOption({
+      animation: true,
+      animationDuration: 1000,
+      animationEasing: 'cubicOut',
+      animationDelay: 200,
+      tooltip: { trigger: 'item' },
+      legend: {
+        orient: 'vertical',
+        right: '5%',
+        top: 'center',
+        textStyle: { color: textColor }
       },
-      pointer: {
-        itemStyle: { color: 'auto' }
+      series: [{
+        type: 'pie',
+        radius: ['40%', '70%'],
+        center: ['40%', '50%'],
+        avoidLabelOverlap: false,
+        itemStyle: { borderRadius: 10, borderColor: 'transparent' },
+        label: { show: false },
+        emphasis: { label: { show: true, fontSize: 14, fontWeight: 'bold' } },
+        data: [
+          { value: 1048, name: '搜索引擎', itemStyle: { color: accentColor } },
+          { value: 735, name: '直接访问', itemStyle: { color: '#3b82f6' } },
+          { value: 580, name: '邮件营销', itemStyle: { color: '#f59e0b' } },
+          { value: 484, name: '联盟广告', itemStyle: { color: '#8b5cf6' } }
+        ]
+      }]
+    });
+    charts.push(pieChart);
+    
+    var radarChart = echarts.init(document.getElementById('radarChart'));
+    radarChart.setOption({
+      animation: true,
+      animationDuration: 800,
+      animationEasing: 'cubicOut',
+      animationDelay: 300,
+      tooltip: {},
+      radar: {
+        indicator: [
+          { name: '销售', max: 6500 },
+          { name: '管理', max: 16000 },
+          { name: '技术', max: 30000 },
+          { name: '客服', max: 38000 },
+          { name: '研发', max: 52000 },
+          { name: '市场', max: 25000 }
+        ],
+        axisLine: { lineStyle: { color: axisLineColor } },
+        splitLine: { lineStyle: { color: splitLineColor } },
+        splitArea: { areaStyle: { color: 'transparent' } },
+        axisName: { color: textColor }
       },
-      axisTick: { distance: -20, length: 8, lineStyle: { color: 'auto', width: 2 } },
-      splitLine: { distance: -20, length: 20, lineStyle: { color: 'auto', width: 3 } },
-      axisLabel: { color: theme.textColor, distance: 30, fontSize: 12 },
-      detail: { valueAnimation: true, formatter: '{value}%', color: theme.textColor, fontSize: 20 },
-      data: [{ value: 75 }]
-    }]
-  });
-
+      series: [{
+        type: 'radar',
+        data: [{
+          value: [4200, 3000, 20000, 35000, 50000, 18000],
+          name: '预算分配',
+          areaStyle: { color: accentColor, opacity: 0.2 },
+          lineStyle: { color: accentColor },
+          itemStyle: { color: accentColor }
+        }]
+      }]
+    });
+    charts.push(radarChart);
+    
+    var areaChart = echarts.init(document.getElementById('areaChart'));
+    areaChart.setOption({
+      animation: true,
+      animationDuration: 1000,
+      animationEasing: 'cubicOut',
+      animationDelay: 400,
+      tooltip: { trigger: 'axis' },
+      grid: { left: '3%', right: '4%', bottom: '3%', containLabel: true },
+      xAxis: {
+        type: 'category',
+        boundaryGap: false,
+        data: ['1月', '2月', '3月', '4月', '5月', '6月', '7月'],
+        axisLine: { lineStyle: { color: axisLineColor } },
+        axisLabel: { color: textColor }
+      },
+      yAxis: {
+        type: 'value',
+        axisLine: { lineStyle: { color: axisLineColor } },
+        axisLabel: { color: textColor },
+        splitLine: { lineStyle: { color: splitLineColor } }
+      },
+      series: [{
+        data: [820, 932, 901, 934, 1290, 1330, 1320],
+        type: 'line',
+        smooth: true,
+        itemStyle: { color: accentColor },
+        areaStyle: {
+          color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
+            { offset: 0, color: accentColor + 'cc' },
+            { offset: 1, color: accentColor + '11' }
+          ])
+        }
+      }]
+    });
+    charts.push(areaChart);
+    
+    var gaugeChart = echarts.init(document.getElementById('gaugeChart'));
+    gaugeChart.setOption({
+      animation: true,
+      animationDuration: 1200,
+      animationEasing: 'cubicOut',
+      animationDelay: 500,
+      series: [{
+        type: 'gauge',
+        center: ['50%', '60%'],
+        startAngle: 200,
+        endAngle: -20,
+        min: 0,
+        max: 100,
+        splitNumber: 10,
+        axisLine: {
+          lineStyle: {
+            width: 20,
+            color: [
+              [0.3, '#f59e0b'],
+              [0.7, '#3b82f6'],
+              [1, accentColor]
+            ]
+          }
+        },
+        pointer: { itemStyle: { color: 'auto' } },
+        axisTick: { distance: -20, length: 8, lineStyle: { color: 'auto', width: 2 } },
+        splitLine: { distance: -20, length: 20, lineStyle: { color: 'auto', width: 3 } },
+        axisLabel: { color: textColor, distance: 30, fontSize: 12 },
+        detail: { valueAnimation: true, formatter: '{value}%', color: textColor, fontSize: 20 },
+        data: [{ value: 75 }]
+      }]
+    });
+    charts.push(gaugeChart);
+  }, 50);
+  
   window.addEventListener('resize', function() {
     charts.forEach(function(chart) {
       chart.resize();
     });
   });
-
-  var observer = new MutationObserver(function(mutations) {
-    mutations.forEach(function(mutation) {
-      if (mutation.attributeName === 'data-theme') {
-        var newTheme = $('html').attr('data-theme') === 'dark' ? 'dark' : 'light';
-        if (newTheme !== currentTheme) {
-          currentTheme = newTheme;
-          location.reload();
-        }
-      }
-    });
-  });
-  observer.observe(document.documentElement, { attributes: true });
-
+  
   $('.layui-card-btn').on('click', function() {
     $(this).addClass('active').siblings().removeClass('active');
   });
