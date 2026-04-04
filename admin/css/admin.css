@@ -1288,6 +1288,10 @@ body {
     transform: translateX(-100%);
   }
 
+  .layui-sidebar.collapsed.mobile-open {
+    transform: translateX(0);
+  }
+
   .layui-main-wrapper {
     margin-left: 0 !important;
   }

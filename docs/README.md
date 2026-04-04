@@ -1787,22 +1787,28 @@ var Module = {
 
 ## 🔄 更新日志
 
-### v1.2.2 (2026-04-04)
+### v1.3.0 (2026-04-04)
 
 #### 新增功能
 
-- ✅ **智能组件渲染模块**: 新增 `componentRenderer` 模块，自动检测并渲染 SPA 中的 LayUI 组件
-  - 支持 11 种 LayUI 组件的自动渲染
+- ✅ **融合 LayUI 组件智能渲染模块**: 新增 `componentRenderer` 模块，自动检测并渲染 SPA 中的 LayUI 组件
+  - 支持 11 种 LayUI 组件的自动渲染（tabs、form、element、carousel、rate、slider、transfer、tree、colorpicker、laypage、code）
   - 智能扫描 DOM，按需加载模块，减少 80% 不必要的模块加载
   - 支持组件渲染优先级控制和调试模式
   - 智能缓存机制，避免重复渲染
 
-- ✅ **水印系统增强**: 大幅改进水印功能
+- ✅ **水印版块优化改进**: 大幅改进水印功能
   - **防删除保护**: 使用 MutationObserver 监听水印节点，自动恢复被删除或修改的水印
   - **Canvas 缓存机制**: 使用缓存提升水印生成性能，支持精确文本测量
   - **动态文本支持**: 支持从 sessionStorage 读取动态文本作为水印内容
   - **嵌套键名**: 支持使用点号分隔的嵌套路径，如 `userInfo.admin.userName`
   - **主题自动适配**: 水印颜色根据亮色/暗色主题自动调整
+
+- ✅ **新增 LayUI 组件示例页面**: 新增 18 个组件示例页面
+  - tabs、carousel、rate、slider、transfer、tree
+  - colorpicker、laypage、progress、util、flow
+  - code、laytpl、nav、breadcrumb、collapse
+  - treeTable、upload
 
 #### 功能优化
 
@@ -1814,17 +1820,9 @@ var Module = {
 
 #### 问题修复
 
-- ✅ 修复移动端侧边栏菜单报错问题（`toggleSubmenu` 缺少 `state` 参数）
+- ✅ **修复移动端菜单 Bug**: 修复移动端侧边栏菜单报错问题（`toggleSubmenu` 缺少 `state` 参数）
 - ✅ 修复 SPA 模式下 LayUI 组件不自动渲染的问题
 - ✅ 修复 .gitignore 阻止 lib 目录下 min.js 文件推送的问题
-
-#### 组件示例
-
-- ✅ 新增 18 个 LayUI 组件示例页面：
-  - tabs、carousel、rate、slider、transfer、tree
-  - colorpicker、laypage、progress、util、flow
-  - code、laytpl、nav、breadcrumb、collapse
-  - treeTable、upload
 
 ### v1.1.0 (2026-04-02)
 
@@ -1934,4 +1932,4 @@ chore: 构建/工具相关
 ***
 
 **最后更新时间**: 2026-04-04\
-**文档版本**: 1.2.2
+**文档版本**: 1.3.0

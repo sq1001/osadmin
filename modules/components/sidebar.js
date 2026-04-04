@@ -54,6 +54,13 @@ layui.define(['jquery', 'layer', 'themeModule', 'routerModule', 'commonMod'], fu
 
     loadCollapseState: function() {
       try {
+        var isMobile = window.innerWidth <= 768;
+        if (isMobile) {
+          this.collapsed = false;
+          $('#sidebar').removeClass('collapsed');
+          document.documentElement.classList.remove('sidebar-collapsed-init');
+          return;
+        }
         var saved = localStorage.getItem('sidebarCollapsed');
         if (saved === 'true') {
           this.collapsed = true;
