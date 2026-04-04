@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>折叠面板组件 - Layui</title>
+  <meta name="keywords" content="折叠面板,collapse,手风琴">
+  <meta name="description" content="Layui折叠面板组件使用示例">
+</head>
+<body>
+  <div class="page-content">
+    <div class="layui-card">
+      <div class="layui-card-header">
+        <h3>折叠面板组件 (collapse)</h3>
+      </div>
+      <div class="layui-card-body">
+        
+        <fieldset class="layui-elem-field layui-field-title">
+          <legend>手风琴折叠</legend>
+          <div class="layui-field-box">
+            <div class="layui-collapse" lay-filter="test">
+              <div class="layui-colla-item">
+                <h2 class="layui-colla-title">为什么JS社区倾向于采用JS构建工具？</h2>
+                <div class="layui-colla-content layui-show">
+                  <p>JS社区倾向于采用JS构建工具，是因为它们可以利用Node.js生态系统中的丰富工具和库，同时保持技术栈的统一性。</p>
+                </div>
+              </div>
+              <div class="layui-colla-item">
+                <h2 class="layui-colla-title">为什么Layui采用自身模块规范？</h2>
+                <div class="layui-colla-content">
+                  <p>Layui采用自身模块规范，是为了提供更简单、更直接的模块化方案，降低学习成本，同时保持轻量级和高性能。</p>
+                </div>
+              </div>
+              <div class="layui-colla-item">
+                <h2 class="layui-colla-title">Layui是否提供深色主题？</h2>
+                <div class="layui-colla-content">
+                  <p>Layui 2.8+版本开始提供深色主题支持，可以通过简单的CSS变量配置实现主题切换。</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </fieldset>
+
+        <fieldset class="layui-elem-field layui-field-title">
+          <legend>手风琴模式</legend>
+          <div class="layui-field-box">
+            <div class="layui-collapse" lay-accordion>
+              <div class="layui-colla-item">
+                <h2 class="layui-colla-title">标题1</h2>
+                <div class="layui-colla-content layui-show">
+                  <p>内容区域1</p>
+                </div>
+              </div>
+              <div class="layui-colla-item">
+                <h2 class="layui-colla-title">标题2</h2>
+                <div class="layui-colla-content">
+                  <p>内容区域2</p>
+                </div>
+              </div>
+              <div class="layui-colla-item">
+                <h2 class="layui-colla-title">标题3</h2>
+                <div class="layui-colla-content">
+                  <p>内容区域3</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </fieldset>
+
+      </div>
+    </div>
+  </div>
+
+  <script>
+  layui.use(['element'], function(){
+    var element = layui.element;
+    
+    element.render('collapse');
+    
+    element.on('collapse(test)', function(data){
+      console.log('展开状态：'+ data.show);
+    });
+  });
+  </script>
+</body>
+</html>

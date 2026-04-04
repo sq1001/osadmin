@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>模板引擎组件 - Layui</title>
+  <meta name="keywords" content="模板引擎,laytpl,数据渲染">
+  <meta name="description" content="Layui模板引擎组件使用示例">
+</head>
+<body>
+  <div class="page-content">
+    <div class="layui-card">
+      <div class="layui-card-header">
+        <h3>模板引擎组件 (laytpl)</h3>
+      </div>
+      <div class="layui-card-body">
+        
+        <fieldset class="layui-elem-field layui-field-title">
+          <legend>基础用法</legend>
+          <div class="layui-field-box">
+            <script type="text/html" id="demo-tpl">
+              <h3>{{ d.title }}</h3>
+              <p>作者：{{ d.author }}</p>
+              <p>时间：{{ d.time }}</p>
+              <ul>
+              {{# layui.each(d.list, function(index, item){ }}
+                <li>
+                  <span>{{ item.name }}</span>
+                  <span>{{ item.age }}岁</span>
+                </li>
+              {{# }); }}
+              </ul>
+            </script>
+            <div id="demo-view"></div>
+          </div>
+        </fieldset>
+
+        <fieldset class="layui-elem-field layui-field-title">
+          <legend>条件判断</legend>
+          <div class="layui-field-box">
+            <script type="text/html" id="demo-tpl2">
+              {{# if(d.type === 1){ }}
+                <div style="color: red;">类型1：普通用户</div>
+              {{# } else if(d.type === 2){ }}
+                <div style="color: blue;">类型2：VIP用户</div>
+              {{# } else { }}
+                <div style="color: green;">类型3：管理员</div>
+              {{# } }}
+            </script>
+            <div id="demo-view2"></div>
+          </div>
+        </fieldset>
+
+        <fieldset class="layui-elem-field layui-field-title">
+          <legend>分隔符设置</legend>
+          <div class="layui-field-box">
+            <script type="text/html" id="demo-tpl3">
+              <div>[= d.title ]</div>
+              <div>[= d.content ]</div>
+            </script>
+            <div id="demo-view3"></div>
+          </div>
+        </fieldset>
+
+      </div>
+    </div>
+  </div>
+
+  <script>
+  layui.use(['laytpl'], function(){
+    var laytpl = layui.laytpl;
+    var $ = layui.$;
+    
+    var data1 = {
+      title: 'Layui模板引擎示例',
+      author: '贤心',
+      time: '2024-01-01',
+      list: [
+        {name: '张三', age: 20},
+        {name: '李四', age: 25},
+        {name: '王五', age: 30}
+      ]
+    };
+    
+    var tpl1 = document.getElementById('demo-tpl').innerHTML;
+    laytpl(tpl1).render(data1, function(html){
+      $('#demo-view').html(html);
+    });
+    
+    var data2 = {type: 2};
+    var tpl2 = document.getElementById('demo-tpl2').innerHTML;
+    laytpl(tpl2).render(data2, function(html){
+      $('#demo-view2').html(html);
+    });
+    
+    laytpl.config({
+      open: '[[',
+      close: ']]'
+    });
+    
+    var data3 = {
+      title: '自定义分隔符',
+      content: '使用自定义的分隔符语法'
+    };
+    var tpl3 = document.getElementById('demo-tpl3').innerHTML;
+    laytpl(tpl3).render(data3, function(html){
+      $('#demo-view3').html(html);
+    });
+  });
+  </script>
+</body>
+</html>

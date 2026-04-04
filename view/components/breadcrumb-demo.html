@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>面包屑组件 - Layui</title>
+  <meta name="keywords" content="面包屑,breadcrumb,导航路径">
+  <meta name="description" content="Layui面包屑组件使用示例">
+</head>
+<body>
+  <div class="page-content">
+    <div class="layui-card">
+      <div class="layui-card-header">
+        <h3>面包屑组件 (breadcrumb)</h3>
+      </div>
+      <div class="layui-card-body">
+        
+        <fieldset class="layui-elem-field layui-field-title">
+          <legend>基础用法</legend>
+          <div class="layui-field-box">
+            <span class="layui-breadcrumb">
+              <a href="">首页</a>
+              <a href="">国际新闻</a>
+              <a href="">亚太地区</a>
+              <a><cite>正文</cite></a>
+            </span>
+          </div>
+        </fieldset>
+
+        <fieldset class="layui-elem-field layui-field-title">
+          <legend>自定义分隔符</legend>
+          <div class="layui-field-box">
+            <span class="layui-breadcrumb" lay-separator="—">
+              <a href="">首页</a>
+              <a href="">国际新闻</a>
+              <a href="">亚太地区</a>
+              <a><cite>正文</cite></a>
+            </span>
+          </div>
+        </fieldset>
+
+        <fieldset class="layui-elem-field layui-field-title">
+          <legend>带图标</legend>
+          <div class="layui-field-box">
+            <span class="layui-breadcrumb" lay-separator="|">
+              <a href=""><i class="layui-icon layui-icon-home"></i> 首页</a>
+              <a href=""><i class="layui-icon layui-icon-user"></i> 用户中心</a>
+              <a href=""><i class="layui-icon layui-icon-set"></i> 基本设置</a>
+              <a><cite>修改密码</cite></a>
+            </span>
+          </div>
+        </fieldset>
+
+      </div>
+    </div>
+  </div>
+
+  <script>
+  layui.use(['element'], function(){
+    var element = layui.element;
+    
+    element.render('breadcrumb');
+  });
+  </script>
+</body>
+</html>

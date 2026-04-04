@@ -351,7 +351,8 @@ layui.define(['jquery', 'layer', 'themeModule', 'routerModule', 'commonMod'], fu
       
       if (isDirectory) {
         if (window.innerWidth <= 768) {
-          this.toggleSubmenu($el, menuId);
+          var mobileState = theme.getState();
+          this.toggleSubmenu($el, menuId, mobileState);
           return;
         }
         

@@ -80,6 +80,7 @@
         themeModule: 'modules/common/theme',
         permissionModule: 'modules/common/permission',
         resourceLoader: 'modules/common/resource-loader',
+        componentRenderer: 'modules/common/component-renderer',
         sidebarComp: 'modules/components/sidebar',
         tabsComp: 'modules/components/tabs',
         commonMod: 'modules/extends/common',
@@ -92,9 +93,12 @@
         appMain: 'modules/app'
       });
 
-      layui.use(['appMain', 'permissionModule'], function() {
+      layui.use(['appMain', 'permissionModule', 'componentRenderer'], function() {
         var app = layui.appMain;
         var permission = layui.permissionModule;
+        var componentRenderer = layui.componentRenderer;
+        
+        componentRenderer.init();
         
         var permissionConfig = self.appConfig && self.appConfig.permission ? self.appConfig.permission : {};
         

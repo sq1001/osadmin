@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>进度条组件 - Layui</title>
+  <meta name="keywords" content="进度条,progress,加载进度">
+  <meta name="description" content="Layui进度条组件使用示例">
+</head>
+<body>
+  <div class="page-content">
+    <div class="layui-card">
+      <div class="layui-card-header">
+        <h3>进度条组件 (progress)</h3>
+      </div>
+      <div class="layui-card-body">
+        
+        <fieldset class="layui-elem-field layui-field-title">
+          <legend>基础进度条</legend>
+          <div class="layui-field-box">
+            <div class="layui-progress" lay-filter="demo1">
+              <div class="layui-progress-bar" lay-percent="10%"></div>
+            </div>
+            <div class="layui-progress" lay-filter="demo2" style="margin-top: 20px;">
+              <div class="layui-progress-bar" lay-percent="20%"></div>
+            </div>
+            <div class="layui-progress" lay-filter="demo3" style="margin-top: 20px;">
+              <div class="layui-progress-bar" lay-percent="30%"></div>
+            </div>
+          </div>
+        </fieldset>
+
+        <fieldset class="layui-elem-field layui-field-title">
+          <legend>显示百分比</legend>
+          <div class="layui-field-box">
+            <div class="layui-progress" lay-showpercent="true">
+              <div class="layui-progress-bar" lay-percent="20%"></div>
+            </div>
+            <div class="layui-progress" lay-showpercent="true" style="margin-top: 20px;">
+              <div class="layui-progress-bar" lay-percent="50%"></div>
+            </div>
+          </div>
+        </fieldset>
+
+        <fieldset class="layui-elem-field layui-field-title">
+          <legend>自定义颜色</legend>
+          <div class="layui-field-box">
+            <div class="layui-progress">
+              <div class="layui-progress-bar layui-bg-red" lay-percent="10%"></div>
+            </div>
+            <div class="layui-progress" style="margin-top: 20px;">
+              <div class="layui-progress-bar layui-bg-orange" lay-percent="20%"></div>
+            </div>
+            <div class="layui-progress" style="margin-top: 20px;">
+              <div class="layui-progress-bar layui-bg-green" lay-percent="30%"></div>
+            </div>
+            <div class="layui-progress" style="margin-top: 20px;">
+              <div class="layui-progress-bar layui-bg-blue" lay-percent="40%"></div>
+            </div>
+          </div>
+        </fieldset>
+
+        <fieldset class="layui-elem-field layui-field-title">
+          <legend>动态改变进度</legend>
+          <div class="layui-field-box">
+            <div class="layui-progress" lay-filter="demo4" lay-showpercent="true">
+              <div class="layui-progress-bar" lay-percent="0%"></div>
+            </div>
+            <div class="layui-btn-container" style="margin-top: 20px;">
+              <button class="layui-btn" id="setPercent">设置 50%</button>
+              <button class="layui-btn" id="addPercent">增加 10%</button>
+            </div>
+          </div>
+        </fieldset>
+
+      </div>
+    </div>
+  </div>
+
+  <script>
+  layui.use(['element', 'util'], function(){
+    var $ = layui.$;
+    var element = layui.element;
+    var util = layui.util;
+    
+    element.render('progress');
+    
+    var p = 0;
+    
+    util.on('lay-on', {
+      setPercent: function(){
+        element.progress('demo4', '50%');
+      },
+      addPercent: function(){
+        p = p + 10;
+        element.progress('demo4', p + '%');
+        if(p >= 100){
+          p = 0;
+        }
+      }
+    });
+  });
+  </script>
+</body>
+</html>

@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>流加载组件 - Layui</title>
+  <meta name="keywords" content="流加载,flow,滚动加载">
+  <meta name="description" content="Layui流加载组件使用示例">
+</head>
+<body>
+  <div class="page-content">
+    <div class="layui-card">
+      <div class="layui-card-header">
+        <h3>流加载组件 (flow)</h3>
+      </div>
+      <div class="layui-card-body">
+        
+        <fieldset class="layui-elem-field layui-field-title">
+          <legend>信息流</legend>
+          <div class="layui-field-box">
+            <ul class="flow-default" id="LAY_demo1"></ul>
+          </div>
+        </fieldset>
+
+        <fieldset class="layui-elem-field layui-field-title">
+          <legend>图片懒加载</legend>
+          <div class="layui-field-box">
+            <div class="site-demo-flow" id="LAY_demo2">
+              <img lay-src="https://unpkg.com/outeres@0.1.1/demo/000.jpg" alt="图片1">
+              <img lay-src="https://unpkg.com/outeres@0.1.1/demo/001.jpg" alt="图片2">
+              <img lay-src="https://unpkg.com/outeres@0.1.1/demo/002.jpg" alt="图片3">
+              <img lay-src="https://unpkg.com/outeres@0.1.1/demo/003.jpg" alt="图片4">
+              <img lay-src="https://unpkg.com/outeres@0.1.1/demo/004.jpg" alt="图片5">
+              <img lay-src="https://unpkg.com/outeres@0.1.1/demo/005.jpg" alt="图片6">
+            </div>
+          </div>
+        </fieldset>
+
+      </div>
+    </div>
+  </div>
+
+  <script>
+  layui.use(['flow'], function(){
+    var flow = layui.flow;
+    
+    flow.load({
+      elem: '#LAY_demo1'
+      ,done: function(page, next){
+        var lis = [];
+        setTimeout(function(){
+          for(var i = 0; i < 8; i++){
+            lis.push('<li>'+ (page * 8 + i + 1) +'. 这是一条测试数据</li>');
+          }
+          next(lis.join(''), page < 3);
+        }, 500);
+      }
+    });
+    
+    flow.lazyimg({
+      elem: '#LAY_demo2 img'
+    });
+  });
+  </script>
+
+  <style>
+  .flow-default {
+    height: 300px;
+    overflow: auto;
+    padding: 10px;
+    border: 1px solid #e6e6e6;
+  }
+  .flow-default li {
+    padding: 10px;
+    border-bottom: 1px solid #e6e6e6;
+  }
+  .site-demo-flow img {
+    width: 200px;
+    height: 150px;
+    margin: 0 10px 10px 0;
+    border: none;
+  }
+  </style>
+</body>
+</html>

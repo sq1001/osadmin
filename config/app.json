@@ -1,6 +1,6 @@
 {
   "name": "OSADMIN",
-  "version": "1.2.1",
+  "version": "1.3.0",
   "description": "基于layui原生管理后台系统",
   "site": {
     "name": "OSADMIN",
@@ -24,7 +24,8 @@
   },
   "watermark": {
     "enabled": true,
-    "text": "OSADMIN 1.2.1",
+    "text": "OSADMIN 水印文字",
+    "dynamicTextKey": "username",
     "fontSize": 14,
     "color": "rgba(0, 0, 0, 0.08)",
     "rotate": -22,

@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>代码修饰器组件 - Layui</title>
+  <meta name="keywords" content="代码修饰器,code,代码高亮">
+  <meta name="description" content="Layui代码修饰器组件使用示例">
+</head>
+<body>
+  <div class="page-content">
+    <div class="layui-card">
+      <div class="layui-card-header">
+        <h3>代码修饰器组件 (code)</h3>
+      </div>
+      <div class="layui-card-body">
+        
+        <fieldset class="layui-elem-field layui-field-title">
+          <legend>基础用法</legend>
+          <div class="layui-field-box">
+            <pre class="layui-code">
+// 代码区域
+var a = 'hello world';
+var b = function(){
+  return a;
+};
+            </pre>
+          </div>
+        </fieldset>
+
+        <fieldset class="layui-elem-field layui-field-title">
+          <legend>显示行号</legend>
+          <div class="layui-field-box">
+            <pre class="layui-code" lay-title="JavaScript" lay-skin="notepad">
+layui.use(['layer'], function(){
+  var layer = layui.layer;
+  
+  layer.msg('Hello World');
+});
+            </pre>
+          </div>
+        </fieldset>
+
+        <fieldset class="layui-elem-field layui-field-title">
+          <legend>自定义风格</legend>
+          <div class="layui-field-box">
+            <pre class="layui-code" lay-title="CSS" lay-skin="notepad">
+.layui-code {
+  position: relative;
+  padding: 10px;
+  border: 1px solid #e6e6e6;
+  border-left-width: 6px;
+  background-color: #f5f5f5;
+  color: #333;
+  font-family: Courier New;
+  font-size: 13px;
+}
+            </pre>
+          </div>
+        </fieldset>
+
+      </div>
+    </div>
+  </div>
+
+  <script>
+  layui.use(['code'], function(){
+    var code = layui.code;
+    
+    code({
+      elem: '.layui-code',
+      title: '代码区域',
+      skin: 'notepad',
+      about: false
+    });
+  });
+  </script>
+</body>
+</html>

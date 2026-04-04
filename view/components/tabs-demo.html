@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>标签页组件 - Layui</title>
+  <meta name="keywords" content="标签页,tabs,选项卡">
+  <meta name="description" content="Layui全新tabs标签页组件使用示例">
+</head>
+<body>
+  <div class="page-content">
+    <div class="layui-card">
+      <div class="layui-card-header">
+        <h3>标签页组件 (tabs) - 2.10+全新组件</h3>
+      </div>
+      <div class="layui-card-body">
+        
+        <fieldset class="layui-elem-field layui-field-title">
+          <legend>常规用法（自动渲染）</legend>
+          <div class="layui-field-box">
+            <div class="layui-tabs" id="demoTabs1">
+              <ul class="layui-tabs-header">
+                <li class="layui-this" lay-id="tab1">标签一</li>
+                <li lay-id="tab2">标签二</li>
+                <li lay-id="tab3">标签三</li>
+                <li lay-id="tab4">标签四</li>
+                <li lay-id="tab5">标签五</li>
+              </ul>
+              <div class="layui-tabs-body">
+                <div class="layui-tabs-item layui-show">内容-1</div>
+                <div class="layui-tabs-item">内容-2</div>
+                <div class="layui-tabs-item">内容-3</div>
+                <div class="layui-tabs-item">内容-4</div>
+                <div class="layui-tabs-item">内容-5</div>
+              </div>
+            </div>
+          </div>
+        </fieldset>
+
+        <fieldset class="layui-elem-field layui-field-title">
+          <legend>可关闭的标签页（自动渲染）</legend>
+          <div class="layui-field-box">
+            <div class="layui-tabs" id="demoTabs2" lay-options="{closable: true}">
+              <ul class="layui-tabs-header">
+                <li lay-id="aaa" lay-closable="false">首页</li>
+                <li lay-id="bbb">标签一</li>
+                <li lay-id="ccc">标签二</li>
+                <li lay-id="ddd">标签三</li>
+              </ul>
+              <div class="layui-tabs-body">
+                <div class="layui-tabs-item">首页内容</div>
+                <div class="layui-tabs-item">内容-1</div>
+                <div class="layui-tabs-item">内容-2</div>
+                <div class="layui-tabs-item">内容-3</div>
+              </div>
+            </div>
+            <div class="layui-btn-container" style="margin-top: 10px;">
+              <button class="layui-btn" onclick="layui.tabs.change('demoTabs2', 'ccc')">切换到「标签二」</button>
+              <button class="layui-btn" onclick="layui.tabs.close('demoTabs2', 'ddd')">关闭「标签三」</button>
+              <button class="layui-btn" lay-on="addTab">新增标签</button>
+            </div>
+          </div>
+        </fieldset>
+
+        <fieldset class="layui-elem-field layui-field-title">
+          <legend>滚动模式（自动渲染）</legend>
+          <div class="layui-field-box">
+            <div class="layui-tabs" id="demoTabs3" lay-options="{headerMode: 'scroll'}">
+              <ul class="layui-tabs-header">
+                <li lay-id="t1">标签一</li>
+                <li lay-id="t2">标签二</li>
+                <li lay-id="t3">标签三</li>
+                <li lay-id="t4">标签四</li>
+                <li lay-id="t5">标签五</li>
+                <li lay-id="t6">标签六</li>
+                <li lay-id="t7">标签七</li>
+                <li lay-id="t8">标签八</li>
+                <li lay-id="t9">标签九</li>
+                <li lay-id="t10">标签十</li>
+              </ul>
+              <div class="layui-tabs-body">
+                <div class="layui-tabs-item">内容-1</div>
+                <div class="layui-tabs-item">内容-2</div>
+                <div class="layui-tabs-item">内容-3</div>
+                <div class="layui-tabs-item">内容-4</div>
+                <div class="layui-tabs-item">内容-5</div>
+                <div class="layui-tabs-item">内容-6</div>
+                <div class="layui-tabs-item">内容-7</div>
+                <div class="layui-tabs-item">内容-8</div>
+                <div class="layui-tabs-item">内容-9</div>
+                <div class="layui-tabs-item">内容-10</div>
+              </div>
+            </div>
+          </div>
+        </fieldset>
+
+        <fieldset class="layui-elem-field layui-field-title">
+          <legend>方法渲染</legend>
+          <div class="layui-field-box">
+            <div id="demoTabs4"></div>
+          </div>
+        </fieldset>
+
+        <fieldset class="layui-elem-field layui-field-title">
+          <legend>卡片风格（自动渲染）</legend>
+          <div class="layui-field-box">
+            <div class="layui-tabs layui-tabs-card" id="demoTabs5">
+              <ul class="layui-tabs-header">
+                <li class="layui-this">标签一</li>
+                <li>标签二</li>
+                <li>标签三</li>
+              </ul>
+              <div class="layui-tabs-body">
+                <div class="layui-tabs-item layui-show">内容-1</div>
+                <div class="layui-tabs-item">内容-2</div>
+                <div class="layui-tabs-item">内容-3</div>
+              </div>
+            </div>
+          </div>
+        </fieldset>
+
+      </div>
+    </div>
+  </div>
+
+  <script>
+  layui.use(['tabs', 'util', 'layer'], function(){
+    var $ = layui.$;
+    var tabs = layui.tabs;
+    var util = layui.util;
+    var layer = layui.layer;
+    
+    // ✅ 静态渲染的tabs会自动初始化，无需手动调用 tabs.render()
+    
+    // 方法渲染示例
+    tabs.render({
+      elem: '#demoTabs4',
+      header: [
+        { title: '标签一' },
+        { title: '标签二' },
+        { title: '标签三' }
+      ],
+      body: [
+        { content: '方法渲染的内容-1' },
+        { content: '方法渲染的内容-2' },
+        { content: '方法渲染的内容-3' }
+      ]
+    });
+    
+    // 监听事件
+    tabs.on('change(demoTabs1)', function(data){
+      console.log('标签切换：', data);
+    });
+    
+    tabs.on('close(demoTabs2)', function(data){
+      console.log('标签关闭：', data);
+    });
+    
+    // 自定义事件
+    util.on('lay-on', {
+      addTab: function(){
+        var n = Math.random() * 1000 | 0;
+        tabs.add('demoTabs2', {
+          title: '新标签' + n,
+          content: '新内容 ' + n,
+          id: 'new-' + n
+        });
+        layer.msg('已添加新标签');
+      }
+    });
+  });
+  </script>
+</body>
+</html>

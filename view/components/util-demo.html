@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>工具集组件 - Layui</title>
+  <meta name="keywords" content="工具集,util,常用工具">
+  <meta name="description" content="Layui工具集组件使用示例">
+</head>
+<body>
+  <div class="page-content">
+    <div class="layui-card">
+      <div class="layui-card-header">
+        <h3>工具集组件 (util)</h3>
+      </div>
+      <div class="layui-card-body">
+        
+        <fieldset class="layui-elem-field layui-field-title">
+          <legend>事件绑定</legend>
+          <div class="layui-field-box">
+            <button class="layui-btn" lay-on="e1">事件1</button>
+            <button class="layui-btn" lay-on="e2">事件2</button>
+            <button class="layui-btn" lay-on="e3">事件3</button>
+          </div>
+        </fieldset>
+
+        <fieldset class="layui-elem-field layui-field-title">
+          <legend>时间格式化</legend>
+          <div class="layui-field-box">
+            <div id="time1"></div>
+            <div id="time2" style="margin-top: 10px;"></div>
+          </div>
+        </fieldset>
+
+        <fieldset class="layui-elem-field layui-field-title">
+          <legend>数字格式化</legend>
+          <div class="layui-field-box">
+            <div id="number1"></div>
+            <div id="number2" style="margin-top: 10px;"></div>
+          </div>
+        </fieldset>
+
+        <fieldset class="layui-elem-field layui-field-title">
+          <legend>字符串转义</legend>
+          <div class="layui-field-box">
+            <div id="escape1"></div>
+          </div>
+        </fieldset>
+
+      </div>
+    </div>
+  </div>
+
+  <script>
+  layui.use(['util', 'layer'], function(){
+    var util = layui.util;
+    var layer = layui.layer;
+    var $ = layui.$;
+    
+    util.on('lay-on', {
+      e1: function(){
+        layer.msg('触发了事件1');
+      },
+      e2: function(){
+        layer.msg('触发了事件2');
+      },
+      e3: function(){
+        layer.msg('触发了事件3');
+      }
+    });
+    
+    var date1 = new Date();
+    $('#time1').text('当前时间：' + util.toDateString(date1, 'yyyy-MM-dd HH:mm:ss'));
+    
+    var date2 = 1607654400000;
+    $('#time2').text('时间戳转换：' + util.toDateString(date2, 'yyyy年MM月dd日'));
+    
+    var num1 = 1234567.89;
+    $('#number1').text('数字格式化：' + util.number(num1, '#,##0.00'));
+    
+    var num2 = 0.123456;
+    $('#number2').text('保留小数：' + util.number(num2, '0.000'));
+    
+    var html = '<div>这是HTML内容</div>';
+    $('#escape1').text('转义HTML：' + util.escape(html));
+  });
+  </script>
+</body>
+</html>

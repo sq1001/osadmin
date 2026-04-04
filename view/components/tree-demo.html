@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>树形菜单组件 - Layui</title>
+  <meta name="keywords" content="树形菜单,tree,树结构">
+  <meta name="description" content="Layui树形菜单组件使用示例">
+</head>
+<body>
+  <div class="page-content">
+    <div class="layui-card">
+      <div class="layui-card-header">
+        <h3>树形菜单组件 (tree)</h3>
+      </div>
+      <div class="layui-card-body">
+        
+        <fieldset class="layui-elem-field layui-field-title">
+          <legend>基础用法</legend>
+          <div class="layui-field-box">
+            <div id="test1" class="demo-tree"></div>
+          </div>
+        </fieldset>
+
+        <fieldset class="layui-elem-field layui-field-title">
+          <legend>复选框</legend>
+          <div class="layui-field-box">
+            <div id="test2" class="demo-tree"></div>
+          </div>
+        </fieldset>
+
+        <fieldset class="layui-elem-field layui-field-title">
+          <legend>手风琴模式</legend>
+          <div class="layui-field-box">
+            <div id="test3" class="demo-tree"></div>
+          </div>
+        </fieldset>
+
+        <fieldset class="layui-elem-field layui-field-title">
+          <legend>开启节点操作图标</legend>
+          <div class="layui-field-box">
+            <div id="test4" class="demo-tree"></div>
+          </div>
+        </fieldset>
+
+      </div>
+    </div>
+  </div>
+
+  <script>
+  layui.use(['tree'], function(){
+    var tree = layui.tree;
+    
+    var data1 = [{
+      title: '江西'
+      ,id: 1
+      ,children: [{
+        title: '南昌'
+        ,id: 1000
+        ,children: [{
+          title: '青山湖区'
+          ,id: 10001
+        },{
+          title: '高新区'
+          ,id: 10002
+        }]
+      },{
+        title: '九江'
+        ,id: 1001
+      },{
+        title: '赣州'
+        ,id: 1002
+      }]
+    },{
+      title: '广西'
+      ,id: 2
+      ,children: [{
+        title: '南宁'
+        ,id: 2000
+      },{
+        title: '桂林'
+        ,id: 2001
+      }]
+    },{
+      title: '陕西'
+      ,id: 3
+      ,children: [{
+        title: '西安'
+        ,id: 3000
+      },{
+        title: '延安'
+        ,id: 3001
+      }]
+    }];
+    
+    tree.render({
+      elem: '#test1'
+      ,data: data1
+    });
+    
+    tree.render({
+      elem: '#test2'
+      ,data: data1
+      ,showCheckbox: true
+    });
+    
+    tree.render({
+      elem: '#test3'
+      ,data: data1
+      ,accordion: true
+    });
+    
+    tree.render({
+      elem: '#test4'
+      ,data: data1
+      ,edit: ['add', 'update', 'del']
+    });
+  });
+  </script>
+</body>
+</html>

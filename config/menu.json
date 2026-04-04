@@ -160,9 +160,9 @@
     "title": "组件示例",
     "icon": "layui-icon-component",
     "children": [
-      { "id": 1002, "type": 1, "code": "view/resource-demo", "title": "资源加载示例", "icon": "layui-icon-template-1", "href": "view/resource-demo.html" },
-      { "id": 1001, "type": 1, "code": "view/permission-demo", "title": "权限组件", "icon": "layui-icon-chart", "href": "view/permission-demo.html" },
-      { "id": 1000, "type": 1, "code": "view/components/form-comprehensive", "title": "表单综合", "icon": "layui-icon-chart", "href": "view/components/form-comprehensive.html" },
+      { "id": 77, "type": 1, "code": "view/resource-demo", "title": "资源加载示例", "icon": "layui-icon-template-1", "href": "view/resource-demo.html" },
+      { "id": 78, "type": 1, "code": "view/permission-demo", "title": "权限组件", "icon": "layui-icon-chart", "href": "view/permission-demo.html" },
+      { "id": 79, "type": 1, "code": "view/components/form-comprehensive", "title": "表单综合", "icon": "layui-icon-chart", "href": "view/components/form-comprehensive.html" },
       { "id": 80, "type": 1, "code": "view/components/form-demo", "title": "表单组件", "icon": "layui-icon-form", "href": "view/components/form-demo.html" },
       { "id": 81, "type": 1, "code": "view/components/button-demo", "title": "按钮组件", "icon": "layui-icon-slider", "href": "view/components/button-demo.html" },
       { "id": 82, "type": 1, "code": "view/components/table-demo", "title": "表格组件", "icon": "layui-icon-table", "href": "view/components/table-demo.html" },
@@ -171,10 +171,28 @@
       { "id": 85, "type": 1, "code": "view/components/dropdown-demo", "title": "下拉菜单", "icon": "layui-icon-down", "href": "view/components/dropdown-demo.html" },
       { "id": 86, "type": 1, "code": "view/components/drawer-demo", "title": "抽屉弹窗", "icon": "layui-icon-shrink-right", "href": "view/components/drawer-demo.html" },
       { "id": 87, "type": 1, "code": "view/components/drawer-demo1", "title": "内容区域抽屉", "icon": "layui-icon-shrink-right", "href": "view/components/drawer-demo1.html" },
-      { "id": 91, "type": 1, "code": "view/components/laydrawer-demo", "title": "LayDrawer抽屉", "icon": "layui-icon-shrink-right", "href": "view/components/laydrawer-demo.html" },
-      { "id": 88, "type": 1, "code": "view/components/echarts-demo", "title": "ECharts图表", "icon": "layui-icon-chart", "href": "view/components/echarts-demo.html" },
-      { "id": 89, "type": 1, "code": "view/components/xm-select-demo", "title": "多选下拉框", "icon": "layui-icon-unlink", "href": "view/components/xm-select-demo.html" },
-      { "id": 90, "type": 1, "code": "view/components/toast-demo", "title": "Toast提示", "icon": "layui-icon-tips", "href": "view/components/toast-demo.html" }
+      { "id": 88, "type": 1, "code": "view/components/laydrawer-demo", "title": "LayDrawer抽屉", "icon": "layui-icon-shrink-right", "href": "view/components/laydrawer-demo.html" },
+      { "id": 89, "type": 1, "code": "view/components/echarts-demo", "title": "ECharts图表", "icon": "layui-icon-chart", "href": "view/components/echarts-demo.html" },
+      { "id": 90, "type": 1, "code": "view/components/xm-select-demo", "title": "多选下拉框", "icon": "layui-icon-unlink", "href": "view/components/xm-select-demo.html" },
+      { "id": 91, "type": 1, "code": "view/components/toast-demo", "title": "Toast提示", "icon": "layui-icon-tips", "href": "view/components/toast-demo.html" },
+      { "id": 92, "type": 1, "code": "view/components/tabs-demo", "title": "标签页组件", "icon": "layui-icon-tabs", "href": "view/components/tabs-demo.html" },
+      { "id": 93, "type": 1, "code": "view/components/carousel-demo", "title": "轮播组件", "icon": "layui-icon-carousel", "href": "view/components/carousel-demo.html" },
+      { "id": 94, "type": 1, "code": "view/components/rate-demo", "title": "评分组件", "icon": "layui-icon-rate", "href": "view/components/rate-demo.html" },
+      { "id": 95, "type": 1, "code": "view/components/slider-demo", "title": "滑块组件", "icon": "layui-icon-slider", "href": "view/components/slider-demo.html" },
+      { "id": 96, "type": 1, "code": "view/components/transfer-demo", "title": "穿梭框组件", "icon": "layui-icon-transfer", "href": "view/components/transfer-demo.html" },
+      { "id": 97, "type": 1, "code": "view/components/tree-demo", "title": "树形菜单", "icon": "layui-icon-tree", "href": "view/components/tree-demo.html" },
+      { "id": 98, "type": 1, "code": "view/components/colorpicker-demo", "title": "颜色选择器", "icon": "layui-icon-color", "href": "view/components/colorpicker-demo.html" },
+      { "id": 99, "type": 1, "code": "view/components/laypage-demo", "title": "分页组件", "icon": "layui-icon-page", "href": "view/components/laypage-demo.html" },
+      { "id": 100, "type": 1, "code": "view/components/progress-demo", "title": "进度条组件", "icon": "layui-icon-progress", "href": "view/components/progress-demo.html" },
+      { "id": 101, "type": 1, "code": "view/components/util-demo", "title": "工具集", "icon": "layui-icon-util", "href": "view/components/util-demo.html" },
+      { "id": 102, "type": 1, "code": "view/components/flow-demo", "title": "流加载组件", "icon": "layui-icon-flow", "href": "view/components/flow-demo.html" },
+      { "id": 103, "type": 1, "code": "view/components/code-demo", "title": "代码修饰器", "icon": "layui-icon-code", "href": "view/components/code-demo.html" },
+      { "id": 104, "type": 1, "code": "view/components/laytpl-demo", "title": "模板引擎", "icon": "layui-icon-template", "href": "view/components/laytpl-demo.html" },
+      { "id": 105, "type": 1, "code": "view/components/nav-demo", "title": "导航组件", "icon": "layui-icon-nav", "href": "view/components/nav-demo.html" },
+      { "id": 106, "type": 1, "code": "view/components/breadcrumb-demo", "title": "面包屑组件", "icon": "layui-icon-breadcrumb", "href": "view/components/breadcrumb-demo.html" },
+      { "id": 107, "type": 1, "code": "view/components/collapse-demo", "title": "折叠面板", "icon": "layui-icon-collapse", "href": "view/components/collapse-demo.html" },
+      { "id": 108, "type": 1, "code": "view/components/treeTable-demo", "title": "树形表格", "icon": "layui-icon-tree-table", "href": "view/components/treeTable-demo.html" },
+      { "id": 109, "type": 1, "code": "view/components/upload-demo", "title": "文件上传", "icon": "layui-icon-upload", "href": "view/components/upload-demo.html" }
     ]
   },
   {
@@ -187,16 +205,16 @@
     "closable": false
   },
   {
-    "id": 100,
+    "id": 110,
     "type": 0,
     "code": "external-links",
     "title": "外部链接",
     "icon": "layui-icon-link",
     "children": [
-      { "id": 101, "type": 1, "code": "external/baidu", "title": "百度搜索", "icon": "layui-icon-search", "href": "https://www.baidu.com", "openType": "_blank" },
-      { "id": 102, "type": 1, "code": "external/aliyun", "title": "阿里云(blank)", "icon": "layui-icon-read", "href": "https://dashi.aliyun.com/", "openType": "_blank" },
-      { "id": 103, "type": 1, "code": "external/aliyun", "title": "阿里云(dialog)", "icon": "layui-icon-read", "href": "https://dashi.aliyun.com/", "openType": "_dialog" },
-      { "id": 104, "type": 1, "code": "external/aliyun", "title": "阿里云(iframe)", "icon": "layui-icon-chart-screen", "href": "https://dashi.aliyun.com/", "openType": "_iframe" }
+      { "id": 111, "type": 1, "code": "external/baidu", "title": "百度搜索", "icon": "layui-icon-search", "href": "https://www.baidu.com", "openType": "_blank" },
+      { "id": 112, "type": 1, "code": "external/aliyun", "title": "阿里云(blank)", "icon": "layui-icon-read", "href": "https://dashi.aliyun.com/", "openType": "_blank" },
+      { "id": 113, "type": 1, "code": "external/aliyun", "title": "阿里云(dialog)", "icon": "layui-icon-read", "href": "https://dashi.aliyun.com/", "openType": "_dialog" },
+      { "id": 114, "type": 1, "code": "external/aliyun", "title": "阿里云(iframe)", "icon": "layui-icon-chart-screen", "href": "https://dashi.aliyun.com/", "openType": "_iframe" }
     ]
   }
 ]

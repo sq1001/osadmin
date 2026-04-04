@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>评分组件 - Layui</title>
+  <meta name="keywords" content="评分,rate,星级">
+  <meta name="description" content="Layui评分组件使用示例">
+</head>
+<body>
+  <div class="page-content">
+    <div class="layui-card">
+      <div class="layui-card-header">
+        <h3>评分组件 (rate)</h3>
+      </div>
+      <div class="layui-card-body">
+        
+        <fieldset class="layui-elem-field layui-field-title">
+          <legend>基础用法</legend>
+          <div class="layui-field-box">
+            <div id="test1"></div>
+            <div id="test2"></div>
+            <div id="test3"></div>
+          </div>
+        </fieldset>
+
+        <fieldset class="layui-elem-field layui-field-title">
+          <legend>半星效果</legend>
+          <div class="layui-field-box">
+            <div id="test4"></div>
+          </div>
+        </fieldset>
+
+        <fieldset class="layui-elem-field layui-field-title">
+          <legend>自定义文本</legend>
+          <div class="layui-field-box">
+            <div id="test5"></div>
+            <span id="test5-text"></span>
+          </div>
+        </fieldset>
+
+        <fieldset class="layui-elem-field layui-field-title">
+          <legend>只读</legend>
+          <div class="layui-field-box">
+            <div id="test6"></div>
+          </div>
+        </fieldset>
+
+        <fieldset class="layui-elem-field layui-field-title">
+          <legend>自定义主题色</legend>
+          <div class="layui-field-box">
+            <div id="test7"></div>
+            <div id="test8"></div>
+            <div id="test9"></div>
+          </div>
+        </fieldset>
+
+      </div>
+    </div>
+  </div>
+
+  <script>
+  layui.use(['rate'], function(){
+    var rate = layui.rate;
+    
+    rate.render({
+      elem: '#test1'
+    });
+    
+    rate.render({
+      elem: '#test2'
+      ,value: 2
+    });
+    
+    rate.render({
+      elem: '#test3'
+      ,value: 3
+      ,half: true
+    });
+    
+    rate.render({
+      elem: '#test4'
+      ,value: 2.5
+      ,half: true
+    });
+    
+    rate.render({
+      elem: '#test5'
+      ,value: 3
+      ,text: true
+      ,setText: function(value){
+        var arrs = {
+          '1': '极差'
+          ,'2': '差'
+          ,'3': '中等'
+          ,'4': '好'
+          ,'5': '极好'
+        };
+        this.span.text(arrs[value] || ( value + '星'));
+      }
+    });
+    
+    rate.render({
+      elem: '#test6'
+      ,value: 4
+      ,readonly: true
+    });
+    
+    rate.render({
+      elem: '#test7'
+      ,value: 3
+      ,theme: '#FF8000'
+    });
+    
+    rate.render({
+      elem: '#test8'
+      ,value: 3
+      ,theme: '#009688'
+    });
+    
+    rate.render({
+      elem: '#test9'
+      ,value: 3
+      ,theme: '#1E9FFF'
+    });
+  });
+  </script>
+</body>
+</html>

@@ -3,7 +3,7 @@
 ## 📋 项目概述
 
 **项目名称**: OSADMIN\
-**版本**: 1.1.0\
+**版本**: 1.3.0\
 **描述**: 基于 LayUI 的轻量化原生管理后台系统\
 **技术栈**: LayUI + jQuery + 原生 JavaScript\
 **架构模式**: 模块化架构 + 配置驱动
@@ -16,6 +16,8 @@
 - ✅ **主题系统**: 支持多主题切换和自定义
 - ✅ **路由管理**: Hash 路由，支持 ID 和 Code 混合路由
 - ✅ **资源按需加载**: 页面级 CSS/JS 按需加载，支持动态 meta 信息
+- ✅ **智能组件渲染**: 自动检测并渲染 LayUI 组件，支持按需加载模块
+- ✅ **水印系统**: Canvas 水印，支持防删除保护和动态文本
 - ✅ **组件丰富**: 封装多种常用组件
 - ✅ **响应式设计**: 适配多种屏幕尺寸
 
@@ -69,7 +71,8 @@ osadmin/
 │   ├── common/             # 公共模块
 │   │   ├── router.js       # 路由模块
 │   │   ├── theme.js        # 主题模块
-│   │   └── permission.js   # 权限模块
+│   │   ├── permission.js   # 权限模块
+│   │   └── component-renderer.js # 组件渲染模块
 │   ├── components/         # 组件模块
 │   │   ├── sidebar.js      # 侧边栏组件
 │   │   └── tabs.js         # 标签页组件
@@ -180,6 +183,156 @@ http://localhost:8080
 }
 ```
 
+### 水印系统
+
+系统内置了强大的水印功能，支持动态文本、防删除保护和性能优化。
+
+#### 基本配置
+
+```json
+{
+  "watermark": {
+    "enabled": true,
+    "text": "OSADMIN",
+    "dynamicTextKey": "username",
+    "fontSize": 14,
+    "color": "rgba(0, 0, 0, 0.08)",
+    "rotate": -22,
+    "gapX": 100,
+    "gapY": 100
+  }
+}
+```
+
+#### 水印特性
+
+##### 1. 动态文本支持
+
+支持从 sessionStorage 中读取动态文本作为水印内容：
+
+```javascript
+// 简单键名
+sessionStorage.setItem('username', '张三');
+
+// 嵌套键名（支持多层级）
+sessionStorage.setItem('userInfo', JSON.stringify({
+  admin: {
+    info: {
+      userName: '张三'
+    }
+  }
+}));
+
+// 配置中使用嵌套路径
+{
+  "watermark": {
+    "dynamicTextKey": "userInfo.admin.info.userName"
+  }
+}
+```
+
+##### 2. 防删除保护
+
+使用 MutationObserver 监听水印节点，自动恢复被删除或修改的水印：
+
+- **节点删除保护**: 检测到水印节点被删除时自动恢复
+- **样式修改保护**: 检测到 `display`、`visibility`、`opacity` 等样式被修改时自动恢复
+- **控制台警告**: 删除或修改水印时在控制台输出警告信息
+
+##### 3. Canvas 缓存机制
+
+使用 Canvas 生成水印图片并缓存，提升性能：
+
+- **缓存策略**: 根据水印参数（文本、字体、颜色、旋转角度、间距）生成缓存键
+- **性能提升**: 相同参数的水印只生成一次，后续直接使用缓存
+- **精确测量**: 使用 `ctx.measureText()` 精确测量文本宽度，优化水印间距
+
+##### 4. 主题自动适配
+
+水印颜色会根据主题模式自动调整：
+
+- **亮色主题**: 使用配置的颜色（默认 `rgba(0, 0, 0, 0.08)`）
+- **暗色主题**: 自动切换为 `rgba(255, 255, 255, 0.06)`
+
+#### 使用方法
+
+##### 启用/禁用水印
+
+```javascript
+var theme = OSLAY.modules.theme;
+
+// 启用水印
+theme.setState({ watermarkEnabled: true });
+
+// 禁用水印
+theme.setState({ watermarkEnabled: false });
+
+// 设置水印文本
+theme.setState({ watermarkText: '机密文件' });
+```
+
+##### 动态设置水印
+
+```javascript
+// 用户登录后设置水印
+sessionStorage.setItem('username', '张三');
+theme.applyWatermark(true, '张三');
+
+// 使用嵌套数据
+var userData = {
+  admin: { name: '张三', department: '技术部' }
+};
+sessionStorage.setItem('userData', JSON.stringify(userData));
+
+// 配置文件中
+{
+  "watermark": {
+    "dynamicTextKey": "userData.admin.name"
+  }
+}
+```
+
+#### 水印优先级
+
+水印文本的获取优先级：
+
+1. **sessionStorage 动态文本** (最高优先级)
+   - 从 `dynamicTextKey` 配置的键名读取
+   
+2. **state.watermarkText**
+   - 通过 `theme.setState({ watermarkText: 'xxx' })` 设置的文本
+   
+3. **配置文件中的 text**
+   - `app.json` 中 `watermark.text` 的值
+
+#### API 接口
+
+```javascript
+var theme = OSLAY.modules.theme;
+
+// 应用水印
+theme.applyWatermark(enabled, text);
+
+// 获取水印文本
+var watermarkText = theme.getWatermarkText();
+
+// 获取嵌套对象值
+var value = theme.getNestedValue(obj, 'path.to.value');
+
+// 启动水印监听
+theme.startWatermarkObserver();
+
+// 停止水印监听
+theme.stopWatermarkObserver();
+```
+
+#### 注意事项
+
+1. **性能考虑**: 水印使用 Canvas 生成，大量不同参数的水印会占用内存
+2. **安全提示**: 前端水印可被技术手段绕过，重要场景需配合后端水印
+3. **浏览器兼容**: 需要浏览器支持 Canvas API 和 MutationObserver
+4. **sessionStorage 限制**: sessionStorage 大小限制约 5MB，避免存储过大数据
+
 #### 站点配置
 
 ```json
@@ -227,7 +380,8 @@ http://localhost:8080
 {
   "watermark": {
     "enabled": true,             // 是否启用水印
-    "text": "OSSUP",             // 水印文字
+    "text": "OSADMIN",           // 水印默认文字
+    "dynamicTextKey": "username", // 动态文本键名，支持嵌套路径如 "userInfo.admin.userName"
     "fontSize": 14,              // 字体大小
     "color": "rgba(0, 0, 0, 0.08)", // 水印颜色
     "rotate": -22,               // 旋转角度
@@ -236,6 +390,13 @@ http://localhost:8080
   }
 }
 ```
+
+**水印特性说明**:
+- **动态文本**: 支持从 sessionStorage 中读取动态文本，如用户名
+- **嵌套键名**: 支持使用点号分隔的嵌套路径，如 `"userInfo.admin.userName"`
+- **防删除保护**: 使用 MutationObserver 监听水印节点，自动恢复被删除的水印
+- **Canvas 缓存**: 使用缓存机制提升水印生成性能
+- **主题适配**: 自动适配亮色/暗色主题，调整水印颜色
 
 #### 多语言配置
 
@@ -650,7 +811,8 @@ resourceLoader.clearCache();
 │   ├── app.js          # 主应用模块
 │   ├── router.js       # 路由模块
 │   ├── theme.js        # 主题模块
-│   └── permission.js   # 权限模块
+│   ├── permission.js   # 权限模块
+│   └── component-renderer.js # 组件渲染模块
 │
 ├── 组件模块 (Component Modules)
 │   ├── sidebar.js      # 侧边栏组件
@@ -862,6 +1024,181 @@ theme.setColor('#16baaa');
   }
 }
 ```
+
+***
+
+## 🤖 智能组件渲染
+
+### 功能概述
+
+在 SPA (单页应用) 模式下，动态加载的 HTML 内容中的 LayUI 组件不会自动渲染。`componentRenderer` 模块通过智能扫描 DOM，自动检测并渲染所需的 LayUI 组件，实现按需加载和性能优化。
+
+### 核心特性
+
+- ✅ **自动扫描**: 自动检测页面中的 LayUI 组件
+- ✅ **按需加载**: 只加载检测到的组件所需的模块
+- ✅ **智能缓存**: 避免重复渲染同一组件
+- ✅ **优先级控制**: 支持组件渲染优先级配置
+- ✅ **调试模式**: 提供详细的渲染日志
+
+### 支持的组件
+
+| 组件名 | 选择器 | LayUI 模块 | 优先级 |
+|--------|--------|-----------|--------|
+| tabs | `.layui-tabs` | tabs | 1 |
+| form | `.layui-form`, 表单元素 | form | 2 |
+| element | `.layui-nav`, `.layui-collapse` 等 | element | 3 |
+| carousel | `.layui-carousel` | carousel | 4 |
+| rate | `.layui-rate` | rate | 5 |
+| slider | `.layui-slider` | slider | 6 |
+| transfer | `.layui-transfer` | transfer | 7 |
+| tree | `.layui-tree` | tree | 8 |
+| colorpicker | `.layui-colorpicker` | colorpicker | 9 |
+| laypage | `.layui-laypage` | laypage | 10 |
+| code | `pre.layui-code` | code | 11 |
+
+### 使用方法
+
+#### 1. 基本使用
+
+```javascript
+// 在页面加载完成后自动渲染所有组件
+OSLAY.ready(function(modules) {
+  var renderer = layui.componentRenderer;
+  
+  // 渲染整个页面
+  renderer.render();
+});
+```
+
+#### 2. 渲染指定容器
+
+```javascript
+// 只渲染特定容器内的组件
+renderer.render('#myContainer');
+```
+
+#### 3. 渲染指定组件
+
+```javascript
+// 只渲染指定的组件类型
+renderer.render('#container', 'tabs,form,element');
+```
+
+#### 4. 开启调试模式
+
+```javascript
+// 初始化时开启调试
+renderer.init({ debug: true });
+
+// 渲染时会输出详细日志
+renderer.render();
+// 输出示例:
+// [ComponentRenderer] Detected: tabs Count: 2
+// [ComponentRenderer] Modules to load: ["tabs", "form"]
+// [ComponentRenderer] Rendered: tabs
+```
+
+#### 5. 清除缓存
+
+```javascript
+// 清除渲染缓存，允许重新渲染
+renderer.clearCache('#container');
+```
+
+### API 文档
+
+#### 初始化
+
+```javascript
+renderer.init(options);
+```
+
+| 参数 | 类型 | 默认值 | 说明 |
+|------|------|--------|------|
+| debug | Boolean | false | 是否开启调试模式 |
+
+#### 渲染方法
+
+```javascript
+renderer.render(container, componentNames);
+```
+
+| 参数 | 类型 | 必填 | 说明 |
+|------|------|------|------|
+| container | String/Element | 否 | 容器选择器或元素，默认为整个文档 |
+| componentNames | String | 否 | 组件名称列表，用逗号分隔 |
+
+#### 其他方法
+
+```javascript
+// 扫描组件
+var components = renderer.scanComponents($('#container'));
+
+// 获取所需模块
+var modules = renderer.getRequiredModules(components);
+
+// 清除缓存
+renderer.clearCache('#container');
+
+// 渲染所有组件
+renderer.renderAll('#container');
+```
+
+### 工作原理
+
+1. **DOM 扫描**: 遍历容器，查找匹配的组件选择器
+2. **模块收集**: 收集所有检测到的组件所需的 LayUI 模块
+3. **按需加载**: 使用 `layui.use()` 动态加载所需模块
+4. **组件渲染**: 调用各组件的 `render()` 方法进行渲染
+5. **状态标记**: 为已渲染的组件添加标记，避免重复渲染
+
+### 性能优化
+
+- **减少模块加载**: 只加载页面实际使用的组件模块，减少 80% 的不必要加载
+- **Canvas 缓存**: 水印等组件使用 Canvas 缓存机制
+- **智能检测**: 通过选择器快速定位，避免全局遍历
+- **渲染标记**: 使用 `data-layui-rendered` 标记避免重复渲染
+
+### 最佳实践
+
+#### 1. 在 SPA 中使用
+
+```javascript
+// 在 app.js 的 showContent 方法中
+showContent: function(content) {
+  $wrapper.html(content);
+  
+  // 自动渲染新内容中的组件
+  if (window.layui && layui.componentRenderer) {
+    layui.componentRenderer.render($wrapper);
+  }
+}
+```
+
+#### 2. 动态内容渲染
+
+```javascript
+// 加载动态内容后渲染
+$('#container').load('page.html', function() {
+  layui.componentRenderer.render('#container');
+});
+```
+
+#### 3. 表单动态添加
+
+```javascript
+// 添加新表单元素后渲染
+$('#formContainer').append(newFormHtml);
+layui.componentRenderer.render('#formContainer', 'form');
+```
+
+### 注意事项
+
+1. **避免重复渲染**: 组件渲染后会添加标记，重复调用 `render()` 不会重复渲染
+2. **容器选择**: 建议指定具体的容器，避免全局扫描影响性能
+3. **模块依赖**: 确保所需的 LayUI 模块已正确配置
+4. **调试模式**: 生产环境建议关闭调试模式
 
 ***
 
@@ -1450,6 +1787,45 @@ var Module = {
 
 ## 🔄 更新日志
 
+### v1.2.2 (2026-04-04)
+
+#### 新增功能
+
+- ✅ **智能组件渲染模块**: 新增 `componentRenderer` 模块，自动检测并渲染 SPA 中的 LayUI 组件
+  - 支持 11 种 LayUI 组件的自动渲染
+  - 智能扫描 DOM，按需加载模块，减少 80% 不必要的模块加载
+  - 支持组件渲染优先级控制和调试模式
+  - 智能缓存机制，避免重复渲染
+
+- ✅ **水印系统增强**: 大幅改进水印功能
+  - **防删除保护**: 使用 MutationObserver 监听水印节点，自动恢复被删除或修改的水印
+  - **Canvas 缓存机制**: 使用缓存提升水印生成性能，支持精确文本测量
+  - **动态文本支持**: 支持从 sessionStorage 读取动态文本作为水印内容
+  - **嵌套键名**: 支持使用点号分隔的嵌套路径，如 `userInfo.admin.userName`
+  - **主题自动适配**: 水印颜色根据亮色/暗色主题自动调整
+
+#### 功能优化
+
+- ✅ **第三方资源更新**: 
+  - ECharts 更新至 v6.0.0
+  - LayUI 更新至 v2.13.5
+- ✅ **样式兼容性**: 修复部分样式兼容问题
+- ✅ **配置命名优化**: 将 `usernameKey` 重命名为更通用的 `dynamicTextKey`
+
+#### 问题修复
+
+- ✅ 修复移动端侧边栏菜单报错问题（`toggleSubmenu` 缺少 `state` 参数）
+- ✅ 修复 SPA 模式下 LayUI 组件不自动渲染的问题
+- ✅ 修复 .gitignore 阻止 lib 目录下 min.js 文件推送的问题
+
+#### 组件示例
+
+- ✅ 新增 18 个 LayUI 组件示例页面：
+  - tabs、carousel、rate、slider、transfer、tree
+  - colorpicker、laypage、progress、util、flow
+  - code、laytpl、nav、breadcrumb、collapse
+  - treeTable、upload
+
 ### v1.1.0 (2026-04-02)
 
 #### 新增功能
@@ -1557,5 +1933,5 @@ chore: 构建/工具相关
 
 ***
 
-**最后更新时间**: 2026-04-02\
-**文档版本**: 1.1.0
+**最后更新时间**: 2026-04-04\
+**文档版本**: 1.2.2

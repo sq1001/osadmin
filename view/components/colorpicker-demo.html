@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>颜色选择器组件 - Layui</title>
+  <meta name="keywords" content="颜色选择器,colorpicker,颜色">
+  <meta name="description" content="Layui颜色选择器组件使用示例">
+</head>
+<body>
+  <div class="page-content">
+    <div class="layui-card">
+      <div class="layui-card-header">
+        <h3>颜色选择器组件 (colorpicker)</h3>
+      </div>
+      <div class="layui-card-body">
+        
+        <fieldset class="layui-elem-field layui-field-title">
+          <legend>常规使用</legend>
+          <div class="layui-field-box">
+            <div id="test1"></div>
+            <div id="test2" style="margin-left: 30px;"></div>
+          </div>
+        </fieldset>
+
+        <fieldset class="layui-elem-field layui-field-title">
+          <legend>表单赋值</legend>
+          <div class="layui-field-box">
+            <form class="layui-form" action="">
+              <div class="layui-form-item">
+                <label class="layui-form-label">颜色选择</label>
+                <div class="layui-input-inline">
+                  <input type="text" value="" placeholder="请选择颜色" class="layui-input" id="test-input">
+                </div>
+                <div class="layui-input-inline" style="width: 36px;">
+                  <div id="test-form"></div>
+                </div>
+              </div>
+            </form>
+          </div>
+        </fieldset>
+
+        <fieldset class="layui-elem-field layui-field-title">
+          <legend>预定义颜色项</legend>
+          <div class="layui-field-box">
+            <div id="test3"></div>
+          </div>
+        </fieldset>
+
+        <fieldset class="layui-elem-field layui-field-title">
+          <legend>开启透明度</legend>
+          <div class="layui-field-box">
+            <div id="test4"></div>
+          </div>
+        </fieldset>
+
+      </div>
+    </div>
+  </div>
+
+  <script>
+  layui.use(['colorpicker', 'form'], function(){
+    var colorpicker = layui.colorpicker;
+    var form = layui.form;
+    
+    colorpicker.render({
+      elem: '#test1'
+      ,color: '#1c97f5'
+      ,done: function(color){
+        console.log('选择的颜色：'+ color);
+      }
+    });
+    
+    colorpicker.render({
+      elem: '#test2'
+      ,color: 'rgba(218, 121, 157, 0.5)'
+      ,alpha: true
+      ,format: 'rgb'
+    });
+    
+    colorpicker.render({
+      elem: '#test-form'
+      ,color: '#1c97f5'
+      ,done: function(color){
+        $('#test-input').val(color);
+      }
+    });
+    
+    colorpicker.render({
+      elem: '#test3'
+      ,color: '#1c97f5'
+      ,predefine: true
+    });
+    
+    colorpicker.render({
+      elem: '#test4'
+      ,alpha: true
+    });
+  });
+  </script>
+</body>
+</html>

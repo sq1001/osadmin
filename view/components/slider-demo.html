@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>滑块组件 - Layui</title>
+  <meta name="keywords" content="滑块,slider,范围选择">
+  <meta name="description" content="Layui滑块组件使用示例">
+</head>
+<body>
+  <div class="page-content">
+    <div class="layui-card">
+      <div class="layui-card-header">
+        <h3>滑块组件 (slider)</h3>
+      </div>
+      <div class="layui-card-body">
+        
+        <fieldset class="layui-elem-field layui-field-title">
+          <legend>基础用法</legend>
+          <div class="layui-field-box">
+            <div id="slideTest1"></div>
+            <div id="slideTest2" style="margin-top: 30px;"></div>
+          </div>
+        </fieldset>
+
+        <fieldset class="layui-elem-field layui-field-title">
+          <legend>定义初始值</legend>
+          <div class="layui-field-box">
+            <div id="slideTest3"></div>
+          </div>
+        </fieldset>
+
+        <fieldset class="layui-elem-field layui-field-title">
+          <legend>设置最大最小值</legend>
+          <div class="layui-field-box">
+            <div id="slideTest4"></div>
+          </div>
+        </fieldset>
+
+        <fieldset class="layui-elem-field layui-field-title">
+          <legend>设置步长</legend>
+          <div class="layui-field-box">
+            <div id="slideTest5"></div>
+          </div>
+        </fieldset>
+
+        <fieldset class="layui-elem-field layui-field-title">
+          <legend>范围选择</legend>
+          <div class="layui-field-box">
+            <div id="slideTest6"></div>
+          </div>
+        </fieldset>
+
+        <fieldset class="layui-elem-field layui-field-title">
+          <legend>垂直滑块</legend>
+          <div class="layui-field-box" style="height: 200px;">
+            <div id="slideTest7" style="margin: 0 30px;"></div>
+          </div>
+        </fieldset>
+
+        <fieldset class="layui-elem-field layui-field-title">
+          <legend>禁用</legend>
+          <div class="layui-field-box">
+            <div id="slideTest8"></div>
+          </div>
+        </fieldset>
+
+        <fieldset class="layui-elem-field layui-field-title">
+          <legend>自定义提示文本</legend>
+          <div class="layui-field-box">
+            <div id="slideTest9"></div>
+          </div>
+        </fieldset>
+
+      </div>
+    </div>
+  </div>
+
+  <script>
+  layui.use(['slider'], function(){
+    var slider = layui.slider;
+    
+    slider.render({
+      elem: '#slideTest1'
+    });
+    
+    slider.render({
+      elem: '#slideTest2'
+      ,type: 'vertical'
+    });
+    
+    slider.render({
+      elem: '#slideTest3'
+      ,value: 30
+    });
+    
+    slider.render({
+      elem: '#slideTest4'
+      ,min: 20
+      ,max: 50
+    });
+    
+    slider.render({
+      elem: '#slideTest5'
+      ,step: 10
+    });
+    
+    slider.render({
+      elem: '#slideTest6'
+      ,range: true
+    });
+    
+    slider.render({
+      elem: '#slideTest7'
+      ,type: 'vertical'
+      ,height: '200px'
+    });
+    
+    slider.render({
+      elem: '#slideTest8'
+      ,disabled: true
+    });
+    
+    slider.render({
+      elem: '#slideTest9'
+      ,tips: function(value){
+        return '当前选中值为：' + value;
+      }
+    });
+  });
+  </script>
+</body>
+</html>

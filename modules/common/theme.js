@@ -117,16 +117,19 @@ layui.define(['jquery', 'layer'], function(exports) {
     },
 
     applyWatermark: function(enabled, text) {
+      var self = this;
       var $watermark = $('#contentWatermark');
       
       if (!enabled) {
         $watermark.remove();
+        this.stopWatermarkObserver();
         return;
       }
 
       var watermarkText = text || this.getWatermarkText();
       if (!watermarkText) {
         $watermark.remove();
+        this.stopWatermarkObserver();
         return;
       }
 
@@ -146,9 +149,32 @@ layui.define(['jquery', 'layer'], function(exports) {
         $('#contentWrapper').before($watermark);
       }
 
+      var dataUrl = this.getWatermarkDataURL(watermarkText, fontSize, color, rotate, gapX, gapY);
+
+      $watermark.css({
+        'background-image': 'url(' + dataUrl + ')',
+        'background-repeat': 'repeat',
+        'pointer-events': 'none'
+      });
+
+      this.startWatermarkObserver();
+    },
+
+    watermarkCache: {},
+    
+    getWatermarkDataURL: function(text, fontSize, color, rotate, gapX, gapY) {
+      var cacheKey = text + '|' + fontSize + '|' + color + '|' + rotate + '|' + gapX + '|' + gapY;
+      
+      if (this.watermarkCache[cacheKey]) {
+        return this.watermarkCache[cacheKey];
+      }
+
       var canvas = document.createElement('canvas');
       var ctx = canvas.getContext('2d');
-      var textWidth = watermarkText.length * fontSize;
+      
+      ctx.font = fontSize + 'px Arial, sans-serif';
+      var textWidth = ctx.measureText(text).width;
+      
       canvas.width = gapX + textWidth;
       canvas.height = gapY + fontSize * 2;
 
@@ -159,27 +185,121 @@ layui.define(['jquery', 'layer'], function(exports) {
       
       ctx.translate(canvas.width / 2, canvas.height / 2);
       ctx.rotate(rotate * Math.PI / 180);
-      ctx.fillText(watermarkText, 0, 0);
+      ctx.fillText(text, 0, 0);
 
-      $watermark.css({
-        'background-image': 'url(' + canvas.toDataURL('image/png') + ')',
-        'background-repeat': 'repeat',
-        'pointer-events': 'none'
+      var dataUrl = canvas.toDataURL('image/png');
+      this.watermarkCache[cacheKey] = dataUrl;
+      
+      return dataUrl;
+    },
+
+    watermarkObserver: null,
+    
+    startWatermarkObserver: function() {
+      var self = this;
+      
+      if (this.watermarkObserver) {
+        return;
+      }
+
+      this.watermarkObserver = new MutationObserver(function(mutations) {
+        mutations.forEach(function(mutation) {
+          if (mutation.type === 'childList' && mutation.removedNodes.length > 0) {
+            for (var i = 0; i < mutation.removedNodes.length; i++) {
+              var node = mutation.removedNodes[i];
+              if (node.id === 'contentWatermark' || 
+                  (node.nodeType === 1 && node.querySelector && node.querySelector('#contentWatermark'))) {
+                setTimeout(function() {
+                  if (self.state.watermarkEnabled && !document.getElementById('contentWatermark')) {
+                    console.warn('[Watermark] 检测到水印被删除，正在恢复...');
+                    self.applyWatermark(self.state.watermarkEnabled, self.state.watermarkText);
+                  }
+                }, 100);
+                break;
+              }
+            }
+          }
+          
+          if (mutation.type === 'attributes' && mutation.target.id === 'contentWatermark') {
+            var $watermark = $(mutation.target);
+            if (!$watermark.css('background-image') || 
+                $watermark.css('display') === 'none' ||
+                $watermark.css('visibility') === 'hidden' ||
+                $watermark.css('opacity') === '0') {
+              console.warn('[Watermark] 检测到水印样式被修改，正在恢复...');
+              self.applyWatermark(self.state.watermarkEnabled, self.state.watermarkText);
+            }
+          }
+        });
+      });
+
+      this.watermarkObserver.observe(document.body, {
+        childList: true,
+        subtree: true,
+        attributes: true,
+        attributeFilter: ['style', 'class']
       });
     },
 
+    stopWatermarkObserver: function() {
+      if (this.watermarkObserver) {
+        this.watermarkObserver.disconnect();
+        this.watermarkObserver = null;
+      }
+    },
+
     getWatermarkText: function() {
+      var watermarkConfig = appConfig.watermark || {};
+      var dynamicTextKey = watermarkConfig.dynamicTextKey || 'username';
+      
+      try {
+        var sessionData = sessionStorage.getItem(dynamicTextKey.split('.')[0]);
+        if (sessionData) {
+          try {
+            var parsedData = JSON.parse(sessionData);
+            var value = this.getNestedValue(parsedData, dynamicTextKey);
+            if (value) {
+              return String(value);
+            }
+          } catch (e) {
+            if (dynamicTextKey.indexOf('.') === -1) {
+              return sessionData;
+            }
+          }
+        }
+      } catch (e) {}
+      
       var text = this.state.watermarkText || '';
       if (text) {
         return text;
       }
-      try {
-        var sessionUser = sessionStorage.getItem('username');
-        if (sessionUser) {
-          return sessionUser;
-        }
-      } catch (e) {}
+      
+      var defaultText = watermarkConfig.text || '';
+      if (defaultText) {
+        return defaultText;
+      }
+      
       return '';
+    },
+
+    getNestedValue: function(obj, path) {
+      if (!obj || !path) return null;
+      
+      if (path.indexOf('.') === -1) {
+        return obj[path];
+      }
+      
+      var keys = path.split('.');
+      var current = obj;
+      
+      for (var i = 0; i < keys.length; i++) {
+        if (current === null || current === undefined || typeof current !== 'object') {
+          return null;
+        }
+        current = current[keys[i]];
+      }
+      
+      return current;
     },
 
     setWatermarkText: function(text) {

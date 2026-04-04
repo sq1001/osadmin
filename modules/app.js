@@ -484,6 +484,10 @@ layui.define(['jquery', 'routerModule', 'themeModule', 'sidebarComp', 'tabsComp'
         $pageContent.addClass('page-anim-' + animation);
         $pageContent.addClass('active');
       }
+      
+      if (window.layui && layui.componentRenderer) {
+        layui.componentRenderer.render($wrapper);
+      }
     },
 
     extractContent: function(html) {

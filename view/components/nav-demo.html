@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>导航组件 - Layui</title>
+  <meta name="keywords" content="导航,nav,菜单导航">
+  <meta name="description" content="Layui导航组件使用示例">
+</head>
+<body>
+  <div class="page-content">
+    <div class="layui-card">
+      <div class="layui-card-header">
+        <h3>导航组件 (nav)</h3>
+      </div>
+      <div class="layui-card-body">
+        
+        <fieldset class="layui-elem-field layui-field-title">
+          <legend>水平导航</legend>
+          <div class="layui-field-box">
+            <ul class="layui-nav">
+              <li class="layui-nav-item layui-this"><a href="">选中</a></li>
+              <li class="layui-nav-item">
+                <a href="javascript:;">常规</a>
+                <dl class="layui-nav-child">
+                  <dd><a href="">菜单1</a></dd>
+                  <dd><a href="">菜单2</a></dd>
+                  <dd><a href="">菜单3</a></dd>
+                </dl>
+              </li>
+              <li class="layui-nav-item"><a href="">导航</a></li>
+              <li class="layui-nav-item"><a href="">链接</a></li>
+            </ul>
+          </div>
+        </fieldset>
+
+        <fieldset class="layui-elem-field layui-field-title">
+          <legend>垂直导航</legend>
+          <div class="layui-field-box">
+            <ul class="layui-nav layui-nav-tree layui-inline" lay-filter="test">
+              <li class="layui-nav-item layui-nav-itemed">
+                <a href="javascript:;">默认展开</a>
+                <dl class="layui-nav-child">
+                  <dd><a href="javascript:;">选项1</a></dd>
+                  <dd><a href="javascript:;">选项2</a></dd>
+                  <dd><a href="javascript:;">选项3</a></dd>
+                </dl>
+              </li>
+              <li class="layui-nav-item">
+                <a href="javascript:;">解决方案</a>
+                <dl class="layui-nav-child">
+                  <dd><a href="">移动模块</a></dd>
+                  <dd><a href="">后台模版</a></dd>
+                  <dd><a href="">电商平台</a></dd>
+                </dl>
+              </li>
+              <li class="layui-nav-item"><a href="">云市场</a></li>
+              <li class="layui-nav-item"><a href="">社区</a></li>
+            </ul>
+          </div>
+        </fieldset>
+
+        <fieldset class="layui-elem-field layui-field-title">
+          <legend>侧边导航</legend>
+          <div class="layui-field-box">
+            <ul class="layui-nav layui-nav-tree layui-bg-cyan layui-inline" lay-filter="test2">
+              <li class="layui-nav-item layui-nav-itemed">
+                <a href="javascript:;">产品</a>
+                <dl class="layui-nav-child">
+                  <dd><a href="javascript:;">所有产品</a></dd>
+                  <dd><a href="javascript:;">产品A</a></dd>
+                  <dd><a href="javascript:;">产品B</a></dd>
+                </dl>
+              </li>
+              <li class="layui-nav-item">
+                <a href="javascript:;">案例</a>
+                <dl class="layui-nav-child">
+                  <dd><a href="">移动案例</a></dd>
+                  <dd><a href="">PC案例</a></dd>
+                </dl>
+              </li>
+              <li class="layui-nav-item"><a href="">关于</a></li>
+            </ul>
+          </div>
+        </fieldset>
+
+      </div>
+    </div>
+  </div>
+
+  <script>
+  layui.use(['element'], function(){
+    var element = layui.element;
+    
+    element.render('nav', 'test');
+    element.render('nav', 'test2');
+  });
+  </script>
+</body>
+</html>

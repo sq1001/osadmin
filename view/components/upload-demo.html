@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>文件上传组件 - Layui</title>
+  <meta name="keywords" content="上传,文件,图片,拖拽上传">
+  <meta name="description" content="Layui文件上传组件使用示例">
+</head>
+<body>
+  <div class="page-content">
+    <div class="layui-card">
+      <div class="layui-card-header">
+        <h3>文件上传组件 (upload)</h3>
+      </div>
+      <div class="layui-card-body">
+        
+        <fieldset class="layui-elem-field">
+          <legend>常规使用</legend>
+          <div class="layui-field-box">
+            <div class="layui-upload">
+              <button type="button" class="layui-btn layui-btn-normal" id="testList">
+                选择多文件
+              </button>
+              <div class="layui-upload-list">
+                <table class="layui-table">
+                  <thead>
+                    <tr>
+                      <th>文件名</th>
+                      <th>大小</th>
+                      <th>状态</th>
+                      <th>操作</th>
+                    </tr>
+                  </thead>
+                  <tbody id="demoList"></tbody>
+                </table>
+              </div>
+              <button type="button" class="layui-btn" id="testListAction">
+                开始上传
+              </button>
+            </div>
+          </div>
+        </fieldset>
+
+        <fieldset class="layui-elem-field layui-field-title">
+          <legend>拖拽上传</legend>
+          <div class="layui-field-box">
+            <div class="layui-upload-drag" id="testDrag">
+              <i class="layui-icon"></i>
+              <p>点击上传，或将文件拖拽到此处</p>
+              <div class="layui-hide" id="uploadDemoView">
+                <hr>
+                <img src="" alt="上传成功后渲染" style="max-width: 196px">
+              </div>
+            </div>
+          </div>
+        </fieldset>
+
+        <fieldset class="layui-elem-field layui-field-title">
+          <legend>绑定原始文件域</legend>
+          <div class="layui-field-box">
+            <input type="file" name="file" id="testUploadOriginal">
+          </div>
+        </fieldset>
+
+      </div>
+    </div>
+  </div>
+
+  <script>
+  layui.use(['upload', 'layer', 'element'], function(){
+    var $ = layui.$
+    ,upload = layui.upload
+    ,layer = layui.layer;
+    
+    var uploadListIns = upload.render({
+      elem: '#testList'
+      ,elemList: '#demoList'
+      ,url: 'https://httpbin.org/post'
+      ,accept: 'file'
+      ,multiple: true
+      ,number: 3
+      ,auto: false
+      ,bindAction: '#testListAction'
+      ,choose: function(obj){   
+        var that = this;
+        var files = this.files = obj.pushFile();
+        
+        obj.preview(function(index, file, result){
+          var tr = $(['<tr id="upload-'+ index +'">'
+            ,'<td>'+ file.name +'</td>'
+            ,'<td>'+ (file.size/1014).toFixed(1) +'kb</td>'
+            ,'<td>等待上传</td>'
+            ,'<td>'
+              ,'<button class="layui-btn layui-btn-xs demo-reload layui-hide">重传</button>'
+              ,'<button class="layui-btn layui-btn-xs layui-btn-danger demo-delete">删除</button>'
+            ,'</td>'
+          ,'</tr>'].join(''));
+          
+          tr.find('.demo-delete').on('click', function(){
+            delete files[index];
+            tr.remove();
+            uploadListIns.config.elem.next()[0].value = '';
+          });
+          
+          that.elemList.append(tr);
+        });
+      }
+      ,done: function(res, index, upload){
+        var that = this;
+        var tr = that.elemList.find('#upload-'+ index);
+        var tds = tr.children();
+        tds.eq(2).html('<span style="color: #5FB878;">上传成功</span>');
+        tds.eq(3).html('');
+        
+        return delete this.files[index];
+      }
+      ,allDone: function(obj){
+        layer.msg('上传完毕！共计：'+ obj.total +' 个文件，成功：'+ obj.successful +' 个，失败：'+ obj.aborted +' 个');
+      }
+      ,error: function(){
+        var that = this;
+        var tr = that.elemList.find('#upload-'+ index);
+        var tds = tr.children();
+        tds.eq(2).html('<span style="color: #FF5722;">上传失败</span>');
+        tds.eq(3).find('.demo-reload').removeClass('layui-hide');
+      }
+    });
+    
+    upload.render({
+      elem: '#testDrag'
+      ,url: 'https://httpbin.org/post'
+      ,done: function(res){
+        layer.msg('上传成功');
+        $('#uploadDemoView').removeClass('layui-hide').find('img').attr('src', res.files.file);
+        console.log(res);
+      }
+    });
+    
+    upload.render({
+      elem: '#testUploadOriginal'
+      ,url: 'https://httpbin.org/post'
+      ,done: function(res){
+        layer.msg('上传成功');
+        console.log(res);
+      }
+    });
+  });
+  </script>
+</body>
+</html>
