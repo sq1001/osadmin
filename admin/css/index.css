@@ -2,6 +2,10 @@
 @import './admin.css';
 @import './theme.css';
 
+/* LayUI 全局样式 */
+@import '../../lib/layui/css/layui.css';
+@import './layui-override/layer.css';
+
 /* LayUI 扩展样式 */
 @import './extends/toast.css';
 /* @import './extends/resetForm.css'; */

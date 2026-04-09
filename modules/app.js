@@ -12,15 +12,17 @@
  *   _dialog - 弹窗打开
  *   无      - 默认内部页面加载
  */
-layui.define(['jquery', 'routerModule', 'themeModule', 'sidebarComp', 'tabsComp', 'resourceLoader'], function(exports) {
+layui.define(['jquery', 'util', 'routerModule', 'themeModule', 'sidebarComp', 'tabsComp', 'resourceLoader', 'toastMod'], function(exports) {
   'use strict';
 
   var $ = layui.jquery;
+  var util = layui.util;
   var router = layui.routerModule;
   var theme = layui.themeModule;
   var sidebar = layui.sidebarComp;
   var tabs = layui.tabsComp;
   var resourceLoader = layui.resourceLoader;
+  var toast = layui.toastMod;
 
   var App = {
     initialized: false,
@@ -58,7 +60,7 @@ layui.define(['jquery', 'routerModule', 'themeModule', 'sidebarComp', 'tabsComp'
         this.menuConfig = window.OSLAY.menuConfig;
         this.initModules();
         this.initialized = true;
-        console.log('OSLAY v1.0.0 initialized');
+        console.log('OSLAY initialized');
       } else {
         $.when(
           this.loadConfig('config/app.json'),
@@ -70,7 +72,7 @@ layui.define(['jquery', 'routerModule', 'themeModule', 'sidebarComp', 'tabsComp'
           self.initModules();
           self.initialized = true;
           
-          console.log('OSLAY v1.0.0 initialized');
+          console.log('OSLAY initialized');
         }).fail(function(error) {
           console.error('Failed to load config:', error);
         });
@@ -330,7 +332,54 @@ layui.define(['jquery', 'routerModule', 'themeModule', 'sidebarComp', 'tabsComp'
         item.read = true;
       });
       this.renderNotifications();
-      layer.msg('已全部标记为已读', { icon: 1, time: 1500 });
+      // layer.msg('已全部标记为已读', { icon: 1, time: 1500 });
+      toast.success('已全部标记为已读');
+    },
+
+    handleLogout: function() {
+      var self = this;
+      
+      var logoutConfig = this.appConfig && this.appConfig.logout ? this.appConfig.logout : {};
+      
+      if (logoutConfig.enabled === false) {
+        toast.success('已退出登录', { time: 1500 });
+        setTimeout(function() {
+          window.location.href = 'login.html';
+        }, 1500);
+        return;
+      }
+      
+      var logoutUrl = logoutConfig.url || 'view/data/logout.json';
+      var method = logoutConfig.method || 'POST';
+      var cache = logoutConfig.cache !== undefined ? logoutConfig.cache : false;
+      
+      var loadingIndex = layer.load(2, { shade: [0.1, '#fff'] });
+      
+      $.ajax({
+        url: this.resolveUrl(logoutUrl),
+        type: method,
+        dataType: 'json',
+        cache: cache
+      }).done(function(response) {
+        layer.close(loadingIndex);
+        
+        if (response.code === 0) {
+          toast.success(response.msg || '退出成功', { time: 1500 });
+          
+          setTimeout(function() {
+            if (response.data && response.data.redirect) {
+              window.location.href = response.data.redirect;
+            } else {
+              window.location.href = 'login.html';
+            }
+          }, 1500);
+        } else {
+          toast.error(response.msg || '退出失败', { time: 2000 });
+        }
+      }).fail(function(xhr, status, error) {
+        layer.close(loadingIndex);
+        toast.error('退出请求失败，请稍后重试', { time: 2000 });
+      });
     },
 
     handleRouteChange: function(routeInfo) {
@@ -780,7 +829,7 @@ layui.define(['jquery', 'routerModule', 'themeModule', 'sidebarComp', 'tabsComp'
             btn: ['确定', '取消']
           }, function(index) {
             layer.close(index);
-            layer.msg('已退出登录');
+            self.handleLogout();
           });
         } else if (action === 'settings') {
           router.navigateByCode('view/user-profile');
@@ -807,6 +856,94 @@ layui.define(['jquery', 'routerModule', 'themeModule', 'sidebarComp', 'tabsComp'
       $('#markAllRead').on('click', function() {
         self.markAllNotificationsRead();
       });
+
+      // 自定义固定条
+      util.fixbar({
+        // bars: [{
+        //   type: 'menu',
+        //   icon: 'layui-icon-spread-left',
+        //   style: 'display: none;'
+        // }],
+        css: {right: 18, bottom: 18},
+        default: true,
+        scroll: '#contentWrapper',
+        bgcolor: '',
+        margin: 200,
+        duration: 300,
+        on: {
+          mouseenter: function(type) {
+            var tips = {
+              menu: '菜单',
+              top: '回到顶部'
+            };
+            // layer.tips(tips[type] || type, this, {
+            //   tips: 4,
+            //   fixed: true
+            // });
+          },
+          mouseleave: function(type) {
+            layer.closeAll('tips');
+          }
+        },
+        click: function(type) {
+          if (type === 'menu') {
+            self.toggleMobileSidebar();
+          } else if (type === 'top') {
+            $('#contentWrapper').animate({
+              scrollTop: 0
+            }, 300);
+          }
+        }
+      });
+
+      this.initMobileMenuButton();
+    },
+
+    initMobileMenuButton: function() {
+      var self = this;
+      var $menuBar = $('.layui-fixbar').find('[lay-type="menu"]');
+
+      if ($menuBar.length && window.innerWidth <= 768) {
+        $menuBar.css('display', 'flex');
+      }
+
+      $(window).on('resize', function() {
+        var $bar = $('.layui-fixbar').find('[lay-type="menu"]');
+        if ($bar.length) {
+          if (window.innerWidth <= 768) {
+            $bar.css('display', 'flex');
+          } else {
+            $bar.css('display', 'none');
+          }
+        }
+      });
+    },
+
+    toggleMobileSidebar: function() {
+      var $sidebar = $('#sidebar');
+      var $overlay = $('#sidebarOverlay');
+      var $menuBar = $('.layui-fixbar').find('[lay-type="menu"]');
+
+      if ($sidebar.hasClass('mobile-open')) {
+        this.closeMobileSidebar();
+      } else {
+        $sidebar.addClass('mobile-open');
+        $overlay.addClass('show');
+        if ($menuBar.length) {
+          $menuBar.addClass('layui-fixbar-active');
+        }
+      }
+    },
+
+    closeMobileSidebar: function() {
+      $('#sidebar').removeClass('mobile-open');
+      $('#sidebarOverlay').removeClass('show');
+      var $menuBar = $('.layui-fixbar').find('[lay-type="menu"]');
+      if ($menuBar.length) {
+        $menuBar.removeClass('layui-fixbar-active');
+      }
+      $('.submenu.open').removeClass('open');
+      $('.menu-item.expanded').removeClass('expanded');
     }
   };
 

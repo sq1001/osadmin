@@ -26,7 +26,7 @@
   --sidebar-collapsed: 64px;
   --submenu-width: 180px;
   --topbar-height: 50px;
-  --tabs-height: 40px;
+  --tabs-height: 41px;
 }
 
 .sidebar-collapsed-init .layui-sidebar {
@@ -143,7 +143,7 @@ body {
   top: 0;
   bottom: 0;
   z-index: 1001;
-  transition: transform 0.3s ease, width 0.25s ease;
+  transition: transform 0.25s ease, width 0.25s ease;
   display: flex;
   flex-direction: column;
   border-right: 1px solid rgba(255, 255, 255, 0.05);
@@ -702,8 +702,8 @@ body {
 
 .layui-mobile-menu-fab {
   position: fixed;
-  left: 16px;
-  bottom: 16px;
+  left: 18px;
+  bottom: 18px;
   width: 52px;
   height: 52px;
   background: linear-gradient(135deg, var(--accent), var(--accent-hover));
@@ -733,15 +733,20 @@ body {
   transform: rotate(90deg);
 }
 
+.layui-fixbar{
+  z-index: 999;
+}
+
 .layui-main-wrapper {
   flex: 1;
   margin-left: var(--sidebar-width);
-  transition: margin-left 0.25s ease;
   display: flex;
   flex-direction: column;
   min-width: 0;
   height: 100vh;
   overflow: hidden;
+  /* transform: translateX(0); */
+  transition: transform 0.25s ease;
 }
 
 .layui-sidebar.collapsed ~ .layui-main-wrapper {
@@ -749,14 +754,15 @@ body {
 }
 
 .layui-main-wrapper.submenu-expanded {
-  margin-left: calc(var(--sidebar-width) + var(--submenu-width));
+  transform: translateX(var(--submenu-width));
 }
 
 .layui-sidebar.collapsed ~ .layui-main-wrapper.submenu-expanded {
-  margin-left: calc(var(--sidebar-collapsed) + var(--submenu-width));
+  margin-left: var(--sidebar-collapsed);
 }
 
 .layui-topbar {
+  z-index: 1001;
   height: var(--topbar-height);
   background: var(--card-bg);
   border-bottom: 1px solid var(--border);
@@ -985,6 +991,7 @@ body {
 .layui-tabs-container {
   display: flex;
   align-items: center;
+  z-index: 1000;
   background: var(--card-bg);
   border-bottom: 1px solid var(--border);
   height: var(--tabs-height);
@@ -1117,7 +1124,7 @@ body {
   justify-content: center;
   border-radius: 3px;
   transition: all 0.15s ease;
-  margin-left: 2px;
+  /* margin-left: 2px; */
   flex-shrink: 0;
 }
 
@@ -1131,7 +1138,19 @@ body {
 }
 
 .layui-tabs-bar .layui-icon {
-  all: unset;
+  position: unset !important;
+  /* left: unset !important; */
+  /* top: unset !important; */
+  /* z-index: unset !important; */
+  width: unset !important;
+  /* height: unset !important; */
+  line-height: unset !important;
+  border: unset !important;
+  text-align: unset !important;
+  /* cursor: unset !important; */
+  box-sizing: unset !important;
+  background-color: unset !important;
+  box-shadow: unset !important;
 }
 
 .layui-tabs-actions {
@@ -1298,6 +1317,7 @@ body {
 
   .layui-main-wrapper.submenu-expanded {
     margin-left: 0 !important;
+    transform: translateX(0) !important;
   }
 
   .layui-sidebar-footer {

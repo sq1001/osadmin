@@ -88,5 +88,11 @@
     "url": "view/data/userinfo.json",
     "method": "GET",
     "cache": false
+  },
+  "logout": {
+    "enabled": true,
+    "url": "view/data/logout.json",
+    "method": "POST",
+    "cache": false
   }
 }

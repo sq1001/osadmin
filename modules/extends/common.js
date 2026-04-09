@@ -34,7 +34,7 @@ layui.define(['jquery', 'element', 'table'], function(exports) {
 		/**
 		 * 当前是否为与移动端
 		 * */
-		this.isModile = function(){
+		this.isMobile = function(){
 			if ($(window).width() <= 768) {
 				return true;
 			}

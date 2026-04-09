@@ -16,7 +16,7 @@ function toggleSearchFormShow()
             toggle();
         });
     }
-    let countPerRow = parseInt($('.top-search-from').width()/$('.layui-form-item').width());
+    let countPerRow = Math.max(2, parseInt($('.top-search-from').width()/$('.layui-form-item').width()));
     if (items.length <= countPerRow) {
         return;
     }

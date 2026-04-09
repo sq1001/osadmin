@@ -1,48 +1,3 @@
-
-
-/* 竖版表单 */
-.layui-form-item-column {
-    display: flex;
-    flex-direction: column;
-}
-.layui-form-item-column .layui-input-block {
-    margin: 0;
-    padding: 0px 15px;
-}
-.layui-form-item-column .layui-form-label {
-    width: 100%;
-    text-align: left;
-}
-.layui-form-item-column .layui-word-aux {
-    margin: 0 15px;
-    font-size: 12px;
-}
-
-/* 输入框后置提示图标 */
-.layui-input-prefix-icon {
-    position: absolute; 
-    right: -25px;
-    top: 50%;
-    transform: translateY(-50%);
-    cursor: pointer;
-}
-
-.layui-form-label.required:after {
-    content: "*";
-    color: red;
-    display: inline-block;
-    padding: 7px 5px;
-    line-height: 20px;
-    text-align: right;
-    position: absolute;
-    right: 0;
-    top: 5px;
-}
-
-.layui-bg-green {
-    background-color: #36b368 !important;
-}
-
 a {
     cursor: pointer;
 }
@@ -95,7 +50,7 @@ a {
     margin-right: 7px;
 }
 .top-search-from .layui-form-label {
-    width: 60px;
+    width: 85px;
     white-space: nowrap;
 }
 .top-search-from .inline-block {
@@ -104,6 +59,18 @@ a {
 }
 .top-search-from .layui-form-item {
     width: 370px;
+}
+.top-search-from .date-range {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+.top-search-from .date-range .layui-input {
+    width: 120px;
+}
+.top-search-from .date-separator {
+    color: var(--text-muted, #999);
+    flex-shrink: 0;
 }
 .top-search-from .toggle-btn {
     text-align: center;
@@ -116,8 +83,14 @@ a {
     color: #333;
 }
 @media screen and (max-width:768px) {
+    .top-search-from .layui-form-label {
+        width: 80px;
+    }
     .top-search-from .layui-input {
         max-width: 234px;
+    }
+    .top-search-from .date-range .layui-input {
+        width: 102px;
     }
     .top-search-from .layui-input.inline-block {
         max-width: 110px;
@@ -144,117 +117,294 @@ a {
     margin-bottom: 16px;
 }
 
-/* 日期范围 */
-.date-range {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-}
-.date-range .layui-input {
-    width: 128px;
-}
-.date-separator {
-    color: var(--text-muted, #999);
-    flex-shrink: 0;
-}
-
 /* 主表单容器 */
-.main-form .mainBox {
-    padding-bottom: 0;
+.main-form {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
 }
 
-.main-form .main-container {
+.main-form .main-box {
+    flex: 1;
+    overflow-y: auto;
     background: var(--card-bg, #fff);
-    border-radius: 8px;
-    border: 1px solid var(--border, #e6e6e6);
+    /* border-radius: 8px; */
+    /* border: 1px solid var(--border, #e6e6e6); */
+}
+
+/* 竖版表单 */
+.main-form .column {
+    display: flex;
+    flex-direction: column;
+}
+.main-form .column .layui-input-block {
+    margin: 0;
+    padding: 0px 15px;
+}
+.main-form .column .layui-form-label {
+    width: 100%;
+    text-align: left;
     overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+.main-form .column .layui-word-aux {
+    margin: 0 15px;
+    font-size: 12px;
 }
 
 /* 表单区块 */
-.form-section {
-    padding: 0;
-}
-
-.form-section-header {
-    padding: 16px 20px;
+.main-form .form-section {
+    margin-bottom: 0;
     border-bottom: 1px solid var(--border, #e6e6e6);
-    background: var(--bg-content, #fafafa);
 }
 
-.form-section-title {
-    font-size: 15px;
+.main-form .form-section:last-child {
+    border-bottom: none;
+}
+
+.main-form .form-section-header {
+    padding: 14px 20px;
+    border-bottom: 1px solid var(--border, #e6e6e6);
+}
+
+.main-form .form-section-title {
+    font-size: 14px;
     font-weight: 600;
     color: var(--text-primary, #333);
     position: relative;
     padding-left: 12px;
 }
 
-.form-section-title::before {
+.main-form .form-section-title::before {
     content: '';
     position: absolute;
     left: 0;
     top: 50%;
     transform: translateY(-50%);
     width: 3px;
-    height: 16px;
+    height: 14px;
     background: var(--accent, #16baaa);
     border-radius: 2px;
 }
 
-.form-section-body {
-    padding: 20px;
+.main-form .form-section-body {
+    padding: 16px 20px;
 }
 
-/* 表单底部占位 */
-.form-footer-placeholder {
-    height: 80px;
+/* 表单项优化 */
+.main-form .layui-form-item {
+    margin-bottom: 16px;
 }
 
-/* 固定底部按钮 */
-.main-form .bottom {
-    position: fixed;
-    bottom: 0;
-    left: var(--sidebar-width, 220px);
+.main-form .layui-form-item:last-child {
+    margin-bottom: 0;
+}
+
+.main-form .layui-form-label {
+    width: 100px;
+    padding: 9px 12px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.main-form .column .layui-form-label {
+    padding: 9px 15px;
+}
+
+.main-form .layui-input-block {
+    margin-left: 100px;
+    margin-right: 9px;
+}
+
+/* 输入框后置提示图标 */
+.main-form .layui-input-prefix-icon {
+    position: absolute; 
+    font-size: 14px;
+    right: -11px;
+    top: 50%;
+    transform: translateY(-50%);
+    cursor: pointer;
+}
+
+.main-form .column .layui-input-prefix-icon {
+    position: absolute; 
+    font-size: 14px;
+    right: -5px;
+    top: 56.5px;
+    /* top: 50%;
+    transform: translateY(-50%); */
+    cursor: pointer;
+}
+
+.main-form .layui-form-label.required:after {
+    content: "*";
+    color: red;
+    display: inline-block;
+    padding: 7px 5px;
+    line-height: 20px;
+    text-align: right;
+    position: absolute;
     right: 0;
+    top: 5px;
+}
+
+.main-form .column .layui-form-label.required:before {
+    content: "*";
+    color: red;
+    display: inline-block;
+    padding: 7px 5px;
+    line-height: 20px;
+    text-align: right;
+    position: absolute;
+    left: 0;
+    top: 5px;
+}
+.main-form .column .layui-form-label.required:after {
+    all: unset;
+}
+
+/* 双列布局 */
+.main-form .form-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0 24px;
+}
+
+.main-form .form-row .layui-form-item {
+    flex: 1 ;
+    min-width: 280px;
+}
+
+/* 三列布局 */
+.main-form .form-row-3 {
+    flex-wrap: wrap;
+    gap: 0 16px;
+}
+
+.main-form .form-row-3 .layui-form-item {
+    flex: 1;
+    min-width: 200px;
+}
+
+/* 日期范围 */
+.main-form .date-range {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.main-form .date-range .layui-input {
+    width: 140px;
+}
+
+.main-form .date-separator {
+    color: var(--text-muted, #999);
+    flex-shrink: 0;
+}
+
+/* xmSelect 样式 */
+.main-form .xm-select-parent {
+    width: 100%;
+}
+
+.main-form .xm-select-parent .xm-select {
+    min-height: 38px;
+}
+
+/* 文本域 */
+.main-form .layui-textarea {
+    min-height: 100px;
+    resize: vertical;
+}
+
+/* 固定底部按钮 - 在表单容器内 */
+.main-form .main-form-footer-box {
+    flex-shrink: 0;
+    position: relative;
+    bottom: 0;
     background: var(--card-bg, #fff);
     border-top: 1px solid var(--border, #e6e6e6);
-    padding: 16px 24px;
-    z-index: 999;
-    transition: left 0.3s ease;
+    padding: 12px 20px;
+    border-radius: 0 0 8px 8px;
 }
 
-.button-container {
+.main-form .main-form-footer-box .button-group {
     display: flex;
     justify-content: flex-end;
     gap: 12px;
 }
 
-.button-container .layui-btn {
-    min-width: 100px;
+.main-form .main-form-footer-box .button-group .layui-btn {
+    min-width: 80px;
+}
+
+/* 表单提示文字 */
+.main-form .form-tip {
+    font-size: 12px;
+    color: var(--text-muted, #999);
+    margin-top: 4px;
+}
+
+/* 表单分隔线 */
+.main-form .form-divider {
+    height: 1px;
+    background: var(--border, #e6e6e6);
+    margin: 16px 0;
 }
 
 /* 响应式 */
 @media screen and (max-width: 992px) {
-    .main-form .bottom {
-        left: 0;
+    .main-form .form-row,
+    .main-form .form-row-3 {
+        flex-direction: column;
+        gap: 0;
+    }
+    
+    .main-form .form-row .layui-form-item,
+    .main-form .form-row-3 .layui-form-item {
+        min-width: 100%;
+    }
+}
+
+@media screen and (max-width:768px) {
+    .main-form .layui-form-item:last-child {
+        margin-bottom: 16px;
+    }
+    .main-form .layui-form-label {
+        width: 80px;
+    }
+    .main-form .layui-input-block {
+        margin-left: 80px;
+    }
+    .main-form .date-range .layui-input {
+        width: 100%;
+        flex: 1;
+    }
+    .main-form .form-section-body {
+        padding: 12px 16px;
     }
 }
 
 /* 深色模式 */
-[data-theme="dark"] .main-form .main-container {
+[data-theme="dark"] .main-form .main-box {
     background: var(--card-bg);
     border-color: var(--border);
 }
 
-[data-theme="dark"] .form-section-header {
+[data-theme="dark"] .main-form .form-section-header {
     background: var(--bg-content);
     border-color: var(--border);
 }
 
-[data-theme="dark"] .main-form .bottom {
+[data-theme="dark"] .main-form .form-section {
+    border-color: var(--border);
+}
+
+[data-theme="dark"] .main-form .main-form-footer-box {
     background: var(--card-bg);
     border-color: var(--border);
 }
 
 /** 综合表单样式 End **/
-

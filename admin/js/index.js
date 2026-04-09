@@ -1,15 +1,25 @@
 /**
- * OS Admin - 全局 JS 入口
- * 自动加载所有模块并初始化应用
+ * OS Admin - 统一入口脚本
+ * 自动检测环境，适配主页面和独立页面
+ * 
+ * 使用场景：
+ * 1. 主页面：完整初始化（加载配置、创建 OSLAY、初始化应用）
+ * 2. iframe/新窗口：仅配置 LayUI（不初始化应用）
  */
 (function(window, document) {
   'use strict';
 
+  // 防止重复初始化
+  if (window.__OSLAY_INITIALIZED__) {
+    return;
+  }
+
+  // ========== 基础配置 ==========
   var script = document.currentScript || document.scripts[document.scripts.length - 1];
   var scriptSrc = script.src;
-
   var scriptPath = scriptSrc.substring(0, scriptSrc.lastIndexOf('/') + 1);
 
+  // 计算 baseUrl
   var baseUrl = (function() {
     if (window.__OSLAY_BASE_URL__ !== undefined) {
       return window.__OSLAY_BASE_URL__;
@@ -25,6 +35,60 @@
     return pathParts.join('/') + '/';
   })();
 
+  // LayUI 模块配置（主页面和独立页面共用）
+  var layuiModules = {
+    routerModule: 'modules/common/router',
+    themeModule: 'modules/common/theme',
+    permissionModule: 'modules/common/permission',
+    resourceLoader: 'modules/common/resource-loader',
+    componentRenderer: 'modules/common/component-renderer',
+    sidebarComp: 'modules/components/sidebar',
+    tabsComp: 'modules/components/tabs',
+    commonMod: 'modules/extends/common',
+    countMod: 'modules/extends/count',
+    echartsMod: 'modules/extends/echarts',
+    xmSelectMod: 'modules/extends/xm-select',
+    toastMod: 'modules/extends/toast',
+    drawerMod: 'modules/extends/drawer',
+    appMain: 'modules/app'
+  };
+
+  // ========== 基础初始化（所有页面都执行） ==========
+  if (layui && layui.config) {
+    layui.config({
+      base: baseUrl,
+      version: true
+    }).extend(layuiModules);
+
+    window.__OSLAY_BASE_URL__ = baseUrl;
+    window.__OSLAY_INITIALIZED__ = true;
+  }
+
+  // ========== 检测页面类型 ==========
+  // 判断是否为独立页面（iframe、新窗口、弹窗）
+  var isStandalonePage = (function() {
+    // 1. 在 iframe 中
+    if (window.self !== window.top) {
+      return true;
+    }
+    // 2. 有 data-standalone 属性
+    if (script.hasAttribute('data-standalone')) {
+      return true;
+    }
+    // 3. URL 参数指定
+    if (window.location.search.indexOf('__standalone__=1') !== -1) {
+      return true;
+    }
+    return false;
+  })();
+
+  // 独立页面：只配置 LayUI，不初始化应用
+  if (isStandalonePage) {
+    console.log('[OSLAY] 独立页面模式，baseUrl:', baseUrl);
+    return;
+  }
+
+  // ========== 主页面完整初始化 ==========
   var readyCallbacks = [];
   var isReady = false;
 
@@ -34,8 +98,9 @@
     debug: false,
     baseUrl: baseUrl,
     scriptPath: scriptPath,
-
     modules: {},
+    appConfig: null,
+    menuConfig: null,
 
     init: function() {
       var self = this;
@@ -56,42 +121,22 @@
           cache: false
         }).done(function(menuConfig) {
           self.menuConfig = menuConfig;
-          self.initModules();
+          self.initApp();
         }).fail(function() {
           console.error('[OSLAY] Failed to load menu config');
           self.menuConfig = [];
-          self.initModules();
+          self.initApp();
         });
       }).fail(function() {
         console.error('[OSLAY] Failed to load app config');
         self.appConfig = {};
         self.menuConfig = [];
-        self.initModules();
+        self.initApp();
       });
     },
 
-    initModules: function() {
+    initApp: function() {
       var self = this;
-
-      layui.config({
-        base: baseUrl
-      }).extend({
-        routerModule: 'modules/common/router',
-        themeModule: 'modules/common/theme',
-        permissionModule: 'modules/common/permission',
-        resourceLoader: 'modules/common/resource-loader',
-        componentRenderer: 'modules/common/component-renderer',
-        sidebarComp: 'modules/components/sidebar',
-        tabsComp: 'modules/components/tabs',
-        commonMod: 'modules/extends/common',
-        countMod: 'modules/extends/count',
-        echartsMod: 'modules/extends/echarts',
-        xmSelectMod: 'modules/extends/xm-select',
-        toastMod: 'modules/extends/toast',
-        drawerMod: 'modules/extends/drawer',
-        laydrawer: 'modules/extends/laydrawer',
-        appMain: 'modules/app'
-      });
 
       layui.use(['appMain', 'permissionModule', 'componentRenderer'], function() {
         var app = layui.appMain;
@@ -104,59 +149,38 @@
         
         permission.init(permissionConfig).then(function() {
           app.init();
-          
-          self.modules = {
-            router: layui.routerModule,
-            theme: layui.themeModule,
-            sidebar: layui.sidebarComp,
-            tabs: layui.tabsComp,
-            common: layui.commonMod,
-            count: layui.countMod,
-            echarts: layui.echartsMod,
-            xmSelect: layui.xmSelectMod,
-            toast: layui.toastMod,
-            permission: permission,
-            resourceLoader: layui.resourceLoader,
-            app: layui.appMain
-          };
-
+          self.registerModules();
           isReady = true;
           self.triggerReady();
 
           if (self.debug) {
             console.log('[' + self.name + '] v' + self.version + ' initialized');
-            console.log('baseUrl:', baseUrl);
-            console.log('Modules:', self.modules);
           }
         }).catch(function(err) {
           console.error('[OSLAY] Permission initialization failed:', err);
           app.init();
-          
-          self.modules = {
-            router: layui.routerModule,
-            theme: layui.themeModule,
-            sidebar: layui.sidebarComp,
-            tabs: layui.tabsComp,
-            common: layui.commonMod,
-            count: layui.countMod,
-            echarts: layui.echartsMod,
-            xmSelect: layui.xmSelectMod,
-            toast: layui.toastMod,
-            permission: permission,
-            resourceLoader: layui.resourceLoader,
-            app: layui.appMain
-          };
-
+          self.registerModules();
           isReady = true;
           self.triggerReady();
-
-          if (self.debug) {
-            console.log('[' + self.name + '] v' + self.version + ' initialized (permission failed)');
-            console.log('baseUrl:', baseUrl);
-            console.log('Modules:', self.modules);
-          }
         });
       });
+    },
+
+    registerModules: function() {
+      this.modules = {
+        router: layui.routerModule,
+        theme: layui.themeModule,
+        sidebar: layui.sidebarComp,
+        tabs: layui.tabsComp,
+        common: layui.commonMod,
+        count: layui.countMod,
+        echarts: layui.echartsMod,
+        xmSelect: layui.xmSelectMod,
+        toast: layui.toastMod,
+        permission: layui.permissionModule,
+        resourceLoader: layui.resourceLoader,
+        app: layui.appMain
+      };
     },
 
     ready: function(callback) {
@@ -200,6 +224,7 @@
 
   window.OSLAY = App;
 
+  // 启动主页面初始化
   layui.use(['jquery'], function() {
     App.init();
   });

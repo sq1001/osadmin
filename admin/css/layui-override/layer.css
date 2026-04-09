@@ -1,0 +1,52 @@
+/* Drawer Animations - 覆盖layer原生slide动画 */
+.layui-layer.layer-anim-slide-left {
+  animation: layerDrawerSlideRight 0.3s ease-out forwards !important;
+}
+
+.layui-layer.layer-anim-slide-right {
+  animation: layerDrawerSlideLeft 0.3s ease-out forwards !important;
+}
+
+.layui-layer.layer-anim-slide-down {
+  animation: layerDrawerSlideTop 0.3s ease-out forwards !important;
+}
+
+.layui-layer.layer-anim-slide-up {
+  animation: layerDrawerSlideBottom 0.3s ease-out forwards !important;
+}
+
+@keyframes layerDrawerSlideRight {
+  from {
+    transform: translateX(100%);
+  }
+  to {
+    transform: translateX(0);
+  }
+}
+
+@keyframes layerDrawerSlideLeft {
+  from {
+    transform: translateX(-100%);
+  }
+  to {
+    transform: translateX(0);
+  }
+}
+
+@keyframes layerDrawerSlideTop {
+  from {
+    transform: translateY(-100%);
+  }
+  to {
+    transform: translateY(0);
+  }
+}
+
+@keyframes layerDrawerSlideBottom {
+  from {
+    transform: translateY(100%);
+  }
+  to {
+    transform: translateY(0);
+  }
+}
