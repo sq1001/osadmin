@@ -1787,6 +1787,72 @@ var Module = {
 
 ## 🔄 更新日志
 
+### v1.4.0 (2026-04-09)
+
+#### 新增功能
+
+##### LayDrawer 抽屉组件重构
+- 重构抽屉组件，基于 `layer.open` 封装，参数与 `layer.open` 完全兼容
+- 新增 `container` 配置，支持挂载到任意容器（不再局限于 body）
+- 新增 `placement` 配置，支持四个方向：`right`、`left`、`top`、`bottom`
+- 新增快捷方法：`drawerMod.right()`、`drawerMod.left()`、`drawerMod.top()`、`drawerMod.bottom()`
+- 支持最小化、最大化、还原功能
+- 支持拖拽移动（限制在容器范围内）
+- 支持窗口 resize 时自动调整位置
+- 支持路由切换时自动关闭所有抽屉
+
+##### 退出登录功能
+- 新增 `handleLogout` 方法，支持配置化退出登录
+- 支持自定义退出登录 URL、请求方法、缓存策略
+- 集成 `toastMod` 提示组件，优化用户反馈体验
+- 支持退出成功后自定义跳转地址
+
+##### 新增文件
+- `admin/js/layui-init.js` - LayUI 独立页面初始化脚本，用于 iframe 弹窗、新窗口等场景
+- `admin/css/layui-override/layer.css` - LayUI layer 组件覆盖样式
+- `view/components/form-open-test.html` - 表单组件测试页面
+- `view/data/logout.json` - 退出登录模拟数据
+
+#### 功能优化
+
+##### 表单样式优化
+- 优化搜索表单布局，调整标签宽度为 85px
+- 新增日期范围选择器样式 `.date-range`
+- 优化表单间距和布局一致性
+
+##### 代码优化
+- 删除冗余文件 `laydrawer.js`，统一使用 `drawer.js`
+- 删除冗余示例页面 `drawer-demo.html`、`drawer-demo1.html`
+- 优化 `laydrawer-demo.html` 示例代码
+- 净减少约 1100 行代码，提升代码可维护性
+
+#### 配置更新
+
+##### app.json 新增配置项
+```json
+{
+  "logout": {
+    "enabled": true,
+    "url": "view/data/logout.json",
+    "method": "POST",
+    "cache": false
+  }
+}
+```
+
+#### 技术细节
+
+##### LayDrawer 与 layer.open 的 fixed 差异
+- LayDrawer 在非 body 容器场景下强制使用 `position: fixed` 定位
+- 确保抽屉始终贴合容器边界，不会随容器滚动而移动
+- 移除 `defaults` 中的 `fixed: false` 配置项，避免误导
+
+#### 文件变更统计
+- 修改文件：17 个
+- 新增代码：+1,535 行
+- 删除代码：-2,631 行
+- 净减少：1,096 行
+
 ### v1.3.0 (2026-04-04)
 
 #### 新增功能
