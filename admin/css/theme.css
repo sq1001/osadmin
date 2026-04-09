@@ -644,43 +644,6 @@
   visibility: visible;
 }
 
-.layui-toast {
-  position: fixed;
-  top: 20px;
-  left: 50%;
-  transform: translateX(-50%) translateY(-100px);
-  background: var(--card-bg);
-  border: 1px solid var(--border);
-  border-radius: 8px;
-  padding: 12px 20px;
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.15);
-  z-index: 3000;
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  font-size: 13px;
-  color: var(--text-primary);
-  opacity: 0;
-  transition: all 0.3s ease;
-}
-
-.layui-toast.show {
-  opacity: 1;
-  transform: translateX(-50%) translateY(0);
-}
-
-.layui-toast.success {
-  border-color: var(--success);
-}
-
-.layui-toast.success .layui-toast-icon {
-  color: var(--success);
-}
-
-.layui-toast-icon {
-  font-size: 18px;
-}
-
 @media (max-width: 768px) {
   .layui-theme-config-panel {
     width: 100%;

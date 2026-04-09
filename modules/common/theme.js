@@ -2,11 +2,12 @@
  * 主题模块
  * 管理主题模式、颜色、布局、水印、语言等配置
  */
-layui.define(['jquery', 'layer'], function(exports) {
+layui.define(['jquery', 'layer', 'form'], function(exports) {
   'use strict';
 
   var $ = layui.jquery;
   var layer = layui.layer;
+  var form = layui.form;
   var appConfig = null;
 
   var Theme = {
@@ -323,6 +324,7 @@ layui.define(['jquery', 'layer'], function(exports) {
         this.updateConfigPanel();
         $panel.addClass('show');
         $overlay.addClass('show');
+        form.render('select');
       }
     },
 
@@ -390,8 +392,8 @@ layui.define(['jquery', 'layer'], function(exports) {
         self.previewWatermark($(this).prop('checked'));
       });
 
-      $(document).on('change', '#pageAnimationSelect', function() {
-        self.previewPageAnimation($(this).val());
+      form.on('select(pageAnimation)', function(data) {
+        self.previewPageAnimation(data.value);
       });
     },
 

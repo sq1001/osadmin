@@ -266,12 +266,14 @@
             <span class="config-item-label">切换效果</span>
             <span class="config-item-desc">页面切换时的动画效果</span>
           </div>
-          <select class="theme-config-select" id="pageAnimationSelect">
-            <option value="fadeIn">渐显</option>
-            <option value="slideDown">顶部往下</option>
-            <option value="slideLeft">从右往左</option>
-            <option value="slideRight">从左往右</option>
-          </select>
+          <div class="layui-form">
+            <select class="theme-config-select" id="pageAnimationSelect" lay-filter="pageAnimation">
+              <option value="fadeIn">渐显</option>
+              <option value="slideDown">顶部往下</option>
+              <option value="slideLeft">从右往左</option>
+              <option value="slideRight">从左往右</option>
+            </select>
+          </div>
         </div>
       </div>
     </div>
@@ -283,11 +285,6 @@
         <i class="layui-icon layui-icon-ok"></i>保存
       </button>
     </div>
-  </div>
-
-  <div class="layui-toast" id="toast">
-    <i class="layui-icon layui-icon-ok-circle layui-toast-icon"></i>
-    <span id="toastText">保存成功</span>
   </div>
 
   <script src="lib/layui/layui.js"></script>

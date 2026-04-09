@@ -513,11 +513,11 @@ layui.define(['jquery', 'util', 'routerModule', 'themeModule', 'sidebarComp', 't
     showLoading: function() {
       var $wrapper = $('#contentWrapper');
       $wrapper.removeClass('page-anim-fadeIn page-anim-slideDown page-anim-slideLeft page-anim-slideRight');
-      $wrapper.html('<div class="layui-loading"><i class="layui-icon layui-icon-loading layui-anim layui-anim-rotate layui-anim-loop"></i><span>加载中...</span></div>');
+      $wrapper.html('<div class="page-loading"><i class="layui-icon layui-icon-loading layui-anim layui-anim-rotate layui-anim-loop"></i></div>');
     },
 
     hideLoading: function() {
-      $('#contentWrapper .layui-loading').remove();
+      $('#contentWrapper .page-loading').remove();
     },
 
     showContent: function(content) {

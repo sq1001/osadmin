@@ -351,6 +351,21 @@ layui.define(['jquery', 'layer', 'themeModule', 'routerModule', 'commonMod'], fu
           self.closeAllNestedDropdowns();
         }
       });
+
+      $(window).on('resize', function() {
+        var isMobile = window.innerWidth <= 768;
+        if (isMobile) {
+          if (self.collapsed) {
+            self.collapsed = false;
+            $('#sidebar').removeClass('collapsed');
+          }
+          self.hideSubmenuPanel();
+          self.hideDropdownMenu();
+          self.closeAllNestedDropdowns();
+        } else {
+          self.closeMobileSidebar();
+        }
+      });
     },
 
     handleMenuClick: function(menuId, itemType, href, openType, isExternal, $el, level) {
@@ -406,7 +421,7 @@ layui.define(['jquery', 'layer', 'themeModule', 'routerModule', 'commonMod'], fu
           title: ' ',
           content: href,
           closeBtn: 1,
-          area: [common.isModile()?"100%":"550px", common.isModile()?"100%":"600px"],
+          area: [common.isMobile()?"100%":"550px", common.isMobile()?"100%":"600px"],
           shadeClose: true,
           maxmin: true
         });
@@ -450,7 +465,6 @@ layui.define(['jquery', 'layer', 'themeModule', 'routerModule', 'commonMod'], fu
       $('#submenuPanelTitle').text(menu.title);
       $('#submenuPanelContent').html(html);
       $('#submenuPanel').addClass('show');
-      $('#mainWrapper').addClass('submenu-expanded');
       
       this.currentSubmenuPanel = menuId;
       
@@ -619,7 +633,6 @@ layui.define(['jquery', 'layer', 'themeModule', 'routerModule', 'commonMod'], fu
       $('#submenuPanel').removeClass('show');
       $('#submenuPanelTitle').text('');
       $('#submenuPanelContent').html('');
-      $('#mainWrapper').removeClass('submenu-expanded');
       this.currentSubmenuPanel = null;
     },
 
@@ -843,6 +856,7 @@ layui.define(['jquery', 'layer', 'themeModule', 'routerModule', 'commonMod'], fu
 
       var self = this;
       var state = theme.getState();
+      var isMobile = window.innerWidth <= 768;
       
       this.collapsed = $('#sidebar').hasClass('collapsed');
       
@@ -867,7 +881,10 @@ layui.define(['jquery', 'layer', 'themeModule', 'routerModule', 'commonMod'], fu
 
       var panelShown = false;
       
-      if (state.layout === 'double' && menuPath.length > 0 && $triggerItem) {
+      if (isMobile) {
+        this.setActiveItems(pageId, menuPath, state);
+      }
+      else if (state.layout === 'double' && menuPath.length > 0 && $triggerItem) {
         if (this.currentSubmenuPanel !== topItemId) {
           this.showSubmenuPanel(topItemId, $triggerItem, pageId);
           panelShown = true;
@@ -900,14 +917,17 @@ layui.define(['jquery', 'layer', 'themeModule', 'routerModule', 'commonMod'], fu
         }
       });
 
-      if (state.layout === 'dropdown' && !this.collapsed && menuPath.length > 1) {
-        var firstItemId = menuPath[0].id !== undefined ? menuPath[0].id : menuPath[0].code;
-        var $parentItem = $('.menu-item[data-id="' + firstItemId + '"]');
-        if ($parentItem.length && menuPath.length > 1) {
-          $parentItem.addClass('expanded');
-          var $submenu = $parentItem.next('.submenu');
-          if ($submenu.length) {
-            $submenu.addClass('open');
+      var isMobile = window.innerWidth <= 768;
+      if ((state.layout === 'dropdown' && !this.collapsed) || isMobile) {
+        if (menuPath.length > 1) {
+          var firstItemId = menuPath[0].id !== undefined ? menuPath[0].id : menuPath[0].code;
+          var $parentItem = $('.menu-item[data-id="' + firstItemId + '"]');
+          if ($parentItem.length) {
+            $parentItem.addClass('expanded');
+            var $submenu = $parentItem.next('.submenu');
+            if ($submenu.length) {
+              $submenu.addClass('open');
+            }
           }
         }
       }
