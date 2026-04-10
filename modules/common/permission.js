@@ -50,7 +50,7 @@ layui.define(['jquery'], function(exports) {
 
     applyPermissions: function() {
       if (this.isSuperAdmin) {
-        $("head").append("<style>*[permission]{display: initial}</style>");
+        $("head").append("<style>*[permission]{display: initial !important}</style>");
         return;
       }
 
@@ -59,7 +59,7 @@ layui.define(['jquery'], function(exports) {
       });
 
       if (codes.length) {
-        $("head").append("<style>" + codes.join(",") + "{display: initial}</style>");
+        $("head").append("<style>" + codes.join(",") + "{display: initial !important}</style>");
       }
     },
 

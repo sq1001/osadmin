@@ -2,10 +2,6 @@ a {
     cursor: pointer;
 }
 
-*[permission] {
-    display: none;
-}
-
 @media screen and (max-width:768px) {
     .layui-table-tool-self .layui-inline:nth-child(3){
         display: none;
