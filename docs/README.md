@@ -88,6 +88,7 @@ osadmin/
 │       ├── count.js        # 计数器
 │       ├── echarts.js      # 图表扩展
 │       ├── xm-select.js    # 下拉选择扩展
+│       ├── tinymce.js      # 富文本编辑器扩展
 │       ├── toast.js        # 提示框
 │       ├── drawer.js       # 抽屉组件
 │       └── laydrawer.js    # LayUI 抽屉
@@ -106,6 +107,7 @@ osadmin/
 │   │   ├── drawer-demo.html # 抽屉示例
 │   │   ├── echarts-demo.html # 图表示例
 │   │   ├── xm-select-demo.html # 下拉选择示例
+│   │   ├── tinymce-demo.html # 富文本编辑器示例
 │   │   ├── toast-demo.html # 提示框示例
 │   │   └── form-comprehensive.html # 综合表单
 │   └── data/               # 示例数据
@@ -1793,6 +1795,79 @@ var Module = {
 ***
 
 ## 🔄 更新日志
+
+### v1.5.1 (2026-04-10)
+
+#### 新增功能
+
+##### TinyMCE 富文本编辑器模块
+- ✅ **新增 TinyMCE 8.4.0 富文本编辑器模块**
+  - 完整集成 TinyMCE 8.4.0 最新版本
+  - 支持 GPL 开源许可证，无需 API Key
+  - 内置中文语言包（zh-CN）
+  - 支持快速工具栏（Quickbars）
+  - 支持图片上传功能
+  - 支持多种编辑器模式（标准、迷你、内联、只读）
+
+- ✅ **新增富文本编辑器示例页面**
+  - 基础编辑器示例
+  - 迷你编辑器示例
+  - 完整功能编辑器示例
+  - 内联编辑器示例
+  - 只读模式示例
+  - 自定义工具栏示例
+
+- ✅ **新增编辑器美化样式**
+  - 现代化圆角设计
+  - 渐变背景工具栏
+  - 柔和阴影效果
+  - 悬停动画过渡
+  - 深色主题完整支持
+
+#### 功能优化
+
+##### TinyMCE 模块功能完善
+- ✅ **完整的 API 封装**
+  - `init()` - 初始化编辑器
+  - `get()` - 获取编辑器实例
+  - `remove()` - 移除编辑器
+  - `getContent()` - 获取内容
+  - `setContent()` - 设置内容
+  - `resetContent()` - 重置内容
+  - `show()` - 显示编辑器
+  - `hide()` - 隐藏编辑器
+  - `reload()` - 重载编辑器（支持保留内容和光标位置）
+
+#### 文件变更
+
+##### 新增文件
+- `lib/tinymce/` - TinyMCE 8.4.0 完整资源
+  - `tinymce.min.js` - 核心文件
+  - `skins/` - 皮肤文件
+  - `plugins/` - 插件文件（29个插件）
+  - `themes/` - 主题文件
+  - `icons/` - 图标文件
+  - `langs/` - 语言包文件
+- `modules/extends/tinymce.js` - TinyMCE 模块封装
+- `admin/css/extends/tinymce.css` - TinyMCE 美化样式
+- `view/components/tinymce-demo.html` - 富文本编辑器示例页面
+
+##### 修改文件
+- `config/menu.json` - 添加富文本编辑器菜单项
+
+#### 技术细节
+
+##### TinyMCE 配置特性
+- **插件支持**: advlist, autolink, lists, link, image, charmap, preview, anchor, searchreplace, visualblocks, code, fullscreen, insertdatetime, media, table, help, wordcount, quickbars
+- **快速工具栏**: 选中文本时显示格式化工具，新行时显示快速插入按钮
+- **图片上传**: 支持拖拽上传和文件选择器上传
+- **主题支持**: 完整支持亮色/暗色主题自动切换
+- **GPL 许可**: 使用 `license_key: 'gpl'` 开源许可证
+
+#### 菜单更新
+
+新增"组件示例"菜单项：
+- 富文本编辑器（ID: 110, Code: view/components/tinymce-demo）
 
 ### v1.5.0 (2026-04-10)
 
