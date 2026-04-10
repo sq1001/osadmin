@@ -190,7 +190,8 @@
       { "id": 106, "type": 1, "code": "view/components/breadcrumb-demo", "title": "面包屑组件", "icon": "layui-icon-breadcrumb", "href": "view/components/breadcrumb-demo.html" },
       { "id": 107, "type": 1, "code": "view/components/collapse-demo", "title": "折叠面板", "icon": "layui-icon-collapse", "href": "view/components/collapse-demo.html" },
       { "id": 108, "type": 1, "code": "view/components/treeTable-demo", "title": "树形表格", "icon": "layui-icon-tree-table", "href": "view/components/treeTable-demo.html" },
-      { "id": 109, "type": 1, "code": "view/components/upload-demo", "title": "文件上传", "icon": "layui-icon-upload", "href": "view/components/upload-demo.html" }
+      { "id": 109, "type": 1, "code": "view/components/upload-demo", "title": "文件上传", "icon": "layui-icon-upload", "href": "view/components/upload-demo.html" },
+      { "id": 110, "type": 1, "code": "view/components/tinymce-demo", "title": "富文本编辑器", "icon": "layui-icon-edit", "href": "view/components/tinymce-demo.html" }
     ]
   },
   {

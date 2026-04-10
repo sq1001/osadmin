@@ -1,0 +1,360 @@
+/**
+ * TinyMCE 现代化美化样式
+ * 适用于 TinyMCE 8.x
+ */
+
+/* 编辑器容器美化 */
+.tox-tinymce {
+  border-radius: 8px !important;
+  border: 1px solid #e0e0e0 !important;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08) !important;
+  transition: all 0.3s ease !important;
+}
+
+.tox-tinymce:hover {
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12) !important;
+}
+
+.tox-tinymce:focus-within {
+  border-color: #16baaa !important;
+  box-shadow: 0 0 0 3px rgba(22, 186, 170, 0.1) !important;
+}
+
+/* 工具栏美化 */
+.tox-toolbar__primary {
+  background: linear-gradient(to bottom, #ffffff 0%, #fafafa 100%) !important;
+  border-bottom: 1px solid #e8e8e8 !important;
+  padding: 8px 4px !important;
+}
+
+.tox-toolbar__group {
+  padding: 0 6px !important;
+  border-right: 1px solid #f0f0f0 !important;
+}
+
+.tox-toolbar__group:last-child {
+  border-right: none !important;
+}
+
+/* 工具栏按钮美化 */
+.tox-tbtn {
+  border-radius: 4px !important;
+  margin: 2px !important;
+  transition: all 0.2s ease !important;
+}
+
+.tox-tbtn:hover {
+  background-color: #f5f5f5 !important;
+  transform: translateY(-1px) !important;
+}
+
+.tox-tbtn:active {
+  transform: translateY(0) !important;
+}
+
+.tox-tbtn--enabled {
+  background-color: #e6f7f5 !important;
+  color: #16baaa !important;
+}
+
+.tox-tbtn__select-chevron {
+  transition: transform 0.2s ease !important;
+}
+
+/* 下拉菜单美化 */
+.tox-menu {
+  border-radius: 6px !important;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.12) !important;
+  border: 1px solid #e8e8e8 !important;
+  padding: 4px !important;
+}
+
+.tox-collection__item {
+  border-radius: 4px !important;
+  margin: 2px 0 !important;
+  transition: all 0.15s ease !important;
+}
+
+.tox-collection__item:hover {
+  background-color: #f5f5f5 !important;
+}
+
+.tox-collection__item--active {
+  background-color: #e6f7f5 !important;
+  color: #16baaa !important;
+}
+
+/* 菜单栏美化 */
+.tox-menubar {
+  background: #fafafa !important;
+  border-bottom: 1px solid #e8e8e8 !important;
+  padding: 4px 8px !important;
+}
+
+.tox-mbtn {
+  border-radius: 4px !important;
+  margin: 2px 4px !important;
+  transition: all 0.2s ease !important;
+}
+
+.tox-mbtn:hover {
+  background-color: #f0f0f0 !important;
+}
+
+.tox-mbtn--active {
+  background-color: #16baaa !important;
+  color: white !important;
+}
+
+/* 编辑区域美化 */
+.tox-edit-area {
+  border: none !important;
+  background: #ffffff !important;
+}
+
+.tox-edit-area__iframe {
+  background: #ffffff !important;
+  border-radius: 0 0 8px 8px !important;
+}
+
+/* 状态栏美化 */
+.tox-statusbar {
+  background: #fafafa !important;
+  border-top: 1px solid #e8e8e8 !important;
+  border-radius: 0 0 8px 8px !important;
+  padding: 4px 12px !important;
+}
+
+.tox-statusbar__path {
+  padding: 2px 8px !important;
+  border-radius: 4px !important;
+  background: #f5f5f5 !important;
+}
+
+.tox-statusbar__path-item {
+  transition: color 0.2s ease !important;
+}
+
+.tox-statusbar__path-item:hover {
+  color: #16baaa !important;
+}
+
+/* 对话框美化 */
+.tox-dialog-wrap__backdrop {
+  background: rgba(0, 0, 0, 0.5) !important;
+  backdrop-filter: blur(4px) !important;
+}
+
+.tox-dialog {
+  border-radius: 12px !important;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.16) !important;
+  border: none !important;
+}
+
+.tox-dialog__header {
+  background: linear-gradient(to bottom, #fafafa 0%, #ffffff 100%) !important;
+  border-bottom: 1px solid #e8e8e8 !important;
+  border-radius: 12px 12px 0 0 !important;
+  padding: 16px 20px !important;
+}
+
+.tox-dialog__body {
+  padding: 20px !important;
+}
+
+.tox-dialog__footer {
+  background: #fafafa !important;
+  border-top: 1px solid #e8e8e8 !important;
+  border-radius: 0 0 12px 12px !important;
+  padding: 16px 20px !important;
+}
+
+.tox-button {
+  border-radius: 6px !important;
+  transition: all 0.2s ease !important;
+  font-weight: 500 !important;
+}
+
+.tox-button:hover {
+  transform: translateY(-1px) !important;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15) !important;
+}
+
+.tox-button--primary {
+  background: linear-gradient(135deg, #16baaa 0%, #0d9488 100%) !important;
+  border: none !important;
+}
+
+.tox-button--primary:hover {
+  background: linear-gradient(135deg, #0d9488 0%, #0f766e 100%) !important;
+}
+
+/* 通知提示美化 */
+.tox-notification {
+  border-radius: 8px !important;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1) !important;
+  border: none !important;
+  padding: 12px 16px !important;
+}
+
+.tox-notification--success {
+  background: linear-gradient(135deg, #10b981 0%, #059669 100%) !important;
+}
+
+.tox-notification--warning {
+  background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%) !important;
+}
+
+.tox-notification--error {
+  background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%) !important;
+}
+
+/* 滚动条美化 */
+.tox-edit-area__iframe::-webkit-scrollbar {
+  width: 8px !important;
+  height: 8px !important;
+}
+
+.tox-edit-area__iframe::-webkit-scrollbar-track {
+  background: #f5f5f5 !important;
+  border-radius: 4px !important;
+}
+
+.tox-edit-area__iframe::-webkit-scrollbar-thumb {
+  background: #d0d0d0 !important;
+  border-radius: 4px !important;
+  transition: background 0.2s ease !important;
+}
+
+.tox-edit-area__iframe::-webkit-scrollbar-thumb:hover {
+  background: #a0a0a0 !important;
+}
+
+/* 下拉菜单滚动条 */
+.tox-menu::-webkit-scrollbar {
+  width: 6px !important;
+}
+
+.tox-menu::-webkit-scrollbar-track {
+  background: transparent !important;
+}
+
+.tox-menu::-webkit-scrollbar-thumb {
+  background: #d0d0d0 !important;
+  border-radius: 3px !important;
+}
+
+/* 深色主题支持 */
+[data-theme="dark"] .tox-tinymce {
+  border-color: #3a3a3a !important;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3) !important;
+}
+
+[data-theme="dark"] .tox-toolbar__primary {
+  background: linear-gradient(to bottom, #2d2d2d 0%, #262626 100%) !important;
+  border-bottom-color: #3a3a3a !important;
+}
+
+[data-theme="dark"] .tox-toolbar__group {
+  border-right-color: #3a3a3a !important;
+}
+
+[data-theme="dark"] .tox-tbtn:hover {
+  background-color: #3a3a3a !important;
+}
+
+[data-theme="dark"] .tox-tbtn--enabled {
+  background-color: rgba(22, 186, 170, 0.15) !important;
+}
+
+[data-theme="dark"] .tox-menubar {
+  background: #262626 !important;
+  border-bottom-color: #3a3a3a !important;
+}
+
+[data-theme="dark"] .tox-mbtn:hover {
+  background-color: #3a3a3a !important;
+}
+
+[data-theme="dark"] .tox-edit-area {
+  background: #1a1a1a !important;
+}
+
+[data-theme="dark"] .tox-edit-area__iframe {
+  background: #1a1a1a !important;
+}
+
+[data-theme="dark"] .tox-statusbar {
+  background: #262626 !important;
+  border-top-color: #3a3a3a !important;
+}
+
+[data-theme="dark"] .tox-statusbar__path {
+  background: #2d2d2d !important;
+}
+
+[data-theme="dark"] .tox-menu {
+  background: #2d2d2d !important;
+  border-color: #3a3a3a !important;
+}
+
+[data-theme="dark"] .tox-collection__item:hover {
+  background-color: #3a3a3a !important;
+}
+
+[data-theme="dark"] .tox-collection__item--active {
+  background-color: rgba(22, 186, 170, 0.15) !important;
+}
+
+[data-theme="dark"] .tox-dialog {
+  background: #2d2d2d !important;
+}
+
+[data-theme="dark"] .tox-dialog__header {
+  background: linear-gradient(to bottom, #262626 0%, #2d2d2d 100%) !important;
+  border-bottom-color: #3a3a3a !important;
+}
+
+[data-theme="dark"] .tox-dialog__footer {
+  background: #262626 !important;
+  border-top-color: #3a3a3a !important;
+}
+
+/* 工具提示美化 */
+.tox-tooltip {
+  border-radius: 6px !important;
+  padding: 6px 12px !important;
+  font-size: 12px !important;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15) !important;
+}
+
+/* 图标优化 */
+.tox-icon svg {
+  transition: transform 0.2s ease !important;
+}
+
+.tox-tbtn:hover .tox-icon svg {
+  transform: scale(1.1) !important;
+}
+
+/* 禁用状态 */
+.tox-tbtn--disabled {
+  opacity: 0.4 !important;
+  cursor: not-allowed !important;
+}
+
+.tox-tbtn--disabled:hover {
+  background-color: transparent !important;
+  transform: none !important;
+}
+
+/* 加载动画 */
+@keyframes tinymce-loading {
+  0% { opacity: 0.5; }
+  50% { opacity: 1; }
+  100% { opacity: 0.5; }
+}
+
+.tox-tinymce--loading {
+  animation: tinymce-loading 1.5s ease-in-out infinite !important;
+}

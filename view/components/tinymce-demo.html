@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>富文本编辑器</title>
+</head>
+<body>
+<div class="page-content">
+  <div class="demo-header">
+    <h3 class="demo-title">TinyMCE 富文本编辑器示例</h3>
+    <p class="demo-desc">本页面演示 TinyMCE 8.x 富文本编辑器的使用方法，支持图片上传、表格、代码高亮等功能</p>
+  </div>
+
+  <div class="demo-grid">
+    <div class="layui-card">
+      <div class="layui-card-header">
+        <span class="layui-card-title">基础编辑器（含快速工具栏）</span>
+      </div>
+      <div class="layui-card-body">
+        <form class="layui-form">
+          <div class="layui-form-item">
+            <label class="layui-form-label">文章内容</label>
+            <div class="layui-input-block">
+              <textarea id="basicEditor" name="content" placeholder="请输入文章内容..."></textarea>
+            </div>
+          </div>
+          <div class="layui-form-item">
+            <div class="layui-input-block">
+              <button type="button" class="layui-btn" id="getBasicContent">获取内容</button>
+              <button type="button" class="layui-btn layui-btn-primary" id="setBasicContent">设置内容</button>
+              <button type="button" class="layui-btn layui-btn-danger" id="clearBasicContent">清空内容</button>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <div class="layui-card">
+      <div class="layui-card-header">
+        <span class="layui-card-title">迷你编辑器</span>
+      </div>
+      <div class="layui-card-body">
+        <form class="layui-form">
+          <div class="layui-form-item">
+            <label class="layui-form-label">简短描述</label>
+            <div class="layui-input-block">
+              <textarea id="miniEditor" name="description" placeholder="请输入简短描述..."></textarea>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <div class="layui-card layui-card-lg">
+      <div class="layui-card-header">
+        <span class="layui-card-title">完整功能编辑器（含快速工具栏）</span>
+      </div>
+      <div class="layui-card-body">
+        <form class="layui-form">
+          <div class="layui-form-item">
+            <label class="layui-form-label">完整文章</label>
+            <div class="layui-input-block">
+              <textarea id="fullEditor" name="article" placeholder="请输入完整文章内容..."></textarea>
+            </div>
+          </div>
+          <div class="layui-form-item">
+            <div class="layui-input-block">
+              <button type="button" class="layui-btn" id="getFullContent">获取HTML</button>
+              <button type="button" class="layui-btn layui-btn-normal" id="getFullText">获取纯文本</button>
+              <button type="button" class="layui-btn layui-btn-primary" id="insertContent">插入内容</button>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <div class="layui-card">
+      <div class="layui-card-header">
+        <span class="layui-card-title">内联编辑器</span>
+      </div>
+      <div class="layui-card-body">
+        <div class="inline-editor-wrapper">
+          <div id="inlineEditor" class="inline-editor-content">
+            <h3>点击此处开始编辑</h3>
+            <p>这是一个内联编辑器示例，你可以直接在这里编辑内容，无需工具栏。</p>
+            <p>支持<strong>粗体</strong>、<em>斜体</em>、<u>下划线</u>等基本格式。</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="layui-card">
+      <div class="layui-card-header">
+        <span class="layui-card-title">只读模式</span>
+      </div>
+      <div class="layui-card-body">
+        <form class="layui-form">
+          <div class="layui-form-item">
+            <label class="layui-form-label">只读内容</label>
+            <div class="layui-input-block">
+              <textarea id="readonlyEditor" name="readonly">
+<h3>只读模式示例</h3>
+<p>这个编辑器处于只读状态，用户无法编辑内容。</p>
+<ul>
+  <li>适用于内容预览</li>
+  <li>适用于协议展示</li>
+  <li>适用于帮助文档</li>
+</ul>
+              </textarea>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <div class="layui-card">
+      <div class="layui-card-header">
+        <span class="layui-card-title">自定义工具栏</span>
+      </div>
+      <div class="layui-card-body">
+        <form class="layui-form">
+          <div class="layui-form-item">
+            <label class="layui-form-label">自定义工具</label>
+            <div class="layui-input-block">
+              <textarea id="customToolbarEditor" name="custom" placeholder="请输入内容..."></textarea>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+<style>
+.demo-header {
+  margin-bottom: 16px;
+}
+.demo-title {
+  font-size: 18px;
+  font-weight: 600;
+  color: var(--text-primary);
+  margin-bottom: 4px;
+}
+.demo-desc {
+  font-size: 13px;
+  color: var(--text-muted);
+}
+.demo-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 16px;
+}
+@media (max-width: 992px) {
+  .demo-grid {
+    grid-template-columns: 1fr;
+  }
+}
+.layui-card-lg {
+  grid-column: 1 / -1;
+}
+.layui-form-label {
+  width: 100px;
+}
+.layui-input-block {
+  margin-left: 130px;
+}
+.inline-editor-wrapper {
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  padding: 16px;
+  min-height: 200px;
+  background: var(--bg-content);
+}
+.inline-editor-content {
+  outline: none;
+}
+.inline-editor-content:focus {
+  outline: none;
+}
+[data-theme="dark"] .tox-tinymce {
+  border-color: var(--border) !important;
+}
+[data-theme="dark"] .tox-toolbar__primary {
+  background: var(--bg-content) !important;
+}
+[data-theme="dark"] .tox-menubar {
+  background: var(--bg-content) !important;
+}
+[data-theme="dark"] .tox-statusbar {
+  background: var(--bg-content) !important;
+}
+[data-theme="dark"] .tox-edit-area {
+  background: var(--card-bg) !important;
+}
+[data-theme="dark"] .tox-edit-area__iframe {
+  background: var(--card-bg) !important;
+}
+</style>
+
+<script>
+layui.use(['tinymceMod', 'layer'], function() {
+  var tinymceMod = layui.tinymceMod;
+  var layer = layui.layer;
+  var $ = layui.$;
+
+  tinymceMod.init({
+    selector: '#basicEditor',
+    height: 300
+  });
+
+  tinymceMod.init({
+    selector: '#miniEditor',
+    height: 150,
+    menubar: false,
+    plugins: 'advlist autolink lists link',
+    toolbar: 'bold italic underline | bullist numlist | link'
+  });
+
+  tinymceMod.init({
+    selector: '#fullEditor',
+    height: 500
+  });
+
+  tinymceMod.init({
+    selector: '#inlineEditor',
+    inline: true,
+    menubar: false,
+    plugins: 'advlist autolink lists link',
+    toolbar: 'bold italic underline | bullist numlist | link'
+  });
+
+  tinymceMod.init({
+    selector: '#readonlyEditor',
+    height: 300,
+    readonly: true,
+    menubar: false,
+    toolbar: false
+  });
+
+  tinymceMod.init({
+    selector: '#customToolbarEditor',
+    height: 250,
+    menubar: false,
+    plugins: 'advlist autolink lists link image quickbars',
+    quickbars_selection_toolbar: 'bold italic | alignleft aligncenter alignright',
+    quickbars_insert_toolbar: 'quickimage quicktable',
+    toolbar: 'formatselect | bold italic | alignleft aligncenter alignright | bullist numlist | link image'
+  });
+
+  $('#getBasicContent').on('click', function() {
+    var content = tinymceMod.getContent('basicEditor');
+    layer.open({
+      type: 1,
+      title: '编辑器内容',
+      area: ['600px', '400px'],
+      content: '<div style="padding: 20px;"><pre style="white-space: pre-wrap; word-wrap: break-word;">' + 
+        $('<div>').text(content).html() + '</pre></div>'
+    });
+  });
+
+  $('#setBasicContent').on('click', function() {
+    tinymceMod.setContent('basicEditor', '<h3>这是设置的内容</h3><p>通过 <strong>setContent</strong> 方法设置的内容。</p>');
+    layer.msg('内容已设置');
+  });
+
+  $('#clearBasicContent').on('click', function() {
+    tinymceMod.setContent('basicEditor', '');
+    layer.msg('内容已清空');
+  });
+
+  $('#getFullContent').on('click', function() {
+    var content = tinymceMod.getContent('fullEditor');
+    layer.open({
+      type: 1,
+      title: 'HTML内容',
+      area: ['800px', '500px'],
+      content: '<div style="padding: 20px;"><pre style="white-space: pre-wrap; word-wrap: break-word; max-height: 400px; overflow-y: auto;">' + 
+        $('<div>').text(content).html() + '</pre></div>'
+    });
+  });
+
+  $('#getFullText').on('click', function() {
+    var editor = tinymceMod.get('fullEditor');
+    var text = editor ? editor.getContent({ format: 'text' }) : '';
+    layer.open({
+      type: 1,
+      title: '纯文本内容',
+      area: ['600px', '400px'],
+      content: '<div style="padding: 20px;"><pre style="white-space: pre-wrap; word-wrap: break-word;">' + 
+        $('<div>').text(text).html() + '</pre></div>'
+    });
+  });
+
+  $('#insertContent').on('click', function() {
+    var editor = tinymceMod.get('fullEditor');
+    if (editor) {
+      editor.insertContent('<p style="color: #16baaa;">这是插入的内容，时间：' + new Date().toLocaleString() + '</p>');
+      layer.msg('内容已插入');
+    }
+  });
+});
+</script>
+</body>
+</html>

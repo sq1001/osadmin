@@ -3,7 +3,7 @@
 ## 📋 项目概述
 
 **项目名称**: OSADMIN\
-**版本**: 1.5.0\
+**版本**: 1.5.1\
 **描述**: 基于 LayUI 的轻量化原生管理后台系统\
 **技术栈**: LayUI + jQuery + 原生 JavaScript\
 **架构模式**: 模块化架构 + 配置驱动
@@ -63,8 +63,15 @@ osadmin/
 │   │   └── font/           # LayUI 字体图标
 │   ├── echarts/            # ECharts 图表库
 │   │   └── echarts.min.js
-│   └── xm-select/          # XM-Select 下拉选择
-│       └── xm-select.js
+│   ├── xm-select/          # XM-Select 下拉选择
+│   │   └── xm-select.js
+│   └── tinymce/            # TinyMCE 富文本编辑器
+│       ├── tinymce.min.js  # TinyMCE 核心
+│       ├── skins/          # 皮肤文件
+│       ├── plugins/        # 插件文件
+│       ├── themes/         # 主题文件
+│       ├── icons/          # 图标文件
+│       └── langs/          # 语言包
 │
 ├── modules/                  # 模块目录
 │   ├── app.js              # 主应用模块

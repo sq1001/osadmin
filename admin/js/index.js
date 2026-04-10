@@ -50,6 +50,7 @@
     xmSelectMod: 'modules/extends/xm-select',
     toastMod: 'modules/extends/toast',
     drawerMod: 'modules/extends/drawer',
+    tinymceMod: 'modules/extends/tinymce',
     appMain: 'modules/app'
   };
 
@@ -93,7 +94,7 @@
   var isReady = false;
 
   var App = {
-    version: '1.5.0',
+    version: '1.5.1',
     name: 'OS Admin',
     debug: false,
     baseUrl: baseUrl,
@@ -177,6 +178,8 @@
         echarts: layui.echartsMod,
         xmSelect: layui.xmSelectMod,
         toast: layui.toastMod,
+        drawer: layui.drawerMod,
+        tinymce: layui.tinymceMod,
         permission: layui.permissionModule,
         resourceLoader: layui.resourceLoader,
         app: layui.appMain
