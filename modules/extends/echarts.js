@@ -1,11 +1,10 @@
 /**
- * ECharts模块封装
- * 基于Apache ECharts最新版本
+ * ECharts 图表模块
  */
-
 layui.define(['jquery'], function(exports) {
   'use strict';
 
+  var MOD_NAME = 'echartsMod';
   var $ = layui.jquery;
   var echartsOriginal = window.echarts;
 
@@ -19,6 +18,6 @@ layui.define(['jquery'], function(exports) {
     echartsOriginal = window.echarts;
   }
 
-  exports('echartsMod', echartsOriginal);
+  exports(MOD_NAME, echartsOriginal);
 });
 

@@ -346,8 +346,11 @@ layui.define(['jquery', 'layer', 'themeModule', 'routerModule', 'commonMod'], fu
 
       $(document).on('click', function(e) {
         if (!$(e.target).closest('.layui-sidebar, .layui-submenu-panel, .layui-dropdown-menu-panel-wrapper, .layui-mobile-menu-fab').length) {
-          self.hideSubmenuPanel();
-          self.hideDropdownMenu();
+          var state = theme.getState();
+          if (state.layout !== 'fixed-double') {
+            self.hideSubmenuPanel();
+            self.hideDropdownMenu();
+          }
           self.closeAllNestedDropdowns();
         }
       });
@@ -380,7 +383,7 @@ layui.define(['jquery', 'layer', 'themeModule', 'routerModule', 'commonMod'], fu
         
         var state = theme.getState();
         
-        if (state.layout === 'double') {
+        if (state.layout === 'double' || state.layout === 'fixed-double') {
           this.showSubmenuPanel(menuId, $el);
           this.hideDropdownMenu();
         } else {
@@ -884,7 +887,7 @@ layui.define(['jquery', 'layer', 'themeModule', 'routerModule', 'commonMod'], fu
       if (isMobile) {
         this.setActiveItems(pageId, menuPath, state);
       }
-      else if (state.layout === 'double' && menuPath.length > 0 && $triggerItem) {
+      else if ((state.layout === 'double' || state.layout === 'fixed-double') && menuPath.length > 0 && $triggerItem) {
         if (this.currentSubmenuPanel !== topItemId) {
           this.showSubmenuPanel(topItemId, $triggerItem, pageId);
           panelShown = true;

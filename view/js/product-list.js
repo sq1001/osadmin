@@ -1,4 +1,5 @@
-layui.use(['table', 'form'], function(){
+layui.use(['jquery', 'table', 'form'], function(){
+  var $ = layui.jquery;
   var table = layui.table;
   var form = layui.form;
 

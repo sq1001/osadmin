@@ -1,11 +1,10 @@
 /**
- * TinyMCE模块封装
- * 基于TinyMCE 8.x最新版本
+ * TinyMCE 富文本编辑器模块
  */
-
 layui.define(['jquery'], function(exports) {
   'use strict';
 
+  var MOD_NAME = 'tinymceMod';
   var $ = layui.jquery;
   var tinymceOriginal = window.tinymce;
 
@@ -108,5 +107,5 @@ layui.define(['jquery'], function(exports) {
     
   };
 
-  exports('tinymceMod', tinymceMod);
+  exports(MOD_NAME, tinymceMod);
 });

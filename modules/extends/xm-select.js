@@ -1,10 +1,10 @@
 /**
- * xm-select模块封装
- * 基于Layui的多选下拉框解决方案
+ * xm-select 多选下拉框模块
  */
 layui.define(['jquery'], function(exports) {
   'use strict';
 
+  var MOD_NAME = 'xmSelectMod';
   var $ = layui.jquery;
   var xmSelectOriginal = window.xmSelect;
 
@@ -18,5 +18,5 @@ layui.define(['jquery'], function(exports) {
     xmSelectOriginal = window.xmSelect;
   }
 
-  exports('xmSelectMod', xmSelectOriginal);
+  exports(MOD_NAME, xmSelectOriginal);
 });

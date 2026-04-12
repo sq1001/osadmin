@@ -2,12 +2,13 @@
  * 主题模块
  * 管理主题模式、颜色、布局、水印、语言等配置
  */
-layui.define(['jquery', 'layer', 'form'], function(exports) {
+layui.define(['jquery', 'layer', 'form', 'watermarkMod'], function(exports) {
   'use strict';
 
   var $ = layui.jquery;
   var layer = layui.layer;
   var form = layui.form;
+  var Watermark = layui.watermarkMod;
   var appConfig = null;
 
   var Theme = {
@@ -15,7 +16,7 @@ layui.define(['jquery', 'layer', 'form'], function(exports) {
     tempState: null,
     defaultState: null,
     _events: {},
-    watermarkCanvas: null,
+    _watermarkInstance: null,
 
     init: function(config) {
       appConfig = config || {};
@@ -107,6 +108,13 @@ layui.define(['jquery', 'layer', 'form'], function(exports) {
 
     applyLayout: function(layout) {
       $('body').attr('data-layout', layout);
+      $('body').removeClass('layout-double layout-dropdown layout-fixed-double');
+      $('body').addClass('layout-' + layout);
+      
+      if (layout === 'fixed-double') {
+        $('#sidebar').removeClass('collapsed');
+        $('#submenuPanel').addClass('show');
+      }
     },
 
     applyTabsVisible: function(visible) {
@@ -118,135 +126,42 @@ layui.define(['jquery', 'layer', 'form'], function(exports) {
     },
 
     applyWatermark: function(enabled, text) {
-      var self = this;
-      var $watermark = $('#contentWatermark');
-      
+      if (this._watermarkInstance) {
+        this._watermarkInstance.destroy();
+        this._watermarkInstance = null;
+      }
+
       if (!enabled) {
-        $watermark.remove();
-        this.stopWatermarkObserver();
         return;
       }
 
       var watermarkText = text || this.getWatermarkText();
       if (!watermarkText) {
-        $watermark.remove();
-        this.stopWatermarkObserver();
         return;
       }
 
       var watermarkConfig = appConfig.watermark || {};
-      var fontSize = watermarkConfig.fontSize || 14;
       var color = watermarkConfig.color || 'rgba(0, 0, 0, 0.08)';
-      var rotate = watermarkConfig.rotate || -22;
-      var gapX = watermarkConfig.gapX || 100;
-      var gapY = watermarkConfig.gapY || 100;
 
       if (this.state.mode === 'dark') {
         color = 'rgba(255, 255, 255, 0.06)';
       }
 
-      if ($watermark.length === 0) {
-        $watermark = $('<div id="contentWatermark" class="content-watermark"></div>');
-        $('#contentWrapper').before($watermark);
-      }
+      var $wrapper = $('#contentWrapper');
+      var appendTo = $wrapper.length > 0 ? $wrapper.parent()[0] : 'body';
 
-      var dataUrl = this.getWatermarkDataURL(watermarkText, fontSize, color, rotate, gapX, gapY);
-
-      $watermark.css({
-        'background-image': 'url(' + dataUrl + ')',
-        'background-repeat': 'repeat',
-        'pointer-events': 'none'
+      this._watermarkInstance = new Watermark({
+        content: watermarkText,
+        appendTo: appendTo,
+        fontSize: watermarkConfig.fontSize || 14,
+        fontColor: color,
+        rotate: watermarkConfig.rotate || -22,
+        colSpacing: watermarkConfig.gapX || 100,
+        rowSpacing: watermarkConfig.gapY || 100,
+        width: watermarkConfig.width || 100,
+        height: watermarkConfig.height || 20,
+        zIndex: 999998
       });
-
-      this.startWatermarkObserver();
-    },
-
-    watermarkCache: {},
-    
-    getWatermarkDataURL: function(text, fontSize, color, rotate, gapX, gapY) {
-      var cacheKey = text + '|' + fontSize + '|' + color + '|' + rotate + '|' + gapX + '|' + gapY;
-      
-      if (this.watermarkCache[cacheKey]) {
-        return this.watermarkCache[cacheKey];
-      }
-
-      var canvas = document.createElement('canvas');
-      var ctx = canvas.getContext('2d');
-      
-      ctx.font = fontSize + 'px Arial, sans-serif';
-      var textWidth = ctx.measureText(text).width;
-      
-      canvas.width = gapX + textWidth;
-      canvas.height = gapY + fontSize * 2;
-
-      ctx.font = fontSize + 'px Arial, sans-serif';
-      ctx.fillStyle = color;
-      ctx.textAlign = 'center';
-      ctx.textBaseline = 'middle';
-      
-      ctx.translate(canvas.width / 2, canvas.height / 2);
-      ctx.rotate(rotate * Math.PI / 180);
-      ctx.fillText(text, 0, 0);
-
-      var dataUrl = canvas.toDataURL('image/png');
-      this.watermarkCache[cacheKey] = dataUrl;
-      
-      return dataUrl;
-    },
-
-    watermarkObserver: null,
-    
-    startWatermarkObserver: function() {
-      var self = this;
-      
-      if (this.watermarkObserver) {
-        return;
-      }
-
-      this.watermarkObserver = new MutationObserver(function(mutations) {
-        mutations.forEach(function(mutation) {
-          if (mutation.type === 'childList' && mutation.removedNodes.length > 0) {
-            for (var i = 0; i < mutation.removedNodes.length; i++) {
-              var node = mutation.removedNodes[i];
-              if (node.id === 'contentWatermark' || 
-                  (node.nodeType === 1 && node.querySelector && node.querySelector('#contentWatermark'))) {
-                setTimeout(function() {
-                  if (self.state.watermarkEnabled && !document.getElementById('contentWatermark')) {
-                    console.warn('[Watermark] 检测到水印被删除，正在恢复...');
-                    self.applyWatermark(self.state.watermarkEnabled, self.state.watermarkText);
-                  }
-                }, 100);
-                break;
-              }
-            }
-          }
-          
-          if (mutation.type === 'attributes' && mutation.target.id === 'contentWatermark') {
-            var $watermark = $(mutation.target);
-            if (!$watermark.css('background-image') || 
-                $watermark.css('display') === 'none' ||
-                $watermark.css('visibility') === 'hidden' ||
-                $watermark.css('opacity') === '0') {
-              console.warn('[Watermark] 检测到水印样式被修改，正在恢复...');
-              self.applyWatermark(self.state.watermarkEnabled, self.state.watermarkText);
-            }
-          }
-        });
-      });
-
-      this.watermarkObserver.observe(document.body, {
-        childList: true,
-        subtree: true,
-        attributes: true,
-        attributeFilter: ['style', 'class']
-      });
-    },
-
-    stopWatermarkObserver: function() {
-      if (this.watermarkObserver) {
-        this.watermarkObserver.disconnect();
-        this.watermarkObserver = null;
-      }
     },
 
     getWatermarkText: function() {

@@ -7,572 +7,817 @@
   <link rel="stylesheet" href="/admin/css/extends/resetForm.css">
 </head>
 <body class="page-content">
-<div class="has-footer">
-  <div class="demo-header">
-    <h3 class="demo-title">综合表单示例</h3>
-  </div>
+  <style>
+    .btn-group { display: flex; flex-wrap: wrap; gap: 10px; }
+  </style>
+  <div class="has-footer">
+    <div class="demo-header">
+      <h3 class="demo-title">综合表单示例</h3>
+    </div>
 
-  <div class="layui-card search-card">
-    <div class="layui-card-body">
-      <form class="layui-form top-search-from" lay-filter="searchForm">
-        <div class="layui-form-item">
-          <label class="layui-form-label">UID</label>
-          <div class="layui-input-block">
-            <input type="text" lay-affix="number" name="uid" placeholder="请输入UID" class="layui-input">
+    <div class="layui-card search-card">
+      <div class="layui-card-body">
+        <form class="layui-form top-search-from" lay-filter="searchForm">
+          <div class="layui-form-item">
+            <label class="layui-form-label">UID</label>
+            <div class="layui-input-block">
+              <input type="text" lay-affix="number" name="uid" placeholder="请输入UID" class="layui-input">
+            </div>
           </div>
-        </div>
 
-        <div class="layui-form-item">
-          <label class="layui-form-label">用户名</label>
-          <div class="layui-input-block">
-            <input type="text" name="username" placeholder="请输入用户名" class="layui-input">
+          <div class="layui-form-item">
+            <label class="layui-form-label">用户名</label>
+            <div class="layui-input-block">
+              <input type="text" name="username" placeholder="请输入用户名" class="layui-input">
+            </div>
           </div>
-        </div>
 
-        <div class="layui-form-item">
-          <label class="layui-form-label">昵称</label>
-          <div class="layui-input-block">
-            <input type="text" name="nickname" placeholder="请输入昵称" class="layui-input">
+          <div class="layui-form-item">
+            <label class="layui-form-label">昵称</label>
+            <div class="layui-input-block">
+              <input type="text" name="nickname" placeholder="请输入昵称" class="layui-input">
+            </div>
           </div>
-        </div>
 
-        <div class="layui-form-item">
-          <label class="layui-form-label">邮箱</label>
-          <div class="layui-input-block">
-            <input type="text" name="email" placeholder="请输入邮箱" class="layui-input">
+          <div class="layui-form-item">
+            <label class="layui-form-label">邮箱</label>
+            <div class="layui-input-block">
+              <input type="text" name="email" placeholder="请输入邮箱" class="layui-input">
+            </div>
           </div>
-        </div>
 
-        <div class="layui-form-item">
-          <label class="layui-form-label">等级</label>
-          <div class="layui-input-block">
-            <input type="text" lay-affix="number" name="level" placeholder="请输入等级" class="layui-input">
+          <div class="layui-form-item">
+            <label class="layui-form-label">等级</label>
+            <div class="layui-input-block">
+              <input type="text" lay-affix="number" name="level" placeholder="请输入等级" class="layui-input">
+            </div>
           </div>
-        </div>
 
-        <div class="layui-form-item">
-          <label class="layui-form-label">余额(元)</label>
-          <div class="layui-input-block">
-            <input type="text" lay-affix="number" name="balance" placeholder="请输入余额" class="layui-input">
+          <div class="layui-form-item">
+            <label class="layui-form-label">余额(元)</label>
+            <div class="layui-input-block">
+              <input type="text" lay-affix="number" name="balance" placeholder="请输入余额" class="layui-input">
+            </div>
           </div>
-        </div>
 
-        <div class="layui-form-item">
-          <label class="layui-form-label">登录时间</label>
-          <div class="layui-input-block">
-            <div class="date-range">
-              <input type="text" autocomplete="off" name="last_login_at[]" id="last_login_at-start" class="layui-input" placeholder="开始时间">
-              <span class="date-separator">至</span>
-              <input type="text" autocomplete="off" name="last_login_at[]" id="last_login_at-end" class="layui-input" placeholder="结束时间">
+          <div class="layui-form-item">
+            <label class="layui-form-label">登录时间</label>
+            <div class="layui-input-block">
+              <div class="date-range">
+                <input type="text" autocomplete="off" name="last_login_at[]" id="last_login_at-start" class="layui-input" placeholder="开始时间">
+                <span class="date-separator">至</span>
+                <input type="text" autocomplete="off" name="last_login_at[]" id="last_login_at-end" class="layui-input" placeholder="结束时间">
+              </div>
+            </div>
+          </div>
+
+          <div class="layui-form-item">
+            <label class="layui-form-label">登录IP</label>
+            <div class="layui-input-block">
+              <input type="text" name="last_login_ip" placeholder="请输入登录IP" class="layui-input">
+            </div>
+          </div>
+
+          <div class="layui-form-item form-actions">
+            <label class="layui-form-label"></label>
+            <div class="layui-input-block">
+              <button class="layui-btn layui-btn-sm" lay-submit lay-filter="table-query">
+                <i class="layui-icon layui-icon-search"></i>查询
+              </button>
+              <button type="reset" class="layui-btn layui-btn-sm layui-btn-primary">
+                <i class="layui-icon layui-icon-refresh"></i>重置
+              </button>
+            </div>
+          </div>
+          <div class="toggle-btn">
+            <a class="layui-hide">展开<i class="layui-icon layui-icon-down"></i></a>
+            <a class="layui-hide">收起<i class="layui-icon layui-icon-up"></i></a>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <div class="layui-card">
+      <div class="layui-card-header">
+        <span>弹窗示例</span>
+      </div>
+      <div class="layui-card-body">
+        <div class="btn-group">
+          <button class="layui-btn layui-btn-normal" id="btnLayerDefault">默认Layer弹窗</button>
+          <button class="layui-btn" id="btnDrawerRight">抽屉弹窗</button>
+          <button class="layui-btn layui-btn-warm" id="btnDrawerFormTest">抽屉表单(无赋值)</button>
+          <button class="layui-btn layui-btn-danger" id="btnDrawerFormSet">抽屉表单(带赋值)</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="layui-card">
+      <form class="layui-form main-form" lay-filter="mainForm">
+        <div class="main-box">
+          <div class="form-section">
+            <div class="form-section-header">
+              <span class="form-section-title">基本信息（竖版）</span>
+            </div>
+            <div class="form-section-body">
+              <div class="form-row">
+                <div class="layui-form-item column">
+                  <label class="layui-form-label required">名称</label>
+                  <div class="layui-input-block">
+                    <input type="text" name="name" placeholder="请输入名称" required lay-verify="required" class="layui-input">
+                  </div>
+                  <i class="layui-icon layui-icon-tips layui-input-prefix-icon" lay-on="tip_name"></i>
+                </div>
+
+                <div class="layui-form-item column">
+                  <label class="layui-form-label required">编码</label>
+                  <div class="layui-input-block">
+                    <input type="text" name="code" placeholder="请输入编码" required lay-verify="required" class="layui-input">
+                  </div>
+                  <i class="layui-icon layui-icon-tips layui-input-prefix-icon" lay-on="tip_code"></i>
+                </div>
+              </div>
+
+              <div class="form-row">
+                <div class="layui-form-item column">
+                  <label class="layui-form-label">生效日期</label>
+                  <div class="layui-input-block">
+                    <div class="date-range">
+                      <input type="text" name="effect_date[]" id="effect_date-start" class="layui-input" placeholder="开始日期">
+                      <span class="date-separator">至</span>
+                      <input type="text" name="effect_date[]" id="effect_date-end" class="layui-input" placeholder="结束日期">
+                    </div>
+                  </div>
+                </div>
+
+                <div class="layui-form-item column">
+                  <label class="layui-form-label required">启用状态</label>
+                  <div class="layui-input-block">
+                    <input type="checkbox" name="status" value="1" lay-skin="switch" lay-text="开启|关闭" checked>
+                  </div>
+                </div>
+              </div>
+
+              <div class="layui-form-item column">
+                <label class="layui-form-label">测试测试测试测试测试测试测试测试测试Logo</label>
+                <div class="layui-input-block">
+                    <img class="img-3" src=""/>
+                    <input type="text" style="display:none" name="logo" value="/admin/images/avatar.webp" />
+                    <button type="button" class="layui-btn layui-btn-sm" id="image">
+                        <i class="layui-icon layui-icon-upload"></i>上传图片
+                    </button>
+                    <button type="button" class="layui-btn layui-btn-sm" id="attachment-choose-image">
+                        <i class="layui-icon layui-icon-align-left"></i>选择图片
+                    </button>
+                    <div class="form-tip">支持 jpg、png、pdf 格式，单个文件不超过 5MB</div>
+                </div>
+              </div>
+
+              <div class="layui-form-item column">
+                <label class="layui-form-label">多图片上传</label>
+                <div class="layui-input-block">
+                    <div id="imagesPreview" class="images-preview"></div>
+                    <input type="text" style="display:none" name="images" value="" />
+                    <button type="button" class="layui-btn layui-btn-sm" id="imagesUpload">
+                        <i class="layui-icon layui-icon-upload"></i>上传多图
+                    </button>
+                    <button type="button" class="layui-btn layui-btn-sm" id="attachment-choose-images">
+                        <i class="layui-icon layui-icon-align-left"></i>选择图片
+                    </button>
+                    <div class="form-tip">支持 jpg、png 格式，最多上传5张图片</div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="form-section">
+            <div class="form-section-header">
+              <span class="form-section-title">基本信息</span>
+            </div>
+            <div class="form-section-body">
+              <div class="form-row">
+                <div class="layui-form-item">
+                  <label class="layui-form-label required">名称</label>
+                  <div class="layui-input-block">
+                    <input type="text" name="name" placeholder="请输入名称" required lay-verify="required" class="layui-input">
+                  </div>
+                  <i class="layui-icon layui-icon-tips layui-input-prefix-icon" lay-on="tip_name"></i>
+                </div>
+
+                <div class="layui-form-item">
+                  <label class="layui-form-label required">编码</label>
+                  <div class="layui-input-block">
+                    <input type="text" name="code" placeholder="请输入编码" required lay-verify="required" class="layui-input">
+                  </div>
+                  <i class="layui-icon layui-icon-tips layui-input-prefix-icon" lay-on="tip_code"></i>
+                </div>
+              </div>
+
+              <div class="form-row">
+                <div class="layui-form-item">
+                  <label class="layui-form-label">所属分类</label>
+                  <div class="layui-input-block">
+                    <select name="category" lay-verify="">
+                      <option value="">请选择分类</option>
+                      <option value="1">分类一</option>
+                      <option value="2">分类二</option>
+                      <option value="3">分类三</option>
+                    </select>
+                  </div>
+                  <i class="layui-icon layui-icon-tips layui-input-prefix-icon" lay-on="tip_category"></i>
+                </div>
+
+                <div class="layui-form-item">
+                  <label class="layui-form-label">所属部门</label>
+                  <div class="layui-input-block">
+                    <div id="deptSelect"></div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="form-row">
+                <div class="layui-form-item">
+                  <label class="layui-form-label required">开通成本</label>
+                  <div class="layui-input-block">
+                    <input type="text" lay-affix="number" name="cost" min="0" max="100" step="1" lay-verify="required|number" placeholder="请输入开通成本" class="layui-input">
+                    <div class="form-tip">范围 0-100</div>
+                  </div>
+                </div>
+
+                <div class="layui-form-item">
+                  <label class="layui-form-label required">端口</label>
+                  <div class="layui-input-block">
+                    <input type="text" lay-affix="number" name="port" value="465" min="0" step="1" lay-verify="required|number" autocomplete="off" placeholder="" class="layui-input">
+                  </div>
+                </div>
+              </div>
+
+              <div class="form-row">
+                <div class="layui-form-item">
+                  <label class="layui-form-label">生效日期</label>
+                  <div class="layui-input-block">
+                    <div class="date-range">
+                      <input type="text" name="effect_date[]" id="effect_date-start" class="layui-input" placeholder="开始日期">
+                      <span class="date-separator">至</span>
+                      <input type="text" name="effect_date[]" id="effect_date-end" class="layui-input" placeholder="结束日期">
+                    </div>
+                  </div>
+                </div>
+
+                <div class="layui-form-item">
+                  <label class="layui-form-label required">启用状态</label>
+                  <div class="layui-input-block">
+                    <input type="checkbox" name="status" value="1" lay-skin="switch" lay-text="开启|关闭" checked>
+                  </div>
+                </div>
+              </div>
+
+              <div class="layui-form-item">
+                <label class="layui-form-label">测试测试测试测试测试测试测试测试测试Logo</label>
+                <div class="layui-input-block">
+                    <img class="img-3" src=""/>
+                    <input type="text" style="display:none" name="logo" value="/admin/images/avatar.webp" />
+                    <button type="button" class="layui-btn layui-btn-sm" id="image">
+                        <i class="layui-icon layui-icon-upload"></i>上传图片
+                    </button>
+                    <button type="button" class="layui-btn layui-btn-sm" id="attachment-choose-image">
+                        <i class="layui-icon layui-icon-align-left"></i>选择图片
+                    </button>
+                    <div class="form-tip">支持 jpg、png、pdf 格式，单个文件不超过 5MB</div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="form-section">
+            <div class="form-section-header">
+              <span class="form-section-title">扩展信息</span>
+            </div>
+            <div class="form-section-body">
+              <div class="form-row">
+                <div class="layui-form-item">
+                  <label class="layui-form-label">用户标签</label>
+                  <div class="layui-input-block">
+                    <div id="tagSelect"></div>
+                  </div>
+                </div>
+
+                <div class="layui-form-item">
+                  <label class="layui-form-label">权限角色</label>
+                  <div class="layui-input-block">
+                    <div id="roleSelect"></div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="form-row">
+                <div class="layui-form-item">
+                  <label class="layui-form-label">优先级</label>
+                  <div class="layui-input-block">
+                    <input type="radio" name="priority" value="1" title="低">
+                    <input type="radio" name="priority" value="2" title="中" checked>
+                    <input type="radio" name="priority" value="3" title="高">
+                  </div>
+                </div>
+
+                <div class="layui-form-item">
+                  <label class="layui-form-label">通知方式</label>
+                  <div class="layui-input-block">
+                    <input type="checkbox" name="notify" value="email" title="邮件" checked>
+                    <input type="checkbox" name="notify" value="sms" title="短信">
+                    <input type="checkbox" name="notify" value="wechat" title="微信">
+                  </div>
+                </div>
+              </div>
+
+              <div class="layui-form-item">
+                <label class="layui-form-label">处理器</label>
+                <div class="layui-input-block">
+                  <input type="text" name="handler" value="" lay-verify="" class="layui-input" placeholder="请输入处理器名称">
+                </div>
+              </div>
+
+              <div class="layui-form-item">
+                <label class="layui-form-label">备注说明</label>
+                <div class="layui-input-block">
+                  <textarea name="remark" placeholder="请输入备注说明" class="layui-textarea"></textarea>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="form-section">
+            <div class="form-section-header">
+              <span class="form-section-title">其他设置</span>
+            </div>
+            <div class="form-section-body">
+              <div class="layui-tabs">
+                <ul class="layui-tabs-header">
+                  <li lay-id="aaa">设置1</li>
+                  <li lay-id="bbb">设置2</li>
+                  <li lay-id="ccc">设置3</li>
+                </ul>
+                <div class="layui-tabs-body">
+                  <div class="layui-tabs-item">
+                    <div class="form-row-3">
+                      <div class="layui-form-item">
+                        <label class="layui-form-label">排序号</label>
+                        <div class="layui-input-block">
+                          <input type="text" lay-affix="number" name="sort" value="0" min="0" lay-verify="number" class="layui-input">
+                        </div>
+                      </div>
+
+                      <div class="layui-form-item">
+                        <label class="layui-form-label">最大数量</label>
+                        <div class="layui-input-block">
+                          <input type="text" lay-affix="number" name="max_count" value="100" min="1" class="layui-input">
+                        </div>
+                      </div>
+
+                      <div class="layui-form-item">
+                        <label class="layui-form-label">超时时间</label>
+                        <div class="layui-input-block">
+                          <input type="text" lay-affix="number" name="timeout" value="30" min="1" class="layui-input">
+                          <div class="form-tip">单位：秒</div>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="layui-form-item">
+                      <label class="layui-form-label">附件上传</label>
+                      <div class="layui-input-block">
+                        <button type="button" class="layui-btn layui-btn-sm" id="uploadBtn">
+                          <i class="layui-icon layui-icon-upload"></i>上传文件
+                        </button>
+                        <div class="form-tip">支持 jpg、png、pdf 格式，单个文件不超过 5MB</div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="layui-tabs-item">
+                    <div class="form-row">
+                      <div class="layui-form-item">
+                        <label class="layui-form-label">数量</label>
+                        <div class="layui-input-block">
+                          <input type="text" lay-affix="number" name="max_count" value="100" min="1" class="layui-input">
+                        </div>
+                      </div>
+
+                      <div class="layui-form-item">
+                        <label class="layui-form-label">时间</label>
+                        <div class="layui-input-block">
+                          <input type="text" lay-affix="number" name="timeout" value="30" min="1" class="layui-input">
+                          <div class="form-tip">单位：秒</div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="layui-tabs-item">设置3</div>
+                </div>
+              </div>
             </div>
           </div>
         </div>
 
-        <div class="layui-form-item">
-          <label class="layui-form-label">登录IP</label>
-          <div class="layui-input-block">
-            <input type="text" name="last_login_ip" placeholder="请输入登录IP" class="layui-input">
-          </div>
-        </div>
-
-        <div class="layui-form-item form-actions">
-          <label class="layui-form-label"></label>
-          <div class="layui-input-block">
-            <button class="layui-btn layui-btn-sm" lay-submit lay-filter="table-query">
-              <i class="layui-icon layui-icon-search"></i>查询
+        <div class="main-form-footer-box">
+          <div class="button-group">
+            <button type="submit" class="layui-btn layui-btn-sm" lay-submit lay-filter="save">
+              <i class="layui-icon layui-icon-ok"></i>提交
             </button>
             <button type="reset" class="layui-btn layui-btn-sm layui-btn-primary">
               <i class="layui-icon layui-icon-refresh"></i>重置
             </button>
           </div>
         </div>
-        <div class="toggle-btn">
-          <a class="layui-hide">展开<i class="layui-icon layui-icon-down"></i></a>
-          <a class="layui-hide">收起<i class="layui-icon layui-icon-up"></i></a>
-        </div>
       </form>
     </div>
-  </div>
+    <!-- <script src="/lib/layui/layui.js"></script> -->
+    <script src="/admin/js/extends/searchForm.js"></script>
 
-  <div class="layui-card">
-    <form class="layui-form main-form" lay-filter="mainForm">
-      <div class="main-box">
-        <div class="form-section">
-          <div class="form-section-header">
-            <span class="form-section-title">基本信息（竖版）</span>
-          </div>
-          <div class="form-section-body">
-            <div class="form-row">
-              <div class="layui-form-item column">
-                <label class="layui-form-label required">名称</label>
-                <div class="layui-input-block">
-                  <input type="text" name="name" placeholder="请输入名称" required lay-verify="required" class="layui-input">
-                </div>
-                <i class="layui-icon layui-icon-tips layui-input-prefix-icon" lay-on="tip_name"></i>
-              </div>
+    <script>
+      layui.use(['layer', 'drawerMod', 'commonMod'], function() {
+        var $ = layui.$;
+        var layer = layui.layer;
+        var drawer = layui.drawerMod;
+        var common = layui.commonMod;
 
-              <div class="layui-form-item column">
-                <label class="layui-form-label required">编码</label>
-                <div class="layui-input-block">
-                  <input type="text" name="code" placeholder="请输入编码" required lay-verify="required" class="layui-input">
-                </div>
-                <i class="layui-icon layui-icon-tips layui-input-prefix-icon" lay-on="tip_code"></i>
-              </div>
-            </div>
+        var editData = {
+          name: '测试项目名称',
+          code: 'TEST_CODE_001',
+          effect_date: ['2024-01-01', '2024-12-31'],
+          status: 1,
+          logo: '/admin/images/avatar.webp',
+          category: '2',
+          dept_id: 1,
+          cost: 88,
+          port: 465,
+          tags: [1, 2],
+          roles: [1, 3],
+          priority: '2',
+          notify: ['email', 'wechat'],
+          handler: 'DefaultHandler',
+          remark: '这是一段备注说明文字，用于描述详细信息。',
+          sort: 10,
+          max_count: 100,
+          timeout: 30,
+          images: [
+            '/admin/images/avatar.webp',
+            '/admin/images/avatar.webp',
+            '/admin/images/avatar.webp',
+            '/admin/images/avatar.webp',
+            '/admin/images/avatar.webp'
+          ]
+        };
 
-            <div class="form-row">
-              <div class="layui-form-item column">
-                <label class="layui-form-label">生效日期</label>
-                <div class="layui-input-block">
-                  <div class="date-range">
-                    <input type="text" name="effect_date[]" id="effect_date-start" class="layui-input" placeholder="开始日期">
-                    <span class="date-separator">至</span>
-                    <input type="text" name="effect_date[]" id="effect_date-end" class="layui-input" placeholder="结束日期">
-                  </div>
-                </div>
-              </div>
-
-              <div class="layui-form-item column">
-                <label class="layui-form-label required">启用状态</label>
-                <div class="layui-input-block">
-                  <input type="checkbox" name="status" value="1" lay-skin="switch" lay-text="开启|关闭" checked>
-                </div>
-              </div>
-            </div>
-
-            <div class="layui-form-item column">
-              <label class="layui-form-label">测试测试测试测试测试测试测试测试测试Logo</label>
-              <div class="layui-input-block">
-                  <img class="img-3" src=""/>
-                  <input type="text" style="display:none" name="logo" value="/admin/images/avatar.webp" />
-                  <button type="button" class="layui-btn layui-btn-sm" id="image">
-                      <i class="layui-icon layui-icon-upload"></i>上传图片
-                  </button>
-                  <button type="button" class="layui-btn layui-btn-sm" id="attachment-choose-image">
-                      <i class="layui-icon layui-icon-align-left"></i>选择图片
-                  </button>
-                  <div class="form-tip">支持 jpg、png、pdf 格式，单个文件不超过 5MB</div>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <div class="form-section">
-          <div class="form-section-header">
-            <span class="form-section-title">基本信息</span>
-          </div>
-          <div class="form-section-body">
-            <div class="form-row">
-              <div class="layui-form-item">
-                <label class="layui-form-label required">名称</label>
-                <div class="layui-input-block">
-                  <input type="text" name="name" placeholder="请输入名称" required lay-verify="required" class="layui-input">
-                </div>
-                <i class="layui-icon layui-icon-tips layui-input-prefix-icon" lay-on="tip_name"></i>
-              </div>
-
-              <div class="layui-form-item">
-                <label class="layui-form-label required">编码</label>
-                <div class="layui-input-block">
-                  <input type="text" name="code" placeholder="请输入编码" required lay-verify="required" class="layui-input">
-                </div>
-                <i class="layui-icon layui-icon-tips layui-input-prefix-icon" lay-on="tip_code"></i>
-              </div>
-            </div>
-
-            <div class="form-row">
-              <div class="layui-form-item">
-                <label class="layui-form-label">所属分类</label>
-                <div class="layui-input-block">
-                  <select name="category" lay-verify="">
-                    <option value="">请选择分类</option>
-                    <option value="1">分类一</option>
-                    <option value="2">分类二</option>
-                    <option value="3">分类三</option>
-                  </select>
-                </div>
-                <i class="layui-icon layui-icon-tips layui-input-prefix-icon" lay-on="tip_category"></i>
-              </div>
-
-              <div class="layui-form-item">
-                <label class="layui-form-label">所属部门</label>
-                <div class="layui-input-block">
-                  <div id="deptSelect"></div>
-                </div>
-              </div>
-            </div>
-
-            <div class="form-row">
-              <div class="layui-form-item">
-                <label class="layui-form-label required">开通成本</label>
-                <div class="layui-input-block">
-                  <input type="text" lay-affix="number" name="cost" min="0" max="100" step="1" lay-verify="required|number" placeholder="请输入开通成本" class="layui-input">
-                  <div class="form-tip">范围 0-100</div>
-                </div>
-              </div>
-
-              <div class="layui-form-item">
-                <label class="layui-form-label required">端口</label>
-                <div class="layui-input-block">
-                  <input type="text" lay-affix="number" name="port" value="465" min="0" step="1" lay-verify="required|number" autocomplete="off" placeholder="" class="layui-input">
-                </div>
-              </div>
-            </div>
-
-            <div class="form-row">
-              <div class="layui-form-item">
-                <label class="layui-form-label">生效日期</label>
-                <div class="layui-input-block">
-                  <div class="date-range">
-                    <input type="text" name="effect_date[]" id="effect_date-start" class="layui-input" placeholder="开始日期">
-                    <span class="date-separator">至</span>
-                    <input type="text" name="effect_date[]" id="effect_date-end" class="layui-input" placeholder="结束日期">
-                  </div>
-                </div>
-              </div>
-
-              <div class="layui-form-item">
-                <label class="layui-form-label required">启用状态</label>
-                <div class="layui-input-block">
-                  <input type="checkbox" name="status" value="1" lay-skin="switch" lay-text="开启|关闭" checked>
-                </div>
-              </div>
-            </div>
-
-            <div class="layui-form-item">
-              <label class="layui-form-label">测试测试测试测试测试测试测试测试测试Logo</label>
-              <div class="layui-input-block">
-                  <img class="img-3" src=""/>
-                  <input type="text" style="display:none" name="logo" value="/admin/images/avatar.webp" />
-                  <button type="button" class="layui-btn layui-btn-sm" id="image">
-                      <i class="layui-icon layui-icon-upload"></i>上传图片
-                  </button>
-                  <button type="button" class="layui-btn layui-btn-sm" id="attachment-choose-image">
-                      <i class="layui-icon layui-icon-align-left"></i>选择图片
-                  </button>
-                  <div class="form-tip">支持 jpg、png、pdf 格式，单个文件不超过 5MB</div>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <div class="form-section">
-          <div class="form-section-header">
-            <span class="form-section-title">扩展信息</span>
-          </div>
-          <div class="form-section-body">
-            <div class="form-row">
-              <div class="layui-form-item">
-                <label class="layui-form-label">用户标签</label>
-                <div class="layui-input-block">
-                  <div id="tagSelect"></div>
-                </div>
-              </div>
-
-              <div class="layui-form-item">
-                <label class="layui-form-label">权限角色</label>
-                <div class="layui-input-block">
-                  <div id="roleSelect"></div>
-                </div>
-              </div>
-            </div>
-
-            <div class="form-row">
-              <div class="layui-form-item">
-                <label class="layui-form-label">优先级</label>
-                <div class="layui-input-block">
-                  <input type="radio" name="priority" value="1" title="低">
-                  <input type="radio" name="priority" value="2" title="中" checked>
-                  <input type="radio" name="priority" value="3" title="高">
-                </div>
-              </div>
-
-              <div class="layui-form-item">
-                <label class="layui-form-label">通知方式</label>
-                <div class="layui-input-block">
-                  <input type="checkbox" name="notify" value="email" title="邮件" checked>
-                  <input type="checkbox" name="notify" value="sms" title="短信">
-                  <input type="checkbox" name="notify" value="wechat" title="微信">
-                </div>
-              </div>
-            </div>
-
-            <div class="layui-form-item">
-              <label class="layui-form-label">处理器</label>
-              <div class="layui-input-block">
-                <input type="text" name="handler" value="" lay-verify="" class="layui-input" placeholder="请输入处理器名称">
-              </div>
-            </div>
-
-            <div class="layui-form-item">
-              <label class="layui-form-label">备注说明</label>
-              <div class="layui-input-block">
-                <textarea name="remark" placeholder="请输入备注说明" class="layui-textarea"></textarea>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <div class="form-section">
-          <div class="form-section-header">
-            <span class="form-section-title">其他设置</span>
-          </div>
-          <div class="form-section-body">
-            <div class="layui-tabs">
-              <ul class="layui-tabs-header">
-                <li lay-id="aaa">设置1</li>
-                <li lay-id="bbb">设置2</li>
-                <li lay-id="ccc">设置3</li>
-              </ul>
-              <div class="layui-tabs-body">
-                <div class="layui-tabs-item">
-                  <div class="form-row-3">
-                    <div class="layui-form-item">
-                      <label class="layui-form-label">排序号</label>
-                      <div class="layui-input-block">
-                        <input type="text" lay-affix="number" name="sort" value="0" min="0" lay-verify="number" class="layui-input">
-                      </div>
-                    </div>
-
-                    <div class="layui-form-item">
-                      <label class="layui-form-label">最大数量</label>
-                      <div class="layui-input-block">
-                        <input type="text" lay-affix="number" name="max_count" value="100" min="1" class="layui-input">
-                      </div>
-                    </div>
-
-                    <div class="layui-form-item">
-                      <label class="layui-form-label">超时时间</label>
-                      <div class="layui-input-block">
-                        <input type="text" lay-affix="number" name="timeout" value="30" min="1" class="layui-input">
-                        <div class="form-tip">单位：秒</div>
-                      </div>
-                    </div>
-                  </div>
-                  <div class="layui-form-item">
-                    <label class="layui-form-label">附件上传</label>
-                    <div class="layui-input-block">
-                      <button type="button" class="layui-btn layui-btn-sm" id="uploadBtn">
-                        <i class="layui-icon layui-icon-upload"></i>上传文件
-                      </button>
-                      <div class="form-tip">支持 jpg、png、pdf 格式，单个文件不超过 5MB</div>
-                    </div>
-                  </div>
-                </div>
-                <div class="layui-tabs-item">
-                  <div class="form-row">
-                    <div class="layui-form-item">
-                      <label class="layui-form-label">数量</label>
-                      <div class="layui-input-block">
-                        <input type="text" lay-affix="number" name="max_count" value="100" min="1" class="layui-input">
-                      </div>
-                    </div>
-
-                    <div class="layui-form-item">
-                      <label class="layui-form-label">时间</label>
-                      <div class="layui-input-block">
-                        <input type="text" lay-affix="number" name="timeout" value="30" min="1" class="layui-input">
-                        <div class="form-tip">单位：秒</div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                <div class="layui-tabs-item">设置3</div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <div class="main-form-footer-box">
-        <div class="button-group">
-          <button type="submit" class="layui-btn layui-btn-sm" lay-submit lay-filter="save">
-            <i class="layui-icon layui-icon-ok"></i>提交
-          </button>
-          <button type="reset" class="layui-btn layui-btn-sm layui-btn-primary">
-            <i class="layui-icon layui-icon-refresh"></i>重置
-          </button>
-        </div>
-      </div>
-    </form>
-  </div>
-  <!-- <script src="/lib/layui/layui.js"></script> -->
-  <script src="/admin/js/extends/searchForm.js"></script>
-  <script>
-    // 图片上传
-    layui.use(['upload', 'layer', 'toastMod'], function() {
-        let $ = layui.$;
-        let form = layui.form;
-        let toast = layui.toastMod;
-
-        // image
-        let input = $("#image").prev();
-        input.prev().attr("src", input.val());
-        layui.$("#attachment-choose-image").on("click", function() {
-            parent.layer.open({
-                type: 2,
-                title: "选择附件",
-                content: "/app/admin/upload/attachment?ext=jpg,jpeg,png,gif,bmp",
-                area: ["95%", "90%"],
-                success: function (layero, index) {
-                    parent.layui.$("#layui-layer" + index).data("callback", function (data) {
-                        input.val(data.url).prev().attr("src", data.url);
-                    });
-                }
-            });
+        $('#btnLayerDefault').on('click', function() {
+          layer.open({
+            type: 2,
+            title: '默认Layer弹窗',
+            content: '/view/components/form-open-test.html',
+            area: [common.isMobile() ? '100%' : '520px', common.isMobile() ? '100%' : '520px'],
+            maxmin: true
+          });
         });
-        layui.upload.render({
-            elem: "#image",
-            url: "/app/admin/upload/uploadImage?type=logo",
-            acceptMime: "image/gif,image/jpeg,image/jpg,image/png",
-            done: function (res) {
-                if (res.code) {
-                    return toast.failure(res.msg);
-                }
-                this.item.prev().val(res.data.url).prev().attr("src", res.data.url);
+
+        $('#btnDrawerRight').on('click', function() {
+          drawer.open({
+            type: 2,
+            container: '#contentWrapper',
+            placement: 'right',
+            title: '右侧抽屉弹窗',
+            area: [common.isMobile() ? '100%' : '550px', '100%'],
+            maxmin: true,
+            fixed: false,
+            content: '/view/components/form-open-test.html'
+          });
+        });
+
+        $('#btnDrawerFormTest').on('click', function() {
+          drawer.open({
+            type: 2,
+            container: '#contentWrapper',
+            placement: 'right',
+            title: '抽屉表单(无赋值)',
+            area: [common.isMobile() ? '100%' : '550px', '100%'],
+            maxmin: true,
+            fixed: false,
+            content: '/view/components/form-open-test-set.html'
+          });
+        });
+
+        $('#btnDrawerFormSet').on('click', function() {
+          var drawerIndex = drawer.open({
+            type: 2,
+            container: '#contentWrapper',
+            placement: 'right',
+            title: '抽屉表单(带赋值)',
+            area: [common.isMobile() ? '100%' : '550px', '100%'],
+            maxmin: true,
+            fixed: false,
+            content: '/view/components/form-open-test-set.html',
+            success: function(layero, index) {
+              var iframe = layero.find('iframe')[0];
+              if (iframe) {
+                iframe.onload = function() {
+                  try {
+                    var iframeWindow = iframe.contentWindow;
+                    if (iframeWindow && iframeWindow.layui) {
+                      iframeWindow.layui.use(['form'], function() {
+                        var form = iframeWindow.layui.form;
+                        var $ = iframeWindow.layui.$;
+                        $('input[name="name"]').val(editData.name);
+                        $('input[name="code"]').val(editData.code);
+                        $('input[name="cost"]').val(editData.cost);
+                        $('input[name="port"]').val(editData.port);
+                        $('input[name="handler"]').val(editData.handler);
+                        $('textarea[name="remark"]').val(editData.remark);
+                        $('input[name="sort"]').val(editData.sort);
+                        $('input[name="max_count"]').val(editData.max_count);
+                        $('input[name="timeout"]').val(editData.timeout);
+                        $('input[name="logo"]').val(editData.logo).prev().attr('src', editData.logo);
+                        if (editData.status == 1) {
+                          $('input[name="status"]').prop('checked', true);
+                        }
+                        if (editData.category) {
+                          $('select[name="category"]').val(editData.category);
+                        }
+                        if (editData.priority) {
+                          $('input[name="priority"][value="' + editData.priority + '"]').prop('checked', true);
+                        }
+                        if (editData.notify && editData.notify.length > 0) {
+                          $('input[name="notify"]').prop('checked', false);
+                          editData.notify.forEach(function(v) {
+                            $('input[name="notify"][value="' + v + '"]').prop('checked', true);
+                          });
+                        }
+                        if (editData.effect_date && editData.effect_date.length == 2) {
+                          $('#effect_date-start').val(editData.effect_date[0]);
+                          $('#effect_date-end').val(editData.effect_date[1]);
+                        }
+                        if (editData.images && editData.images.length > 0) {
+                          $('input[name="images"]').val(JSON.stringify(editData.images));
+                          if (typeof iframeWindow.renderImagesPreview === 'function') {
+                            iframeWindow.renderImagesPreview(editData.images);
+                          }
+                        }
+                        form.render();
+                      });
+                    }
+                  } catch (e) {
+                    console.log('iframe赋值失败:', e);
+                  }
+                };
+              }
             }
+          });
         });
-    });
+      });
+      // 图片上传
+      layui.use(['upload', 'layer', 'toastMod'], function() {
+          let $ = layui.$;
+          let form = layui.form;
+          let toast = layui.toastMod;
 
-    layui.use(['form', 'util', 'layer', 'laydate', 'upload', 'xmSelectMod'], function() {
-      var form = layui.form;
-      var util = layui.util;
-      var layer = layui.layer;
-      var laydate = layui.laydate;
-      var upload = layui.upload;
-      var xmSelect = layui.xmSelectMod;
-      var $ = layui.$;
-
-      laydate.render({
-        elem: '#last_login_at-start',
-        type: 'datetime'
+          // image
+          let input = $("#image").prev();
+          input.prev().attr("src", input.val());
+          layui.$("#attachment-choose-image").on("click", function() {
+              parent.layer.open({
+                  type: 2,
+                  title: "选择附件",
+                  content: "/app/admin/upload/attachment?ext=jpg,jpeg,png,gif,bmp",
+                  area: ["95%", "90%"],
+                  success: function (layero, index) {
+                      parent.layui.$("#layui-layer" + index).data("callback", function (data) {
+                          input.val(data.url).prev().attr("src", data.url);
+                      });
+                  }
+              });
+          });
+          layui.upload.render({
+              elem: "#image",
+              url: "/app/admin/upload/uploadImage?type=logo",
+              acceptMime: "image/gif,image/jpeg,image/jpg,image/png",
+              done: function (res) {
+                  if (res.code) {
+                      return toast.failure(res.msg);
+                  }
+                  this.item.prev().val(res.data.url).prev().attr("src", res.data.url);
+              }
+          });
       });
 
-      laydate.render({
-        elem: '#last_login_at-end',
-        type: 'datetime'
-      });
+      layui.use(['form', 'util', 'layer', 'laydate', 'upload', 'xmSelectMod'], function() {
+        var form = layui.form;
+        var util = layui.util;
+        var layer = layui.layer;
+        var laydate = layui.laydate;
+        var upload = layui.upload;
+        var xmSelect = layui.xmSelectMod;
+        var $ = layui.$;
 
-      laydate.render({
-        elem: '#effect_date-start'
-      });
+        laydate.render({
+          elem: '#last_login_at-start',
+          type: 'datetime'
+        });
 
-      laydate.render({
-        elem: '#effect_date-end'
-      });
+        laydate.render({
+          elem: '#last_login_at-end',
+          type: 'datetime'
+        });
 
-      xmSelect.render({
-        el: '#deptSelect',
-        name: 'dept_id',
-        tips: '请选择部门',
-        data: [
-          {name: '技术部', value: 1},
-          {name: '市场部', value: 2},
-          {name: '运营部', value: 3},
-          {name: '财务部', value: 4}
-        ]
-      });
+        laydate.render({
+          elem: '#effect_date-start'
+        });
 
-      xmSelect.render({
-        el: '#tagSelect',
-        name: 'tags',
-        tips: '请选择标签',
-        multiple: true,
-        data: [
-          {name: 'VIP用户', value: 1},
-          {name: '活跃用户', value: 2},
-          {name: '新用户', value: 3},
-          {name: '老用户', value: 4}
-        ]
-      });
+        laydate.render({
+          elem: '#effect_date-end'
+        });
 
-      xmSelect.render({
-        el: '#roleSelect',
-        name: 'roles',
-        tips: '请选择角色',
-        multiple: true,
-        data: [
-          {name: '管理员', value: 1},
-          {name: '编辑', value: 2},
-          {name: '访客', value: 3}
-        ]
-      });
+        xmSelect.render({
+          el: '#deptSelect',
+          name: 'dept_id',
+          tips: '请选择部门',
+          data: [
+            {name: '技术部', value: 1},
+            {name: '市场部', value: 2},
+            {name: '运营部', value: 3},
+            {name: '财务部', value: 4}
+          ]
+        });
 
-      upload.render({
-        elem: '#uploadBtn',
-        url: '/api/upload',
-        accept: 'file',
-        exts: 'jpg|png|pdf',
-        size: 5120,
-        done: function(res) {
-          if (res.code === 0) {
-            layer.msg('上传成功', {icon: 1});
+        xmSelect.render({
+          el: '#tagSelect',
+          name: 'tags',
+          tips: '请选择标签',
+          multiple: true,
+          data: [
+            {name: 'VIP用户', value: 1},
+            {name: '活跃用户', value: 2},
+            {name: '新用户', value: 3},
+            {name: '老用户', value: 4}
+          ]
+        });
+
+        xmSelect.render({
+          el: '#roleSelect',
+          name: 'roles',
+          tips: '请选择角色',
+          multiple: true,
+          data: [
+            {name: '管理员', value: 1},
+            {name: '编辑', value: 2},
+            {name: '访客', value: 3}
+          ]
+        });
+
+        upload.render({
+          elem: '#uploadBtn',
+          url: '/api/upload',
+          accept: 'file',
+          exts: 'jpg|png|pdf',
+          size: 5120,
+          done: function(res) {
+            if (res.code === 0) {
+              layer.msg('上传成功', {icon: 1});
+            }
           }
+        });
+
+        function renderImagesPreview(images) {
+          var html = '';
+          images.forEach(function(src, index) {
+            html += '<div class="image-item" data-index="' + index + '">';
+            html += '<img src="' + src + '" />';
+            html += '<i class="layui-icon layui-icon-close remove-image"></i>';
+            html += '</div>';
+          });
+          $('#imagesPreview').html(html);
         }
+
+        $(document).on('click', '.remove-image', function() {
+          var index = $(this).parent().data('index');
+          var images = JSON.parse($('input[name="images"]').val() || '[]');
+          images.splice(index, 1);
+          $('input[name="images"]').val(JSON.stringify(images));
+          renderImagesPreview(images);
+        });
+
+        upload.render({
+          elem: '#imagesUpload',
+          url: '/app/admin/upload/uploadImage?type=images',
+          acceptMime: 'image/gif,image/jpeg,image/jpg,image/png',
+          multiple: true,
+          number: 5,
+          done: function(res) {
+            if (res.code) {
+              return layer.msg(res.msg, {icon: 2});
+            }
+            var images = JSON.parse($('input[name="images"]').val() || '[]');
+            if (images.length >= 5) {
+              return layer.msg('最多上传5张图片', {icon: 0});
+            }
+            images.push(res.data.url);
+            $('input[name="images"]').val(JSON.stringify(images));
+            renderImagesPreview(images);
+          }
+        });
+
+        $('#attachment-choose-images').on('click', function() {
+          parent.layer.open({
+            type: 2,
+            title: '选择附件',
+            content: '/app/admin/upload/attachment?ext=jpg,jpeg,png,gif,bmp',
+            area: ['95%', '90%'],
+            success: function(layero, index) {
+              parent.layui.$('#layui-layer' + index).data('callback', function(data) {
+                var images = JSON.parse($('input[name="images"]').val() || '[]');
+                if (images.length >= 5) {
+                  return layer.msg('最多上传5张图片', {icon: 0});
+                }
+                images.push(data.url);
+                $('input[name="images"]').val(JSON.stringify(images));
+                renderImagesPreview(images);
+              });
+            }
+          });
+        });
+
+        var initImages = [
+          '/admin/images/avatar.webp',
+          '/admin/images/avatar.webp',
+          '/admin/images/avatar.webp',
+          '/admin/images/avatar.webp',
+          '/admin/images/avatar.webp',
+          '/admin/images/avatar.webp',
+          '/admin/images/avatar.webp',
+          '/admin/images/avatar.webp',
+          '/admin/images/avatar.webp',
+          '/admin/images/avatar.webp',
+          '/admin/images/avatar.webp'
+        ];
+        $('input[name="images"]').val(JSON.stringify(initImages));
+        renderImagesPreview(initImages);
+
+        // 提示图标功能
+        var tipData = {
+          tip_name: '请输入名称，该名称将用于系统显示和标识。',
+          tip_code: '请输入唯一编码，只能包含字母、数字和下划线。',
+          tip_category: '选择所属分类，用于数据分组和筛选。',
+          tip_cost: '开通成本范围 0-100，单位：元。',
+          tip_port: '服务端口号，范围 1-65535，常用端口：80、443、8080等。'
+        };
+
+        // 事件
+        util.on('lay-on', {
+          'tip_name': function(){
+            layer.tips(tipData.tip_name, this, {
+              tips: [4, '#16b777']
+            });
+          },
+          'tip_code': function(){
+            layer.tips(tipData.tip_code, this, {
+              tips: [4, '#16b777'],
+              time: 3000,
+              maxWidth: 280
+            });
+          },
+          'tip_category': function(){
+            layer.tips(tipData.tip_category, this, {
+              tips: [4, '#16b777'],
+              time: 3000,
+              maxWidth: 280
+            });
+          },
+          'tip_cost': function(){
+            layer.tips(tipData.tip_cost, this, {
+              tips: [4, '#16b777'],
+              time: 3000,
+              maxWidth: 280
+            });
+          },
+          'tip_port': function(){
+            layer.tips(tipData.tip_port, this, {
+              tips: [4, '#16b777'],
+              time: 3000,
+              maxWidth: 280
+            });
+          },
+        }, {
+          trigger: 'mouseenter' // 鼠标移入时触发事件
+        })
+
+        form.on('submit(table-query)', function(data) {
+          console.log('查询条件：', data.field);
+          return false;
+        });
+
+        form.on('submit(save)', function(data) {
+          layer.msg('提交成功', { icon: 1 });
+          console.log('表单数据：', data.field);
+          return false;
+        });
+
+        form.render();
       });
-
-      // 提示图标功能
-      var tipData = {
-        tip_name: '请输入名称，该名称将用于系统显示和标识。',
-        tip_code: '请输入唯一编码，只能包含字母、数字和下划线。',
-        tip_category: '选择所属分类，用于数据分组和筛选。',
-        tip_cost: '开通成本范围 0-100，单位：元。',
-        tip_port: '服务端口号，范围 1-65535，常用端口：80、443、8080等。'
-      };
-
-      // 事件
-      util.on('lay-on', {
-        'tip_name': function(){
-          layer.tips(tipData.tip_name, this, {
-            tips: [4, '#16b777']
-          });
-        },
-        'tip_code': function(){
-          layer.tips(tipData.tip_code, this, {
-            tips: [4, '#16b777'],
-            time: 3000,
-            maxWidth: 280
-          });
-        },
-        'tip_category': function(){
-          layer.tips(tipData.tip_category, this, {
-            tips: [4, '#16b777'],
-            time: 3000,
-            maxWidth: 280
-          });
-        },
-        'tip_cost': function(){
-          layer.tips(tipData.tip_cost, this, {
-            tips: [4, '#16b777'],
-            time: 3000,
-            maxWidth: 280
-          });
-        },
-        'tip_port': function(){
-          layer.tips(tipData.tip_port, this, {
-            tips: [4, '#16b777'],
-            time: 3000,
-            maxWidth: 280
-          });
-        },
-      }, {
-        trigger: 'mouseenter' // 鼠标移入时触发事件
-      })
-
-      form.on('submit(table-query)', function(data) {
-        console.log('查询条件：', data.field);
-        return false;
-      });
-
-      form.on('submit(save)', function(data) {
-        layer.msg('提交成功', { icon: 1 });
-        console.log('表单数据：', data.field);
-        return false;
-      });
-
-      form.render();
-    });
-  </script>
-</div>
+    </script>
+  </div>
 </body>
 </html>
