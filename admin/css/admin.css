@@ -181,6 +181,9 @@ body {
   font-weight: 600;
   color: #fff;
   white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 120px;
   opacity: 1;
   transition: opacity 0.2s ease 0.15s;
 }
@@ -390,6 +393,7 @@ body {
   text-decoration: none;
   position: relative;
   margin-bottom: 1px;
+  border-radius: 6px;
 }
 
 .submenu-item .menu-icon {
@@ -456,7 +460,7 @@ body {
 
 .layui-submenu-panel-header {
   height: var(--topbar-height);
-  padding: 0 16px;
+  padding: 0 8px;
   display: flex;
   align-items: center;
   border-bottom: 1px solid rgba(255, 255, 255, 0.05);
@@ -467,12 +471,16 @@ body {
   font-size: 14px;
   font-weight: 600;
   color: rgba(255, 255, 255, 0.9);
-  display: flex;
-  align-items: center;
-  gap: 8px;
+  display: block;
   opacity: 0;
   transform: translateX(-10px);
   transition: opacity 0.25s ease, transform 0.25s ease;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  max-width: 140px;
+  padding-left: 11px;
+  position: relative;
 }
 
 .layui-submenu-panel.show .layui-submenu-panel-title {
@@ -482,6 +490,10 @@ body {
 
 .layui-submenu-panel-title::before {
   content: '';
+  position: absolute;
+  left: 0;
+  top: 50%;
+  transform: translateY(-50%);
   width: 3px;
   height: 16px;
   background: var(--accent);
@@ -1642,6 +1654,7 @@ body {
   text-decoration: none;
   position: relative;
   margin-bottom: 1px;
+  border-radius: 6px;
 }
 
 .nested-dropdown-item .menu-icon {
@@ -1894,4 +1907,259 @@ body {
   height: 100%;
   border: none;
   display: block;
+}
+
+/* ========================================
+   固定双列布局样式 (fixed-double)
+   ======================================== */
+
+:root {
+  --sidebar-fixed-width: 80px;
+  --submenu-fixed-width: 180px;
+}
+
+.layout-fixed-double .layui-sidebar {
+  width: var(--sidebar-fixed-width);
+  min-width: var(--sidebar-fixed-width);
+}
+
+.layout-fixed-double .layui-sidebar.collapsed {
+  width: var(--sidebar-fixed-width);
+}
+
+.layout-fixed-double .layui-sidebar-logo {
+  flex-direction: column;
+  justify-content: center;
+  padding: 8px 4px;
+  height: auto;
+  min-height: 60px;
+  gap: 4px;
+}
+
+.layout-fixed-double .layui-sidebar-logo .layui-logo-img {
+  width: 28px;
+  height: 28px;
+}
+
+.layout-fixed-double .layui-sidebar-logo .layui-logo-text {
+  opacity: 1;
+  display: block;
+  font-size: 11px;
+  margin-left: 0px;
+  max-width: 68px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  text-align: center;
+}
+
+.layout-fixed-double .layui-sidebar-menu {
+  padding: 4px;
+}
+
+.layout-fixed-double .layui-sidebar-menu .menu-section {
+  display: none;
+}
+
+.layout-fixed-double .layui-sidebar-menu .menu-item {
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: auto;
+  min-height: 60px;
+  padding: 8px 4px;
+  border-radius: 8px;
+  text-align: center;
+  margin-bottom: 4px;
+}
+
+.layout-fixed-double .layui-sidebar-menu .menu-item:hover {
+  transform: none;
+}
+
+.layout-fixed-double .layui-sidebar-menu .menu-item .menu-icon {
+  margin: 0 0 4px 0;
+  width: 24px;
+  height: 24px;
+}
+
+.layout-fixed-double .layui-sidebar-menu .menu-item .menu-icon .layui-icon {
+  font-size: 20px;
+}
+
+.layout-fixed-double .layui-sidebar-menu .menu-item .menu-text {
+  margin: 0;
+  opacity: 1;
+  font-size: 11px;
+  max-width: 68px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  pointer-events: auto;
+}
+
+.layout-fixed-double .layui-sidebar-menu .menu-item .menu-arrow {
+  display: none;
+}
+
+.layout-fixed-double .layui-sidebar-menu .menu-item .menu-badge {
+  position: absolute;
+  top: 2px;
+  right: 2px;
+  padding: 2px 4px;
+  font-size: 9px;
+  margin: 0;
+}
+
+.layout-fixed-double .layui-sidebar-menu .submenu {
+  display: none;
+}
+
+.layout-fixed-double .layui-sidebar-footer {
+  display: none;
+}
+
+.layout-fixed-double .layui-submenu-panel {
+  width: var(--submenu-fixed-width);
+  box-shadow: 4px 0 20px rgba(0, 0, 0, 0.15);
+}
+
+.layout-fixed-double .layui-submenu-panel.show {
+  width: var(--submenu-fixed-width);
+}
+
+.layout-fixed-double .layui-submenu-panel-header {
+  display: flex;
+  padding-top: 8px;
+}
+
+.layout-fixed-double .layui-submenu-panel-title {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+.layout-fixed-double .layui-submenu-panel-content {
+  display: block;
+}
+
+.layout-fixed-double .layui-dropdown-menu-panel-wrapper {
+  display: none !important;
+}
+
+.layout-fixed-double .layui-sidebar-menu .menu-item.active::before {
+  left: 2px;
+  width: 3px;
+  height: 40px;
+}
+
+@media (max-width: 768px) {
+  .layout-fixed-double .layui-sidebar {
+    position: fixed;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    transform: translateX(-100%);
+    width: var(--sidebar-width) !important;
+    transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  .layout-fixed-double .layui-sidebar.mobile-open {
+    transform: translateX(0);
+  }
+
+  .layout-fixed-double .layui-sidebar-logo {
+    flex-direction: row;
+    padding: 0 16px;
+    height: var(--topbar-height);
+    min-height: unset;
+    gap: 12px;
+  }
+
+  .layout-fixed-double .layui-sidebar-logo .layui-logo-img {
+    width: 32px;
+    height: 32px;
+  }
+
+  .layout-fixed-double .layui-sidebar-logo .layui-logo-text {
+    font-size: 16px;
+    max-width: none;
+  }
+
+  .layout-fixed-double .layui-sidebar-menu {
+    padding: 0;
+  }
+
+  .layout-fixed-double .layui-sidebar-menu .menu-section {
+    display: block;
+  }
+
+  .layout-fixed-double .layui-sidebar-menu .menu-item {
+    flex-direction: row;
+    align-items: center;
+    justify-content: flex-start;
+    height: 40px;
+    min-height: unset;
+    padding: 0 12px;
+    border-radius: 8px;
+    text-align: left;
+    margin-bottom: 2px;
+  }
+
+  .layout-fixed-double .layui-sidebar-menu .menu-item:hover {
+    transform: translateX(2px);
+  }
+
+  .layout-fixed-double .layui-sidebar-menu .menu-item .menu-icon {
+    margin: 0;
+    min-width: 20px;
+    width: 20px;
+    height: 20px;
+  }
+
+  .layout-fixed-double .layui-sidebar-menu .menu-item .menu-icon .layui-icon {
+    font-size: 16px;
+  }
+
+  .layout-fixed-double .layui-sidebar-menu .menu-item .menu-text {
+    margin-left: 10px;
+    font-size: 13px;
+    max-width: none;
+    white-space: nowrap;
+    opacity: 1;
+    flex: 1;
+  }
+
+  .layout-fixed-double .layui-sidebar-menu .menu-item .menu-arrow {
+    display: block;
+    margin-left: auto;
+    opacity: 1;
+  }
+
+  .layout-fixed-double .layui-sidebar-menu .menu-item .menu-badge {
+    position: static;
+    margin-left: auto;
+    padding: 2px 6px;
+    font-size: 10px;
+    opacity: 1;
+  }
+
+  .layout-fixed-double .layui-sidebar-menu .submenu {
+    display: block;
+  }
+
+  .layout-fixed-double .layui-submenu-panel {
+    display: none !important;
+  }
+
+  .layout-fixed-double .layui-mobile-menu-fab {
+    display: flex;
+  }
+
+  .layout-fixed-double .layui-sidebar-menu .menu-item.active::before {
+    left: 0;
+    width: 3px;
+    height: 20px;
+    border-radius: 0 2px 2px 0;
+    box-shadow: 0 0 8px rgba(var(--accent-rgb), 0.5);
+  }
 }

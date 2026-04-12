@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>图标选择器</title>
+</head>
+<body>
+<div class="page-content">
+  <div class="demo-header">
+    <h3 class="demo-title">图标选择器示例</h3>
+    <p class="demo-desc">本页面演示 IconPicker 图标选择器组件的使用方法，支持 fontClass 和 unicode 两种模式</p>
+  </div>
+
+  <div class="demo-grid">
+    <div class="layui-card">
+      <div class="layui-card-header">
+        <span class="layui-card-title">FontClass 模式</span>
+      </div>
+      <div class="layui-card-body">
+        <div class="form-item">
+          <label class="form-label">选择图标：</label>
+          <input type="text" id="iconFontClass" value="" placeholder="点击选择图标" class="layui-input" style="width: 200px;">
+        </div>
+        <div class="result-box" style="margin-top: 15px;">
+          <span class="result-label">选中的图标：</span>
+          <span id="fontClassResult" class="result-value">未选择</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="layui-card">
+      <div class="layui-card-header">
+        <span class="layui-card-title">Unicode 模式</span>
+      </div>
+      <div class="layui-card-body">
+        <div class="form-item">
+          <label class="form-label">选择图标：</label>
+          <input type="text" id="iconUnicode" value="" placeholder="点击选择图标" class="layui-input" style="width: 200px;">
+        </div>
+        <div class="result-box" style="margin-top: 15px;">
+          <span class="result-label">选中的图标：</span>
+          <span id="unicodeResult" class="result-value">未选择</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="layui-card">
+      <div class="layui-card-header">
+        <span class="layui-card-title">自定义配置</span>
+      </div>
+      <div class="layui-card-body">
+        <div class="form-item">
+          <label class="form-label">每页数量：</label>
+          <input type="number" id="pageSize" value="12" class="layui-input" style="width: 100px; display: inline-block;">
+        </div>
+        <div class="form-item" style="margin-top: 10px;">
+          <label class="form-label">格子宽度：</label>
+          <input type="text" id="cellWidth" value="" placeholder="如: 50px 或 20%" class="layui-input" style="width: 150px; display: inline-block;">
+        </div>
+        <div class="form-item" style="margin-top: 10px;">
+          <button class="layui-btn" id="customRender">重新渲染</button>
+        </div>
+        <div class="form-item" style="margin-top: 10px;">
+          <label class="form-label">选择图标：</label>
+          <input type="text" id="iconCustom" value="" placeholder="点击选择图标" class="layui-input" style="width: 200px;">
+        </div>
+      </div>
+    </div>
+
+    <div class="layui-card">
+      <div class="layui-card-header">
+        <span class="layui-card-title">带回调函数</span>
+      </div>
+      <div class="layui-card-body">
+        <div class="form-item">
+          <label class="form-label">选择图标：</label>
+          <input type="text" id="iconCallback" value="" placeholder="点击选择图标" class="layui-input" style="width: 200px;">
+        </div>
+        <div class="result-box" style="margin-top: 15px;">
+          <span class="result-label">回调信息：</span>
+          <div id="callbackLog" style="margin-top: 10px; padding: 10px; background: var(--bg-secondary); border-radius: 4px; font-size: 12px; font-family: monospace; max-height: 150px; overflow-y: auto;"></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="layui-card">
+      <div class="layui-card-header">
+        <span class="layui-card-title">禁用搜索</span>
+      </div>
+      <div class="layui-card-body">
+        <div class="form-item">
+          <label class="form-label">选择图标：</label>
+          <input type="text" id="iconNoSearch" value="" placeholder="点击选择图标" class="layui-input" style="width: 200px;">
+        </div>
+      </div>
+    </div>
+
+    <div class="layui-card">
+      <div class="layui-card-header">
+        <span class="layui-card-title">禁用分页</span>
+      </div>
+      <div class="layui-card-body">
+        <div class="form-item">
+          <label class="form-label">选择图标：</label>
+          <input type="text" id="iconNoPage" value="" placeholder="点击选择图标" class="layui-input" style="width: 200px;">
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="demo-code">
+    <h4 class="demo-code-title">使用示例</h4>
+    <pre class="layui-code" lay-options="{title: 'JavaScript'}">
+// 基本用法 - FontClass 模式
+layui.use(['iconPickerMod'], function() {
+  var iconPicker = layui.iconPickerMod;
+  
+  iconPicker.render({
+    elem: '#iconInput',
+    type: 'fontClass',
+    click: function(data) {
+      console.log('选中的图标:', data.icon);
+    }
+  });
+});
+
+// Unicode 模式
+iconPicker.render({
+  elem: '#iconInput',
+  type: 'unicode',
+  click: function(data) {
+    console.log('选中的图标:', data.icon);
+  }
+});
+
+// 自定义配置
+iconPicker.render({
+  elem: '#iconInput',
+  type: 'fontClass',
+  page: true,
+  limit: 12,
+  cellWidth: '50px',
+  search: true,
+  click: function(data) {
+    console.log('图标:', data.icon);
+  },
+  success: function(d) {
+    console.log('渲染成功:', d);
+  }
+});
+
+// 手动选中图标
+iconPicker.checkIcon('filterName', 'layui-icon-home');</pre>
+  </div>
+</div>
+
+<style>
+.demo-header {
+  margin-bottom: 16px;
+}
+.demo-title {
+  font-size: 18px;
+  font-weight: 600;
+  color: var(--text-primary);
+  margin-bottom: 4px;
+}
+.demo-desc {
+  font-size: 13px;
+  color: var(--text-muted);
+}
+.demo-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 16px;
+  margin-bottom: 16px;
+}
+@media (max-width: 992px) {
+  .demo-grid {
+    grid-template-columns: 1fr;
+  }
+}
+.form-item {
+  display: flex;
+  align-items: center;
+}
+.form-label {
+  min-width: 80px;
+  color: var(--text-secondary);
+  font-size: 14px;
+}
+.result-box {
+  padding: 10px;
+  background: var(--bg-secondary);
+  border-radius: 4px;
+}
+.result-label {
+  color: var(--text-secondary);
+  font-size: 13px;
+}
+.result-value {
+  color: var(--text-primary);
+  font-size: 13px;
+  font-weight: 500;
+}
+.demo-code {
+  margin-top: 16px;
+}
+.demo-code-title {
+  font-size: 14px;
+  font-weight: 600;
+  margin-bottom: 10px;
+}
+.layui-code {
+  border-radius: 8px;
+}
+</style>
+
+<script>
+layui.use(['iconPickerMod', 'layer'], function() {
+  var iconPicker = layui.iconPickerMod;
+  var layer = layui.layer;
+  var $ = layui.$;
+
+  iconPicker.render({
+    elem: '#iconFontClass',
+    type: 'fontClass',
+    click: function(data) {
+      $('#fontClassResult').html('<i class="layui-icon ' + data.icon + '" style="font-size: 20px;"></i> ' + data.icon);
+    }
+  });
+
+  iconPicker.render({
+    elem: '#iconUnicode',
+    type: 'unicode',
+    click: function(data) {
+      $('#unicodeResult').html('<i class="layui-icon" style="font-size: 20px;">' + data.icon + '</i> ' + data.icon);
+    }
+  });
+
+  var customPicker = null;
+  $('#customRender').on('click', function() {
+    var limit = parseInt($('#pageSize').val()) || 12;
+    var cellWidth = $('#cellWidth').val() || null;
+    
+    customPicker = iconPicker.render({
+      elem: '#iconCustom',
+      type: 'fontClass',
+      limit: limit,
+      cellWidth: cellWidth,
+      click: function(data) {
+        layer.msg('选中: ' + data.icon);
+      }
+    });
+  });
+
+  iconPicker.render({
+    elem: '#iconCallback',
+    type: 'fontClass',
+    click: function(data) {
+      var log = $('#callbackLog');
+      var time = new Date().toLocaleTimeString();
+      log.prepend('<div>[' + time + '] 选中图标: ' + data.icon + '</div>');
+    },
+    success: function(d) {
+      var log = $('#callbackLog');
+      var time = new Date().toLocaleTimeString();
+      log.prepend('<div style="color: var(--success-color);">[' + time + '] 渲染成功，ID: ' + d.id + '</div>');
+    }
+  });
+
+  iconPicker.render({
+    elem: '#iconNoSearch',
+    type: 'fontClass',
+    search: false,
+    click: function(data) {
+      layer.msg('选中: ' + data.icon);
+    }
+  });
+
+  iconPicker.render({
+    elem: '#iconNoPage',
+    type: 'fontClass',
+    page: false,
+    click: function(data) {
+      layer.msg('选中: ' + data.icon);
+    }
+  });
+});
+</script>
+</body>
+</html>

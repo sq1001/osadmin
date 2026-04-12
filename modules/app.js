@@ -107,6 +107,16 @@ layui.define(['jquery', 'util', 'routerModule', 'themeModule', 'sidebarComp', 't
         sidebar.init({ data: menuData || [] });
         tabs.init(self.appConfig, menuData || []);
 
+        var state = theme.getState();
+        if (state.layout === 'fixed-double' && menuData && menuData.length > 0) {
+          var firstMenu = menuData[0];
+          var firstMenuId = firstMenu.id !== undefined ? firstMenu.id : firstMenu.code;
+          var $firstMenuItem = $('.menu-item[data-id="' + firstMenuId + '"]');
+          if ($firstMenuItem.length && firstMenu.children && firstMenu.children.length > 0) {
+            sidebar.showSubmenuPanel(firstMenuId, $firstMenuItem);
+          }
+        }
+
         router.on('routeChange', function(routeInfo) {
           self.handleRouteChange(routeInfo);
         });

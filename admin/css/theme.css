@@ -231,7 +231,7 @@
   position: fixed;
   top: 0;
   right: 0;
-  width: 320px;
+  width: 360px;
   height: 100vh;
   background: var(--card-bg);
   border-left: 1px solid var(--border);
@@ -536,6 +536,28 @@
 .layout-option[data-layout="double"] .layout-icon-submenu {
   position: absolute;
   left: 10px;
+  top: 4px;
+  width: 8px;
+  height: calc(100% - 8px);
+  background: var(--accent);
+  opacity: 0.3;
+  border-radius: 1px;
+}
+
+.layout-option[data-layout="fixed-double"] .layout-icon-fixed-sidebar {
+  position: absolute;
+  left: 8px;
+  top: 4px;
+  width: 6px;
+  height: calc(100% - 8px);
+  background: var(--accent);
+  opacity: 0.5;
+  border-radius: 1px;
+}
+
+.layout-option[data-layout="fixed-double"] .layout-icon-fixed-submenu {
+  position: absolute;
+  left: 16px;
   top: 4px;
   width: 8px;
   height: calc(100% - 8px);

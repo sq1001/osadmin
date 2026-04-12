@@ -8,8 +8,9 @@
 layui.define(['layer', 'jquery'], function(exports) {
   'use strict';
 
-  var layer = layui.layer;
-  var $ = layui.jquery;
+  var MOD_NAME = 'drawerMod';
+  var $ = layui.jquery,
+      layer = layui.layer;
 
   var instances = {};
   var routeChangeListenerAdded = false;
@@ -526,5 +527,5 @@ layui.define(['layer', 'jquery'], function(exports) {
     }
   };
 
-  exports('drawerMod', LayDrawer);
+  exports(MOD_NAME, LayDrawer);
 });

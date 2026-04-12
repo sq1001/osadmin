@@ -1,13 +1,12 @@
-layui.define(['jquery', 'element', 'table'], function(exports) {
+/**
+ * Common 常用工具模块
+ */
+layui.define(['jquery', 'layer', 'table'], function(exports) {
 	"use strict";
 
-	/**
-	 * 常用封装类
-	 * */
-	var MOD_NAME = 'commonMod',
-		$ = layui.jquery,
+	var MOD_NAME = 'commonMod';
+	var	$ = layui.jquery,
 		table = layui.table,
-		element = layui.element,
 		layer = layui.layer;
 
 	var common = new function() {

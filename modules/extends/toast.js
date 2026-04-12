@@ -5,6 +5,7 @@
 layui.define(['jquery'], function(exports) {
   'use strict';
 
+  var MOD_NAME = 'toastMod';
   var $ = layui.jquery;
 
   var Toast = {
@@ -239,5 +240,5 @@ layui.define(['jquery'], function(exports) {
     }
   };
 
-  exports('toastMod', Toast);
+  exports(MOD_NAME, Toast);
 });

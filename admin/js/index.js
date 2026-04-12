@@ -51,6 +51,8 @@
     toastMod: 'modules/extends/toast',
     drawerMod: 'modules/extends/drawer',
     tinymceMod: 'modules/extends/tinymce',
+    iconPickerMod: 'modules/extends/iconPicker',
+    watermarkMod: 'modules/extends/watermark',
     appMain: 'modules/app'
   };
 
@@ -94,7 +96,7 @@
   var isReady = false;
 
   var App = {
-    version: '1.5.1',
+    version: '1.6.0',
     name: 'OS Admin',
     debug: false,
     baseUrl: baseUrl,
@@ -171,6 +173,9 @@
       this.modules = {
         router: layui.routerModule,
         theme: layui.themeModule,
+        permission: layui.permissionModule,
+        resourceLoader: layui.resourceLoader,
+        componentRenderer: layui.componentRenderer,
         sidebar: layui.sidebarComp,
         tabs: layui.tabsComp,
         common: layui.commonMod,
@@ -180,8 +185,8 @@
         toast: layui.toastMod,
         drawer: layui.drawerMod,
         tinymce: layui.tinymceMod,
-        permission: layui.permissionModule,
-        resourceLoader: layui.resourceLoader,
+        iconPicker: layui.iconPickerMod,
+        watermark: layui.watermarkMod,
         app: layui.appMain
       };
     },

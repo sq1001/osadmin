@@ -1,8 +1,11 @@
+/**
+ * Count 数字动画模块
+ */
 layui.define(['jquery', 'element'], function(exports) {
 	"use strict";
 
-	var MOD_NAME = 'countMod',
-		$ = layui.jquery,
+	var MOD_NAME = 'countMod';
+	var	$ = layui.jquery,
 		element = layui.element;
 
 	var count = new function() {

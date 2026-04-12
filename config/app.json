@@ -1,6 +1,6 @@
 {
   "name": "OSADMIN",
-  "version": "1.5.1",
+  "version": "1.6.0",
   "description": "基于layui原生管理后台系统",
   "site": {
     "name": "OSADMIN",
@@ -29,8 +29,10 @@
     "fontSize": 14,
     "color": "rgba(0, 0, 0, 0.08)",
     "rotate": -22,
-    "gapX": 100,
-    "gapY": 100
+    "gapX": 30,
+    "gapY": 60,
+    "width": 100,
+    "height": 20
   },
   "lang": {
     "default": "zh-CN",
