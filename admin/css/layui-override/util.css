@@ -1,0 +1,14 @@
+/**
+ * LayUI 工具类主题适配
+ * 仅覆盖颜色、背景色相关属性
+ */
+
+/* ========== 固定工具栏 ========== */
+.layui-fixbar li {
+  background-color: var(--text-muted);
+}
+
+/* ========== 深色主题 ========== */
+[data-theme="dark"] .layui-fixbar li {
+  background-color: rgba(255, 255, 255, 0.2);
+}

@@ -1,0 +1,1088 @@
+/**
+ * 主应用模块
+ * 支持id与code混合路由方案
+ * 
+ * type 定义:
+ *   0 - 目录 (有 children)
+ *   1 - 菜单 (有 href)
+ * 
+ * openType 定义 (仅菜单类型有效):
+ *   _blank  - 新标签页打开
+ *   _iframe - 内嵌 iframe
+ *   _dialog - 弹窗打开
+ *   无      - 默认内部页面加载
+ */
+layui.define(['jquery', 'util', 'routerModule', 'themeModule', 'sidebarComp', 'tabsComp', 'resourceLoader', 'toastMod'], function(exports) {
+  'use strict';
+
+  var $ = layui.jquery;
+  var util = layui.util;
+  var router = layui.routerModule;
+  var theme = layui.themeModule;
+  var sidebar = layui.sidebarComp;
+  var tabs = layui.tabsComp;
+  var resourceLoader = layui.resourceLoader;
+  var toast = layui.toastMod;
+
+  var App = {
+    initialized: false,
+    appConfig: null,
+    menuConfig: null,
+    resourceConfig: null,
+    notificationData: [],
+    currentAnimation: 'fadeIn',
+    baseUrl: '',
+    version: '1.0.0',
+
+    configCache: {
+      data: {},
+      timestamp: {},
+      ttl: 5 * 60 * 1000,
+
+      get: function(key) {
+        if (this.data[key] && this.timestamp[key]) {
+          if (Date.now() - this.timestamp[key] < this.ttl) {
+            return this.data[key];
+          }
+          delete this.data[key];
+          delete this.timestamp[key];
+        }
+        return null;
+      },
+
+      set: function(key, value) {
+        this.data[key] = value;
+        this.timestamp[key] = Date.now();
+      },
+
+      clear: function(key) {
+        if (key) {
+          delete this.data[key];
+          delete this.timestamp[key];
+        } else {
+          this.data = {};
+          this.timestamp = {};
+        }
+      }
+    },
+
+    pageCache: {
+      data: {},
+      order: [],
+      maxSize: 20,
+
+      get: function(key) {
+        if (this.data[key]) {
+          var idx = this.order.indexOf(key);
+          if (idx > -1) {
+            this.order.splice(idx, 1);
+            this.order.push(key);
+          }
+          return this.data[key];
+        }
+        return null;
+      },
+
+      set: function(key, value) {
+        if (this.data[key]) {
+          this.data[key] = value;
+          var idx = this.order.indexOf(key);
+          if (idx > -1) {
+            this.order.splice(idx, 1);
+            this.order.push(key);
+          }
+          return;
+        }
+
+        while (this.order.length >= this.maxSize) {
+          var oldKey = this.order.shift();
+          delete this.data[oldKey];
+        }
+
+        this.data[key] = value;
+        this.order.push(key);
+      },
+
+      clear: function(key) {
+        if (key) {
+          delete this.data[key];
+          var idx = this.order.indexOf(key);
+          if (idx > -1) {
+            this.order.splice(idx, 1);
+          }
+        } else {
+          this.data = {};
+          this.order = [];
+        }
+      },
+
+      size: function() {
+        return this.order.length;
+      }
+    },
+
+    isExternalUrl: function(href) {
+      if (!href) return false;
+      return href.indexOf('http://') === 0 || href.indexOf('https://') === 0 || href.indexOf('//') === 0;
+    },
+
+    getMenuItemType: function(item) {
+      if (item.type !== undefined) {
+        return item.type;
+      }
+      if (item.children && item.children.length > 0) {
+        return 0;
+      }
+      return 1;
+    },
+
+    init: function() {
+      if (this.initialized) {
+        return this;
+      }
+
+      var self = this;
+
+      if (window.OSLAY && window.OSLAY.appConfig) {
+        this.appConfig = window.OSLAY.appConfig;
+        this.menuConfig = window.OSLAY.menuConfig;
+        this.initModules();
+        this.initialized = true;
+        console.log('OSLAY initialized');
+      } else {
+        $.when(
+          this.loadConfig('config/app.json'),
+          this.loadConfig('config/menu.json')
+        ).done(function(appResult, menuResult) {
+          self.appConfig = appResult[0];
+          self.menuConfig = menuResult[0];
+          
+          self.initModules();
+          self.initialized = true;
+          
+          console.log('OSLAY initialized');
+        }).fail(function(error) {
+          console.error('Failed to load config:', error);
+        });
+      }
+
+      return this;
+    },
+
+    loadConfig: function(url) {
+      var self = this;
+      var cacheKey = url;
+
+      var cachedData = this.configCache.get(cacheKey);
+      if (cachedData) {
+        return $.Deferred().resolve([cachedData]).promise();
+      }
+
+      var versionedUrl = url;
+      if (this.appConfig && this.appConfig.version) {
+        versionedUrl = url + '?v=' + this.appConfig.version;
+      }
+
+      return $.ajax({
+        url: versionedUrl,
+        dataType: 'json'
+      }).done(function(data) {
+        self.configCache.set(cacheKey, data);
+      });
+    },
+
+    initModules: function() {
+      var self = this;
+      var selectId = (this.appConfig.menu && this.appConfig.menu.selectId) || 0;
+
+      this.baseUrl = this.appConfig.router && this.appConfig.router.base ? this.appConfig.router.base : '/';
+      this.version = this.appConfig.version || '1.0.0';
+      
+      $.when(this.loadResourceConfig()).done(function() {
+        self.initSite();
+        
+        router.init(self.appConfig, false);
+        
+        var menuData = self.getMenuData();
+        router.registerMenu(menuData);
+        
+        theme.init(self.appConfig);
+        sidebar.init({ data: menuData || [] });
+        tabs.init(self.appConfig, menuData || []);
+
+        var state = theme.getState();
+        if (state.layout === 'fixed-double' && menuData && menuData.length > 0) {
+          var firstMenu = menuData[0];
+          var firstMenuId = firstMenu.id !== undefined ? firstMenu.id : firstMenu.code;
+          var $firstMenuItem = $('.menu-item[data-id="' + firstMenuId + '"]');
+          if ($firstMenuItem.length && firstMenu.children && firstMenu.children.length > 0) {
+            sidebar.showSubmenuPanel(firstMenuId, $firstMenuItem);
+          }
+        }
+
+        router.on('routeChange', function(routeInfo) {
+          self.handleRouteChange(routeInfo);
+        });
+
+        tabs.on('refreshTab', function(data) {
+          self.loadPageContent(data.tabId);
+        });
+
+        self.bindGlobalEvents();
+        
+        var initPath = router.getCurrentPath();
+        var initCode = initPath.replace(/^\//, '') || '';
+        var initId = router.getIdByCode(initCode);
+        
+        if (initPath === '/' || initPath === '' || !initCode) {
+          router.navigateById(selectId);
+        } else {
+          self.handleRouteChange({
+            path: initPath,
+            code: initCode,
+            id: initId
+          });
+        }
+      });
+    },
+
+    loadResourceConfig: function() {
+      var self = this;
+      var deferred = $.Deferred();
+      var url = 'config/resources.json';
+      var cacheKey = url;
+
+      var cachedData = this.configCache.get(cacheKey);
+      if (cachedData) {
+        self.resourceConfig = cachedData || {};
+        resourceLoader.init(self.resourceConfig);
+        if (window.OSLAY) {
+          window.OSLAY.resourceConfig = self.resourceConfig;
+        }
+        deferred.resolve();
+        return deferred.promise();
+      }
+
+      var versionedUrl = url;
+      if (this.appConfig && this.appConfig.version) {
+        versionedUrl = url + '?v=' + this.appConfig.version;
+      }
+
+      $.ajax({
+        url: versionedUrl,
+        dataType: 'json'
+      }).done(function(config) {
+        self.configCache.set(cacheKey, config || {});
+        self.resourceConfig = config || {};
+        resourceLoader.init(self.resourceConfig);
+        if (window.OSLAY) {
+          window.OSLAY.resourceConfig = self.resourceConfig;
+        }
+        deferred.resolve();
+      }).fail(function() {
+        console.warn('[App] Failed to load resource config, using fallback mode');
+        self.resourceConfig = {};
+        resourceLoader.init({});
+        if (window.OSLAY) {
+          window.OSLAY.resourceConfig = {};
+        }
+        deferred.resolve();
+      });
+
+      return deferred.promise();
+    },
+
+    getMenuData: function() {
+      if (Array.isArray(this.menuConfig)) {
+        return this.menuConfig;
+      }
+      if (this.menuConfig.menu && this.menuConfig.menu.data) {
+        return this.menuConfig.menu.data;
+      }
+      if (this.menuConfig.data) {
+        return this.menuConfig.data;
+      }
+      return [];
+    },
+
+    initSite: function() {
+      var site = this.appConfig.site || {};
+      
+      if (site.title) {
+        document.title = site.title;
+      }
+      
+      if (site.keywords) {
+        $('meta[name="keywords"]').attr('content', site.keywords);
+      }
+      
+      if (site.description) {
+        $('meta[name="description"]').attr('content', site.description);
+      }
+      
+      if (site.name) {
+        $('#logoText').text(site.name);
+      }
+      
+      if (site.logo) {
+        var logoUrl = this.resolveUrl(site.logo);
+        $('#logoIcon').replaceWith('<img src="' + logoUrl + '" alt="' + (site.name || 'Logo') + '" class="layui-logo-img">');
+      }
+      
+      this.loadUserinfo();
+      this.loadNotifications();
+    },
+
+    loadUserinfo: function() {
+      var self = this;
+      
+      var userinfoConfig = this.appConfig && this.appConfig.userinfo ? this.appConfig.userinfo : {};
+      var userinfoUrl = userinfoConfig.url || 'view/data/userinfo.json';
+      var cache = userinfoConfig.cache !== undefined ? userinfoConfig.cache : false;
+      
+      if (userinfoConfig.enabled === false) {
+        return;
+      }
+      
+      $.ajax({
+        url: this.resolveUrl(userinfoUrl),
+        dataType: 'json',
+        cache: cache
+      }).done(function(response) {
+        if (response && response.code === 0 && response.data) {
+          self.renderUserinfo(response.data);
+        }
+      }).fail(function() {
+        console.warn('[App] Failed to load userinfo');
+      });
+    },
+
+    renderUserinfo: function(data) {
+      if (!data) return;
+      
+      var $avatar = $('.layui-user-avatar');
+      var $name = $('.layui-user-name');
+      var $role = $('.layui-user-role');
+      
+      if (data.nickname) {
+        $name.text(data.nickname);
+        $name.attr('title', data.nickname);
+      }
+      
+      if (data.rolename) {
+        var roleText = data.isSuperAdmin ? '超级管理员' : data.rolename;
+        $role.text(roleText);
+        $role.attr('title', roleText);
+      }
+      
+      if (data.avatar) {
+        var avatarUrl = this.resolveUrl(data.avatar);
+        $avatar.html('<img src="' + avatarUrl + '" alt="' + (data.nickname || 'Avatar') + '">');
+      } else if (data.nickname) {
+        var firstChar = data.nickname.charAt(0);
+        $avatar.text(firstChar);
+      }
+    },
+
+    loadNotifications: function() {
+      var self = this;
+      
+      var notificationConfig = this.appConfig && this.appConfig.notification ? this.appConfig.notification : {};
+      var notificationUrl = notificationConfig.url || 'view/data/notifications.json';
+      var cache = notificationConfig.cache !== undefined ? notificationConfig.cache : false;
+      
+      if (notificationConfig.enabled === false) {
+        self.notificationData = [];
+        self.renderNotifications();
+        return;
+      }
+      
+      $.ajax({
+        url: this.resolveUrl(notificationUrl),
+        dataType: 'json',
+        cache: cache
+      }).done(function(data) {
+        self.notificationData = data || [];
+        self.renderNotifications();
+      }).fail(function() {
+        self.notificationData = [];
+        self.renderNotifications();
+      });
+    },
+
+    renderNotifications: function() {
+      var html = '';
+      var unreadCount = 0;
+      
+      if (this.notificationData.length === 0) {
+        html = '<div class="layui-notification-empty"><i class="layui-icon layui-icon-notice"></i><span>暂无通知</span></div>';
+      } else {
+        this.notificationData.forEach(function(item) {
+          if (!item.read) {
+            unreadCount++;
+          }
+          var unreadClass = item.read ? '' : 'unread';
+          var hrefAttr = item.href ? ' data-href="' + item.href + '"' : '';
+          html += '<div class="layui-notification-item ' + unreadClass + '" data-id="' + item.id + '"' + hrefAttr + '>';
+          html += '<div class="layui-notification-item-title">' + item.title + '</div>';
+          html += '<div class="layui-notification-item-time">' + item.time + '</div>';
+          html += '</div>';
+        });
+      }
+      
+      $('#notificationList').html(html);
+      
+      var $badge = $('#notificationBtn .badge');
+      if (unreadCount > 0) {
+        $badge.text(unreadCount > 99 ? '99+' : unreadCount).show();
+      } else {
+        $badge.hide();
+      }
+    },
+
+    markNotificationRead: function(id) {
+      var self = this;
+      var targetItem = null;
+      this.notificationData.forEach(function(item) {
+        if (item.id === id) {
+          item.read = true;
+          targetItem = item;
+        }
+      });
+      this.renderNotifications();
+      
+      if (targetItem && targetItem.href) {
+        $('#notificationDropdown').removeClass('show');
+        router.navigateByCode(targetItem.href);
+      }
+    },
+
+    markAllNotificationsRead: function() {
+      var self = this;
+      this.notificationData.forEach(function(item) {
+        item.read = true;
+      });
+      this.renderNotifications();
+      // layer.msg('已全部标记为已读', { icon: 1, time: 1500 });
+      toast.success('已全部标记为已读');
+    },
+
+    handleLogout: function() {
+      var self = this;
+      
+      var logoutConfig = this.appConfig && this.appConfig.logout ? this.appConfig.logout : {};
+      
+      if (logoutConfig.enabled === false) {
+        toast.success('已退出登录', { time: 1500 });
+        setTimeout(function() {
+          window.location.href = 'login.html';
+        }, 1500);
+        return;
+      }
+      
+      var logoutUrl = logoutConfig.url || 'view/data/logout.json';
+      var method = logoutConfig.method || 'POST';
+      var cache = logoutConfig.cache !== undefined ? logoutConfig.cache : false;
+      
+      var loadingIndex = layer.load(2, { shade: [0.1, '#fff'] });
+      
+      $.ajax({
+        url: this.resolveUrl(logoutUrl),
+        type: method,
+        dataType: 'json',
+        cache: cache
+      }).done(function(response) {
+        layer.close(loadingIndex);
+        
+        if (response.code === 0) {
+          toast.success(response.msg || '退出成功', { time: 1500 });
+          
+          setTimeout(function() {
+            if (response.data && response.data.redirect) {
+              window.location.href = response.data.redirect;
+            } else {
+              window.location.href = 'login.html';
+            }
+          }, 1500);
+        } else {
+          toast.error(response.msg || '退出失败', { time: 2000 });
+        }
+      }).fail(function(xhr, status, error) {
+        layer.close(loadingIndex);
+        toast.error('退出请求失败，请稍后重试', { time: 2000 });
+      });
+    },
+
+    handleRouteChange: function(routeInfo) {
+      var selectId = (this.appConfig.menu && this.appConfig.menu.selectId) || 0;
+      var pageId = routeInfo.id !== null && routeInfo.id !== undefined ? routeInfo.id : selectId;
+      
+      tabs.openTab(pageId);
+      sidebar.setActive(pageId);
+      
+      var menuData = this.getMenuData();
+      var pageName = this.getPageName(menuData, pageId) || ('Page ' + pageId);
+      $('#currentPageName').text(pageName);
+
+      this.loadPageContent(pageId);
+    },
+
+    getPageName: function(menuData, pageId) {
+      if (!menuData) return null;
+      
+      for (var i = 0; i < menuData.length; i++) {
+        var result = this.findPageNameInItem(menuData[i], pageId);
+        if (result) return result;
+      }
+      return null;
+    },
+
+    findPageNameInItem: function(item, pageId) {
+      var itemId = item.id !== undefined ? item.id : item.code;
+      if (itemId === pageId) {
+        return item.title;
+      }
+      
+      if (item.children && item.children.length > 0) {
+        for (var i = 0; i < item.children.length; i++) {
+          var result = this.findPageNameInItem(item.children[i], pageId);
+          if (result) return result;
+        }
+      }
+      
+      return null;
+    },
+
+    loadPageContent: function(pageId) {
+      var self = this;
+      var menuData = this.getMenuData();
+      var menuTitle = this.getPageName(menuData, pageId) || ('Page ' + pageId);
+      var animation = theme.getPageAnimation();
+
+      this.currentAnimation = animation;
+
+      var menuItem = this.getMenuItemInfo(pageId);
+      
+      if (menuItem && menuItem.type === 1 && menuItem.isExternal) {
+        if (menuItem.openType === '_iframe') {
+          this.loadIframeContent(menuItem.href, menuTitle);
+          return;
+        }
+        
+        if (menuItem.openType === '_blank') {
+          return;
+        }
+        
+        if (menuItem.openType === '_dialog') {
+          return;
+        }
+      }
+
+      var url = this.getPageUrl(pageId);
+
+      this.showLoading();
+
+      if (!url) {
+        this.hideLoading();
+        this.showContent('<div class="page-placeholder"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="12" cy="12" r="10"/><path d="M16 16s-1.5-2-4-2-4 2-4 2"/><line x1="9" y1="9" x2="9.01" y2="9"/><line x1="15" y1="9" x2="15.01" y2="9"/></svg><div class="page-placeholder-title">' + menuTitle + '</div><div class="page-placeholder-desc">页面未找到</div></div>');
+        return;
+      }
+
+      var relativeUrl = this.getRelativeUrl(url);
+
+      var cachedHtml = this.pageCache.get(relativeUrl);
+
+      if (cachedHtml) {
+        var result = this.extractContent(cachedHtml);
+        this.updatePageMeta(result.pageInfo, menuTitle, relativeUrl);
+        this.hideLoading();
+        this.showContent(result.body);
+        return;
+      }
+
+      var versionedUrl = url;
+      if (this.appConfig && this.appConfig.version) {
+        versionedUrl = url + '?v=' + this.appConfig.version;
+      }
+
+      resourceLoader.loadPageResources(relativeUrl).done(function() {
+        $.ajax({
+          url: versionedUrl,
+          dataType: 'html'
+        }).done(function(html) {
+          self.pageCache.set(relativeUrl, html);
+          var result = self.extractContent(html);
+          self.updatePageMeta(result.pageInfo, menuTitle, relativeUrl);
+          self.hideLoading();
+          self.showContent(result.body);
+        }).fail(function() {
+          self.hideLoading();
+          self.showContent('<div class="page-placeholder"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><rect x="3" y="3" width="18" height="18" rx="2"/><line x1="9" y1="9" x2="15" y2="9"/><line x1="9" y1="13" x2="15" y2="13"/><line x1="9" y1="17" x2="12" y2="17"/></svg><div class="page-placeholder-title">' + menuTitle + '</div><div class="page-placeholder-desc">该页面正在开发中...</div></div>');
+        });
+      }).fail(function() {
+        console.warn('[App] Some resources failed to load for:', relativeUrl);
+        $.ajax({
+          url: versionedUrl,
+          dataType: 'html'
+        }).done(function(html) {
+          self.pageCache.set(relativeUrl, html);
+          var result = self.extractContent(html);
+          self.updatePageMeta(result.pageInfo, menuTitle, relativeUrl);
+          self.hideLoading();
+          self.showContent(result.body);
+        }).fail(function() {
+          self.hideLoading();
+          self.showContent('<div class="page-placeholder"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><rect x="3" y="3" width="18" height="18" rx="2"/><line x1="9" y1="9" x2="15" y2="9"/><line x1="9" y1="13" x2="15" y2="13"/><line x1="9" y1="17" x2="12" y2="17"/></svg><div class="page-placeholder-title">' + menuTitle + '</div><div class="page-placeholder-desc">该页面正在开发中...</div></div>');
+        });
+      });
+    },
+
+    getRelativeUrl: function(url) {
+      if (!url) return url;
+      
+      var base = this.baseUrl;
+      if (base.charAt(0) === '/') {
+        base = base.substring(1);
+      }
+      
+      if (base && url.indexOf(base) === 0) {
+        url = url.substring(base.length);
+      }
+      
+      if (url.charAt(0) === '/') {
+        url = url.substring(1);
+      }
+      
+      return url;
+    },
+
+    showLoading: function() {
+      var $wrapper = $('#contentWrapper');
+      $wrapper.removeClass('page-anim-fadeIn page-anim-slideDown page-anim-slideLeft page-anim-slideRight');
+      $wrapper.html('<div class="page-loading"><i class="layui-icon layui-icon-loading layui-anim layui-anim-rotate layui-anim-loop"></i></div>');
+    },
+
+    hideLoading: function() {
+      $('#contentWrapper .page-loading').remove();
+    },
+
+    showContent: function(content) {
+      var $wrapper = $('#contentWrapper');
+      var animation = this.currentAnimation;
+      
+      $wrapper.removeClass('page-anim-fadeIn page-anim-slideDown page-anim-slideLeft page-anim-slideRight');
+      
+      $wrapper.html(content);
+      
+      var $pageContent = $wrapper.find('.page-content');
+      if ($pageContent.length) {
+        $pageContent.addClass('page-anim-' + animation);
+        $pageContent.addClass('active');
+      }
+      
+      if (window.layui && layui.componentRenderer) {
+        layui.componentRenderer.render($wrapper);
+      }
+    },
+
+    extractContent: function(html) {
+      var self = this;
+      
+      var parser = new DOMParser();
+      var doc = parser.parseFromString(html, 'text/html');
+      
+      var pageInfo = {
+        title: null,
+        keywords: null,
+        description: null
+      };
+      
+      var titleEl = doc.querySelector('title');
+      if (titleEl && titleEl.textContent) {
+        pageInfo.title = titleEl.textContent.trim();
+      }
+      
+      var metaKeywords = doc.querySelector('meta[name="keywords"]');
+      if (metaKeywords && metaKeywords.content) {
+        pageInfo.keywords = metaKeywords.content.trim();
+      }
+      
+      var metaDesc = doc.querySelector('meta[name="description"]');
+      if (metaDesc && metaDesc.content) {
+        pageInfo.description = metaDesc.content.trim();
+      }
+      
+      var headLinks = doc.querySelectorAll('head link[href]');
+      headLinks.forEach(function(link) {
+        var href = link.getAttribute('href');
+        if (href && href.indexOf('.css') !== -1) {
+          if (!$('head').find('link[href="' + href + '"]').length && !resourceLoader.isLoaded('css', href)) {
+            resourceLoader.loadCSS(href);
+          }
+        }
+      });
+      
+      var headScripts = doc.querySelectorAll('head script[src]');
+      headScripts.forEach(function(script) {
+        var src = script.getAttribute('src');
+        if (src && src.indexOf('.js') !== -1) {
+          if (!$('head').find('script[src="' + src + '"]').length && !resourceLoader.isLoaded('js', src)) {
+            resourceLoader.loadJS(src);
+          }
+        }
+      });
+      
+      var bodyEl = doc.body;
+      var bodyContent = bodyEl ? bodyEl.innerHTML : html;
+      
+      return {
+        body: bodyContent,
+        pageInfo: pageInfo
+      };
+    },
+
+    updatePageMeta: function(pageInfo, menuTitle, relativeUrl) {
+      var site = this.appConfig.site || {};
+      var siteName = site.name || '';
+      
+      var title = pageInfo.title;
+      var keywords = pageInfo.keywords;
+      var description = pageInfo.description;
+      
+      if (!title || !keywords || !description) {
+        var pageConfig = resourceLoader.getPageConfig(relativeUrl);
+        if (pageConfig) {
+          if (!title && pageConfig.title) {
+            title = pageConfig.title;
+          }
+          if (!keywords && pageConfig.keywords) {
+            keywords = pageConfig.keywords;
+          }
+          if (!description && pageConfig.description) {
+            description = pageConfig.description;
+          }
+        }
+      }
+      
+      if (!title && menuTitle) {
+        title = menuTitle;
+      }
+      
+      if (title) {
+        if (siteName) {
+          document.title = title + ' - ' + siteName;
+        } else {
+          document.title = title;
+        }
+      }
+      
+      if (keywords) {
+        var $keywordsMeta = $('meta[name="keywords"]');
+        if ($keywordsMeta.length) {
+          $keywordsMeta.attr('content', keywords);
+        } else {
+          $('head').append('<meta name="keywords" content="' + keywords + '">');
+        }
+      }
+      
+      if (description) {
+        var $descMeta = $('meta[name="description"]');
+        if ($descMeta.length) {
+          $descMeta.attr('content', description);
+        } else {
+          $('head').append('<meta name="description" content="' + description + '">');
+        }
+      }
+    },
+
+    getPageUrl: function(pageId) {
+      var menuData = this.getMenuData();
+      if (!menuData) return null;
+
+      for (var i = 0; i < menuData.length; i++) {
+        var url = this.findPageUrlInItem(menuData[i], pageId);
+        if (url) {
+          return this.resolveUrl(url);
+        }
+      }
+      return null;
+    },
+
+    resolveUrl: function(url) {
+      if (!url) return url;
+      
+      if (url.indexOf('http://') === 0 || url.indexOf('https://') === 0 || url.indexOf('//') === 0) {
+        return url;
+      }
+      
+      if (url.charAt(0) === '/') {
+        return url;
+      }
+      
+      var base = this.baseUrl;
+      if (base.charAt(base.length - 1) !== '/') {
+        base += '/';
+      }
+      
+      return base + url;
+    },
+
+    findPageUrlInItem: function(item, pageId) {
+      var itemId = item.id !== undefined ? item.id : item.code;
+      if (itemId === pageId && item.href) {
+        return item.href;
+      }
+      
+      if (item.children && item.children.length > 0) {
+        for (var i = 0; i < item.children.length; i++) {
+          var url = this.findPageUrlInItem(item.children[i], pageId);
+          if (url) return url;
+        }
+      }
+      
+      return null;
+    },
+
+    getMenuItemInfo: function(pageId) {
+      var menuData = this.getMenuData();
+      if (!menuData) return null;
+      
+      for (var i = 0; i < menuData.length; i++) {
+        var result = this.findMenuItemInfo(menuData[i], pageId);
+        if (result) return result;
+      }
+      return null;
+    },
+
+    findMenuItemInfo: function(item, pageId) {
+      var itemId = item.id !== undefined ? item.id : item.code;
+      if (itemId === pageId) {
+        return {
+          id: item.id,
+          code: item.code,
+          title: item.title,
+          href: item.href,
+          type: this.getMenuItemType(item),
+          openType: item.openType || null,
+          isExternal: item.href ? this.isExternalUrl(item.href) : false
+        };
+      }
+      
+      if (item.children && item.children.length > 0) {
+        for (var i = 0; i < item.children.length; i++) {
+          var result = this.findMenuItemInfo(item.children[i], pageId);
+          if (result) return result;
+        }
+      }
+      
+      return null;
+    },
+
+    loadIframeContent: function(url, title) {
+      var $wrapper = $('#contentWrapper');
+      var animation = this.currentAnimation;
+      
+      $wrapper.removeClass('page-anim-fadeIn page-anim-slideDown page-anim-slideLeft page-anim-slideRight');
+      
+      var iframeId = 'iframe-' + Date.now();
+      var html = '<div class="page-content page-iframe-wrapper active page-anim-' + animation + '">';
+      html += '<iframe id="' + iframeId + '" src="' + url + '" frameborder="0" allowfullscreen></iframe>';
+      html += '</div>';
+      
+      $wrapper.html(html);
+      
+      var site = this.appConfig.site || {};
+      var siteName = site.name || '';
+      if (title) {
+        document.title = title + (siteName ? ' - ' + siteName : '');
+      }
+    },
+
+    bindGlobalEvents: function() {
+      var self = this;
+
+      $('#reloadBtn').on('click', function() {
+        var activeTabId = tabs.getActiveTabId();
+        if (activeTabId !== null) {
+          self.loadPageContent(activeTabId);
+        }
+      });
+
+      $('#fullscreenBtn').on('click', function() {
+        var $icon = $(this).find('i');
+        if (!document.fullscreenElement) {
+          document.documentElement.requestFullscreen().then(function() {
+            $icon.removeClass('layui-icon-screen-full').addClass('layui-icon-screen-restore');
+          }).catch(function(err) {
+            console.warn('全屏请求失败:', err);
+          });
+        } else {
+          document.exitFullscreen().then(function() {
+            $icon.removeClass('layui-icon-screen-restore').addClass('layui-icon-screen-full');
+          });
+        }
+      });
+
+      $(document).on('fullscreenchange', function() {
+        var $icon = $('#fullscreenBtn').find('i');
+        if (document.fullscreenElement) {
+          $icon.removeClass('layui-icon-screen-full').addClass('layui-icon-screen-restore');
+        } else {
+          $icon.removeClass('layui-icon-screen-restore').addClass('layui-icon-screen-full');
+        }
+      });
+
+      $('#themeBtn').on('click', function() {
+        theme.toggleConfigPanel();
+      });
+
+      $('#themePanelClose, #themePanelOverlay').on('click', function() {
+        theme.hideConfigPanel();
+      });
+
+      $('#saveThemeBtn').on('click', function() {
+        theme.saveConfig();
+      });
+
+      $('#resetThemeBtn').on('click', function() {
+        theme.resetConfig();
+      });
+
+      $('#userDropdown').on('click', function() {
+        $('#userDropdownMenu').toggleClass('show');
+      });
+
+      $(document).on('click', function(e) {
+        if (!$(e.target).closest('.layui-user-dropdown-wrapper').length) {
+          $('#userDropdownMenu').removeClass('show');
+        }
+      });
+
+      $('#userDropdownMenu').on('click', '.layui-user-menu-item', function() {
+        var action = $(this).data('action');
+        if (action === 'logout') {
+          layer.confirm('确定要退出登录吗？', {
+            title: '提示',
+            btn: ['确定', '取消']
+          }, function(index) {
+            layer.close(index);
+            self.handleLogout();
+          });
+        } else if (action === 'settings') {
+          router.navigateByCode('view/user-profile');
+        }
+        $('#userDropdownMenu').removeClass('show');
+      });
+
+      $('#notificationBtn').on('click', function(e) {
+        e.stopPropagation();
+        $('#notificationDropdown').toggleClass('show');
+      });
+
+      $(document).on('click', function(e) {
+        if (!$(e.target).closest('.layui-topbar-btn').length) {
+          $('#notificationDropdown').removeClass('show');
+        }
+      });
+
+      $('#notificationList').on('click', '.layui-notification-item', function() {
+        var id = $(this).data('id');
+        self.markNotificationRead(id);
+      });
+
+      $('#markAllRead').on('click', function() {
+        self.markAllNotificationsRead();
+      });
+
+      // 自定义固定条
+      util.fixbar({
+        // bars: [{
+        //   type: 'menu',
+        //   icon: 'layui-icon-spread-left',
+        //   style: 'display: none;'
+        // }],
+        css: {right: 18, bottom: 18},
+        default: true,
+        scroll: '#contentWrapper',
+        bgcolor: '',
+        margin: 200,
+        duration: 300,
+        on: {
+          mouseenter: function(type) {
+            var tips = {
+              menu: '菜单',
+              top: '回到顶部'
+            };
+            // layer.tips(tips[type] || type, this, {
+            //   tips: 4,
+            //   fixed: true
+            // });
+          },
+          mouseleave: function(type) {
+            layer.closeAll('tips');
+          }
+        },
+        click: function(type) {
+          if (type === 'menu') {
+            self.toggleMobileSidebar();
+          } else if (type === 'top') {
+            $('#contentWrapper').animate({
+              scrollTop: 0
+            }, 300);
+          }
+        }
+      });
+
+      this.initMobileMenuButton();
+    },
+
+    initMobileMenuButton: function() {
+      var self = this;
+      var $menuBar = $('.layui-fixbar').find('[lay-type="menu"]');
+
+      if ($menuBar.length && window.innerWidth <= 768) {
+        $menuBar.css('display', 'flex');
+      }
+
+      $(window).on('resize', function() {
+        var $bar = $('.layui-fixbar').find('[lay-type="menu"]');
+        if ($bar.length) {
+          if (window.innerWidth <= 768) {
+            $bar.css('display', 'flex');
+          } else {
+            $bar.css('display', 'none');
+          }
+        }
+      });
+    },
+
+    toggleMobileSidebar: function() {
+      var $sidebar = $('#sidebar');
+      var $overlay = $('#sidebarOverlay');
+      var $menuBar = $('.layui-fixbar').find('[lay-type="menu"]');
+
+      if ($sidebar.hasClass('mobile-open')) {
+        this.closeMobileSidebar();
+      } else {
+        $sidebar.addClass('mobile-open');
+        $overlay.addClass('show');
+        if ($menuBar.length) {
+          $menuBar.addClass('layui-fixbar-active');
+        }
+      }
+    },
+
+    closeMobileSidebar: function() {
+      $('#sidebar').removeClass('mobile-open');
+      $('#sidebarOverlay').removeClass('show');
+      var $menuBar = $('.layui-fixbar').find('[lay-type="menu"]');
+      if ($menuBar.length) {
+        $menuBar.removeClass('layui-fixbar-active');
+      }
+      $('.submenu.open').removeClass('open');
+      $('.menu-item.expanded').removeClass('expanded');
+    }
+  };
+
+  exports('appMain', App);
+});

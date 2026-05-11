@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>轮播组件 - Layui</title>
+  <meta name="keywords" content="轮播,carousel,幻灯片">
+  <meta name="description" content="Layui轮播组件使用示例">
+</head>
+<body>
+  <div class="page-content">
+    <div class="layui-card">
+      <div class="layui-card-header">
+        <h3>轮播组件 (carousel)</h3>
+      </div>
+      <div class="layui-card-body">
+        
+        <fieldset class="layui-elem-field layui-field-title">
+          <legend>常规轮播</legend>
+          <div class="layui-field-box">
+            <div class="layui-carousel" id="test1">
+              <div carousel-item>
+                <div>条目1</div>
+                <div>条目2</div>
+                <div>条目3</div>
+                <div>条目4</div>
+                <div>条目5</div>
+              </div>
+            </div>
+          </div>
+        </fieldset>
+
+        <fieldset class="layui-elem-field layui-field-title">
+          <legend>动画类型</legend>
+          <div class="layui-field-box">
+            <div class="layui-btn-container" style="margin-bottom: 10px;">
+              <button class="layui-btn" lay-on="anim-default">左右切换</button>
+              <button class="layui-btn" lay-on="anim-fade">渐显</button>
+              <button class="layui-btn" lay-on="anim-updown">上下切换</button>
+            </div>
+            <div class="layui-carousel" id="test2">
+              <div carousel-item>
+                <div>条目1</div>
+                <div>条目2</div>
+                <div>条目3</div>
+                <div>条目4</div>
+                <div>条目5</div>
+              </div>
+            </div>
+          </div>
+        </fieldset>
+
+        <fieldset class="layui-elem-field layui-field-title">
+          <legend>图片轮播</legend>
+          <div class="layui-field-box">
+            <div class="layui-carousel" id="test3">
+              <div carousel-item>
+                <div><img src="https://unpkg.com/outeres@0.1.1/demo/layer.png" alt="图片1"></div>
+                <div><img src="https://unpkg.com/outeres@0.1.1/demo/000.jpg" alt="图片2"></div>
+                <div><img src="https://unpkg.com/outeres@0.1.1/demo/layer.png" alt="图片3"></div>
+              </div>
+            </div>
+          </div>
+        </fieldset>
+
+        <fieldset class="layui-elem-field layui-field-title">
+          <legend>箭头状态</legend>
+          <div class="layui-field-box">
+            <div class="layui-btn-container" style="margin-bottom: 10px;">
+              <button class="layui-btn" lay-on="arrow-hover">hover显示</button>
+              <button class="layui-btn" lay-on="arrow-always">始终显示</button>
+              <button class="layui-btn" lay-on="arrow-none">不显示</button>
+            </div>
+            <div class="layui-carousel" id="test4">
+              <div carousel-item>
+                <div>条目1</div>
+                <div>条目2</div>
+                <div>条目3</div>
+              </div>
+            </div>
+          </div>
+        </fieldset>
+
+        <fieldset class="layui-elem-field layui-field-title">
+          <legend>指示器位置</legend>
+          <div class="layui-field-box">
+            <div class="layui-btn-container" style="margin-bottom: 10px;">
+              <button class="layui-btn" lay-on="ind-inside">内部</button>
+              <button class="layui-btn" lay-on="ind-outside">外部</button>
+              <button class="layui-btn" lay-on="ind-none">不显示</button>
+            </div>
+            <div class="layui-carousel" id="test5">
+              <div carousel-item>
+                <div>条目1</div>
+                <div>条目2</div>
+                <div>条目3</div>
+              </div>
+            </div>
+          </div>
+        </fieldset>
+
+        <fieldset class="layui-elem-field layui-field-title">
+          <legend>自动切换时间</legend>
+          <div class="layui-field-box">
+            <div class="layui-carousel" id="test6">
+              <div carousel-item>
+                <div>间隔2000ms</div>
+                <div>条目2</div>
+                <div>条目3</div>
+              </div>
+            </div>
+          </div>
+        </fieldset>
+
+        <fieldset class="layui-elem-field layui-field-title">
+          <legend>全屏轮播</legend>
+          <div class="layui-field-box">
+            <button class="layui-btn" id="fullscreenBtn">打开全屏轮播</button>
+          </div>
+        </fieldset>
+
+      </div>
+    </div>
+  </div>
+
+  <script>
+  layui.use(['carousel', 'util', 'layer', 'jquery'], function(){
+    var carousel = layui.carousel;
+    var util = layui.util;
+    var layer = layui.layer;
+    var $ = layui.$;
+    
+    carousel.render({
+      elem: '#test1',
+      width: '100%',
+      height: '280px',
+      arrow: 'always'
+    });
+    
+    var ins2 = carousel.render({
+      elem: '#test2',
+      width: '100%',
+      height: '280px',
+      anim: 'default'
+    });
+    
+    carousel.render({
+      elem: '#test3',
+      width: '100%',
+      height: '400px',
+      interval: 3000
+    });
+
+    var ins4 = carousel.render({
+      elem: '#test4',
+      width: '100%',
+      height: '280px',
+      arrow: 'hover'
+    });
+
+    var ins5 = carousel.render({
+      elem: '#test5',
+      width: '100%',
+      height: '280px',
+      arrow: 'always',
+      indicator: 'inside'
+    });
+
+    carousel.render({
+      elem: '#test6',
+      width: '100%',
+      height: '280px',
+      arrow: 'always',
+      interval: 2000
+    });
+    
+    util.on('lay-on', {
+      'anim-default': function(){
+        ins2.reload({anim: 'default'});
+      },
+      'anim-fade': function(){
+        ins2.reload({anim: 'fade'});
+      },
+      'anim-updown': function(){
+        ins2.reload({anim: 'updown'});
+      },
+      'arrow-hover': function(){
+        ins4.reload({arrow: 'hover'});
+      },
+      'arrow-always': function(){
+        ins4.reload({arrow: 'always'});
+      },
+      'arrow-none': function(){
+        ins4.reload({arrow: 'none'});
+      },
+      'ind-inside': function(){
+        ins5.reload({indicator: 'inside'});
+      },
+      'ind-outside': function(){
+        ins5.reload({indicator: 'outside'});
+      },
+      'ind-none': function(){
+        ins5.reload({indicator: 'none'});
+      }
+    });
+
+    $('#fullscreenBtn').on('click', function(){
+      layer.open({
+        type: 1,
+        title: false,
+        closeBtn: 0,
+        shadeClose: true,
+        area: ['100%', '100%'],
+        content: '<div class="layui-carousel" id="fullscreenCarousel"><div carousel-item><div style="background:#16baaa;">全屏条目1</div><div style="background:#1E9FFF;">全屏条目2</div><div style="background:#FF5722;">全屏条目3</div></div></div>',
+        success: function(){
+          carousel.render({
+            elem: '#fullscreenCarousel',
+            width: '100%',
+            height: '100%',
+            arrow: 'always',
+            anim: 'fade'
+          });
+        }
+      });
+    });
+  });
+  </script>
+</body>
+</html>

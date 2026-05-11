@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>徽章组件 - Layui</title>
+  <meta name="keywords" content="徽章,badge,小圆点">
+  <meta name="description" content="Layui徽章组件使用示例">
+</head>
+<body>
+  <div class="page-content">
+    <div class="demo-header">
+      <h3 class="demo-title">徽章组件</h3>
+      <p class="demo-desc">Layui 徽章组件的完整示例，包含普通徽章、小圆点、边框徽章等</p>
+    </div>
+
+    <div class="layui-card">
+      <div class="layui-card-header">
+        <span class="layui-card-title">普通徽章</span>
+      </div>
+      <div class="layui-card-body">
+        <div class="badge-group">
+          <span class="layui-badge">6</span>
+          <span class="layui-badge">99</span>
+          <span class="layui-badge">61728</span>
+          <span class="layui-badge">赤</span>
+          <span class="layui-badge layui-bg-orange">橙</span>
+          <span class="layui-badge layui-bg-green">绿</span>
+          <span class="layui-badge layui-bg-cyan">青</span>
+          <span class="layui-badge layui-bg-blue">蓝</span>
+          <span class="layui-badge layui-bg-black">深</span>
+          <span class="layui-badge layui-bg-gray">浅</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="layui-card">
+      <div class="layui-card-header">
+        <span class="layui-card-title">边框徽章</span>
+      </div>
+      <div class="layui-card-body">
+        <div class="badge-group">
+          <span class="layui-badge-rim">6</span>
+          <span class="layui-badge-rim">Hot</span>
+          <span class="layui-badge-rim">New</span>
+          <span class="layui-badge-rim">VIP</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="layui-card">
+      <div class="layui-card-header">
+        <span class="layui-card-title">小圆点</span>
+      </div>
+      <div class="layui-card-body">
+        <div class="badge-group">
+          <span class="layui-badge-dot"></span>
+          <span class="layui-badge-dot layui-bg-orange"></span>
+          <span class="layui-badge-dot layui-bg-green"></span>
+          <span class="layui-badge-dot layui-bg-cyan"></span>
+          <span class="layui-badge-dot layui-bg-blue"></span>
+          <span class="layui-badge-dot layui-bg-black"></span>
+          <span class="layui-badge-dot layui-bg-gray"></span>
+        </div>
+      </div>
+    </div>
+
+    <div class="layui-card">
+      <div class="layui-card-header">
+        <span class="layui-card-title">徽章搭配按钮</span>
+      </div>
+      <div class="layui-card-body">
+        <div class="badge-group">
+          <button class="layui-btn">
+            按钮甲
+            <span class="layui-badge layui-bg-gray">1</span>
+          </button>
+          <button class="layui-btn">
+            按钮乙
+            <span class="layui-badge-dot layui-bg-orange"></span>
+          </button>
+          <button class="layui-btn layui-btn-normal">
+            消息
+            <span class="layui-badge">99</span>
+          </button>
+          <button class="layui-btn layui-btn-danger">
+            通知
+            <span class="layui-badge">99+</span>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <div class="layui-card">
+      <div class="layui-card-header">
+        <span class="layui-card-title">徽章搭配导航</span>
+      </div>
+      <div class="layui-card-body">
+        <ul class="layui-nav" lay-filter="navDemo">
+          <li class="layui-nav-item">
+            <a href="javascript:;">首页</a>
+          </li>
+          <li class="layui-nav-item">
+            <a href="javascript:;">消息<span class="layui-badge">9</span></a>
+          </li>
+          <li class="layui-nav-item">
+            <a href="javascript:;">动态<span class="layui-badge-dot"></span></a>
+          </li>
+          <li class="layui-nav-item">
+            <a href="javascript:;">个人中心</a>
+          </li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="layui-card">
+      <div class="layui-card-header">
+        <span class="layui-card-title">徽章搭配标签页</span>
+      </div>
+      <div class="layui-card-body">
+        <div class="layui-tab layui-tab-brief">
+          <ul class="layui-tab-title">
+            <li class="layui-this">标签1</li>
+            <li>标签2<span class="layui-badge-dot"></span></li>
+            <li>标签3<span class="layui-badge">99+</span></li>
+            <li>标签4</li>
+          </ul>
+          <div class="layui-tab-content">
+            <div class="layui-tab-item layui-show">内容1</div>
+            <div class="layui-tab-item">内容2</div>
+            <div class="layui-tab-item">内容3</div>
+            <div class="layui-tab-item">内容4</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <style>
+  .demo-header {
+    margin-bottom: 16px;
+  }
+  .demo-title {
+    font-size: 18px;
+    font-weight: 600;
+    color: var(--text-primary);
+    margin-bottom: 4px;
+  }
+  .demo-desc {
+    font-size: 13px;
+    color: var(--text-muted);
+  }
+  .badge-group {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 16px;
+    align-items: center;
+  }
+  .layui-nav {
+    background: var(--bg-sidebar);
+    border-radius: 8px;
+  }
+  </style>
+
+  <script>
+  layui.use(['element'], function(){
+    var element = layui.element;
+    element.render();
+  });
+  </script>
+</body>
+</html>

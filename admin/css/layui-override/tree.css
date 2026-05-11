@@ -1,0 +1,79 @@
+/**
+ * LayUI 树组件主题适配
+ * 仅覆盖颜色、背景色、边框相关属性
+ */
+
+/* ========== 树组件基础 ========== */
+.layui-tree-entry:hover {
+  background-color: var(--accent-light);
+}
+
+.layui-tree-line .layui-tree-entry:hover {
+  background-color: transparent;
+}
+
+.layui-tree-line .layui-tree-entry:hover .layui-tree-txt {
+  color: var(--accent);
+  text-decoration: none;
+}
+
+.layui-tree-icon {
+  border-color: var(--border);
+}
+
+.layui-tree-iconArrow:after {
+  border-color: transparent transparent transparent var(--text-muted);
+}
+
+.layui-tree-line .layui-tree-set:after {
+  border-top-color: var(--border);
+}
+
+.layui-tree-line .layui-tree-set:before {
+  border-left-color: var(--border);
+}
+
+.layui-tree-btnGroup .layui-icon:hover {
+  color: var(--accent);
+}
+
+.layui-tree-editInput {
+  background-color: var(--accent-light);
+}
+
+/* ========== 深色主题 ========== */
+[data-theme="dark"] .layui-tree-entry:hover {
+  background-color: var(--accent-light);
+}
+
+[data-theme="dark"] .layui-tree-line .layui-tree-entry:hover {
+  background-color: transparent;
+}
+
+[data-theme="dark"] .layui-tree-line .layui-tree-entry:hover .layui-tree-txt {
+  color: var(--accent);
+}
+
+[data-theme="dark"] .layui-tree-icon {
+  border-color: var(--border);
+}
+
+[data-theme="dark"] .layui-tree-iconArrow:after {
+  border-color: transparent transparent transparent var(--text-muted);
+}
+
+[data-theme="dark"] .layui-tree-line .layui-tree-set:after {
+  border-top-color: var(--border);
+}
+
+[data-theme="dark"] .layui-tree-line .layui-tree-set:before {
+  border-left-color: var(--border);
+}
+
+[data-theme="dark"] .layui-tree-btnGroup .layui-icon:hover {
+  color: var(--accent);
+}
+
+[data-theme="dark"] .layui-tree-editInput {
+  background-color: rgba(255, 255, 255, 0.1);
+}

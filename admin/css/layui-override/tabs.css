@@ -1,0 +1,188 @@
+/**
+ * LayUI Tab选项卡主题适配
+ * 覆盖颜色、背景色、边框、圆角相关属性
+ * 支持新版 .layui-tabs 组件
+ */
+
+/* ========== Tab基础 ========== */
+.layui-tab-title {
+  border-bottom-color: var(--border);
+}
+
+.layui-tab-title li {
+  color: var(--text-secondary);
+}
+
+.layui-tab-title li:hover {
+  color: var(--accent);
+}
+
+.layui-tab-title li.layui-this {
+  color: var(--accent);
+}
+
+/* ========== Tab简洁风格 ========== */
+.layui-tab-brief > .layui-tab-title .layui-this {
+  color: var(--accent);
+}
+
+.layui-tab-brief > .layui-tab-more li.layui-this:after,
+.layui-tab-brief > .layui-tab-title .layui-this:after {
+  border-bottom-color: var(--accent);
+}
+
+/* ========== Tab卡片风格 ========== */
+.layui-tab-card {
+  border-color: var(--border);
+  border-radius: 6px;
+}
+
+.layui-tab-card > .layui-tab-title {
+  background-color: var(--bg);
+  border-bottom-color: var(--border);
+  border-radius: 6px 6px 0 0;
+}
+
+.layui-tab-card > .layui-tab-title li {
+  border-color: var(--border);
+  background-color: var(--bg);
+}
+
+.layui-tab-card > .layui-tab-title li:first-child {
+  border-radius: 6px 0 0 0;
+}
+
+.layui-tab-card > .layui-tab-title li.layui-this {
+  background-color: var(--card-bg);
+  border-bottom-color: var(--card-bg);
+}
+
+.layui-tab-card > .layui-tab-more .layui-tab-more-box {
+  background-color: var(--card-bg);
+  border-color: var(--border);
+  border-radius: 6px;
+}
+
+/* ========== 关闭按钮 ========== */
+.layui-tab-title li .layui-tab-close {
+  border-radius: 50%;
+}
+
+.layui-tab-title li .layui-tab-close:hover {
+  background-color: var(--danger);
+  color: #fff;
+}
+
+/* ========== 新版 Tabs 组件 ========== */
+.layui-tabs-header:after,
+.layui-tabs-scroll:after {
+  border-bottom-color: var(--border);
+}
+
+.layui-tabs-header li {
+  color: var(--text-secondary);
+}
+
+.layui-tabs-header li:hover,
+.layui-tabs-header .layui-this {
+  color: var(--accent);
+}
+
+.layui-tabs-header .layui-this:after {
+  border-bottom-color: var(--accent);
+}
+
+.layui-tabs-bar .layui-icon {
+  background-color: var(--card-bg);
+  border-color: var(--border);
+}
+
+.layui-tabs-bar .layui-icon:hover {
+  color: var(--accent);
+  border-color: var(--accent);
+}
+
+.layui-tabs-header li .layui-tabs-close:hover {
+  background-color: var(--danger);
+  color: #fff;
+}
+
+/* ========== 新版 Tabs 卡片风格 ========== */
+.layui-tabs-card > .layui-tabs-header .layui-this {
+  background-color: var(--card-bg);
+}
+
+.layui-tabs-card > .layui-tabs-header .layui-this:after {
+  border-color: var(--border);
+  border-bottom-color: var(--card-bg);
+}
+
+/* ========== 深色主题 ========== */
+[data-theme="dark"] .layui-tab-title {
+  border-bottom-color: var(--border);
+}
+
+[data-theme="dark"] .layui-tab-title li {
+  color: var(--text-secondary);
+}
+
+[data-theme="dark"] .layui-tab-title li:hover {
+  color: var(--accent);
+}
+
+[data-theme="dark"] .layui-tab-title li.layui-this {
+  color: var(--accent);
+}
+
+[data-theme="dark"] .layui-tab-card {
+  border-color: var(--border);
+}
+
+[data-theme="dark"] .layui-tab-card > .layui-tab-title {
+  background-color: rgba(0, 0, 0, 0.2);
+  border-bottom-color: var(--border);
+}
+
+[data-theme="dark"] .layui-tab-card > .layui-tab-title li {
+  border-color: var(--border);
+  background-color: transparent;
+}
+
+[data-theme="dark"] .layui-tab-card > .layui-tab-title li.layui-this {
+  background-color: var(--card-bg);
+  border-bottom-color: var(--card-bg);
+}
+
+[data-theme="dark"] .layui-tab-card > .layui-tab-more .layui-tab-more-box {
+  background-color: var(--card-bg);
+  border-color: var(--border);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+}
+
+[data-theme="dark"] .layui-tabs-header:after,
+[data-theme="dark"] .layui-tabs-scroll:after {
+  border-bottom-color: var(--border);
+}
+
+[data-theme="dark"] .layui-tabs-header li {
+  color: var(--text-secondary);
+}
+
+[data-theme="dark"] .layui-tabs-header li:hover,
+[data-theme="dark"] .layui-tabs-header .layui-this {
+  color: var(--accent);
+}
+
+[data-theme="dark"] .layui-tabs-bar .layui-icon {
+  background-color: var(--card-bg);
+  border-color: var(--border);
+}
+
+[data-theme="dark"] .layui-tabs-card > .layui-tabs-header .layui-this {
+  background-color: var(--card-bg);
+}
+
+[data-theme="dark"] .layui-tabs-card > .layui-tabs-header .layui-this:after {
+  border-color: var(--border);
+  border-bottom-color: var(--card-bg);
+}

@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>工具集组件 - Layui</title>
+  <meta name="keywords" content="工具集,util,常用工具,固定条,fixbar">
+  <meta name="description" content="Layui工具集组件使用示例">
+</head>
+<body>
+  <div class="page-content">
+    <div class="demo-header">
+      <h3 class="demo-title">工具集组件</h3>
+      <p class="demo-desc">Layui 工具集模块，包含事件绑定、时间格式化、数字格式化、固定条等常用工具</p>
+    </div>
+
+    <div class="demo-grid">
+      <div class="layui-card">
+        <div class="layui-card-header">
+          <span class="layui-card-title">事件绑定</span>
+        </div>
+        <div class="layui-card-body">
+          <p class="demo-tip">通过 util.on() 方法可以批量绑定事件，无需手动逐个绑定</p>
+          <div class="layui-btn-container">
+            <button class="layui-btn" lay-on="e1">事件1</button>
+            <button class="layui-btn layui-btn-normal" lay-on="e2">事件2</button>
+            <button class="layui-btn layui-btn-warm" lay-on="e3">事件3</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="layui-card">
+        <div class="layui-card-header">
+          <span class="layui-card-title">时间格式化</span>
+        </div>
+        <div class="layui-card-body">
+          <div class="util-row">
+            <label>当前时间：</label>
+            <span id="time1"></span>
+          </div>
+          <div class="util-row">
+            <label>时间戳转换：</label>
+            <span id="time2"></span>
+          </div>
+          <div class="util-row">
+            <label>自定义格式：</label>
+            <span id="time3"></span>
+          </div>
+        </div>
+      </div>
+
+      <div class="layui-card">
+        <div class="layui-card-header">
+          <span class="layui-card-title">数字格式化</span>
+        </div>
+        <div class="layui-card-body">
+          <div class="util-row">
+            <label>千分位：</label>
+            <span id="number1"></span>
+          </div>
+          <div class="util-row">
+            <label>保留小数：</label>
+            <span id="number2"></span>
+          </div>
+          <div class="util-row">
+            <label>货币格式：</label>
+            <span id="number3"></span>
+          </div>
+        </div>
+      </div>
+
+      <div class="layui-card">
+        <div class="layui-card-header">
+          <span class="layui-card-title">字符串转义</span>
+        </div>
+        <div class="layui-card-body">
+          <div class="util-row">
+            <label>原始HTML：</label>
+            <code>&lt;div&gt;这是HTML内容&lt;/div&gt;</code>
+          </div>
+          <div class="util-row">
+            <label>转义结果：</label>
+            <span id="escape1"></span>
+          </div>
+        </div>
+      </div>
+
+      <div class="layui-card layui-card-lg">
+        <div class="layui-card-header">
+          <span class="layui-card-title">固定条 (fixbar)</span>
+        </div>
+        <div class="layui-card-body">
+          <p class="demo-tip">固定条始终固定在页面右侧，点击可触发相应操作。滚动页面查看效果。</p>
+          <div class="layui-btn-container">
+            <button class="layui-btn" lay-on="showFixbar">显示固定条</button>
+            <button class="layui-btn layui-btn-primary" lay-on="hideFixbar">隐藏固定条</button>
+          </div>
+          <div style="height: 300px; overflow-y: auto; margin-top: 16px; padding: 16px; background: var(--bg); border-radius: 8px;" id="scrollArea">
+            <p>滚动区域内容：</p>
+            <p>1. 固定条组件可以固定在页面任意位置</p>
+            <p>2. 支持自定义图标和内容</p>
+            <p>3. 支持多种事件回调</p>
+            <p>4. 可以设置背景色和样式</p>
+            <br>
+            <p>继续滚动查看更多内容...</p>
+            <br><br><br><br><br><br><br><br><br><br>
+            <p>更多内容...</p>
+            <br><br><br><br><br><br><br><br><br><br>
+            <p>到底了</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="layui-card">
+        <div class="layui-card-header">
+          <span class="layui-card-title">其他工具方法</span>
+        </div>
+        <div class="layui-card-body">
+          <div class="util-row">
+            <label>获取随机数：</label>
+            <button class="layui-btn layui-btn-sm" lay-on="randomNum">生成</button>
+            <span id="randomResult" style="margin-left: 10px;"></span>
+          </div>
+          <div class="util-row">
+            <label>获取当前时间戳：</label>
+            <button class="layui-btn layui-btn-sm" lay-on="timestamp">获取</button>
+            <span id="timestampResult" style="margin-left: 10px;"></span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <style>
+  .demo-header {
+    margin-bottom: 16px;
+  }
+  .demo-title {
+    font-size: 18px;
+    font-weight: 600;
+    color: var(--text-primary);
+    margin-bottom: 4px;
+  }
+  .demo-desc {
+    font-size: 13px;
+    color: var(--text-muted);
+  }
+  .demo-tip {
+    font-size: 13px;
+    color: var(--text-muted);
+    margin-bottom: 12px;
+  }
+  .demo-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 16px;
+  }
+  .layui-card-lg {
+    grid-column: span 2;
+  }
+  @media (max-width: 992px) {
+    .demo-grid {
+      grid-template-columns: 1fr;
+    }
+    .layui-card-lg {
+      grid-column: span 1;
+    }
+  }
+  .util-row {
+    display: flex;
+    align-items: center;
+    padding: 8px 0;
+    border-bottom: 1px solid var(--border);
+  }
+  .util-row:last-child {
+    border-bottom: none;
+  }
+  .util-row label {
+    width: 100px;
+    color: var(--text-secondary);
+    font-size: 13px;
+  }
+  .util-row span,
+  .util-row code {
+    color: var(--text-primary);
+    font-size: 13px;
+  }
+  .util-row code {
+    background: var(--bg);
+    padding: 2px 8px;
+    border-radius: 4px;
+  }
+  </style>
+
+  <script>
+  layui.use(['util', 'layer'], function(){
+    var util = layui.util;
+    var layer = layui.layer;
+    var $ = layui.$;
+    
+    util.on('lay-on', {
+      e1: function(){
+        layer.msg('触发了事件1', { icon: 1 });
+      },
+      e2: function(){
+        layer.msg('触发了事件2', { icon: 2 });
+      },
+      e3: function(){
+        layer.msg('触发了事件3', { icon: 3 });
+      },
+      showFixbar: function(){
+        layer.msg('固定条已显示，滚动页面查看效果', { icon: 1 });
+      },
+      hideFixbar: function(){
+        layer.msg('固定条已隐藏', { icon: 2 });
+      },
+      randomNum: function(){
+        var num = Math.floor(Math.random() * 100);
+        $('#randomResult').text(num);
+      },
+      timestamp: function(){
+        var ts = Date.now();
+        $('#timestampResult').text(ts);
+      }
+    });
+    
+    var date1 = new Date();
+    $('#time1').text(util.toDateString(date1, 'yyyy-MM-dd HH:mm:ss'));
+    
+    var date2 = 1607654400000;
+    $('#time2').text(util.toDateString(date2, 'yyyy年MM月dd日'));
+    
+    $('#time3').text(util.toDateString(date1, 'yyyy/MM/dd HH:mm'));
+    
+    var num1 = 1234567.89;
+    $('#number1').text(num1.toLocaleString('zh-CN', { minimumFractionDigits: 2, maximumFractionDigits: 2 }));
+    
+    var num2 = 0.123456;
+    $('#number2').text(num2.toFixed(3));
+    
+    var num3 = 9876543.21;
+    $('#number3').text('¥' + num3.toLocaleString('zh-CN', { minimumFractionDigits: 2, maximumFractionDigits: 2 }));
+    
+    var html = '<div>这是HTML内容</div>';
+    $('#escape1').text(util.escape(html));
+    
+    util.fixbar({
+      bars: [{
+        type: 'share',
+        icon: 'layui-icon-share',
+        style: 'background-color: #16baaa;'
+      }, {
+        type: 'help',
+        icon: 'layui-icon-help',
+        style: 'background-color: #1e9fff;'
+      }, {
+        type: 'cart',
+        icon: 'layui-icon-cart',
+        style: 'background-color: #ff5722;'
+      }],
+      css: { right: 20, bottom: 100 },
+      target: '#scrollArea',
+      on: {
+        mouseenter: function(type){
+          layer.tips(type, this, { tips: 4, fixed: true });
+        },
+        mouseleave: function(){
+          layer.closeAll('tips');
+        }
+      },
+      click: function(type){
+        layer.msg('点击了: ' + type, { icon: 1 });
+      }
+    });
+  });
+  </script>
+</body>
+</html>

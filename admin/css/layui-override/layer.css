@@ -1,0 +1,383 @@
+/**
+ * LayUI 弹层主题适配
+ * 覆盖颜色、背景色、边框、圆角相关属性
+ */
+
+/* ========== 弹层基础 ========== */
+.layui-layer {
+  border-radius: 8px;
+}
+
+.layui-layer-border {
+  border-color: var(--border);
+}
+
+.layui-layer-shade {
+  background-color: rgba(0, 0, 0, 0.3);
+}
+
+.layui-layer-move {
+  background-color: var(--card-bg);
+}
+
+/* ========== 标题栏 ========== */
+.layui-layer-title {
+  background-color: var(--bg);
+  border-bottom-color: var(--border);
+  border-radius: 8px 8px 0 0;
+}
+
+.layui-layer-setwin .layui-layer-min:before {
+  border-bottom-color: var(--text-secondary);
+}
+
+.layui-layer-setwin .layui-layer-min:hover:before {
+  background-color: var(--accent);
+}
+
+.layui-layer-setwin .layui-layer-max:before,
+.layui-layer-setwin .layui-layer-max:after {
+  border-color: var(--text-secondary);
+}
+
+.layui-layer-setwin .layui-layer-max:hover:before,
+.layui-layer-setwin .layui-layer-max:hover:after {
+  border-color: var(--accent);
+}
+
+.layui-layer-setwin .layui-layer-close:hover {
+  opacity: 0.7;
+}
+
+.layui-layer-setwin .layui-layer-close2 {
+  background-color: var(--text-muted);
+  border-color: var(--text-muted);
+  color: #fff;
+  border-radius: 50%;
+}
+
+.layui-layer-setwin .layui-layer-close2:hover {
+  background-color: var(--info);
+}
+
+/* ========== 按钮栏 ========== */
+.layui-layer-btn {
+  background-color: var(--card-bg);
+  border-radius: 0 0 8px 8px;
+}
+
+.layui-layer-btn a {
+  background-color: var(--card-bg);
+  border-color: var(--border);
+  border-radius: 6px;
+}
+
+.layui-layer-btn a:hover {
+  opacity: 0.9;
+}
+
+.layui-layer-btn .layui-layer-btn0 {
+  background-color: var(--accent);
+  border-color: var(--accent);
+  color: #fff;
+}
+
+/* ========== 对话框内容 ========== */
+.layui-layer-dialog .layui-layer-content .layui-icon-tips {
+  color: var(--warning);
+}
+
+.layui-layer-dialog .layui-layer-content .layui-icon-success {
+  color: var(--success);
+}
+
+.layui-layer-dialog .layui-layer-content .layui-icon-error {
+  color: var(--danger);
+}
+
+.layui-layer-dialog .layui-layer-content .layui-icon-question {
+  color: var(--warning);
+}
+
+.layui-layer-dialog .layui-layer-content .layui-icon-lock {
+  color: var(--text-muted);
+}
+
+.layui-layer-dialog .layui-layer-content .layui-icon-face-cry {
+  color: var(--danger);
+}
+
+.layui-layer-dialog .layui-layer-content .layui-icon-face-smile {
+  color: var(--success);
+}
+
+/* ========== 消息提示 ========== */
+.layui-layer-msg {
+  border-color: var(--border);
+  border-radius: 8px;
+}
+
+/* ========== 加载层 ========== */
+.layui-layer-loading-2 {
+  border-radius: 50%;
+}
+
+.layui-layer-loading-2:before,
+.layui-layer-loading-2:after {
+  border-color: var(--border);
+}
+
+.layui-layer-loading-2:after {
+  border-left-color: var(--info);
+}
+
+/* ========== 提示层 ========== */
+.layui-layer-tips .layui-layer-content {
+  background-color: var(--accent) !important;
+  color: #fff;
+  border-radius: 6px;
+}
+
+.layui-layer-tips i.layui-layer-TipsT,
+.layui-layer-tips i.layui-layer-TipsB {
+  border-right-color: var(--accent) !important;
+}
+
+.layui-layer-tips i.layui-layer-TipsR,
+.layui-layer-tips i.layui-layer-TipsL {
+  border-bottom-color: var(--accent) !important;
+}
+
+/* ========== 输入框层 ========== */
+.layui-layer-prompt .layui-layer-input {
+  background-color: var(--card-bg);
+  border-color: var(--border);
+  border-radius: 6px;
+}
+
+.layui-layer-prompt .layui-layer-input:focus {
+  border-color: var(--accent);
+}
+
+/* ========== Tab层 ========== */
+.layui-layer-tab .layui-layer-title span {
+  border-color: var(--border);
+}
+
+.layui-layer-tab .layui-layer-title span.layui-this {
+  background-color: var(--card-bg);
+  border-color: var(--border);
+}
+
+/* ========== 内置皮肤 ========== */
+.layui-layer-lan .layui-layer-title {
+  background-color: var(--info);
+}
+
+.layui-layer-molv .layui-layer-title {
+  background-color: var(--success);
+}
+
+.layui-layer-molv .layui-layer-btn a {
+  background-color: var(--success);
+  border-color: var(--success);
+}
+
+.layui-layer-molv .layui-layer-btn .layui-layer-btn1 {
+  background-color: var(--bg);
+  border-color: var(--border);
+}
+
+/* ========== Windows 10 风格 ========== */
+.layui-layer-win10 {
+  border-color: var(--border);
+}
+
+.layui-layer-win10 .layui-layer-title {
+  background-color: var(--card-bg);
+}
+
+.layui-layer-win10 .layui-layer-setwin span:hover {
+  background-color: var(--bg);
+}
+
+.layui-layer-win10 .layui-layer-setwin span.layui-icon-close:hover {
+  background-color: var(--danger);
+  color: #fff;
+}
+
+.layui-layer-win10 .layui-layer-btn {
+  background-color: var(--bg);
+  border-top-color: var(--border);
+}
+
+.layui-layer-win10 .layui-layer-btn a {
+  background-color: var(--bg);
+  border-color: var(--border);
+  border-radius: 4px;
+}
+
+.layui-layer-win10 .layui-layer-btn a:hover {
+  border-color: var(--info);
+  background-color: var(--accent-light);
+}
+
+.layui-layer-win10 .layui-layer-btn .layui-layer-btn0 {
+  border-color: var(--info);
+}
+
+/* ========== 深色主题 ========== */
+[data-theme="dark"] .layui-layer:not(.layui-layer-loading):not(.layui-layer-tips) {
+  background-color: var(--card-bg);
+  box-shadow: 1px 1px 50px rgba(0, 0, 0, 0.5);
+}
+
+[data-theme="dark"] .layui-layer-border {
+  border-color: var(--border);
+}
+
+[data-theme="dark"] .layui-layer-shade {
+  background-color: rgba(0, 0, 0, 0.5);
+}
+
+[data-theme="dark"] .layui-layer-title {
+  background-color: rgba(0, 0, 0, 0.2);
+  border-bottom-color: var(--border);
+  color: var(--text-primary);
+}
+
+[data-theme="dark"] .layui-layer-setwin span {
+  color: var(--text-secondary);
+}
+
+[data-theme="dark"] .layui-layer-setwin .layui-layer-min:before {
+  border-bottom-color: var(--text-secondary);
+}
+
+[data-theme="dark"] .layui-layer-setwin .layui-layer-max:before,
+[data-theme="dark"] .layui-layer-setwin .layui-layer-max:after {
+  border-color: var(--text-secondary);
+}
+
+[data-theme="dark"] .layui-layer-btn a {
+  background-color: transparent;
+  border-color: var(--border);
+}
+
+[data-theme="dark"] .layui-layer-btn .layui-layer-btn0 {
+  background-color: var(--accent);
+  border-color: var(--accent);
+  color: #fff;
+}
+
+[data-theme="dark"] .layui-layer-dialog .layui-layer-content {
+  color: var(--text-primary);
+}
+
+[data-theme="dark"] .layui-layer-msg {
+  border-color: var(--border);
+  background-color: var(--card-bg);
+}
+
+[data-theme="dark"] .layui-layer-prompt .layui-layer-input {
+  background-color: rgba(0, 0, 0, 0.2);
+  border-color: var(--border);
+  color: var(--text-primary);
+}
+
+[data-theme="dark"] .layui-layer-tips .layui-layer-content {
+  background-color: var(--text-primary);
+}
+
+[data-theme="dark"] .layui-layer-tips i.layui-layer-TipsT,
+[data-theme="dark"] .layui-layer-tips i.layui-layer-TipsB {
+  border-right-color: var(--text-primary);
+}
+
+[data-theme="dark"] .layui-layer-tips i.layui-layer-TipsR,
+[data-theme="dark"] .layui-layer-tips i.layui-layer-TipsL {
+  border-bottom-color: var(--text-primary);
+}
+
+[data-theme="dark"] .layui-layer-tab .layui-layer-title span {
+  border-color: var(--border);
+}
+
+[data-theme="dark"] .layui-layer-tab .layui-layer-title span.layui-this {
+  background-color: var(--card-bg);
+}
+
+[data-theme="dark"] .layui-layer-win10 {
+  border-color: var(--border);
+}
+
+[data-theme="dark"] .layui-layer-win10 .layui-layer-title {
+  background-color: rgba(0, 0, 0, 0.2);
+}
+
+[data-theme="dark"] .layui-layer-win10 .layui-layer-setwin span:hover {
+  background-color: rgba(255, 255, 255, 0.1);
+}
+
+[data-theme="dark"] .layui-layer-win10 .layui-layer-btn {
+  background-color: rgba(0, 0, 0, 0.2);
+  border-top-color: var(--border);
+}
+
+[data-theme="dark"] .layui-layer-win10 .layui-layer-btn a {
+  background-color: transparent;
+  border-color: var(--border);
+}
+
+/* ========== Drawer 动画覆盖 ========== */
+.layui-layer.layer-anim-slide-left {
+  animation: layerDrawerSlideRight 0.3s ease-out forwards !important;
+}
+
+.layui-layer.layer-anim-slide-right {
+  animation: layerDrawerSlideLeft 0.3s ease-out forwards !important;
+}
+
+.layui-layer.layer-anim-slide-down {
+  animation: layerDrawerSlideTop 0.3s ease-out forwards !important;
+}
+
+.layui-layer.layer-anim-slide-up {
+  animation: layerDrawerSlideBottom 0.3s ease-out forwards !important;
+}
+
+@keyframes layerDrawerSlideRight {
+  from {
+    transform: translateX(100%);
+  }
+  to {
+    transform: translateX(0);
+  }
+}
+
+@keyframes layerDrawerSlideLeft {
+  from {
+    transform: translateX(-100%);
+  }
+  to {
+    transform: translateX(0);
+  }
+}
+
+@keyframes layerDrawerSlideTop {
+  from {
+    transform: translateY(-100%);
+  }
+  to {
+    transform: translateY(0);
+  }
+}
+
+@keyframes layerDrawerSlideBottom {
+  from {
+    transform: translateY(100%);
+  }
+  to {
+    transform: translateY(0);
+  }
+}

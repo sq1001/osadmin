@@ -1,0 +1,325 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>文件上传组件 - Layui</title>
+  <meta name="keywords" content="上传,文件,图片,拖拽上传">
+  <meta name="description" content="Layui文件上传组件使用示例">
+</head>
+<body>
+  <div class="page-content">
+    <div class="layui-card">
+      <div class="layui-card-header">
+        <h3>文件上传组件 (upload)</h3>
+      </div>
+      <div class="layui-card-body">
+        
+        <fieldset class="layui-elem-field layui-field-title">
+          <legend>常规使用</legend>
+          <div class="layui-field-box">
+            <div class="layui-upload">
+              <button type="button" class="layui-btn layui-btn-normal" id="testList">
+                选择多文件
+              </button>
+              <div class="layui-upload-list">
+                <table class="layui-table">
+                  <thead>
+                    <tr>
+                      <th>文件名</th>
+                      <th>大小</th>
+                      <th>状态</th>
+                      <th>操作</th>
+                    </tr>
+                  </thead>
+                  <tbody id="demoList"></tbody>
+                </table>
+              </div>
+              <button type="button" class="layui-btn" id="testListAction">
+                开始上传
+              </button>
+            </div>
+          </div>
+        </fieldset>
+
+        <fieldset class="layui-elem-field layui-field-title">
+          <legend>拖拽上传</legend>
+          <div class="layui-field-box">
+            <div class="layui-upload-drag" id="testDrag">
+              <i class="layui-icon">&#xe67c;</i>
+              <p>点击上传，或将文件拖拽到此处</p>
+              <div class="layui-hide" id="uploadDemoView">
+                <hr>
+                <img src="" alt="上传成功后渲染" style="max-width: 196px">
+              </div>
+            </div>
+          </div>
+        </fieldset>
+
+        <fieldset class="layui-elem-field layui-field-title">
+          <legend>绑定原始文件域</legend>
+          <div class="layui-field-box">
+            <input type="file" name="file" id="testUploadOriginal">
+          </div>
+        </fieldset>
+
+        <fieldset class="layui-elem-field layui-field-title">
+          <legend>图片上传</legend>
+          <div class="layui-field-box">
+            <div class="layui-upload">
+              <button type="button" class="layui-btn" id="testImg">上传图片</button>
+              <div class="layui-upload-list">
+                <img id="testImgPreview" alt="图片预览" width="150" height="150" style="display: none; border: 1px solid #e6e6e6; margin-top: 10px;">
+              </div>
+            </div>
+          </div>
+        </fieldset>
+
+        <fieldset class="layui-elem-field layui-field-title">
+          <legend>多图上传</legend>
+          <div class="layui-field-box">
+            <div class="layui-upload">
+              <button type="button" class="layui-btn layui-btn-normal" id="testImgs">选择多图</button>
+              <blockquote class="layui-elem-quote layui-quote-nm" style="margin-top: 10px;">
+                预览图：
+                <div class="layui-upload-list" id="testImgsPreview"></div>
+              </blockquote>
+            </div>
+          </div>
+        </fieldset>
+
+        <fieldset class="layui-elem-field layui-field-title">
+          <legend>限制文件类型</legend>
+          <div class="layui-field-box">
+            <div class="layui-btn-container">
+              <button type="button" class="layui-btn" id="testAcceptImg">
+                <i class="layui-icon">&#xe67c;</i>上传图片
+              </button>
+              <button type="button" class="layui-btn" id="testAcceptFile">
+                <i class="layui-icon">&#xe67c;</i>上传文件
+              </button>
+              <button type="button" class="layui-btn" id="testAcceptVideo">
+                <i class="layui-icon">&#xe67c;</i>上传视频
+              </button>
+              <button type="button" class="layui-btn" id="testAcceptAudio">
+                <i class="layui-icon">&#xe67c;</i>上传音频
+              </button>
+            </div>
+          </div>
+        </fieldset>
+
+        <fieldset class="layui-elem-field layui-field-title">
+          <legend>限制文件大小</legend>
+          <div class="layui-field-box">
+            <div class="layui-upload">
+              <button type="button" class="layui-btn" id="testSize">上传文件（限制60KB）</button>
+              <p class="layui-form-mid layui-word-aux">只能上传不超过60KB的文件</p>
+            </div>
+          </div>
+        </fieldset>
+
+        <fieldset class="layui-elem-field layui-field-title">
+          <legend>进度条</legend>
+          <div class="layui-field-box">
+            <div class="layui-upload">
+              <button type="button" class="layui-btn layui-btn-normal" id="testProgress">选择文件</button>
+              <button type="button" class="layui-btn" id="testProgressAction">开始上传</button>
+              <div class="layui-progress layui-progress-big" lay-filter="demoProgress" style="margin-top: 10px;">
+                <div class="layui-progress-bar"></div>
+              </div>
+              <div id="progressText" style="margin-top: 5px; color: #666;"></div>
+            </div>
+          </div>
+        </fieldset>
+
+      </div>
+    </div>
+  </div>
+
+  <style>
+  .layui-upload-list img {
+    float: left;
+    margin-right: 10px;
+    margin-bottom: 10px;
+    width: 100px;
+    height: 100px;
+    object-fit: cover;
+    border: 1px solid #e6e6e6;
+    border-radius: 4px;
+  }
+  </style>
+
+  <script>
+  layui.use(['upload', 'layer', 'element'], function(){
+    var $ = layui.$,
+    upload = layui.upload,
+    layer = layui.layer,
+    element = layui.element;
+    
+    var uploadListIns = upload.render({
+      elem: '#testList',
+      elemList: '#demoList',
+      url: 'https://httpbin.org/post',
+      accept: 'file',
+      multiple: true,
+      number: 3,
+      auto: false,
+      bindAction: '#testListAction',
+      choose: function(obj){   
+        var that = this;
+        var files = this.files = obj.pushFile();
+        
+        obj.preview(function(index, file, result){
+          var tr = $(['<tr id="upload-'+ index +'">',
+            '<td>'+ file.name +'</td>',
+            '<td>'+ (file.size/1014).toFixed(1) +'kb</td>',
+            '<td>等待上传</td>',
+            '<td>',
+              '<button class="layui-btn layui-btn-xs demo-reload layui-hide">重传</button>',
+              '<button class="layui-btn layui-btn-xs layui-btn-danger demo-delete">删除</button>',
+            '</td>',
+          '</tr>'].join(''));
+          
+          tr.find('.demo-delete').on('click', function(){
+            delete files[index];
+            tr.remove();
+            uploadListIns.config.elem.next()[0].value = '';
+          });
+          
+          that.elemList.append(tr);
+        });
+      },
+      done: function(res, index, upload){
+        var that = this;
+        var tr = that.elemList.find('#upload-'+ index);
+        var tds = tr.children();
+        tds.eq(2).html('<span style="color: #5FB878;">上传成功</span>');
+        tds.eq(3).html('');
+        
+        return delete this.files[index];
+      },
+      allDone: function(obj){
+        layer.msg('上传完毕！共计：'+ obj.total +' 个文件，成功：'+ obj.successful +' 个，失败：'+ obj.aborted +' 个');
+      },
+      error: function(){
+        var that = this;
+        var tr = that.elemList.find('#upload-'+ index);
+        var tds = tr.children();
+        tds.eq(2).html('<span>上传失败</span>');
+        tds.eq(3).find('.demo-reload').removeClass('layui-hide');
+      }
+    });
+    
+    upload.render({
+      elem: '#testDrag',
+      url: 'https://httpbin.org/post',
+      done: function(res){
+        layer.msg('上传成功');
+        $('#uploadDemoView').removeClass('layui-hide').find('img').attr('src', res.files.file);
+        console.log(res);
+      }
+    });
+    
+    upload.render({
+      elem: '#testUploadOriginal',
+      url: 'https://httpbin.org/post',
+      done: function(res){
+        layer.msg('上传成功');
+        console.log(res);
+      }
+    });
+
+    upload.render({
+      elem: '#testImg',
+      url: 'https://httpbin.org/post',
+      before: function(obj){
+        obj.preview(function(index, file, result){
+          $('#testImgPreview').attr('src', result).show();
+        });
+      },
+      done: function(res){
+        layer.msg('上传成功');
+      }
+    });
+
+    var demoImgs = upload.render({
+      elem: '#testImgs',
+      url: 'https://httpbin.org/post',
+      multiple: true,
+      before: function(obj){
+        obj.preview(function(index, file, result){
+          $('#testImgsPreview').append('<img src="'+ result +'" alt="'+ file.name +'">');
+        });
+      },
+      done: function(res){
+        layer.msg('上传成功');
+      }
+    });
+
+    upload.render({
+      elem: '#testAcceptImg',
+      url: 'https://httpbin.org/post',
+      accept: 'images',
+      done: function(res){
+        layer.msg('图片上传成功');
+      }
+    });
+
+    upload.render({
+      elem: '#testAcceptFile',
+      url: 'https://httpbin.org/post',
+      accept: 'file',
+      done: function(res){
+        layer.msg('文件上传成功');
+      }
+    });
+
+    upload.render({
+      elem: '#testAcceptVideo',
+      url: 'https://httpbin.org/post',
+      accept: 'video',
+      done: function(res){
+        layer.msg('视频上传成功');
+      }
+    });
+
+    upload.render({
+      elem: '#testAcceptAudio',
+      url: 'https://httpbin.org/post',
+      accept: 'audio',
+      done: function(res){
+        layer.msg('音频上传成功');
+      }
+    });
+
+    upload.render({
+      elem: '#testSize',
+      url: 'https://httpbin.org/post',
+      size: 60,
+      done: function(res){
+        layer.msg('上传成功');
+      },
+      error: function(){
+        layer.msg('文件大小超出限制');
+      }
+    });
+
+    upload.render({
+      elem: '#testProgress',
+      url: 'https://httpbin.org/post',
+      auto: false,
+      bindAction: '#testProgressAction',
+      progress: function(n, elem, res, index){
+        var percent = n + '%';
+        element.progress('demoProgress', percent);
+        $('#progressText').text('上传进度：' + percent);
+      },
+      done: function(res){
+        layer.msg('上传成功');
+        $('#progressText').text('上传完成');
+      }
+    });
+  });
+  </script>
+</body>
+</html>

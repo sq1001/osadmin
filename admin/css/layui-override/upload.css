@@ -1,0 +1,62 @@
+/**
+ * LayUI 上传组件主题适配
+ * 覆盖背景色、边框、圆角相关属性
+ */
+
+/* ========== 上传区域 ========== */
+.layui-upload-drag {
+  background-color: var(--card-bg);
+  border-color: var(--border);
+  border-radius: 6px;
+}
+
+.layui-upload-drag:hover {
+  border-color: var(--accent);
+}
+
+.layui-upload-drag .layui-icon {
+  color: var(--accent);
+}
+
+/* ========== 上传文件项 ========== */
+.layui-upload-files li {
+  background-color: var(--bg);
+  border-color: var(--border);
+  border-radius: 4px;
+}
+
+.layui-upload-files li:hover {
+  background-color: var(--accent-light);
+}
+
+/* ========== 上传文件状态 ========== */
+.layui-upload-files li .layui-upload-success {
+  color: var(--success);
+}
+
+.layui-upload-files li .layui-upload-error {
+  color: var(--danger);
+}
+
+/* ========== 深色主题 ========== */
+[data-theme="dark"] .layui-upload-drag {
+  background-color: var(--card-bg);
+  border-color: var(--border);
+}
+
+[data-theme="dark"] .layui-upload-drag:hover {
+  border-color: var(--accent);
+}
+
+[data-theme="dark"] .layui-upload-drag .layui-icon {
+  color: var(--accent);
+}
+
+[data-theme="dark"] .layui-upload-files li {
+  background-color: rgba(255, 255, 255, 0.05);
+  border-color: var(--border);
+}
+
+[data-theme="dark"] .layui-upload-files li:hover {
+  background-color: var(--accent-light);
+}

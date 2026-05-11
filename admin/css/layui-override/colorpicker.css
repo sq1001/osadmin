@@ -1,0 +1,93 @@
+/**
+ * LayUI 颜色选择器主题适配
+ * 覆盖背景色、边框、圆角相关属性
+ */
+
+/* ========== 颜色选择器基础 ========== */
+.layui-colorpicker {
+  border-color: var(--border);
+  border-radius: 4px;
+}
+
+.layui-colorpicker:hover {
+  border-color: var(--accent);
+}
+
+/* ========== 颜色选择器主体 ========== */
+.layui-colorpicker-main {
+  background-color: var(--card-bg);
+  border-color: var(--border);
+  border-radius: 6px;
+}
+
+/* ========== 颜色选择器输入框 ========== */
+.layui-colorpicker-main-input input {
+  background-color: var(--card-bg);
+  border-color: var(--border);
+  border-radius: 4px;
+}
+
+.layui-colorpicker-main-input input:focus {
+  border-color: var(--accent);
+}
+
+/* ========== 颜色选择器按钮 ========== */
+.layui-colorpicker-main-input button {
+  background-color: var(--accent);
+  border-color: var(--accent);
+  border-radius: 4px;
+}
+
+.layui-colorpicker-main-input button:hover {
+  background-color: var(--accent-hover);
+}
+
+/* ========== 预设颜色 ========== */
+.layui-colorpicker-main-pre li {
+  border-color: var(--border);
+  border-radius: 4px;
+}
+
+/* ========== 清除按钮 ========== */
+.layui-colorpicker-main-clear {
+  background-color: var(--bg);
+  border-radius: 4px;
+}
+
+.layui-colorpicker-main-clear:hover {
+  background-color: var(--accent-light);
+  color: var(--accent);
+}
+
+/* ========== 深色主题 ========== */
+[data-theme="dark"] .layui-colorpicker {
+  border-color: var(--border);
+}
+
+[data-theme="dark"] .layui-colorpicker:hover {
+  border-color: var(--accent);
+}
+
+[data-theme="dark"] .layui-colorpicker-main {
+  background-color: var(--card-bg);
+  border-color: var(--border);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+}
+
+[data-theme="dark"] .layui-colorpicker-main-input input {
+  background-color: rgba(0, 0, 0, 0.2);
+  border-color: var(--border);
+}
+
+[data-theme="dark"] .layui-colorpicker-main-input button {
+  background-color: var(--accent);
+  border-color: var(--accent);
+}
+
+[data-theme="dark"] .layui-colorpicker-main-pre li {
+  border-color: var(--border);
+}
+
+[data-theme="dark"] .layui-colorpicker-main-clear {
+  background-color: rgba(255, 255, 255, 0.1);
+}

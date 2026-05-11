@@ -1,0 +1,62 @@
+/**
+ * LayUI 代码块主题适配
+ * 仅覆盖颜色、背景色、边框相关属性
+ */
+
+/* ========== 代码块基础 ========== */
+.layui-code {
+  border-color: var(--border);
+  background-color: var(--bg);
+  overflow-x: auto;
+  white-space: pre-wrap;
+  word-wrap: break-word;
+  max-width: 100%;
+}
+
+.layui-code-view {
+  border-color: var(--border);
+  background-color: var(--bg);
+  max-width: 100%;
+}
+
+.layui-code-view .layui-code-wrap {
+  overflow-x: auto;
+}
+
+.layui-code-view .layui-code-line-content {
+  white-space: pre-wrap;
+  word-wrap: break-word;
+}
+
+.layui-code-header {
+  border-bottom-color: var(--border);
+  background-color: var(--bg);
+}
+
+.layui-code-ln-side {
+  border-right-color: var(--border);
+  background-color: var(--bg);
+}
+
+/* ========== 工具栏 ========== */
+.layui-code-fixbar > span:hover,
+.layui-code-tools > i:hover {
+  color: var(--accent);
+}
+
+/* ========== 深色主题 ========== */
+[data-theme="dark"] .layui-code {
+  background-color: rgba(0, 0, 0, 0.2);
+}
+
+[data-theme="dark"] .layui-code-view {
+  background-color: rgba(0, 0, 0, 0.2);
+}
+
+[data-theme="dark"] .layui-code-header {
+  background-color: rgba(0, 0, 0, 0.3);
+}
+
+[data-theme="dark"] .layui-code-ln-side {
+  background-color: rgba(0, 0, 0, 0.3);
+}

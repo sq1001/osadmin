@@ -1,0 +1,14 @@
+/**
+ * LayUI 流加载主题适配
+ * 仅覆盖背景色相关属性
+ */
+
+/* ========== 流加载 ========== */
+.layui-flow-more a cite {
+  background-color: var(--bg);
+}
+
+/* ========== 深色主题 ========== */
+[data-theme="dark"] .layui-flow-more a cite {
+  background-color: rgba(255, 255, 255, 0.1);
+}

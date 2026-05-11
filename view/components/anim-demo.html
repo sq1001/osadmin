@@ -1,0 +1,336 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>动画组件 - Layui</title>
+  <meta name="keywords" content="动画,anim,CSS3动画">
+  <meta name="description" content="Layui动画组件使用示例">
+</head>
+<body>
+  <div class="page-content">
+    <div class="demo-header">
+      <h3 class="demo-title">动画组件</h3>
+      <p class="demo-desc">Layui 内置了几种常见的 CSS3 动画，通过添加类名即可触发动画效果</p>
+    </div>
+
+    <div class="layui-card">
+      <div class="layui-card-header">
+        <span class="layui-card-title">动画使用方式</span>
+      </div>
+      <div class="layui-card-body">
+        <div class="anim-usage">
+          <div class="anim-demo-box layui-anim" id="demoBox">目标元素</div>
+          <div class="layui-btn-container">
+            <button class="layui-btn" data-anim="layui-anim-down">往下滑入</button>
+            <button class="layui-btn layui-btn-normal" data-anim="layui-anim-up">往上滑入</button>
+            <button class="layui-btn layui-btn-warm" data-anim="layui-anim-scale">放大</button>
+            <button class="layui-btn layui-btn-danger" data-anim="layui-anim-fadein">渐现</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="layui-card">
+      <div class="layui-card-header">
+        <span class="layui-card-title">滑入动画</span>
+      </div>
+      <div class="layui-card-body">
+        <div class="anim-grid">
+          <div class="anim-item">
+            <div class="anim-circle layui-anim" data-anim="layui-anim-down"></div>
+            <span>顶部往下滑入</span>
+            <code>layui-anim-down</code>
+          </div>
+          <div class="anim-item">
+            <div class="anim-circle layui-anim" data-anim="layui-anim-up"></div>
+            <span>底部往上滑入</span>
+            <code>layui-anim-up</code>
+          </div>
+          <div class="anim-item">
+            <div class="anim-circle layui-anim" data-anim="layui-anim-downbit"></div>
+            <span>微微往下滑入</span>
+            <code>layui-anim-downbit</code>
+          </div>
+          <div class="anim-item">
+            <div class="anim-circle layui-anim" data-anim="layui-anim-upbit"></div>
+            <span>微微往上滑入</span>
+            <code>layui-anim-upbit</code>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="layui-card">
+      <div class="layui-card-header">
+        <span class="layui-card-title">缩放动画</span>
+      </div>
+      <div class="layui-card-body">
+        <div class="anim-grid">
+          <div class="anim-item">
+            <div class="anim-circle layui-anim" data-anim="layui-anim-scale"></div>
+            <span>平滑放大</span>
+            <code>layui-anim-scale</code>
+          </div>
+          <div class="anim-item">
+            <div class="anim-circle layui-anim" data-anim="layui-anim-scaleSpring"></div>
+            <span>弹簧式放大</span>
+            <code>layui-anim-scaleSpring</code>
+          </div>
+          <div class="anim-item">
+            <div class="anim-circle layui-anim" data-anim="layui-anim-scalesmall"></div>
+            <span>平滑放小</span>
+            <code>layui-anim-scalesmall</code>
+          </div>
+          <div class="anim-item">
+            <div class="anim-circle layui-anim" data-anim="layui-anim-scalesmall-spring"></div>
+            <span>弹簧式放小</span>
+            <code>layui-anim-scalesmall-spring</code>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="layui-card">
+      <div class="layui-card-header">
+        <span class="layui-card-title">渐变动画</span>
+      </div>
+      <div class="layui-card-body">
+        <div class="anim-grid">
+          <div class="anim-item">
+            <div class="anim-circle layui-anim" data-anim="layui-anim-fadein"></div>
+            <span>渐现</span>
+            <code>layui-anim-fadein</code>
+          </div>
+          <div class="anim-item">
+            <div class="anim-circle layui-anim" data-anim="layui-anim-fadeout"></div>
+            <span>渐隐</span>
+            <code>layui-anim-fadeout</code>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="layui-card">
+      <div class="layui-card-header">
+        <span class="layui-card-title">旋转动画</span>
+      </div>
+      <div class="layui-card-body">
+        <div class="anim-grid">
+          <div class="anim-item">
+            <div class="anim-circle layui-anim" data-anim="layui-anim-rotate"></div>
+            <span>360度旋转</span>
+            <code>layui-anim-rotate</code>
+          </div>
+          <div class="anim-item">
+            <div class="anim-circle layui-anim" data-anim="layui-anim-rotate layui-anim-loop"></div>
+            <span>循环旋转</span>
+            <code>+ layui-anim-loop</code>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="layui-card">
+      <div class="layui-card-header">
+        <span class="layui-card-title">循环动画示例</span>
+      </div>
+      <div class="layui-card-body">
+        <div class="loop-demo">
+          <div class="loop-item">
+            <i class="layui-icon layui-icon-loading layui-anim layui-anim-rotate layui-anim-loop"></i>
+            <span>加载中</span>
+          </div>
+          <div class="loop-item">
+            <i class="layui-icon layui-icon-loading-1 layui-anim layui-anim-rotate layui-anim-loop"></i>
+            <span>加载中</span>
+          </div>
+          <div class="loop-item">
+            <button class="layui-btn layui-btn-disabled">
+              <i class="layui-icon layui-icon-loading layui-anim layui-anim-rotate layui-anim-loop"></i>
+              处理中...
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="layui-card">
+      <div class="layui-card-header">
+        <span class="layui-card-title">动画组合应用</span>
+      </div>
+      <div class="layui-card-body">
+        <div class="anim-combo">
+          <div class="combo-item" id="combo1">
+            <div class="combo-box">弹出提示</div>
+          </div>
+          <div class="combo-item" id="combo2">
+            <div class="combo-box">消息通知</div>
+          </div>
+          <div class="combo-item" id="combo3">
+            <div class="combo-box">成功反馈</div>
+          </div>
+          <div class="layui-btn-container">
+            <button class="layui-btn" id="triggerCombo">触发动画组合</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <style>
+  .demo-header {
+    margin-bottom: 16px;
+  }
+  .demo-title {
+    font-size: 18px;
+    font-weight: 600;
+    color: var(--text-primary);
+    margin-bottom: 4px;
+  }
+  .demo-desc {
+    font-size: 13px;
+    color: var(--text-muted);
+  }
+  .anim-usage {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 16px;
+  }
+  .anim-demo-box {
+    width: 200px;
+    height: 80px;
+    background: linear-gradient(135deg, var(--accent), #3b82f6);
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #fff;
+    font-weight: 500;
+  }
+  .anim-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+    gap: 24px;
+  }
+  .anim-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+  }
+  .anim-circle {
+    width: 60px;
+    height: 60px;
+    background: var(--accent);
+    border-radius: 50%;
+    cursor: pointer;
+    transition: transform 0.3s ease;
+  }
+  .anim-circle:hover {
+    transform: scale(1.1);
+  }
+  .anim-item span {
+    font-size: 13px;
+    color: var(--text-secondary);
+  }
+  .anim-item code {
+    font-size: 11px;
+    color: var(--text-muted);
+    background: var(--bg);
+    padding: 2px 6px;
+    border-radius: 4px;
+  }
+  .loop-demo {
+    display: flex;
+    gap: 32px;
+    align-items: center;
+    flex-wrap: wrap;
+  }
+  .loop-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+  }
+  .loop-item i {
+    font-size: 32px;
+    color: var(--accent);
+  }
+  .loop-item span {
+    font-size: 12px;
+    color: var(--text-muted);
+  }
+  .anim-combo {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+  .combo-item {
+    display: flex;
+    justify-content: center;
+  }
+  .combo-box {
+    padding: 12px 24px;
+    background: var(--bg);
+    border-radius: 8px;
+    color: var(--text-primary);
+    font-size: 14px;
+    opacity: 0;
+  }
+  </style>
+
+  <script>
+  layui.use(['layer'], function(){
+    var $ = layui.$;
+    
+    $('#demoBox').siblings('.layui-btn-container').find('.layui-btn').on('click', function(){
+      var anim = $(this).data('anim');
+      var box = $('#demoBox');
+      box.removeClass(anim);
+      setTimeout(function(){
+        box.addClass(anim);
+      });
+    });
+    
+    $('.anim-circle').on('click', function(){
+      var othis = $(this);
+      var anim = othis.data('anim');
+      
+      if(othis.hasClass('layui-anim-loop')){
+        return othis.removeClass(anim);
+      }
+      
+      othis.removeClass(anim);
+      setTimeout(function(){
+        othis.addClass(anim);
+      });
+      
+      if(anim.indexOf('layui-anim-fadeout') !== -1){
+        setTimeout(function(){
+          othis.removeClass(anim);
+        }, 1300);
+      }
+    });
+    
+    $('#triggerCombo').on('click', function(){
+      var boxes = $('.combo-box');
+      boxes.removeClass('layui-anim-up layui-anim-scale layui-anim-fadein').css('opacity', 0);
+      
+      setTimeout(function(){
+        $(boxes[0]).addClass('layui-anim-up').css('opacity', 1);
+      }, 100);
+      
+      setTimeout(function(){
+        $(boxes[1]).addClass('layui-anim-scale').css('opacity', 1);
+      }, 300);
+      
+      setTimeout(function(){
+        $(boxes[2]).addClass('layui-anim-fadein').css('opacity', 1);
+      }, 500);
+    });
+  });
+  </script>
+</body>
+</html>

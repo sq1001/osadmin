@@ -1,0 +1,64 @@
+/**
+ * LayUI 穿梭框主题适配
+ * 仅覆盖颜色、背景色、边框相关属性
+ */
+
+/* ========== 穿梭框基础 ========== */
+.layui-transfer-box {
+  background-color: var(--card-bg);
+  border-color: var(--border);
+}
+
+.layui-transfer-header {
+  background-color: var(--bg);
+  border-bottom-color: var(--border);
+}
+
+.layui-transfer-search .layui-input {
+  background-color: var(--card-bg);
+  border-color: var(--border);
+}
+
+.layui-transfer-data li:hover {
+  background-color: var(--accent-light);
+}
+
+.layui-transfer-active .layui-btn {
+  background-color: var(--accent);
+  border-color: var(--accent);
+}
+
+.layui-transfer-active .layui-btn-disabled {
+  background-color: var(--bg);
+  border-color: var(--border);
+}
+
+/* ========== 深色主题 ========== */
+[data-theme="dark"] .layui-transfer-box {
+  background-color: var(--card-bg);
+  border-color: var(--border);
+}
+
+[data-theme="dark"] .layui-transfer-header {
+  background-color: rgba(0, 0, 0, 0.2);
+  border-bottom-color: var(--border);
+}
+
+[data-theme="dark"] .layui-transfer-search .layui-input {
+  background-color: rgba(0, 0, 0, 0.2);
+  border-color: var(--border);
+}
+
+[data-theme="dark"] .layui-transfer-data li:hover {
+  background-color: var(--accent-light);
+}
+
+[data-theme="dark"] .layui-transfer-active .layui-btn {
+  background-color: var(--accent);
+  border-color: var(--accent);
+}
+
+[data-theme="dark"] .layui-transfer-active .layui-btn-disabled {
+  background-color: rgba(255, 255, 255, 0.1);
+  border-color: var(--border);
+}

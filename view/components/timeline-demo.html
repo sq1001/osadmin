@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>时间线组件 - Layui</title>
+  <meta name="keywords" content="时间线,timeline,垂直时间轴">
+  <meta name="description" content="Layui时间线组件使用示例">
+</head>
+<body>
+  <div class="page-content">
+    <div class="demo-header">
+      <h3 class="demo-title">时间线组件</h3>
+      <p class="demo-desc">Layui 时间线组件的完整示例，用于将时间抽象到二维平面，垂直呈现一段从过去到现在的故事</p>
+    </div>
+
+    <div class="demo-grid">
+      <div class="layui-card">
+        <div class="layui-card-header">
+          <span class="layui-card-title">常规时间线</span>
+        </div>
+        <div class="layui-card-body">
+          <div class="layui-timeline">
+            <div class="layui-timeline-item">
+              <i class="layui-icon layui-timeline-axis">&#xe63f;</i>
+              <div class="layui-timeline-content layui-text">
+                <h3 class="layui-timeline-title">2024年1月</h3>
+                <p>
+                  新年伊始，万象更新。系统迎来了全新的版本更新，优化了用户体验，提升了系统性能。
+                </p>
+              </div>
+            </div>
+            <div class="layui-timeline-item">
+              <i class="layui-icon layui-timeline-axis">&#xe63f;</i>
+              <div class="layui-timeline-content layui-text">
+                <h3 class="layui-timeline-title">2023年12月</h3>
+                <p>系统功能更新：</p>
+                <ul>
+                  <li>新增深色主题支持</li>
+                  <li>优化表格组件性能</li>
+                  <li>修复已知问题</li>
+                </ul>
+              </div>
+            </div>
+            <div class="layui-timeline-item">
+              <i class="layui-icon layui-timeline-axis">&#xe63f;</i>
+              <div class="layui-timeline-content layui-text">
+                <h3 class="layui-timeline-title">2023年6月</h3>
+                <p>
+                  系统正式上线，开始为用户提供服务。感谢所有参与开发和测试的团队成员。
+                </p>
+              </div>
+            </div>
+            <div class="layui-timeline-item">
+              <i class="layui-icon layui-timeline-axis">&#xe63f;</i>
+              <div class="layui-timeline-content layui-text">
+                <div class="layui-timeline-title">更早...</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="layui-card">
+        <div class="layui-card-header">
+          <span class="layui-card-title">简约时间线</span>
+        </div>
+        <div class="layui-card-body">
+          <div class="layui-timeline">
+            <div class="layui-timeline-item">
+              <i class="layui-icon layui-timeline-axis layui-icon-face-smile"></i>
+              <div class="layui-timeline-content layui-text">
+                <div class="layui-timeline-title">2024年，系统2.0版本发布，全新界面设计，性能大幅提升。</div>
+              </div>
+            </div>
+            <div class="layui-timeline-item">
+              <i class="layui-icon layui-timeline-axis layui-icon-fire"></i>
+              <div class="layui-timeline-content layui-text">
+                <div class="layui-timeline-title">2023年，系统用户突破10万，进入快速发展期。</div>
+              </div>
+            </div>
+            <div class="layui-timeline-item">
+              <i class="layui-icon layui-timeline-axis layui-icon-rate"></i>
+              <div class="layui-timeline-content layui-text">
+                <div class="layui-timeline-title">2022年，系统获得用户好评，口碑持续传播。</div>
+              </div>
+            </div>
+            <div class="layui-timeline-item">
+              <i class="layui-icon layui-timeline-axis layui-icon-circle"></i>
+              <div class="layui-timeline-content layui-text">
+                <div class="layui-timeline-title">2021年，系统首个版本发布。</div>
+              </div>
+            </div>
+            <div class="layui-timeline-item">
+              <i class="layui-icon layui-anim layui-anim-rotate layui-anim-loop layui-timeline-axis">&#xe63e;</i>
+              <div class="layui-timeline-content layui-text">
+                <div class="layui-timeline-title">最初，系统在团队的努力下开始孵化。</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="layui-card">
+        <div class="layui-card-header">
+          <span class="layui-card-title">自定义图标时间线</span>
+        </div>
+        <div class="layui-card-body">
+          <div class="layui-timeline">
+            <div class="layui-timeline-item">
+              <i class="layui-icon layui-timeline-axis layui-bg-green" style="color:#fff;">&#xe605;</i>
+              <div class="layui-timeline-content layui-text">
+                <h3 class="layui-timeline-title">开发阶段</h3>
+                <p>需求分析、系统设计、编码实现</p>
+              </div>
+            </div>
+            <div class="layui-timeline-item">
+              <i class="layui-icon layui-timeline-axis layui-bg-blue" style="color:#fff;">&#xe642;</i>
+              <div class="layui-timeline-content layui-text">
+                <h3 class="layui-timeline-title">测试阶段</h3>
+                <p>单元测试、集成测试、用户验收测试</p>
+              </div>
+            </div>
+            <div class="layui-timeline-item">
+              <i class="layui-icon layui-timeline-axis layui-bg-orange" style="color:#fff;">&#xe756;</i>
+              <div class="layui-timeline-content layui-text">
+                <h3 class="layui-timeline-title">部署阶段</h3>
+                <p>环境配置、数据迁移、系统上线</p>
+              </div>
+            </div>
+            <div class="layui-timeline-item">
+              <i class="layui-icon layui-timeline-axis layui-bg-cyan" style="color:#fff;">&#xe7ae;</i>
+              <div class="layui-timeline-content layui-text">
+                <h3 class="layui-timeline-title">运维阶段</h3>
+                <p>监控告警、性能优化、持续迭代</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="layui-card">
+        <div class="layui-card-header">
+          <span class="layui-card-title">项目进度时间线</span>
+        </div>
+        <div class="layui-card-body">
+          <div class="layui-timeline">
+            <div class="layui-timeline-item">
+              <i class="layui-icon layui-timeline-axis layui-bg-green" style="color:#fff;">&#xe605;</i>
+              <div class="layui-timeline-content layui-text">
+                <h3 class="layui-timeline-title">
+                  <span>需求分析</span>
+                  <span class="timeline-status done">已完成</span>
+                </h3>
+                <p>完成用户需求调研和功能规划</p>
+              </div>
+            </div>
+            <div class="layui-timeline-item">
+              <i class="layui-icon layui-timeline-axis layui-bg-green" style="color:#fff;">&#xe605;</i>
+              <div class="layui-timeline-content layui-text">
+                <h3 class="layui-timeline-title">
+                  <span>系统设计</span>
+                  <span class="timeline-status done">已完成</span>
+                </h3>
+                <p>完成系统架构设计和数据库设计</p>
+              </div>
+            </div>
+            <div class="layui-timeline-item">
+              <i class="layui-icon layui-timeline-axis layui-bg-blue" style="color:#fff;">&#xe63d;</i>
+              <div class="layui-timeline-content layui-text">
+                <h3 class="layui-timeline-title">
+                  <span>开发实现</span>
+                  <span class="timeline-status progress">进行中</span>
+                </h3>
+                <p>前端开发进度 80%，后端开发进度 70%</p>
+              </div>
+            </div>
+            <div class="layui-timeline-item">
+              <i class="layui-icon layui-timeline-axis layui-bg-gray">&#xe63f;</i>
+              <div class="layui-timeline-content layui-text">
+                <h3 class="layui-timeline-title">
+                  <span>测试上线</span>
+                  <span class="timeline-status pending">待开始</span>
+                </h3>
+                <p>计划进行系统测试和用户验收</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <style>
+  .demo-header {
+    margin-bottom: 16px;
+  }
+  .demo-title {
+    font-size: 18px;
+    font-weight: 600;
+    color: var(--text-primary);
+    margin-bottom: 4px;
+  }
+  .demo-desc {
+    font-size: 13px;
+    color: var(--text-muted);
+  }
+  .demo-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 16px;
+  }
+  @media (max-width: 992px) {
+    .demo-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+  .timeline-status {
+    float: right;
+    font-size: 12px;
+    padding: 2px 8px;
+    border-radius: 4px;
+    font-weight: normal;
+  }
+  .timeline-status.done {
+    background: rgba(22, 186, 170, 0.1);
+    color: var(--success);
+  }
+  .timeline-status.progress {
+    background: rgba(30, 159, 255, 0.1);
+    color: var(--info);
+  }
+  .timeline-status.pending {
+    background: rgba(0, 0, 0, 0.05);
+    color: var(--text-muted);
+  }
+  [data-theme="dark"] .timeline-status.pending {
+    background: rgba(255, 255, 255, 0.05);
+  }
+  </style>
+</body>
+</html>

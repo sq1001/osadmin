@@ -1,0 +1,401 @@
+/**
+ * LayUI 表单主题适配
+ * 覆盖颜色、背景色、边框、圆角相关属性
+ */
+
+/* ========== 输入框基础 ========== */
+.layui-input,
+.layui-textarea,
+.layui-select {
+  background-color: var(--card-bg);
+  border-color: var(--border);
+  border-radius: 6px;
+  color: var(--text-primary);
+}
+
+.layui-input:hover,
+.layui-textarea:hover {
+  border-color: var(--accent) !important;
+}
+
+.layui-input:focus,
+.layui-textarea:focus {
+  border-color: var(--accent) !important;
+  box-shadow: 0 0 0 3px var(--accent-light);
+}
+
+.layui-input[disabled],
+.layui-textarea[disabled] {
+  background-color: var(--bg);
+  cursor: not-allowed;
+  color: var(--text-muted);
+}
+
+/* ========== 输入框前后缀容器 ========== */
+.layui-input-wrap {
+  line-height: 38px;
+}
+
+.layui-input-wrap .layui-input {
+  border-radius: 6px;
+}
+
+.layui-input-wrap .layui-input-prefix {
+  border-radius: 6px 0 0 6px;
+  border-color: var(--border);
+}
+
+.layui-input-wrap .layui-input-suffix {
+  border-radius: 0 6px 6px 0;
+  border-color: var(--border);
+}
+
+.layui-input-wrap .layui-input-split {
+  border-color: var(--border);
+}
+
+.layui-input-wrap .layui-input-prefix.layui-input-split {
+  border-radius: 6px 0 0 6px;
+}
+
+.layui-input-wrap .layui-input-suffix.layui-input-split {
+  border-radius: 0 6px 6px 0;
+}
+
+.layui-input-wrap .layui-input:hover + .layui-input-split {
+  border-color: var(--accent);
+}
+
+.layui-input-wrap .layui-input:focus + .layui-input-split {
+  border-color: var(--accent);
+}
+
+.layui-input-wrap .layui-input.layui-form-danger:focus + .layui-input-split {
+  border-color: var(--danger);
+}
+
+/* ========== 输入框前后置容器 ========== */
+.layui-input-group {
+  border-radius: 6px;
+  overflow: hidden;
+}
+
+.layui-input-group .layui-input {
+  border-radius: 0;
+}
+
+.layui-input-group .layui-input:first-child {
+  border-radius: 6px 0 0 6px;
+}
+
+.layui-input-group .layui-input:last-child {
+  border-radius: 0 6px 6px 0;
+}
+
+.layui-input-group .layui-input-split {
+  border-color: var(--border);
+}
+
+.layui-input-group > .layui-input-prefix {
+  border-radius: 6px 0 0 6px;
+}
+
+.layui-input-group > .layui-input-suffix {
+  border-radius: 0 6px 6px 0;
+}
+
+.layui-input-group .layui-input-prefix.layui-input-split {
+  border-width: 0;
+  border-right-width: 1px;
+}
+
+.layui-input-group .layui-input-suffix.layui-input-split {
+  border-width: 0;
+  border-left-width: 1px;
+}
+
+/* ========== 数字输入框 ========== */
+.layui-input-wrap .layui-input-number .layui-icon-up {
+  border-bottom-color: var(--border);
+}
+
+.layui-input-wrap .layui-input.layui-input-number-out-of-range,
+.layui-input-wrap .layui-input.layui-input-number-invalid {
+  color: var(--danger);
+}
+
+/* ========== 下拉选择框 ========== */
+.layui-form-select .layui-edge {
+  border-top-color: var(--text-muted);
+}
+
+.layui-form-select dl {
+  background-color: var(--card-bg);
+  border-color: var(--border);
+  border-radius: 6px;
+}
+
+.layui-form-select dl dd {
+  color: var(--text-secondary);
+}
+
+.layui-form-select dl dd:first-child {
+  border-radius: 6px 6px 0 0;
+}
+
+.layui-form-select dl dd:last-child {
+  border-radius: 0 0 6px 6px;
+}
+
+.layui-form-select dl dd:hover {
+  background-color: var(--accent-light);
+}
+
+.layui-form-select dl dd.layui-this {
+  background-color: var(--accent-light);
+  color: var(--accent);
+}
+
+.layui-select-disabled .layui-disabled {
+  border-color: var(--border) !important;
+}
+
+.layui-select-disabled .layui-edge {
+  border-top-color: var(--text-muted);
+}
+
+/* ========== 复选框 - 默认风格 ========== */
+.layui-form-checkbox {
+  background-color: var(--card-bg);
+  border-radius: 6px;
+}
+
+.layui-form-checkbox > div {
+  background-color: var(--bg);
+  border-radius: 6px 0 0 6px;
+}
+
+.layui-form-checkbox > i {
+  border-color: var(--border);
+  border-radius: 0 6px 6px 0;
+}
+
+.layui-form-checkbox:hover > i {
+  border-color: var(--text-muted);
+  color: var(--text-muted);
+}
+
+.layui-form-checked,
+.layui-form-checked:hover {
+  border-color: var(--accent);
+}
+
+.layui-form-checked > div,
+.layui-form-checked:hover > div {
+  color: var(--accent);
+}
+
+.layui-form-checked > i,
+.layui-form-checked:hover > i {
+  color: var(--accent);
+}
+
+.layui-form-checkbox.layui-checkbox-disabled > div {
+  background-color: var(--bg) !important;
+}
+
+/* ========== 复选框 - primary风格 ========== */
+.layui-form-checkbox[lay-skin="primary"] > i {
+  border-color: var(--border);
+  background-color: var(--card-bg);
+  border-radius: 4px;
+}
+
+.layui-form-checkbox[lay-skin="primary"]:hover > i {
+  border-color: var(--accent);
+}
+
+.layui-form-checked[lay-skin="primary"] > i {
+  border-color: var(--accent) !important;
+  background-color: var(--accent);
+  color: #fff;
+}
+
+.layui-checkbox-disabled[lay-skin="primary"] > div {
+  background: none !important;
+}
+
+.layui-form-checked.layui-checkbox-disabled[lay-skin="primary"] > i {
+  background: var(--bg) !important;
+  border-color: var(--border) !important;
+}
+
+.layui-checkbox-disabled[lay-skin="primary"]:hover > i {
+  border-color: var(--border);
+}
+
+.layui-form-checkbox[lay-skin="primary"] > .layui-icon-indeterminate {
+  border-color: var(--accent);
+  background-color: var(--card-bg);
+}
+
+.layui-form-checkbox[lay-skin="primary"] > .layui-icon-indeterminate:before {
+  background-color: var(--accent);
+}
+
+/* ========== 开关 ========== */
+.layui-form-switch {
+  border-color: var(--border);
+  background-color: var(--card-bg);
+  border-radius: 20px;
+}
+
+.layui-form-switch > i {
+  background-color: var(--text-muted);
+  border-radius: 50%;
+}
+
+.layui-form-onswitch {
+  border-color: var(--accent);
+  background-color: var(--accent);
+}
+
+.layui-form-onswitch > i {
+  background-color: #fff;
+}
+
+.layui-form-onswitch > div {
+  color: #fff;
+}
+
+/* ========== 单选框 ========== */
+.layui-form-radio > i {
+  border-radius: 50%;
+}
+
+.layui-form-radioed,
+.layui-form-radioed > i,
+.layui-form-radio:hover > * {
+  color: var(--accent);
+}
+
+.layui-radio-disabled > i {
+  color: var(--bg) !important;
+}
+
+/* ========== 表单警告 ========== */
+.layui-form-danger:focus,
+.layui-form-danger + .layui-form-select .layui-input {
+  border-color: var(--danger) !important;
+  box-shadow: 0 0 0 3px rgba(255, 87, 34, 0.1);
+}
+
+/* ========== 表单方框风格 ========== */
+.layui-form-pane .layui-form-label {
+  background-color: var(--bg);
+  border-color: var(--border);
+  border-radius: 6px 0 0 6px;
+}
+
+.layui-form-pane .layui-form-item[pane] {
+  border-color: var(--border);
+  border-radius: 6px;
+}
+
+.layui-form-pane .layui-input {
+  border-radius: 0 6px 6px 0;
+}
+
+/* ========== 深色主题 ========== */
+[data-theme="dark"] .layui-input,
+[data-theme="dark"] .layui-textarea,
+[data-theme="dark"] .layui-select {
+  background-color: rgba(0, 0, 0, 0.2);
+  border-color: var(--border);
+  color: var(--text-primary);
+}
+
+[data-theme="dark"] .layui-input:hover,
+[data-theme="dark"] .layui-textarea:hover {
+  border-color: var(--accent) !important;
+}
+
+[data-theme="dark"] .layui-input:focus,
+[data-theme="dark"] .layui-textarea:focus {
+  border-color: var(--accent) !important;
+  box-shadow: 0 0 0 3px var(--accent-light);
+}
+
+[data-theme="dark"] .layui-input[disabled],
+[data-theme="dark"] .layui-textarea[disabled] {
+  background-color: rgba(0, 0, 0, 0.3);
+}
+
+[data-theme="dark"] .layui-input-wrap .layui-input-prefix,
+[data-theme="dark"] .layui-input-wrap .layui-input-suffix,
+[data-theme="dark"] .layui-input-wrap .layui-input-split {
+  border-color: var(--border);
+}
+
+[data-theme="dark"] .layui-input-wrap .layui-input-prefix .layui-icon,
+[data-theme="dark"] .layui-input-wrap .layui-input-suffix .layui-icon,
+[data-theme="dark"] .layui-input-wrap .layui-input-split .layui-icon {
+  color: var(--text-secondary);
+}
+
+[data-theme="dark"] .layui-input-group .layui-input-split {
+  border-color: var(--border);
+}
+
+[data-theme="dark"] .layui-input-group .layui-input-prefix.layui-input-split {
+  border-width: 0;
+  border-right-width: 1px;
+}
+
+[data-theme="dark"] .layui-input-group .layui-input-suffix.layui-input-split {
+  border-width: 0;
+  border-left-width: 1px;
+}
+
+[data-theme="dark"] .layui-input-group .layui-input-prefix .layui-icon,
+[data-theme="dark"] .layui-input-group .layui-input-suffix .layui-icon,
+[data-theme="dark"] .layui-input-group .layui-input-split .layui-icon {
+  color: var(--text-secondary);
+}
+
+[data-theme="dark"] .layui-form-select dl {
+  background-color: var(--card-bg);
+  border-color: var(--border);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+}
+
+[data-theme="dark"] .layui-form-select dl dd:hover {
+  background-color: var(--accent-light);
+}
+
+[data-theme="dark"] .layui-form-checkbox {
+  background-color: transparent;
+}
+
+[data-theme="dark"] .layui-form-checkbox > i {
+  border-color: rgba(255, 255, 255, 0.2);
+}
+
+[data-theme="dark"] .layui-form-checkbox[lay-skin="primary"] > i {
+  background-color: transparent;
+  border-color: rgba(255, 255, 255, 0.2);
+}
+
+[data-theme="dark"] .layui-form-switch {
+  background-color: transparent;
+  border-color: rgba(255, 255, 255, 0.2);
+}
+
+[data-theme="dark"] .layui-form-switch > i {
+  background-color: rgba(255, 255, 255, 0.5);
+}
+
+[data-theme="dark"] .layui-form-pane .layui-form-label {
+  background-color: rgba(0, 0, 0, 0.2);
+  border-color: var(--border);
+}

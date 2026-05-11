@@ -1,0 +1,29 @@
+/**
+ * LayUI 辅助类主题适配
+ * 仅覆盖颜色、背景色、边框相关属性
+ */
+
+/* ========== 引用块 ========== */
+.layui-elem-quote {
+  border-left-color: var(--accent);
+  background-color: var(--bg);
+}
+
+.layui-quote-nm {
+  border-color: var(--border);
+  border-left-color: var(--accent);
+}
+
+/* ========== 字段集合 ========== */
+.layui-elem-field {
+  border-color: var(--border);
+}
+
+/* ========== 深色主题 ========== */
+[data-theme="dark"] .layui-elem-quote {
+  background-color: rgba(0, 0, 0, 0.2);
+}
+
+[data-theme="dark"] .layui-elem-field {
+  border-color: var(--border);
+}

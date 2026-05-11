@@ -1,0 +1,84 @@
+/**
+ * LayUI 徽章主题适配
+ * 覆盖颜色、背景色、边框、圆角相关属性
+ */
+
+/* ========== 徽章基础 ========== */
+.layui-badge,
+.layui-badge-dot,
+.layui-badge-rim {
+  background-color: var(--danger);
+  color: #fff;
+  border-radius: 100px;
+}
+
+/* ========== 橙色徽章 ========== */
+.layui-badge-orange {
+  background-color: var(--warning);
+}
+
+/* ========== 绿色徽章 ========== */
+.layui-badge-green {
+  background-color: var(--success);
+}
+
+/* ========== 蓝色徽章 ========== */
+.layui-badge-blue {
+  background-color: var(--info);
+}
+
+/* ========== 黑色徽章 ========== */
+.layui-badge-black {
+  background-color: var(--text-primary);
+}
+
+/* ========== 灰色徽章 ========== */
+.layui-badge-gray {
+  background-color: var(--text-muted);
+}
+
+/* ========== 边框徽章 ========== */
+.layui-badge-rim {
+  background-color: transparent;
+  border-color: var(--danger);
+  color: var(--danger);
+}
+
+/* ========== 圆点徽章 ========== */
+.layui-badge-dot {
+  border-radius: 50%;
+}
+
+/* ========== 深色主题 ========== */
+[data-theme="dark"] .layui-badge,
+[data-theme="dark"] .layui-badge-dot,
+[data-theme="dark"] .layui-badge-rim {
+  background-color: var(--danger);
+  color: #fff;
+}
+
+[data-theme="dark"] .layui-badge-orange {
+  background-color: var(--warning);
+}
+
+[data-theme="dark"] .layui-badge-green {
+  background-color: var(--success);
+}
+
+[data-theme="dark"] .layui-badge-blue {
+  background-color: var(--info);
+}
+
+[data-theme="dark"] .layui-badge-black {
+  background-color: #fff;
+}
+
+[data-theme="dark"] .layui-badge-gray {
+  background-color: var(--text-muted);
+}
+
+[data-theme="dark"] .layui-badge-rim {
+  background-color: transparent;
+  border-color: var(--danger);
+  color: var(--danger);
+}

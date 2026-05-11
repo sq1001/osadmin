@@ -1,0 +1,380 @@
+/**
+ * xm-select 多选下拉组件主题适配
+ * 覆盖背景色、边框、圆角、颜色相关属性
+ * 注意：xm-select 组件会动态生成内联样式，需要使用 !important 覆盖
+ */
+
+/* ========== 主容器 ========== */
+xm-select {
+  background-color: var(--card-bg) !important;
+  border-color: var(--border) !important;
+  border-radius: 6px !important;
+}
+
+xm-select:hover {
+  border-color: var(--accent) !important;
+}
+
+xm-select:focus,
+xm-select.xm-focus {
+  border-color: var(--accent) !important;
+  box-shadow: 0 0 0 2px var(--accent-light) !important;
+}
+
+/* ========== 提示文字 ========== */
+xm-select > .xm-tips {
+  color: var(--text-muted) !important;
+}
+
+/* ========== 下拉图标 ========== */
+xm-select > .xm-icon {
+  border-top-color: var(--text-muted) !important;
+}
+
+/* ========== 标签块 ========== */
+xm-select .xm-label .xm-label-block {
+  background-color: var(--accent) !important;
+  border-radius: 4px !important;
+}
+
+xm-select .xm-label .xm-label-block > span {
+  color: #fff !important;
+}
+
+xm-select .xm-label .xm-label-block > i {
+  color: #fff !important;
+}
+
+xm-select .xm-label .xm-label-block.disabled {
+  background-color: var(--text-muted) !important;
+}
+
+/* ========== 下拉内容区域 ========== */
+xm-select .xm-body {
+  background-color: var(--card-bg) !important;
+  border-color: var(--border) !important;
+  border-radius: 6px !important;
+}
+
+/* ========== 选项 ========== */
+xm-select .xm-option:hover {
+  background-color: var(--accent-light) !important;
+}
+
+xm-select .xm-option.selected {
+  background-color: var(--accent-light) !important;
+}
+
+xm-select .xm-option.selected .xm-option-icon {
+  color: var(--accent) !important;
+  border-color: var(--accent) !important;
+}
+
+xm-select .xm-option-content {
+  color: var(--text-secondary) !important;
+}
+
+xm-select .xm-option.selected .xm-option-content {
+  color: var(--accent) !important;
+}
+
+xm-select .xm-option.selected.hide-icon .xm-option-content {
+  color: var(--accent) !important;
+}
+
+/* ========== 选项图标 ========== */
+xm-select .xm-option-icon {
+  border-color: var(--accent) !important;
+}
+
+/* ========== 空数据提示 ========== */
+xm-select .xm-select-empty {
+  color: var(--text-muted) !important;
+}
+
+/* ========== 禁用状态 ========== */
+xm-select .xm-option.disabled:hover {
+  background-color: var(--card-bg) !important;
+}
+
+xm-select .xm-option.disabled .xm-option-icon {
+  border-color: var(--text-muted) !important;
+}
+
+xm-select .xm-option.disabled .xm-option-content {
+  color: var(--text-muted) !important;
+}
+
+xm-select .xm-option.disabled.selected > .xm-option-icon {
+  color: var(--text-muted) !important;
+}
+
+xm-select .xm-select-disabled {
+  background-color: var(--card-bg) !important;
+}
+
+/* ========== 搜索框 ========== */
+xm-select .xm-search {
+  background-color: var(--card-bg) !important;
+}
+
+xm-select .xm-search > i {
+  color: var(--text-secondary) !important;
+}
+
+xm-select .xm-search-input {
+  background-color: transparent !important;
+  border-bottom-color: var(--border) !important;
+}
+
+xm-select .xm-search-input:focus {
+  border-bottom-color: var(--accent) !important;
+}
+
+/* ========== 分页 ========== */
+xm-select .xm-paging > span {
+  background-color: var(--card-bg) !important;
+  color: var(--text-secondary) !important;
+  border-color: var(--border) !important;
+}
+
+xm-select .xm-paging > span:hover {
+  color: var(--accent) !important;
+  border-color: var(--accent) !important;
+}
+
+/* ========== 工具栏 ========== */
+xm-select .xm-toolbar .toolbar-tag {
+  color: var(--text-secondary) !important;
+}
+
+xm-select .xm-toolbar .toolbar-tag:hover {
+  color: var(--accent) !important;
+}
+
+/* ========== 树形结构 ========== */
+xm-select .xm-tree-icon {
+  border-left-color: var(--text-muted) !important;
+}
+
+xm-select .xm-tree .left-line {
+  border-left-color: var(--border) !important;
+}
+
+xm-select .xm-tree .top-line {
+  border-top-color: var(--border) !important;
+}
+
+/* ========== 级联选择 ========== */
+xm-select .xm-cascader-box {
+  background-color: var(--card-bg) !important;
+  border-color: var(--border) !important;
+}
+
+xm-select .xm-cascader-box::before {
+  border-right-color: var(--border) !important;
+}
+
+xm-select .xm-cascader-box::after {
+  border-right-color: var(--card-bg) !important;
+}
+
+xm-select .xm-cascader .xm-right-arrow {
+  color: var(--text-secondary) !important;
+}
+
+xm-select .xm-cascader .disabled .xm-right-arrow {
+  color: var(--text-muted) !important;
+}
+
+/* ========== 输入框 ========== */
+xm-select .xm-input {
+  background-color: var(--card-bg) !important;
+  border-color: var(--border) !important;
+  border-radius: 6px !important;
+}
+
+xm-select .xm-input:hover {
+  border-color: var(--text-muted) !important;
+}
+
+xm-select .xm-input:focus {
+  border-color: var(--accent) !important;
+  box-shadow: 0 0 0 2px var(--accent-light) !important;
+}
+
+/* ========== 加载状态 ========== */
+xm-select .loading {
+  background-color: rgba(255, 255, 255, 0.6) !important;
+}
+
+xm-select .loader {
+  color: var(--text-muted) !important;
+}
+
+/* ========== 分隔线 ========== */
+xm-select .item--divided {
+  border-top-color: var(--border) !important;
+}
+
+/* ========== 滚动条 ========== */
+xm-select .scroll-body::-webkit-scrollbar {
+  width: 8px !important;
+}
+
+xm-select .scroll-body::-webkit-scrollbar-track {
+  background-color: var(--card-bg) !important;
+  border-radius: 2em !important;
+}
+
+xm-select .scroll-body::-webkit-scrollbar-thumb {
+  background-color: var(--text-muted) !important;
+  border-radius: 2em !important;
+}
+
+/* ========== 分组标题 ========== */
+xm-select .xm-group-item {
+  color: var(--text-muted) !important;
+}
+
+/* ========== 深色主题 ========== */
+[data-theme="dark"] xm-select {
+  background-color: var(--card-bg) !important;
+  border-color: var(--border) !important;
+}
+
+[data-theme="dark"] xm-select:hover {
+  border-color: var(--accent) !important;
+}
+
+[data-theme="dark"] xm-select:focus,
+[data-theme="dark"] xm-select.xm-focus {
+  border-color: var(--accent) !important;
+  box-shadow: 0 0 0 2px var(--accent-light) !important;
+}
+
+[data-theme="dark"] xm-select > .xm-tips {
+  color: var(--text-muted) !important;
+}
+
+[data-theme="dark"] xm-select > .xm-icon {
+  border-top-color: var(--text-muted) !important;
+}
+
+[data-theme="dark"] xm-select .xm-label .xm-label-block {
+  background-color: var(--accent) !important;
+}
+
+[data-theme="dark"] xm-select .xm-body {
+  background-color: var(--card-bg) !important;
+  border-color: var(--border) !important;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3) !important;
+}
+
+[data-theme="dark"] xm-select .xm-option:hover {
+  background-color: var(--accent-light) !important;
+}
+
+[data-theme="dark"] xm-select .xm-option.selected {
+  background-color: var(--accent-light) !important;
+}
+
+[data-theme="dark"] xm-select .xm-option-content {
+  color: var(--text-secondary) !important;
+}
+
+[data-theme="dark"] xm-select .xm-option.selected .xm-option-content {
+  color: var(--accent) !important;
+}
+
+[data-theme="dark"] xm-select .xm-option-icon {
+  border-color: var(--border) !important;
+}
+
+[data-theme="dark"] xm-select .xm-option.disabled:hover {
+  background-color: var(--card-bg) !important;
+}
+
+[data-theme="dark"] xm-select .xm-select-disabled {
+  background-color: var(--card-bg) !important;
+}
+
+[data-theme="dark"] xm-select .xm-search {
+  background-color: var(--card-bg) !important;
+}
+
+[data-theme="dark"] xm-select .xm-search-input {
+  background-color: transparent !important;
+  border-bottom-color: var(--border) !important;
+}
+
+[data-theme="dark"] xm-select .xm-paging > span {
+  background-color: transparent !important;
+  color: var(--text-secondary) !important;
+  border-color: var(--border) !important;
+}
+
+[data-theme="dark"] xm-select .xm-paging > span:hover {
+  color: var(--accent) !important;
+  border-color: var(--accent) !important;
+}
+
+[data-theme="dark"] xm-select .xm-toolbar .toolbar-tag {
+  color: var(--text-secondary) !important;
+}
+
+[data-theme="dark"] xm-select .xm-tree-icon {
+  border-left-color: var(--text-muted) !important;
+}
+
+[data-theme="dark"] xm-select .xm-tree .left-line {
+  border-left-color: var(--border) !important;
+}
+
+[data-theme="dark"] xm-select .xm-tree .top-line {
+  border-top-color: var(--border) !important;
+}
+
+[data-theme="dark"] xm-select .xm-cascader-box {
+  background-color: var(--card-bg) !important;
+  border-color: var(--border) !important;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3) !important;
+}
+
+[data-theme="dark"] xm-select .xm-cascader-box::after {
+  border-right-color: var(--card-bg) !important;
+}
+
+[data-theme="dark"] xm-select .xm-input {
+  background-color: rgba(0, 0, 0, 0.2) !important;
+  border-color: var(--border) !important;
+}
+
+[data-theme="dark"] xm-select .xm-input:hover {
+  border-color: var(--text-muted) !important;
+}
+
+[data-theme="dark"] xm-select .xm-input:focus {
+  border-color: var(--accent) !important;
+  box-shadow: 0 0 0 2px var(--accent-light) !important;
+}
+
+[data-theme="dark"] xm-select .loading {
+  background-color: rgba(0, 0, 0, 0.6) !important;
+}
+
+[data-theme="dark"] xm-select .item--divided {
+  border-top-color: var(--border) !important;
+}
+
+[data-theme="dark"] xm-select .scroll-body::-webkit-scrollbar-track {
+  background-color: var(--card-bg) !important;
+}
+
+[data-theme="dark"] xm-select .scroll-body::-webkit-scrollbar-thumb {
+  background-color: var(--text-muted) !important;
+}
+
+[data-theme="dark"] xm-select .xm-group-item {
+  color: var(--text-muted) !important;
+}

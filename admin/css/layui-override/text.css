@@ -1,0 +1,13 @@
+/**
+ * LayUI 文本区域主题适配
+ * 仅覆盖颜色相关属性
+ */
+
+/* ========== 文本区域 ========== */
+.layui-text :where(a:not(.layui-btn)) {
+  color: var(--accent);
+}
+
+.layui-text blockquote:not(.layui-elem-quote) {
+  border-left-color: var(--accent);
+}

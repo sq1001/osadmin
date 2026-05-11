@@ -1,0 +1,13 @@
+{
+  "code": 0,
+  "msg": "success",
+  "data": [
+    "*"
+  ],
+  "userInfo": {
+    "id": 1,
+    "username": "admin",
+    "role": "超级管理员",
+    "description": "拥有所有权限"
+  }
+}

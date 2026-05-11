@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>权限管理示例</title>
+</head>
+<body>
+<div class="page-content">
+  <div class="demo-header">
+    <h3 class="demo-title">权限管理示例</h3>
+    <p class="demo-desc">权限模块的配置与使用示例，包含 HTML 权限控制、JavaScript API 等</p>
+  </div>
+
+  <div class="layui-card">
+    <div class="layui-card-header">
+      <span class="layui-card-title">权限配置 (app.json)</span>
+    </div>
+    <div class="layui-card-body">
+      <pre class="layui-code" lay-options="{header: true, title: 'app.json'}">
+{
+  "permission": {
+    "enabled": true,
+    "url": "/app/admin/rule/permission",
+    "method": "GET",
+    "cache": true
+  }
+}</pre>
+    </div>
+  </div>
+
+  <div class="layui-card">
+    <div class="layui-card-header">
+      <span class="layui-card-title">HTML 权限控制</span>
+    </div>
+    <div class="layui-card-body">
+      <p class="demo-tip">使用 <code>permission</code> 属性控制元素显示，默认隐藏，有权限才显示</p>
+      
+      <div class="permission-demo-section">
+        <h4>用户管理权限</h4>
+        <div class="btn-group">
+          <button permission="user-view" class="layui-btn layui-btn-sm">查看</button>
+          <button permission="user-add" class="layui-btn layui-btn-sm layui-btn-normal">添加</button>
+          <button permission="user-edit" class="layui-btn layui-btn-sm layui-btn-warm">编辑</button>
+          <button permission="user-delete" class="layui-btn layui-btn-sm layui-btn-danger">删除</button>
+        </div>
+      </div>
+
+      <div class="permission-demo-section">
+        <h4>订单管理权限</h4>
+        <div class="btn-group">
+          <button permission="order-view" class="layui-btn layui-btn-sm">查看</button>
+          <button permission="order-process" class="layui-btn layui-btn-sm layui-btn-normal">处理</button>
+          <button permission="order-refund" class="layui-btn layui-btn-sm layui-btn-warm">退款</button>
+        </div>
+      </div>
+
+      <div class="permission-demo-section">
+        <h4>系统管理权限</h4>
+        <div class="btn-group">
+          <button permission="system-config" class="layui-btn layui-btn-sm">配置</button>
+          <button permission="system-log" class="layui-btn layui-btn-sm layui-btn-normal">日志</button>
+          <button permission="system-backup" class="layui-btn layui-btn-sm layui-btn-warm">备份</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="layui-card">
+    <div class="layui-card-header">
+      <span class="layui-card-title">JavaScript API</span>
+    </div>
+    <div class="layui-card-body">
+      <pre class="layui-code" lay-options="{header: true, title: 'API 示例'}">
+// 方式1: 通过 OSLAY 全局对象
+OSLAY.ready(function(modules) {
+  var permission = modules.permission;
+  
+  // 检查单个权限
+  if (permission.hasPermission('user-edit')) {
+    console.log('有编辑用户权限');
+  }
+  
+  // 判断是否超级管理员
+  if (permission.isSuper()) {
+    console.log('超级管理员，拥有所有权限');
+  }
+  
+  // 获取所有权限列表
+  var permissions = permission.getPermissions();
+});
+
+// 方式2: 直接使用 LayUI 模块
+layui.use(['permissionModule'], function() {
+  var permission = layui.permissionModule;
+  
+  // 初始化
+  permission.init({ url: '/app/admin/rule/permission' });
+  
+  // 权限检查
+  if (permission.hasPermission('admin')) {
+    // 显示管理员功能
+  }
+});</pre>
+    </div>
+  </div>
+
+  <div class="layui-card">
+    <div class="layui-card-header">
+      <span class="layui-card-title">实时权限状态</span>
+    </div>
+    <div class="layui-card-body">
+      <div id="permissionStatus" class="permission-status">
+        <p class="loading-text"><i class="layui-icon layui-icon-loading layui-anim layui-anim-rotate layui-anim-loop"></i> 加载中...</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="layui-card">
+    <div class="layui-card-header">
+      <span class="layui-card-title">权限测试工具</span>
+    </div>
+    <div class="layui-card-body">
+      <form class="layui-form">
+        <div class="layui-form-item">
+          <label class="layui-form-label">权限代码</label>
+          <div class="layui-input-inline" style="width: 200px;">
+            <input type="text" id="permissionInput" placeholder="如: user-edit" class="layui-input">
+          </div>
+          <button type="button" class="layui-btn" id="checkPermissionBtn">检查权限</button>
+        </div>
+      </form>
+      <div id="checkResult"></div>
+    </div>
+  </div>
+</div>
+
+<style>
+.permission-demo-section {
+  margin-bottom: 20px;
+  padding: 15px;
+  background: var(--bg);
+  border-radius: 6px;
+  border: 1px solid var(--border);
+}
+.permission-demo-section:last-child {
+  margin-bottom: 0;
+}
+.permission-demo-section h4 {
+  margin-bottom: 12px;
+  color: var(--text-primary);
+  font-weight: 500;
+}
+.permission-status {
+  padding: 15px;
+  background: var(--bg);
+  border-radius: 6px;
+  border: 1px solid var(--border);
+}
+.permission-status p {
+  margin: 8px 0;
+  color: var(--text-secondary);
+}
+.permission-status .status-label {
+  color: var(--text-muted);
+}
+.permission-status .status-value {
+  color: var(--text-primary);
+  font-weight: 500;
+}
+.permission-status .status-success {
+  color: var(--success);
+}
+.permission-status .status-error {
+  color: var(--danger);
+}
+.loading-text {
+  text-align: center;
+  color: var(--text-muted);
+}
+.loading-text i {
+  margin-right: 8px;
+}
+.demo-tip {
+  margin-bottom: 15px;
+  padding: 10px 15px;
+  background: var(--accent-light);
+  border-radius: 4px;
+  color: var(--accent);
+  font-size: 13px;
+}
+.demo-tip code {
+  background: rgba(255,255,255,0.5);
+  padding: 2px 6px;
+  border-radius: 3px;
+  font-family: monospace;
+}
+.check-result {
+  margin-top: 15px;
+  padding: 12px 15px;
+  border-radius: 6px;
+}
+.check-result.success {
+  background: rgba(22, 190, 144, 0.1);
+  color: #16be90;
+}
+.check-result.error {
+  background: rgba(255, 87, 34, 0.1);
+  color: #ff5722;
+}
+</style>
+
+<script>
+OSLAY.ready(function(modules) {
+  var permission = modules.permission;
+  var $ = layui.$;
+  
+  // 显示权限状态
+  var statusHtml = '';
+  statusHtml += '<p><span class="status-label">初始化状态：</span><span class="status-value ' + (permission.initialized ? 'status-success' : 'status-error') + '">' + (permission.initialized ? '✓ 已初始化' : '✗ 未初始化') + '</span></p>';
+  statusHtml += '<p><span class="status-label">超级管理员：</span><span class="status-value ' + (permission.isSuper() ? 'status-success' : 'status-error') + '">' + (permission.isSuper() ? '✓ 是' : '✗ 否') + '</span></p>';
+  statusHtml += '<p><span class="status-label">权限数量：</span><span class="status-value">' + permission.getPermissions().length + ' 个</span></p>';
+  statusHtml += '<p><span class="status-label">权限列表：</span><span class="status-value">' + permission.getPermissions().join(', ') + '</span></p>';
+  
+  $('#permissionStatus').html(statusHtml);
+  
+  // 权限检查测试
+  $('#checkPermissionBtn').on('click', function() {
+    var code = $('#permissionInput').val().trim();
+    if (!code) {
+      layer.msg('请输入权限代码', { icon: 0 });
+      return;
+    }
+    
+    var hasPermission = permission.hasPermission(code);
+    var resultClass = hasPermission ? 'success' : 'error';
+    var resultText = hasPermission ? '✓ 有权限' : '✗ 无权限';
+    
+    $('#checkResult').html('<div class="check-result ' + resultClass + '"><strong>' + code + '</strong>：' + resultText + '</div>');
+  });
+  
+  // 回车键检查
+  $('#permissionInput').on('keypress', function(e) {
+    if (e.key === 'Enter') {
+      $('#checkPermissionBtn').click();
+    }
+  });
+});
+</script>
+</body>
+</html>

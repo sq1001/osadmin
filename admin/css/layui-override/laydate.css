@@ -1,0 +1,155 @@
+/**
+ * LayUI 日期选择器主题适配
+ * 仅覆盖颜色、背景色、边框相关属性
+ */
+
+/* ========== 日期选择器基础 ========== */
+.layui-laydate,
+.layui-laydate-hint {
+  background-color: var(--card-bg);
+  border-color: var(--border);
+}
+
+.layui-laydate-header {
+  border-bottom-color: var(--border);
+}
+
+.layui-laydate-header i:hover,
+.layui-laydate-header span:hover {
+  color: var(--accent);
+}
+
+.layui-laydate-content td > div:hover,
+.layui-laydate-list li:hover,
+.layui-laydate-shortcut > li:hover {
+  background-color: var(--accent-light);
+}
+
+.layui-laydate .layui-this,
+.layui-laydate .layui-this > div {
+  background-color: var(--accent) !important;
+  color: #fff !important;
+}
+
+.layui-laydate-footer {
+  border-top-color: var(--border);
+}
+
+.layui-laydate-footer span {
+  background-color: transparent;
+  border-color: var(--border);
+  color: var(--text-secondary);
+}
+
+.layui-laydate-footer span.layui-laydate-preview {
+  color: var(--accent) !important;
+}
+
+.layui-laydate-footer span.layui-laydate-preview:hover {
+  color: var(--accent) !important;
+}
+
+.layui-laydate-footer span[lay-type="date"] {
+  color: var(--accent) !important;
+}
+
+.layui-laydate .layui-laydate-list {
+  background-color: var(--card-bg);
+}
+
+.laydate-time-list li ol {
+  border-color: var(--border);
+}
+
+.layui-laydate-shortcut + .layui-laydate-main {
+  border-left-color: var(--border);
+}
+
+.laydate-theme-grid .layui-laydate-content td,
+.laydate-theme-grid .layui-laydate-content thead,
+.laydate-theme-grid .laydate-year-list > li,
+.laydate-theme-grid .laydate-month-list > li {
+  border-color: var(--border);
+}
+
+.layui-laydate-linkage.laydate-theme-grid .laydate-selected,
+.layui-laydate-linkage.laydate-theme-grid .laydate-selected:hover {
+  background-color: var(--accent-light) !important;
+  color: var(--accent) !important;
+}
+
+/* ========== 深色主题 ========== */
+[data-theme="dark"] .layui-laydate,
+[data-theme="dark"] .layui-laydate-hint {
+  background-color: var(--card-bg);
+  border-color: var(--border);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+}
+
+[data-theme="dark"] .layui-laydate-header {
+  border-bottom-color: var(--border);
+}
+
+[data-theme="dark"] .layui-laydate-header i:hover,
+[data-theme="dark"] .layui-laydate-header span:hover {
+  color: var(--accent);
+}
+
+[data-theme="dark"] .layui-laydate-content td > div:hover,
+[data-theme="dark"] .layui-laydate-list li:hover,
+[data-theme="dark"] .layui-laydate-shortcut > li:hover {
+  background-color: var(--accent-light);
+}
+
+[data-theme="dark"] .layui-laydate .layui-this,
+[data-theme="dark"] .layui-laydate .layui-this > div {
+  background-color: var(--accent) !important;
+  color: #fff !important;
+}
+
+[data-theme="dark"] .layui-laydate-footer {
+  border-top-color: var(--border);
+}
+
+[data-theme="dark"] .layui-laydate-footer span {
+  background-color: transparent;
+  border-color: var(--border);
+  color: var(--text-secondary);
+}
+
+[data-theme="dark"] .layui-laydate-footer span.layui-laydate-preview {
+  color: var(--accent) !important;
+}
+
+[data-theme="dark"] .layui-laydate-footer span.layui-laydate-preview:hover {
+  color: var(--accent) !important;
+}
+
+[data-theme="dark"] .layui-laydate-footer span[lay-type="date"] {
+  color: var(--accent) !important;
+}
+
+[data-theme="dark"] .layui-laydate .layui-laydate-list {
+  background-color: var(--card-bg);
+}
+
+[data-theme="dark"] .laydate-time-list li ol {
+  border-color: var(--border);
+}
+
+[data-theme="dark"] .layui-laydate-shortcut + .layui-laydate-main {
+  border-left-color: var(--border);
+}
+
+[data-theme="dark"] .laydate-theme-grid .layui-laydate-content td,
+[data-theme="dark"] .laydate-theme-grid .layui-laydate-content thead,
+[data-theme="dark"] .laydate-theme-grid .laydate-year-list > li,
+[data-theme="dark"] .laydate-theme-grid .laydate-month-list > li {
+  border-color: var(--border);
+}
+
+[data-theme="dark"] .layui-laydate-linkage.laydate-theme-grid .laydate-selected,
+[data-theme="dark"] .layui-laydate-linkage.laydate-theme-grid .laydate-selected:hover {
+  background-color: var(--accent-light) !important;
+  color: var(--accent) !important;
+}

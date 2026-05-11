@@ -1,0 +1,669 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>表单组件 - Layui</title>
+  <meta name="keywords" content="表单,form,输入框,选择框,复选框,开关,单选框">
+  <meta name="description" content="Layui表单组件完整示例">
+</head>
+<body>
+<div class="page-content">
+  <div class="demo-header">
+    <h3 class="demo-title">表单组件</h3>
+    <p class="demo-desc">Layui 表单元素的完整示例，包含输入框、选择框、复选框、开关、单选框等</p>
+  </div>
+
+  <div class="layui-card">
+    <div class="layui-card-header">
+      <span class="layui-card-title">普通输入框</span>
+    </div>
+    <div class="layui-card-body">
+      <form class="layui-form">
+        <div class="layui-form-item">
+          <label class="layui-form-label">文本框</label>
+          <div class="layui-input-block">
+            <input type="text" name="title" placeholder="请输入标题" class="layui-input">
+          </div>
+        </div>
+        <div class="layui-form-item">
+          <label class="layui-form-label">多行文本</label>
+          <div class="layui-input-block">
+            <textarea name="desc" placeholder="请输入内容" class="layui-textarea"></textarea>
+          </div>
+        </div>
+        <div class="layui-form-item">
+          <label class="layui-form-label">禁用状态</label>
+          <div class="layui-input-block">
+            <input type="text" name="disabled" placeholder="禁用输入框" class="layui-input" disabled>
+          </div>
+        </div>
+        <div class="layui-form-item">
+          <label class="layui-form-label">只读状态</label>
+          <div class="layui-input-block">
+            <input type="text" name="readonly" value="只读输入框" class="layui-input" readonly>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <div class="layui-card">
+    <div class="layui-card-header">
+      <span class="layui-card-title">前置和后置</span>
+    </div>
+    <div class="layui-card-body">
+      <form class="layui-form">
+        <div class="layui-form-item">
+          <label class="layui-form-label">身高</label>
+          <div class="layui-input-block">
+            <div class="layui-input-group">
+              <div class="layui-input-split layui-input-prefix">身高</div>
+              <input type="text" placeholder="带任意前置和后置内容" class="layui-input">
+              <div class="layui-input-split layui-input-suffix">cm</div>
+            </div>
+          </div>
+        </div>
+        <div class="layui-form-item">
+          <label class="layui-form-label">手机号</label>
+          <div class="layui-input-block">
+            <div class="layui-input-group">
+              <div class="layui-input-split layui-input-prefix">手机号</div>
+              <input type="text" placeholder="带任意前置和后置内容" class="layui-input">
+              <div class="layui-input-suffix">
+                <button class="layui-btn layui-btn-primary">获取验证码</button>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="layui-form-item">
+          <label class="layui-form-label">用户名</label>
+          <div class="layui-input-block">
+            <div class="layui-input-group">
+              <div class="layui-input-split layui-input-prefix">用户名</div>
+              <input type="text" placeholder="带任意前置内容" class="layui-input">
+            </div>
+          </div>
+        </div>
+        <div class="layui-form-item">
+          <label class="layui-form-label">搜索</label>
+          <div class="layui-input-block">
+            <div class="layui-input-group">
+              <input type="text" placeholder="带任意后置内容" class="layui-input">
+              <div class="layui-input-split layui-input-suffix" style="cursor: pointer;">
+                <i class="layui-icon layui-icon-search"></i>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="layui-form-item">
+          <label class="layui-form-label">网址</label>
+          <div class="layui-input-block">
+            <div class="layui-input-group">
+              <div class="layui-input-prefix">https://</div>
+              <input type="text" placeholder="带任意前置和后置内容" class="layui-input">
+              <div class="layui-input-split layui-input-suffix" style="cursor: pointer;">
+                <i class="layui-icon layui-icon-search"></i>
+              </div>
+            </div>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <div class="layui-card">
+    <div class="layui-card-header">
+      <span class="layui-card-title">前缀和后缀</span>
+    </div>
+    <div class="layui-card-body">
+      <form class="layui-form">
+        <div class="layui-row layui-col-space16">
+          <div class="layui-col-md6">
+            <div class="layui-input-wrap">
+              <div class="layui-input-prefix">
+                <i class="layui-icon layui-icon-username"></i>
+              </div>
+              <input type="text" placeholder="带前缀图标" class="layui-input">
+            </div>
+          </div>
+          <div class="layui-col-md6">
+            <div class="layui-input-wrap">
+              <input type="text" placeholder="带后缀图标" class="layui-input">
+              <div class="layui-input-suffix">
+                <i class="layui-icon layui-icon-search"></i>
+              </div>
+            </div>
+          </div>
+          <div class="layui-col-md6">
+            <div class="layui-input-wrap">
+              <div class="layui-input-prefix layui-input-split">
+                <i class="layui-icon layui-icon-username"></i>
+              </div>
+              <input type="text" placeholder="带前缀和分割框" class="layui-input">
+            </div>
+          </div>
+          <div class="layui-col-md6">
+            <div class="layui-input-wrap">
+              <input type="text" placeholder="带后缀和分割框" class="layui-input">
+              <div class="layui-input-suffix layui-input-split">
+                <i class="layui-icon layui-icon-down"></i>
+              </div>
+            </div>
+          </div>
+          <div class="layui-col-md6">
+            <div class="layui-input-wrap">
+              <div class="layui-input-prefix">
+                <i class="layui-icon layui-icon-location"></i>
+              </div>
+              <input type="text" placeholder="带前缀无分割框和后缀有分割框" class="layui-input">
+              <div class="layui-input-suffix layui-input-split">
+                <i class="layui-icon layui-icon-edit"></i>
+              </div>
+            </div>
+          </div>
+          <div class="layui-col-md6">
+            <div class="layui-input-wrap">
+              <div class="layui-input-prefix layui-input-split">
+                <i class="layui-icon layui-icon-location"></i>
+              </div>
+              <input type="text" placeholder="带前缀有分割框和后缀无分割框" class="layui-input">
+              <div class="layui-input-suffix">
+                <i class="layui-icon layui-icon-edit"></i>
+              </div>
+            </div>
+          </div>
+          <div class="layui-col-md4">
+            <div class="layui-input-wrap">
+              <div class="layui-input-prefix">
+                <i class="layui-icon layui-icon-form"></i>
+              </div>
+              <select>
+                <option value="">放置 select 元素</option>
+                <option value="北京">北京</option>
+                <option value="上海">上海</option>
+                <option value="广州">广州</option>
+                <option value="深圳">深圳</option>
+              </select>
+            </div>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <div class="layui-card">
+    <div class="layui-card-header">
+      <span class="layui-card-title">动态点缀</span>
+    </div>
+    <div class="layui-card-body">
+      <form class="layui-form">
+        <div class="layui-form-item">
+          <label class="layui-form-label">数字输入框</label>
+          <div class="layui-input-block">
+            <input type="number" lay-affix="number" placeholder="数字输入框" value="0" class="layui-input">
+          </div>
+        </div>
+        <div class="layui-form-item">
+          <label class="layui-form-label">小数精度</label>
+          <div class="layui-input-block">
+            <input type="text" lay-affix="number" placeholder="设置 step 为 0.01" step="0.01" class="layui-input">
+          </div>
+        </div>
+        <div class="layui-form-item">
+          <label class="layui-form-label">范围限制</label>
+          <div class="layui-input-block">
+            <input type="text" lay-affix="number" placeholder="设置 step,min,max" step="10" min="0" max="100" class="layui-input">
+          </div>
+        </div>
+        <div class="layui-form-item">
+          <label class="layui-form-label">小数位精度</label>
+          <div class="layui-input-block">
+            <input type="text" lay-affix="number" placeholder="设置小数位精度为 2" step="0.1" lay-precision="2" class="layui-input">
+          </div>
+        </div>
+        <div class="layui-form-item">
+          <label class="layui-form-label">密码显隐</label>
+          <div class="layui-input-block">
+            <div class="layui-input-wrap">
+              <input type="password" lay-affix="eye" placeholder="请输入密码" class="layui-input">
+            </div>
+          </div>
+        </div>
+        <div class="layui-form-item">
+          <label class="layui-form-label">内容清除</label>
+          <div class="layui-input-block">
+            <input type="text" value="默认有值状态" lay-affix="clear" class="layui-input">
+          </div>
+        </div>
+        <div class="layui-form-item">
+          <label class="layui-form-label">自定义点缀</label>
+          <div class="layui-input-block">
+            <input type="text" placeholder="自定义搜索点缀" lay-affix="search" lay-filter="searchInput" class="layui-input">
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <div class="layui-card">
+    <div class="layui-card-header">
+      <span class="layui-card-title">选择框</span>
+    </div>
+    <div class="layui-card-body">
+      <form class="layui-form" lay-filter="selectForm">
+        <div class="layui-form-item">
+          <label class="layui-form-label">单选下拉</label>
+          <div class="layui-input-block">
+            <select name="city" lay-verify="required">
+              <option value="">请选择城市</option>
+              <option value="0">北京</option>
+              <option value="1">上海</option>
+              <option value="2">广州</option>
+              <option value="3">深圳</option>
+              <option value="4">杭州</option>
+            </select>
+          </div>
+        </div>
+        <div class="layui-form-item">
+          <label class="layui-form-label">分组选择</label>
+          <div class="layui-input-block">
+            <select name="quiz">
+              <option value="">请选择</option>
+              <optgroup label="城市记忆">
+                <option value="你工作的第一个城市">你工作的第一个城市</option>
+              </optgroup>
+              <optgroup label="学生时代">
+                <option value="你的工号">你的工号</option>
+                <option value="你最喜欢的老师">你最喜欢的老师</option>
+              </optgroup>
+            </select>
+          </div>
+        </div>
+        <div class="layui-form-item">
+          <label class="layui-form-label">搜索选择</label>
+          <div class="layui-input-block">
+            <select name="search" lay-search="">
+              <option value="">直接选择或搜索选择</option>
+              <option value="1">layer</option>
+              <option value="2">form</option>
+              <option value="3">layim</option>
+              <option value="4">element</option>
+              <option value="5">laytpl</option>
+              <option value="6">upload</option>
+              <option value="7">tree</option>
+              <option value="8">table</option>
+              <option value="9">laypage</option>
+            </select>
+          </div>
+        </div>
+        <div class="layui-form-item">
+          <label class="layui-form-label">禁用选择</label>
+          <div class="layui-input-block">
+            <select name="disabled" disabled>
+              <option value="0">禁用选择框</option>
+            </select>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <div class="layui-card">
+    <div class="layui-card-header">
+      <span class="layui-card-title">复选框</span>
+    </div>
+    <div class="layui-card-body">
+      <form class="layui-form" lay-filter="checkboxForm">
+        <div class="layui-form-item">
+          <label class="layui-form-label">默认风格</label>
+          <div class="layui-input-block">
+            <input type="checkbox" name="like[write]" title="写作">
+            <input type="checkbox" name="like[read]" title="阅读" checked>
+            <input type="checkbox" name="like[dai]" title="发呆">
+          </div>
+        </div>
+        <div class="layui-form-item">
+          <label class="layui-form-label">原始风格</label>
+          <div class="layui-input-block">
+            <input type="checkbox" name="like1[write]" lay-skin="primary" title="写作">
+            <input type="checkbox" name="like1[read]" lay-skin="primary" title="阅读" checked>
+            <input type="checkbox" name="like1[dai]" lay-skin="primary" title="发呆">
+          </div>
+        </div>
+        <div class="layui-form-item">
+          <label class="layui-form-label">禁用状态</label>
+          <div class="layui-input-block">
+            <input type="checkbox" name="disabled" title="禁用" disabled>
+            <input type="checkbox" name="disabled2" title="禁用选中" checked disabled>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <div class="layui-card">
+    <div class="layui-card-header">
+      <span class="layui-card-title">开关</span>
+    </div>
+    <div class="layui-card-body">
+      <form class="layui-form" lay-filter="switchForm">
+        <div class="layui-form-item">
+          <label class="layui-form-label">默认开关</label>
+          <div class="layui-input-block">
+            <input type="checkbox" name="switch" lay-skin="switch" lay-text="ON|OFF">
+          </div>
+        </div>
+        <div class="layui-form-item">
+          <label class="layui-form-label">选中状态</label>
+          <div class="layui-input-block">
+            <input type="checkbox" name="switch2" lay-skin="switch" lay-text="开启|关闭" checked>
+          </div>
+        </div>
+        <div class="layui-form-item">
+          <label class="layui-form-label">禁用状态</label>
+          <div class="layui-input-block">
+            <input type="checkbox" name="switch3" lay-skin="switch" disabled>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <div class="layui-card">
+    <div class="layui-card-header">
+      <span class="layui-card-title">单选框</span>
+    </div>
+    <div class="layui-card-body">
+      <form class="layui-form" lay-filter="radioForm">
+        <div class="layui-form-item">
+          <label class="layui-form-label">默认风格</label>
+          <div class="layui-input-block">
+            <input type="radio" name="sex" value="nan" title="男">
+            <input type="radio" name="sex" value="nv" title="女" checked>
+            <input type="radio" name="sex" value="other" title="保密">
+          </div>
+        </div>
+        <div class="layui-form-item">
+          <label class="layui-form-label">禁用状态</label>
+          <div class="layui-input-block">
+            <input type="radio" name="sex2" value="nan" title="男" disabled>
+            <input type="radio" name="sex2" value="nv" title="女" checked disabled>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <div class="layui-card">
+    <div class="layui-card-header">
+      <span class="layui-card-title">表单验证</span>
+    </div>
+    <div class="layui-card-body">
+      <form class="layui-form" lay-filter="verifyForm">
+        <div class="layui-form-item">
+          <label class="layui-form-label">必填项</label>
+          <div class="layui-input-block">
+            <input type="text" name="required" lay-verify="required" placeholder="必填项" class="layui-input">
+          </div>
+        </div>
+        <div class="layui-form-item">
+          <label class="layui-form-label">邮箱</label>
+          <div class="layui-input-block">
+            <input type="text" name="email" lay-verify="email" placeholder="邮箱格式验证" class="layui-input">
+          </div>
+        </div>
+        <div class="layui-form-item">
+          <label class="layui-form-label">手机号</label>
+          <div class="layui-input-block">
+            <input type="text" name="phone" lay-verify="required|phone" placeholder="必填项+手机号验证" class="layui-input">
+          </div>
+        </div>
+        <div class="layui-form-item">
+          <label class="layui-form-label">网址</label>
+          <div class="layui-input-block">
+            <input type="text" name="url" lay-verify="url" placeholder="网址格式验证" class="layui-input">
+          </div>
+        </div>
+        <div class="layui-form-item">
+          <label class="layui-form-label">身份证</label>
+          <div class="layui-input-block">
+            <input type="text" name="identity" lay-verify="identity" placeholder="身份证格式验证" class="layui-input">
+          </div>
+        </div>
+        <div class="layui-form-item">
+          <label class="layui-form-label">自定义验证</label>
+          <div class="layui-input-block">
+            <input type="text" name="custom" lay-verify="required|customRule" placeholder="自定义验证规则" class="layui-input">
+          </div>
+        </div>
+        <div class="layui-form-item">
+          <div class="layui-input-block">
+            <button class="layui-btn" lay-submit lay-filter="verifyDemo">提交验证</button>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <div class="layui-card">
+    <div class="layui-card-header">
+      <span class="layui-card-title">表单赋值/取值</span>
+    </div>
+    <div class="layui-card-body">
+      <form class="layui-form" lay-filter="valForm">
+        <div class="layui-form-item">
+          <label class="layui-form-label">用户名</label>
+          <div class="layui-input-block">
+            <input type="text" name="username" placeholder="请输入用户名" class="layui-input">
+          </div>
+        </div>
+        <div class="layui-form-item">
+          <label class="layui-form-label">密码</label>
+          <div class="layui-input-block">
+            <input type="password" name="password" placeholder="请输入密码" class="layui-input">
+          </div>
+        </div>
+        <div class="layui-form-item">
+          <label class="layui-form-label">城市</label>
+          <div class="layui-input-block">
+            <select name="city">
+              <option value="">请选择城市</option>
+              <option value="北京">北京</option>
+              <option value="上海">上海</option>
+              <option value="广州">广州</option>
+              <option value="深圳">深圳</option>
+            </select>
+          </div>
+        </div>
+        <div class="layui-form-item">
+          <label class="layui-form-label">兴趣</label>
+          <div class="layui-input-block">
+            <input type="checkbox" name="like[write]" title="写作">
+            <input type="checkbox" name="like[read]" title="阅读">
+            <input type="checkbox" name="like[dai]" title="发呆">
+          </div>
+        </div>
+        <div class="layui-form-item">
+          <label class="layui-form-label">性别</label>
+          <div class="layui-input-block">
+            <input type="radio" name="sex" value="男" title="男">
+            <input type="radio" name="sex" value="女" title="女">
+          </div>
+        </div>
+        <div class="layui-form-item">
+          <label class="layui-form-label">状态</label>
+          <div class="layui-input-block">
+            <input type="checkbox" name="status" lay-skin="switch" lay-text="开启|关闭">
+          </div>
+        </div>
+        <div class="layui-form-item">
+          <div class="layui-input-block">
+            <button type="button" class="layui-btn layui-btn-normal" id="setVal">赋值</button>
+            <button type="button" class="layui-btn layui-btn-normal" id="getVal">取值</button>
+            <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <div class="layui-card">
+    <div class="layui-card-header">
+      <span class="layui-card-title">表单组合</span>
+    </div>
+    <div class="layui-card-body">
+      <form class="layui-form" lay-filter="combinedForm">
+        <div class="layui-form-item">
+          <label class="layui-form-label">用户名</label>
+          <div class="layui-input-block">
+            <input type="text" name="username" placeholder="请输入用户名" class="layui-input" lay-verify="required">
+          </div>
+        </div>
+        <div class="layui-form-item">
+          <label class="layui-form-label">密码</label>
+          <div class="layui-input-block">
+            <input type="password" name="password" placeholder="请输入密码" class="layui-input" lay-verify="required">
+          </div>
+        </div>
+        <div class="layui-form-item">
+          <label class="layui-form-label">角色</label>
+          <div class="layui-input-block">
+            <select name="role" lay-verify="required">
+              <option value="">请选择角色</option>
+              <option value="admin">管理员</option>
+              <option value="user">普通用户</option>
+              <option value="guest">访客</option>
+            </select>
+          </div>
+        </div>
+        <div class="layui-form-item">
+          <label class="layui-form-label">状态</label>
+          <div class="layui-input-block">
+            <input type="checkbox" name="status" lay-skin="switch" lay-text="启用|禁用" checked>
+          </div>
+        </div>
+        <div class="layui-form-item">
+          <div class="layui-input-block">
+            <button type="button" class="layui-btn" lay-submit lay-filter="formDemo">立即提交</button>
+            <button type="reset" class="layui-btn">重置</button>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<style>
+.demo-header {
+  margin-bottom: 16px;
+}
+.demo-title {
+  font-size: 18px;
+  font-weight: 600;
+  color: var(--text-primary);
+  margin-bottom: 4px;
+}
+.demo-desc {
+  font-size: 13px;
+  color: var(--text-muted);
+}
+.layui-form-label {
+  width: 100px;
+}
+.layui-input-block {
+  margin-left: 130px;
+}
+[data-theme="dark"] .layui-input,
+[data-theme="dark"] .layui-textarea,
+[data-theme="dark"] .layui-select {
+  background: var(--bg-content);
+  border-color: var(--border);
+  color: var(--text-primary);
+}
+[data-theme="dark"] .layui-form-select dl {
+  background: var(--card-bg);
+  border-color: var(--border);
+}
+[data-theme="dark"] .layui-form-select dl dd:hover {
+  background: var(--bg-content);
+}
+[data-theme="dark"] .layui-form-select dl dd.layui-this {
+  background: var(--accent-light);
+}
+[data-theme="dark"] .layui-input-prefix,
+[data-theme="dark"] .layui-input-suffix,
+[data-theme="dark"] .layui-input-split {
+  background-color: rgba(0, 0, 0, 0.2);
+  border-color: var(--border);
+}
+[data-theme="dark"] .layui-input-prefix .layui-icon,
+[data-theme="dark"] .layui-input-suffix .layui-icon,
+[data-theme="dark"] .layui-input-split .layui-icon {
+  color: var(--text-secondary);
+}
+</style>
+
+<script>
+layui.use(['form', 'layer'], function() {
+  var form = layui.form;
+  var layer = layui.layer;
+  var $ = layui.$;
+
+  form.render();
+
+  form.verify({
+    customRule: function(value, elem) {
+      if (!value) return;
+      if (value.length < 6) {
+        return '不能小于 6 个字符';
+      }
+    }
+  });
+
+  form.on('submit(formDemo)', function(data) {
+    layer.msg('表单提交成功', { icon: 1 });
+    console.log(data.field);
+    return false;
+  });
+
+  form.on('submit(verifyDemo)', function(data) {
+    layer.msg('验证通过，提交成功', { icon: 1 });
+    console.log(data.field);
+    return false;
+  });
+
+  $('#setVal').on('click', function() {
+    form.val('valForm', {
+      username: 'admin',
+      password: '123456',
+      city: '上海',
+      'like[write]': true,
+      'like[read]': true,
+      sex: '男',
+      status: true
+    });
+    layer.msg('表单赋值成功', { icon: 1 });
+  });
+
+  $('#getVal').on('click', function() {
+    var data = form.val('valForm');
+    layer.alert(JSON.stringify(data, null, 2), {
+      title: '表单数据',
+      area: ['400px', 'auto']
+    });
+  });
+
+  form.on('input-affix(searchInput)', function(data) {
+    var elem = data.elem;
+    var value = elem.value;
+    if (!value) {
+      layer.msg('请输入搜索内容');
+      return elem.focus();
+    }
+    layer.msg('搜索: ' + value, { icon: 1 });
+  });
+});
+</script>
+</body>
+</html>

@@ -1,0 +1,82 @@
+/**
+ * LayUI 分页主题适配
+ * 覆盖颜色、背景色、边框、圆角相关属性
+ */
+
+/* ========== 分页基础 ========== */
+.layui-laypage a,
+.layui-laypage span {
+  background-color: var(--card-bg);
+  border-color: var(--border);
+  border-radius: 0;
+}
+
+.layui-laypage a:first-child,
+.layui-laypage span:first-child {
+  border-radius: 4px 0 0 4px;
+}
+
+.layui-laypage a:last-child,
+.layui-laypage span:last-child {
+  border-radius: 0 4px 4px 0;
+}
+
+.layui-laypage a:hover {
+  color: var(--accent);
+}
+
+/* ========== 当前页 ========== */
+.layui-laypage .layui-laypage-curr .layui-laypage-em {
+  background-color: var(--accent);
+  border-radius: 0;
+}
+
+.layui-laypage .layui-laypage-curr:first-child .layui-laypage-em {
+  border-radius: 4px 0 0 4px;
+}
+
+.layui-laypage .layui-laypage-curr:last-child .layui-laypage-em {
+  border-radius: 0 4px 4px 0;
+}
+
+/* ========== 输入框和按钮 ========== */
+.layui-laypage input,
+.layui-laypage button,
+.layui-laypage select {
+  background-color: var(--card-bg);
+  border-color: var(--border);
+  border-radius: 4px;
+}
+
+.layui-laypage input:focus,
+.layui-laypage select:focus {
+  border-color: var(--accent) !important;
+}
+
+.layui-laypage button:hover {
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
+/* ========== 深色主题 ========== */
+[data-theme="dark"] .layui-laypage a,
+[data-theme="dark"] .layui-laypage span {
+  background-color: transparent;
+  border-color: var(--border);
+}
+
+[data-theme="dark"] .layui-laypage a:hover {
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
+[data-theme="dark"] .layui-laypage .layui-laypage-curr .layui-laypage-em {
+  background-color: var(--accent);
+}
+
+[data-theme="dark"] .layui-laypage input,
+[data-theme="dark"] .layui-laypage button,
+[data-theme="dark"] .layui-laypage select {
+  background-color: transparent;
+  border-color: var(--border);
+}

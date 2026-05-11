@@ -1,0 +1,38 @@
+/**
+ * LayUI 时间线主题适配
+ * 覆盖背景色、边框、圆角相关属性
+ */
+
+/* ========== 时间线轴 ========== */
+.layui-timeline-item:before {
+  background-color: var(--border);
+}
+
+/* ========== 时间线节点 ========== */
+.layui-timeline-axis {
+  background-color: var(--card-bg);
+  border-color: var(--accent);
+  color: var(--accent);
+  border-radius: 50%;
+}
+
+.layui-timeline-axis:hover {
+  background-color: var(--accent);
+  color: #fff;
+}
+
+/* ========== 深色主题 ========== */
+[data-theme="dark"] .layui-timeline-item:before {
+  background-color: var(--border);
+}
+
+[data-theme="dark"] .layui-timeline-axis {
+  background-color: var(--card-bg);
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
+[data-theme="dark"] .layui-timeline-axis:hover {
+  background-color: var(--accent);
+  color: #fff;
+}

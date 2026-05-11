@@ -1,0 +1,23 @@
+/**
+ * LayUI 后台框架布局主题适配
+ * 仅覆盖颜色、背景色相关属性
+ */
+
+/* ========== 后台框架 ========== */
+.layui-layout-admin .layui-header {
+  background-color: var(--bg-sidebar);
+}
+
+.layui-layout-admin .layui-footer {
+  background-color: var(--card-bg);
+}
+
+/* ========== 深色主题 ========== */
+[data-theme="dark"] .layui-layout-admin .layui-header {
+  background-color: var(--bg-sidebar);
+}
+
+[data-theme="dark"] .layui-layout-admin .layui-footer {
+  background-color: var(--card-bg);
+  box-shadow: -1px 0 4px rgba(0, 0, 0, 0.3);
+}

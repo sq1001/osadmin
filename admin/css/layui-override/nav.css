@@ -1,0 +1,110 @@
+/**
+ * LayUI 导航主题适配
+ * 覆盖颜色、背景色、边框、圆角相关属性
+ * 支持滑动条和垂直/侧边导航模式
+ */
+
+/* ========== 导航滑动条 ========== */
+.layui-nav-bar {
+  background-color: var(--accent);
+}
+
+.layui-nav .layui-this:after {
+  background-color: var(--accent);
+}
+
+/* ========== 子菜单 ========== */
+.layui-nav-child {
+  background-color: var(--card-bg);
+  border-color: var(--border);
+  border-radius: 6px;
+}
+
+.layui-nav-child dd a:hover {
+  background-color: var(--accent-light);
+  color: var(--accent);
+}
+
+.layui-nav-child dd.layui-this a {
+  background-color: var(--accent-light);
+  color: var(--accent);
+}
+
+/* ========== 垂直导航 ========== */
+.layui-nav-tree {
+  background-color: var(--bg-sidebar);
+}
+
+.layui-nav-tree .layui-this,
+.layui-nav-tree .layui-this > a,
+.layui-nav-tree .layui-this > a:hover,
+.layui-nav-tree .layui-nav-child dd.layui-this,
+.layui-nav-tree .layui-nav-child dd.layui-this a {
+  background-color: var(--accent);
+  color: #fff;
+}
+
+.layui-nav-tree .layui-nav-bar {
+  background-color: var(--accent);
+}
+
+.layui-nav-tree .layui-nav-child {
+  background-color: rgba(0, 0, 0, 0.1);
+  border: none;
+  box-shadow: none;
+}
+
+.layui-nav-tree .layui-nav-child a:hover {
+  background: none;
+  color: var(--accent);
+}
+
+/* ========== 侧边导航 ========== */
+.layui-nav-side {
+  background-color: var(--bg-sidebar);
+}
+
+/* ========== 导航浅色背景 ========== */
+.layui-nav.layui-bg-gray .layui-this a {
+  color: var(--accent);
+}
+
+.layui-nav-tree.layui-bg-gray .layui-this,
+.layui-nav-tree.layui-bg-gray .layui-this > a,
+.layui-nav-tree.layui-bg-gray .layui-nav-child dd.layui-this,
+.layui-nav-tree.layui-bg-gray .layui-nav-child dd.layui-this a {
+  background: none !important;
+  color: var(--accent) !important;
+}
+
+.layui-nav-tree.layui-bg-gray .layui-nav-bar {
+  background-color: var(--accent);
+}
+
+/* ========== 面包屑 ========== */
+.layui-breadcrumb a:hover {
+  color: var(--accent) !important;
+}
+
+/* ========== 深色主题 ========== */
+[data-theme="dark"] .layui-nav-child {
+  background-color: var(--card-bg);
+  border-color: var(--border);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+}
+
+[data-theme="dark"] .layui-nav-child dd a:hover {
+  background-color: var(--accent-light);
+}
+
+[data-theme="dark"] .layui-nav-tree {
+  background-color: var(--bg-sidebar);
+}
+
+[data-theme="dark"] .layui-nav-tree .layui-nav-child {
+  background-color: rgba(0, 0, 0, 0.2);
+}
+
+[data-theme="dark"] .layui-nav-side {
+  background-color: var(--bg-sidebar);
+}

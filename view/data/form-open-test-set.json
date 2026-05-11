@@ -1,0 +1,55 @@
+{
+  "code": 0,
+  "msg": "success",
+  "data": {
+    "form": {
+      "name": "测试项目名称",
+      "code": "TEST_CODE_001",
+      "effect_date": ["2024-01-01", "2024-12-31"],
+      "status": 1,
+      "logo": "/admin/images/avatar.webp",
+      "category": "2",
+      "dept_id": 1,
+      "cost": 88,
+      "port": 465,
+      "tags": [1, 2],
+      "roles": [1, 3],
+      "priority": "2",
+      "notify": ["email", "wechat"],
+      "handler": "DefaultHandler",
+      "remark": "这是一段备注说明文字，用于描述详细信息。",
+      "sort": 10,
+      "max_count": 100,
+      "timeout": 30,
+      "images": [
+        "/admin/images/demo1.webp",
+        "/admin/images/demo2.webp",
+        "/admin/images/demo3.webp"
+      ]
+    },
+    "selectData": {
+      "category": [
+        {"value": "1", "name": "分类一"},
+        {"value": "2", "name": "分类二"},
+        {"value": "3", "name": "分类三"}
+      ],
+      "dept": [
+        {"value": 1, "name": "技术部"},
+        {"value": 2, "name": "市场部"},
+        {"value": 3, "name": "运营部"},
+        {"value": 4, "name": "财务部"}
+      ],
+      "tags": [
+        {"value": 1, "name": "VIP用户"},
+        {"value": 2, "name": "活跃用户"},
+        {"value": 3, "name": "新用户"},
+        {"value": 4, "name": "老用户"}
+      ],
+      "roles": [
+        {"value": 1, "name": "管理员"},
+        {"value": 2, "name": "编辑"},
+        {"value": 3, "name": "访客"}
+      ]
+    }
+  }
+}

@@ -1,0 +1,159 @@
+/**
+ * LayUI 按钮主题适配
+ * 覆盖颜色、背景色、边框、圆角相关属性
+ */
+
+/* ========== 基础按钮 ========== */
+.layui-btn {
+  background-color: var(--accent);
+  color: #fff;
+  border-radius: 6px;
+}
+
+.layui-btn:hover {
+  opacity: 0.8;
+  color: #fff;
+}
+
+.layui-btn:active {
+  opacity: 1;
+}
+
+/* ========== 原始按钮 ========== */
+.layui-btn-primary {
+  background-color: transparent;
+  border-color: var(--border);
+  color: var(--text-secondary);
+}
+
+.layui-btn-primary:hover {
+  border-color: var(--accent);
+  color: var(--accent);
+  background-color: transparent;
+}
+
+/* ========== 百搭按钮 ========== */
+.layui-btn-normal {
+  background-color: var(--info);
+}
+
+/* ========== 暖色按钮 ========== */
+.layui-btn-warm {
+  background-color: var(--warning);
+}
+
+/* ========== 警告按钮 ========== */
+.layui-btn-danger {
+  background-color: var(--danger);
+}
+
+/* ========== 选中按钮 ========== */
+.layui-btn-checked {
+  background-color: var(--accent);
+}
+
+/* ========== 禁用按钮 ========== */
+.layui-btn-disabled,
+.layui-btn-disabled:hover,
+.layui-btn-disabled:active {
+  background-color: var(--bg) !important;
+  border-color: var(--border) !important;
+  color: var(--text-muted) !important;
+  cursor: not-allowed !important;
+  opacity: 1;
+}
+
+/* ========== 按钮组 ========== */
+.layui-btn-group .layui-btn {
+  border-left-color: rgba(255, 255, 255, 0.3);
+  border-radius: 0;
+}
+
+.layui-btn-group .layui-btn:first-child {
+  border-radius: 6px 0 0 6px;
+}
+
+.layui-btn-group .layui-btn:last-child {
+  border-radius: 0 6px 6px 0;
+}
+
+.layui-btn-group .layui-btn-primary {
+  border-left-color: var(--border);
+}
+
+.layui-btn-group .layui-btn-primary:hover {
+  color: var(--accent);
+}
+
+.layui-btn-group .layui-btn-primary:first-child {
+  border-left-color: var(--border);
+}
+
+/* ========== 流体按钮 ========== */
+.layui-btn-fluid {
+  border-radius: 6px;
+}
+
+/* ========== 圆角按钮 ========== */
+.layui-btn-radius {
+  border-radius: 100px;
+}
+
+/* ========== 不同尺寸按钮圆角 ========== */
+.layui-btn-lg {
+  border-radius: 8px;
+}
+
+.layui-btn-sm {
+  border-radius: 4px;
+}
+
+.layui-btn-xs {
+  border-radius: 4px;
+}
+
+/* ========== 深色主题 ========== */
+[data-theme="dark"] .layui-btn {
+  background-color: var(--accent);
+  color: #fff;
+}
+
+[data-theme="dark"] .layui-btn-primary {
+  background-color: transparent;
+  border-color: rgba(255, 255, 255, 0.2);
+  color: var(--text-secondary);
+}
+
+[data-theme="dark"] .layui-btn-primary:hover {
+  border-color: var(--accent);
+  color: var(--accent);
+  background-color: transparent;
+}
+
+[data-theme="dark"] .layui-btn-normal {
+  background-color: var(--info);
+}
+
+[data-theme="dark"] .layui-btn-warm {
+  background-color: var(--warning);
+}
+
+[data-theme="dark"] .layui-btn-danger {
+  background-color: var(--danger);
+}
+
+[data-theme="dark"] .layui-btn-disabled,
+[data-theme="dark"] .layui-btn-disabled:hover,
+[data-theme="dark"] .layui-btn-disabled:active {
+  background-color: rgba(255, 255, 255, 0.1) !important;
+  border-color: rgba(255, 255, 255, 0.1) !important;
+  color: var(--text-muted) !important;
+}
+
+[data-theme="dark"] .layui-btn-group .layui-btn {
+  border-left-color: rgba(255, 255, 255, 0.2);
+}
+
+[data-theme="dark"] .layui-btn-group .layui-btn-primary {
+  border-left-color: rgba(255, 255, 255, 0.2);
+}

@@ -1,0 +1,487 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>抽屉弹层模块</title>
+</head>
+<body>
+<div class="page-content">
+  <div class="demo-header">
+    <h3 class="demo-title">layDrawer 抽屉弹层模块</h3>
+    <p class="demo-desc">基于 layer.open 封装，参数与 layer.open 保持一致，额外支持 container 和 placement 配置</p>
+  </div>
+
+  <div class="layui-card highlight-card">
+    <div class="layui-card-header">
+      <span>容器内抽屉测试</span>
+    </div>
+    <div class="layui-card-body">
+      <p class="card-desc">抽屉限制在下方容器内，不会覆盖侧边栏和顶栏。</p>
+      <div class="test-container" id="testContainer">
+        <div class="test-header">测试容器（可滚动）</div>
+        <div class="test-content">
+          <div class="btn-group">
+            <button class="layui-btn layui-btn-normal" id="drawerRight">右侧抽屉</button>
+            <button class="layui-btn" id="drawerLeft">左侧抽屉</button>
+            <button class="layui-btn layui-btn-warm" id="drawerTop">顶部抽屉</button>
+            <button class="layui-btn layui-btn-danger" id="drawerBottom">底部抽屉</button>
+          </div>
+          <div class="scroll-content">
+            <div class="scroll-item">测试内容 1 - 滚动容器以测试抽屉固定效果</div>
+            <div class="scroll-item">测试内容 2 - 打开抽屉后滚动容器，抽屉应该保持固定</div>
+            <div class="scroll-item">测试内容 3 - 使用 container 参数将抽屉挂载到容器内</div>
+            <div class="scroll-item">测试内容 4 - 基于 layer.open 封装，参数完全兼容</div>
+            <div class="scroll-item">测试内容 5</div>
+            <div class="scroll-item">测试内容 6</div>
+            <div class="scroll-item">测试内容 7</div>
+            <div class="scroll-item">测试内容 8</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="demo-grid">
+    <div class="layui-card">
+      <div class="layui-card-header">基础用法（内容区域）</div>
+      <div class="layui-card-body">
+        <div class="btn-group">
+          <button class="layui-btn layui-btn-normal" id="drawerRightDefault">右侧抽屉</button>
+          <button class="layui-btn" id="drawerLeftDefault">左侧抽屉</button>
+          <button class="layui-btn layui-btn-warm" id="drawerTopDefault">顶部抽屉</button>
+          <button class="layui-btn layui-btn-danger" id="drawerBottomDefault">底部抽屉</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="layui-card">
+      <div class="layui-card-header">便捷方法</div>
+      <div class="layui-card-body">
+        <div class="btn-group">
+          <button class="layui-btn layui-btn-normal" id="drawerRightEasy">laydrawer.right()</button>
+          <button class="layui-btn" id="drawerLeftEasy">laydrawer.left()</button>
+          <button class="layui-btn layui-btn-warm" id="drawerTopEasy">laydrawer.top()</button>
+          <button class="layui-btn layui-btn-danger" id="drawerBottomEasy">laydrawer.bottom()</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="layui-card">
+      <div class="layui-card-header">全屏抽屉（默认）</div>
+      <div class="layui-card-body">
+        <div class="btn-group">
+          <button class="layui-btn layui-btn-primary" id="drawerFull">全屏右侧抽屉</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="layui-card">
+      <div class="layui-card-header">其他配置</div>
+      <div class="layui-card-body">
+        <div class="btn-group">
+          <button class="layui-btn layui-btn-primary" id="drawerNoShade">无遮罩</button>
+          <button class="layui-btn" id="drawerNoClose">无关闭按钮</button>
+          <button class="layui-btn layui-btn-danger" id="drawerForm">带表单</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="layui-card">
+      <div class="layui-card-header">自定义尺寸 (area)</div>
+      <div class="layui-card-body">
+        <div class="btn-group">
+          <button class="layui-btn" id="drawerSmall">小尺寸 (300px)</button>
+          <button class="layui-btn layui-btn-normal" id="drawerMedium">中尺寸 (450px)</button>
+          <button class="layui-btn layui-btn-warm" id="drawerLarge">大尺寸 (600px)</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="layui-card">
+      <div class="layui-card-header">带按钮 (btn)</div>
+      <div class="layui-card-body">
+        <div class="btn-group">
+          <button class="layui-btn layui-btn-normal" id="drawerBtn">带按钮抽屉</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="layui-card">
+      <div class="layui-card-header">iframe 层 (type: 2)</div>
+      <div class="layui-card-body">
+        <div class="btn-group">
+          <button class="layui-btn layui-btn-danger" id="drawerIframe">iframe 抽屉</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="layui-card">
+      <div class="layui-card-header">多层抽屉</div>
+      <div class="layui-card-body">
+        <div class="btn-group">
+          <button class="layui-btn layui-btn-warm" id="drawerMulti">打开多层抽屉</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<style>
+.demo-header { margin-bottom: 16px; }
+.demo-title { font-size: 18px; font-weight: 600; color: var(--text-primary); margin-bottom: 4px; }
+.demo-desc { font-size: 13px; color: var(--text-muted); }
+.demo-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 16px;
+}
+@media (max-width: 992px) {
+  .demo-grid {
+    grid-template-columns: 1fr;
+  }
+}
+.btn-group { display: flex; flex-wrap: wrap; gap: 10px; }
+.highlight-card { margin-bottom: 16px; border: 1px solid var(--accent); box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08); }
+.highlight-card .layui-card-header { background: linear-gradient(135deg, rgba(59, 130, 246, 0.05), rgba(59, 130, 246, 0.1)); }
+.card-desc { font-size: 13px; color: var(--text-muted); margin: 0 0 12px 0; }
+.test-container {
+  position: relative;
+  width: 100%;
+  height: 300px;
+  background: #fff;
+  border: 2px solid var(--accent);
+  border-radius: 8px;
+  overflow: auto;
+}
+.test-header {
+  padding: 10px 16px;
+  background: var(--accent);
+  color: #fff;
+  font-size: 14px;
+  position: sticky;
+  top: 0;
+  z-index: 1;
+}
+.test-content {
+  padding: 16px;
+}
+.scroll-content {
+  height: 600px;
+  padding: 20px 0;
+}
+.scroll-item {
+  padding: 15px;
+  margin: 10px 0;
+  background: #f5f7fa;
+  border-radius: 4px;
+}
+.drawer-form {
+  padding: 20px;
+}
+.drawer-form .layui-form-item {
+  margin-bottom: 15px;
+}
+.drawer-form .layui-form-label {
+  width: 80px;
+}
+.drawer-form .layui-input-block {
+  margin-left: 110px;
+}
+</style>
+
+<script>
+layui.use(['form', 'drawerMod', 'commonMod'], function() {
+  var $ = layui.$;
+  var form = layui.form;
+  var drawer = layui.drawerMod;
+  var common = layui.commonMod;
+
+  // ==================== 容器内抽屉测试 ====================
+  $('#drawerRight').on('click', function() {
+    drawer.open({
+      container: '#testContainer',
+      placement: 'right',
+      title: '右侧抽屉',
+      area: ['300px', '100%'],
+      maxmin: true,
+      fixed: false,
+      moveOut: true,
+      content: '<div style="padding: 20px;"><p>这是右侧抽屉，从右侧滑入。</p><p style="margin-top:12px;">参数与 layer.open 完全兼容。</p></div>'
+    });
+  });
+
+  $('#drawerLeft').on('click', function() {
+    drawer.open({
+      container: '#testContainer',
+      placement: 'left',
+      title: '左侧抽屉',
+      area: ['300px', '100%'],
+      maxmin: true,
+      fixed: false,
+      content: '<div style="padding: 20px;"><p>这是左侧抽屉，从左侧滑入。</p><p style="margin-top:12px;">适合做筛选面板。</p></div>'
+    });
+  });
+
+  $('#drawerTop').on('click', function() {
+    drawer.open({
+      container: '#testContainer',
+      placement: 'top',
+      title: '顶部抽屉',
+      area: ['100%', '150px'],
+      maxmin: true,
+      fixed: false,
+      content: '<div style="padding: 20px;"><p>这是顶部抽屉，从顶部滑入。</p><p style="margin-top:12px;">适合做高级搜索。</p></div>'
+    });
+  });
+
+  $('#drawerBottom').on('click', function() {
+    drawer.open({   
+      container: '#testContainer',
+      placement: 'bottom',
+      title: '底部抽屉',
+      area: ['100%', '150px'],
+      maxmin: true,
+      fixed: false,
+      content: '<div style="padding: 20px;"><p>这是底部抽屉，从底部滑入。</p><p style="margin-top:12px;">适合做操作面板。</p></div>'
+    });
+  });
+
+  // ==================== 基础用法（内容区域）====================
+  $('#drawerRightDefault').on('click', function() {
+    drawer.open({
+      type: 2,
+      container: '#contentWrapper',
+      placement: 'right',
+      title: '右侧抽屉',
+      area: [common.isMobile() ? '100%' : '550px','100%'],
+      maxmin: true,
+      fixed: false,
+      content: '/view/components/form-open-test.html',
+    });
+  });
+
+  $('#drawerLeftDefault').on('click', function() {
+    drawer.open({
+      container: '#contentWrapper',
+      placement: 'left',
+      title: '左侧抽屉',
+      area: ['350px', '100%'],
+      maxmin: true,
+      content: '<div style="padding: 20px;"><p>左侧抽屉，适合筛选面板。</p></div>'
+    });
+  });
+
+  $('#drawerTopDefault').on('click', function() {
+    drawer.open({
+      container: '#contentWrapper',
+      placement: 'top',
+      title: '顶部抽屉',
+      area: ['100%', '200px'],
+      maxmin: true,
+      content: '<div style="padding: 20px;"><p>顶部抽屉，适合高级搜索。</p></div>'
+    });
+  });
+
+  $('#drawerBottomDefault').on('click', function() {
+    drawer.open({
+      container: '#contentWrapper',
+      placement: 'bottom',
+      title: '底部抽屉',
+      area: ['100%', '250px'],
+      maxmin: true,
+      content: '<div style="padding: 20px;"><p>底部抽屉，适合操作面板。</p></div>'
+    });
+  });
+
+  // ==================== 便捷方法 ====================
+  $('#drawerRightEasy').on('click', function() {
+    drawer.right({
+      container: '#contentWrapper',
+      title: '便捷方法 - 右侧',
+      maxmin: true,
+      content: '<div style="padding: 20px;"><p>使用 drawer.right() 便捷方法。</p></div>'
+    });
+  });
+
+  $('#drawerLeftEasy').on('click', function() {
+    drawer.left({
+      container: '#contentWrapper',
+      title: '便捷方法 - 左侧',
+      content: '<div style="padding: 20px;"><p>使用 drawer.left() 便捷方法。</p></div>'
+    });
+  });
+
+  $('#drawerTopEasy').on('click', function() {
+    drawer.top({
+      container: '#contentWrapper',
+      title: '便捷方法 - 顶部',
+      content: '<div style="padding: 20px;"><p>使用 drawer.top() 便捷方法。</p></div>'
+    });
+  });
+
+  $('#drawerBottomEasy').on('click', function() {
+    drawer.bottom({
+      container: '#contentWrapper',
+      title: '便捷方法 - 底部',
+      content: '<div style="padding: 20px;"><p>使用 drawer.bottom() 便捷方法。</p></div>'
+    });
+  });
+
+  // ==================== 全屏抽屉 ====================
+  $('#drawerFull').on('click', function() {
+    drawer.open({
+      type: 2,
+      title: '全屏抽屉',
+      placement: 'right',
+      area: [common.isMobile() ? '100%' : '550px','100%'],
+      content: '/view/components/form-open-test.html',
+      // content: '<div style="padding: 20px;"><p>这是一个全屏抽屉。</p><p style="margin-top:12px;color:#999;">默认挂载到 body，覆盖整个页面。</p></div>'
+    });
+  });
+
+  // ==================== 其他配置 ====================
+  $('#drawerNoShade').on('click', function() {
+    drawer.right({
+      container: '#contentWrapper',
+      title: '无遮罩',
+      shade: 0,
+      content: '<div style="padding: 20px;"><p>没有遮罩，可操作其他内容。</p></div>'
+    });
+  });
+
+  $('#drawerNoClose').on('click', function() {
+    var instance = drawer.right({
+      container: '#contentWrapper',
+      title: '无关闭按钮',
+      closeBtn: 0,
+      shadeClose: false,
+      content: '<div style="padding: 20px;"><p>没有关闭按钮，只能通过程序关闭。</p><button class="layui-btn" id="closeMe" style="margin-top:12px;">关闭抽屉</button></div>',
+      success: function(layero, index) {
+        layero.find('#closeMe').on('click', function() {
+          layer.close(index);
+        });
+      }
+    });
+  });
+
+  $('#drawerForm').on('click', function() {
+    drawer.right({
+      container: '#contentWrapper',
+      title: '编辑用户',
+      area: ['450px', '100%'],
+      shadeClose: false,
+      content: [
+        '<div class="drawer-form">',
+          '<div class="layui-form" lay-filter="drawerForm">',
+            '<div class="layui-form-item">',
+              '<label class="layui-form-label">用户名</label>',
+              '<div class="layui-input-block">',
+                '<input type="text" name="username" value="张三" class="layui-input">',
+              '</div>',
+            '</div>',
+            '<div class="layui-form-item">',
+              '<label class="layui-form-label">邮箱</label>',
+              '<div class="layui-input-block">',
+                '<input type="email" name="email" value="test@example.com" class="layui-input">',
+              '</div>',
+            '</div>',
+            '<div class="layui-form-item">',
+              '<label class="layui-form-label">状态</label>',
+              '<div class="layui-input-block">',
+                '<input type="checkbox" name="status" lay-skin="switch" lay-text="启用|禁用" checked>',
+              '</div>',
+            '</div>',
+          '</div>',
+        '</div>'
+      ].join(''),
+      success: function(layero) {
+        form.render(null, 'drawerForm');
+      }
+    });
+  });
+
+  // ==================== 自定义尺寸 ====================
+  $('#drawerSmall').on('click', function() {
+    drawer.right({
+      container: '#contentWrapper',
+      title: '小尺寸抽屉 (300px)',
+      area: ['300px', '100%'],
+      content: '<div style="padding: 20px;"><p>这是一个宽度为 300px 的小尺寸抽屉</p></div>'
+    });
+  });
+
+  $('#drawerMedium').on('click', function() {
+    drawer.right({
+      container: '#contentWrapper',
+      title: '中尺寸抽屉 (450px)',
+      area: ['450px', '100%'],
+      content: '<div style="padding: 20px;"><p>这是一个宽度为 450px 的中等尺寸抽屉</p></div>'
+    });
+  });
+
+  $('#drawerLarge').on('click', function() {
+    drawer.right({
+      container: '#contentWrapper',
+      title: '大尺寸抽屉 (600px)',
+      area: ['600px', '100%'],
+      content: '<div style="padding: 20px;"><p>这是一个宽度为 600px 的大尺寸抽屉，适合展示更多内容</p></div>'
+    });
+  });
+
+  // ==================== 带按钮 ====================
+  $('#drawerBtn').on('click', function() {
+    drawer.right({
+      container: '#contentWrapper',
+      title: '带按钮的抽屉',
+      area: ['400px', '100%'],
+      content: '<div style="padding: 20px;"><p>这是一个带底部按钮的抽屉。</p><p style="margin-top:12px;">点击确定或取消按钮触发回调。</p></div>',
+      btn: ['确定', '取消'],
+      yes: function(index) {
+        layer.msg('点击了确定');
+        layer.close(index);
+      },
+      btn2: function(index) {
+        layer.msg('点击了取消');
+      }
+    });
+  });
+
+  // ==================== iframe 层 ====================
+  $('#drawerIframe').on('click', function() {
+    drawer.right({
+      title: 'iframe 抽屉',
+      type: 2,
+      area: ['500px', '100%'],
+      content: 'https://www.baidu.com'
+    });
+  });
+
+  // ==================== 多层抽屉 ====================
+  $('#drawerMulti').on('click', function() {
+    drawer.right({
+      container: '#contentWrapper',
+      title: '第一层抽屉',
+      area: ['350px', '100%'],
+      content: [
+        '<div style="padding: 20px;">',
+          '<p>这是第一层抽屉</p>',
+          '<button class="layui-btn layui-btn-normal" id="openSecondDrawer" style="margin-top: 20px;">打开第二层抽屉</button>',
+        '</div>'
+      ].join(''),
+      success: function(layero) {
+        layero.find('#openSecondDrawer').on('click', function() {
+          drawer.right({
+            title: '第二层抽屉',
+            area: ['300px', '100%'],
+            shade: 0.05,
+            content: '<div style="padding: 20px;"><p>这是第二层抽屉</p><p style="margin-top: 10px; font-size: 12px;">多层抽屉可以用于复杂的信息层级展示</p></div>'
+          });
+        });
+      }
+    });
+  });
+});
+</script>
+</body>
+</html>

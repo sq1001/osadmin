@@ -1,0 +1,58 @@
+/**
+ * LayUI 评分组件主题适配
+ * 覆盖颜色、背景色、边框、圆角相关属性
+ */
+
+/* ========== 评分基础 ========== */
+.layui-rate {
+  color: var(--text-muted);
+}
+
+.layui-rate li i.layui-icon {
+  color: var(--text-muted);
+}
+
+/* ========== 选中状态 ========== */
+.layui-rate li.layui-this i.layui-icon {
+  color: var(--warning);
+}
+
+/* ========== 半选状态 ========== */
+.layui-rate li.layui-half i.layui-icon {
+  color: var(--warning);
+}
+
+/* ========== 悬停状态 ========== */
+.layui-rate li:hover i.layui-icon {
+  color: var(--warning);
+}
+
+/* ========== 只读状态 ========== */
+.layui-rate[readonly] li i.layui-icon {
+  color: var(--text-muted);
+}
+
+.layui-rate[readonly] li.layui-this i.layui-icon {
+  color: var(--warning);
+}
+
+/* ========== 深色主题 ========== */
+[data-theme="dark"] .layui-rate {
+  color: var(--text-muted);
+}
+
+[data-theme="dark"] .layui-rate li i.layui-icon {
+  color: var(--text-muted);
+}
+
+[data-theme="dark"] .layui-rate li.layui-this i.layui-icon {
+  color: var(--warning);
+}
+
+[data-theme="dark"] .layui-rate li.layui-half i.layui-icon {
+  color: var(--warning);
+}
+
+[data-theme="dark"] .layui-rate li:hover i.layui-icon {
+  color: var(--warning);
+}

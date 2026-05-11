@@ -1,0 +1,514 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>图标组件 - Layui</title>
+  <meta name="keywords" content="图标,icon,字体图标">
+  <meta name="description" content="Layui图标组件使用示例">
+</head>
+<body>
+  <div class="page-content">
+    <div class="demo-header">
+      <h3 class="demo-title">图标组件</h3>
+      <p class="demo-desc">Layui 图标采用字体形式，取材于阿里巴巴矢量图标库 iconfont，共 192 个图标</p>
+    </div>
+
+    <div class="layui-card">
+      <div class="layui-card-header">
+        <span class="layui-card-title">图标使用方式</span>
+      </div>
+      <div class="layui-card-body">
+        <div class="icon-usage">
+          <div class="usage-item">
+            <i class="layui-icon layui-icon-face-smile"></i>
+            <span>font-class 方式</span>
+            <code>&lt;i class="layui-icon layui-icon-face-smile"&gt;&lt;/i&gt;</code>
+          </div>
+          <div class="usage-item">
+            <i class="layui-icon">&#xe6af;</i>
+            <span>unicode 方式</span>
+            <code>&lt;i class="layui-icon"&gt;&amp;#xe6af;&lt;/i&gt;</code>
+          </div>
+          <div class="usage-item">
+            <i class="layui-icon layui-icon-face-smile" style="font-size: 30px; color: #1E9FFF;"></i>
+            <span>自定义样式</span>
+            <code>&lt;i class="layui-icon layui-icon-face-smile" style="font-size: 30px; color: #1E9FFF;"&gt;&lt;/i&gt;</code>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="layui-card">
+      <div class="layui-card-header">
+        <span class="layui-card-title">常用图标</span>
+      </div>
+      <div class="layui-card-body">
+        <div class="icon-grid">
+          <div class="icon-item" data-icon="layui-icon-home">
+            <i class="layui-icon layui-icon-home"></i>
+            <span>主页</span>
+          </div>
+          <div class="icon-item" data-icon="layui-icon-user">
+            <i class="layui-icon layui-icon-user"></i>
+            <span>用户</span>
+          </div>
+          <div class="icon-item" data-icon="layui-icon-set">
+            <i class="layui-icon layui-icon-set"></i>
+            <span>设置</span>
+          </div>
+          <div class="icon-item" data-icon="layui-icon-search">
+            <i class="layui-icon layui-icon-search"></i>
+            <span>搜索</span>
+          </div>
+          <div class="icon-item" data-icon="layui-icon-addition">
+            <i class="layui-icon layui-icon-addition"></i>
+            <span>添加</span>
+          </div>
+          <div class="icon-item" data-icon="layui-icon-edit">
+            <i class="layui-icon layui-icon-edit"></i>
+            <span>编辑</span>
+          </div>
+          <div class="icon-item" data-icon="layui-icon-delete">
+            <i class="layui-icon layui-icon-delete"></i>
+            <span>删除</span>
+          </div>
+          <div class="icon-item" data-icon="layui-icon-refresh">
+            <i class="layui-icon layui-icon-refresh"></i>
+            <span>刷新</span>
+          </div>
+          <div class="icon-item" data-icon="layui-icon-upload">
+            <i class="layui-icon layui-icon-upload"></i>
+            <span>上传</span>
+          </div>
+          <div class="icon-item" data-icon="layui-icon-download-circle">
+            <i class="layui-icon layui-icon-download-circle"></i>
+            <span>下载</span>
+          </div>
+          <div class="icon-item" data-icon="layui-icon-share">
+            <i class="layui-icon layui-icon-share"></i>
+            <span>分享</span>
+          </div>
+          <div class="icon-item" data-icon="layui-icon-print">
+            <i class="layui-icon layui-icon-print"></i>
+            <span>打印</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="layui-card">
+      <div class="layui-card-header">
+        <span class="layui-card-title">状态图标</span>
+      </div>
+      <div class="layui-card-body">
+        <div class="icon-grid">
+          <div class="icon-item" data-icon="layui-icon-ok">
+            <i class="layui-icon layui-icon-ok"></i>
+            <span>正确</span>
+          </div>
+          <div class="icon-item" data-icon="layui-icon-ok-circle">
+            <i class="layui-icon layui-icon-ok-circle"></i>
+            <span>正确圆圈</span>
+          </div>
+          <div class="icon-item" data-icon="layui-icon-success">
+            <i class="layui-icon layui-icon-success"></i>
+            <span>成功</span>
+          </div>
+          <div class="icon-item" data-icon="layui-icon-error">
+            <i class="layui-icon layui-icon-error"></i>
+            <span>错误</span>
+          </div>
+          <div class="icon-item" data-icon="layui-icon-close">
+            <i class="layui-icon layui-icon-close"></i>
+            <span>关闭</span>
+          </div>
+          <div class="icon-item" data-icon="layui-icon-close-fill">
+            <i class="layui-icon layui-icon-close-fill"></i>
+            <span>关闭实心</span>
+          </div>
+          <div class="icon-item" data-icon="layui-icon-question">
+            <i class="layui-icon layui-icon-question"></i>
+            <span>问号</span>
+          </div>
+          <div class="icon-item" data-icon="layui-icon-tips">
+            <i class="layui-icon layui-icon-tips"></i>
+            <span>提示</span>
+          </div>
+          <div class="icon-item" data-icon="layui-icon-loading">
+            <i class="layui-icon layui-icon-loading layui-anim layui-anim-rotate layui-anim-loop"></i>
+            <span>加载中</span>
+          </div>
+          <div class="icon-item" data-icon="layui-icon-disabled">
+            <i class="layui-icon layui-icon-disabled"></i>
+            <span>禁用</span>
+          </div>
+          <div class="icon-item" data-icon="layui-icon-lock">
+            <i class="layui-icon layui-icon-lock"></i>
+            <span>锁定</span>
+          </div>
+          <div class="icon-item" data-icon="layui-icon-password">
+            <i class="layui-icon layui-icon-password"></i>
+            <span>密码</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="layui-card">
+      <div class="layui-card-header">
+        <span class="layui-card-title">方向图标</span>
+      </div>
+      <div class="layui-card-body">
+        <div class="icon-grid">
+          <div class="icon-item" data-icon="layui-icon-up">
+            <i class="layui-icon layui-icon-up"></i>
+            <span>向上</span>
+          </div>
+          <div class="icon-item" data-icon="layui-icon-down">
+            <i class="layui-icon layui-icon-down"></i>
+            <span>向下</span>
+          </div>
+          <div class="icon-item" data-icon="layui-icon-left">
+            <i class="layui-icon layui-icon-left"></i>
+            <span>向左</span>
+          </div>
+          <div class="icon-item" data-icon="layui-icon-right">
+            <i class="layui-icon layui-icon-right"></i>
+            <span>向右</span>
+          </div>
+          <div class="icon-item" data-icon="layui-icon-prev">
+            <i class="layui-icon layui-icon-prev"></i>
+            <span>上一页</span>
+          </div>
+          <div class="icon-item" data-icon="layui-icon-next">
+            <i class="layui-icon layui-icon-next"></i>
+            <span>下一页</span>
+          </div>
+          <div class="icon-item" data-icon="layui-icon-return">
+            <i class="layui-icon layui-icon-return"></i>
+            <span>返回</span>
+          </div>
+          <div class="icon-item" data-icon="layui-icon-top">
+            <i class="layui-icon layui-icon-top"></i>
+            <span>置顶</span>
+          </div>
+          <div class="icon-item" data-icon="layui-icon-triangle-d">
+            <i class="layui-icon layui-icon-triangle-d"></i>
+            <span>下三角</span>
+          </div>
+          <div class="icon-item" data-icon="layui-icon-triangle-r">
+            <i class="layui-icon layui-icon-triangle-r"></i>
+            <span>右三角</span>
+          </div>
+          <div class="icon-item" data-icon="layui-icon-circle">
+            <i class="layui-icon layui-icon-circle"></i>
+            <span>单选框</span>
+          </div>
+          <div class="icon-item" data-icon="layui-icon-radio">
+            <i class="layui-icon layui-icon-radio"></i>
+            <span>选中</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="layui-card">
+      <div class="layui-card-header">
+        <span class="layui-card-title">表情图标</span>
+      </div>
+      <div class="layui-card-body">
+        <div class="icon-grid">
+          <div class="icon-item" data-icon="layui-icon-face-smile">
+            <i class="layui-icon layui-icon-face-smile"></i>
+            <span>微笑</span>
+          </div>
+          <div class="icon-item" data-icon="layui-icon-face-cry">
+            <i class="layui-icon layui-icon-face-cry"></i>
+            <span>哭泣</span>
+          </div>
+          <div class="icon-item" data-icon="layui-icon-face-surprised">
+            <i class="layui-icon layui-icon-face-surprised"></i>
+            <span>惊讶</span>
+          </div>
+          <div class="icon-item" data-icon="layui-icon-face-smile-b">
+            <i class="layui-icon layui-icon-face-smile-b"></i>
+            <span>微笑粗</span>
+          </div>
+          <div class="icon-item" data-icon="layui-icon-face-smile-fine">
+            <i class="layui-icon layui-icon-face-smile-fine"></i>
+            <span>微笑细</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="layui-card">
+      <div class="layui-card-header">
+        <span class="layui-card-title">媒体图标</span>
+      </div>
+      <div class="layui-card-body">
+        <div class="icon-grid">
+          <div class="icon-item" data-icon="layui-icon-picture">
+            <i class="layui-icon layui-icon-picture"></i>
+            <span>图片</span>
+          </div>
+          <div class="icon-item" data-icon="layui-icon-camera">
+            <i class="layui-icon layui-icon-camera"></i>
+            <span>相机</span>
+          </div>
+          <div class="icon-item" data-icon="layui-icon-video">
+            <i class="layui-icon layui-icon-video"></i>
+            <span>视频</span>
+          </div>
+          <div class="icon-item" data-icon="layui-icon-music">
+            <i class="layui-icon layui-icon-music"></i>
+            <span>音乐</span>
+          </div>
+          <div class="icon-item" data-icon="layui-icon-play">
+            <i class="layui-icon layui-icon-play"></i>
+            <span>播放</span>
+          </div>
+          <div class="icon-item" data-icon="layui-icon-pause">
+            <i class="layui-icon layui-icon-pause"></i>
+            <span>暂停</span>
+          </div>
+          <div class="icon-item" data-icon="layui-icon-headset">
+            <i class="layui-icon layui-icon-headset"></i>
+            <span>耳机</span>
+          </div>
+          <div class="icon-item" data-icon="layui-icon-voice">
+            <i class="layui-icon layui-icon-voice"></i>
+            <span>语音</span>
+          </div>
+          <div class="icon-item" data-icon="layui-icon-sound">
+            <i class="layui-icon layui-icon-sound"></i>
+            <span>声音</span>
+          </div>
+          <div class="icon-item" data-icon="layui-icon-mute">
+            <i class="layui-icon layui-icon-mute"></i>
+            <span>静音</span>
+          </div>
+          <div class="icon-item" data-icon="layui-icon-mike">
+            <i class="layui-icon layui-icon-mike"></i>
+            <span>麦克风</span>
+          </div>
+          <div class="icon-item" data-icon="layui-icon-carousel">
+            <i class="layui-icon layui-icon-carousel"></i>
+            <span>轮播</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="layui-card">
+      <div class="layui-card-header">
+        <span class="layui-card-title">文件图标</span>
+      </div>
+      <div class="layui-card-body">
+        <div class="icon-grid">
+          <div class="icon-item" data-icon="layui-icon-file">
+            <i class="layui-icon layui-icon-file"></i>
+            <span>文件</span>
+          </div>
+          <div class="icon-item" data-icon="layui-icon-file-b">
+            <i class="layui-icon layui-icon-file-b"></i>
+            <span>文件粗</span>
+          </div>
+          <div class="icon-item" data-icon="layui-icon-folder">
+            <i class="layui-icon layui-icon-folder"></i>
+            <span>文件夹</span>
+          </div>
+          <div class="icon-item" data-icon="layui-icon-folder-open">
+            <i class="layui-icon layui-icon-folder-open"></i>
+            <span>文件夹打开</span>
+          </div>
+          <div class="icon-item" data-icon="layui-icon-template">
+            <i class="layui-icon layui-icon-template"></i>
+            <span>模板</span>
+          </div>
+          <div class="icon-item" data-icon="layui-icon-table">
+            <i class="layui-icon layui-icon-table"></i>
+            <span>表格</span>
+          </div>
+          <div class="icon-item" data-icon="layui-icon-chart">
+            <i class="layui-icon layui-icon-chart"></i>
+            <span>图表</span>
+          </div>
+          <div class="icon-item" data-icon="layui-icon-chart-screen">
+            <i class="layui-icon layui-icon-chart-screen"></i>
+            <span>报表</span>
+          </div>
+          <div class="icon-item" data-icon="layui-icon-list">
+            <i class="layui-icon layui-icon-list"></i>
+            <span>列表</span>
+          </div>
+          <div class="icon-item" data-icon="layui-icon-form">
+            <i class="layui-icon layui-icon-form"></i>
+            <span>表单</span>
+          </div>
+          <div class="icon-item" data-icon="layui-icon-date">
+            <i class="layui-icon layui-icon-date"></i>
+            <span>日期</span>
+          </div>
+          <div class="icon-item" data-icon="layui-icon-time">
+            <i class="layui-icon layui-icon-time"></i>
+            <span>时间</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="layui-card">
+      <div class="layui-card-header">
+        <span class="layui-card-title">品牌图标</span>
+      </div>
+      <div class="layui-card-body">
+        <div class="icon-grid">
+          <div class="icon-item" data-icon="layui-icon-chrome">
+            <i class="layui-icon layui-icon-chrome"></i>
+            <span>Chrome</span>
+          </div>
+          <div class="icon-item" data-icon="layui-icon-firefox">
+            <i class="layui-icon layui-icon-firefox"></i>
+            <span>Firefox</span>
+          </div>
+          <div class="icon-item" data-icon="layui-icon-edge">
+            <i class="layui-icon layui-icon-edge"></i>
+            <span>Edge</span>
+          </div>
+          <div class="icon-item" data-icon="layui-icon-ie">
+            <i class="layui-icon layui-icon-ie"></i>
+            <span>IE</span>
+          </div>
+          <div class="icon-item" data-icon="layui-icon-android">
+            <i class="layui-icon layui-icon-android"></i>
+            <span>Android</span>
+          </div>
+          <div class="icon-item" data-icon="layui-icon-ios">
+            <i class="layui-icon layui-icon-ios"></i>
+            <span>iOS</span>
+          </div>
+          <div class="icon-item" data-icon="layui-icon-windows">
+            <i class="layui-icon layui-icon-windows"></i>
+            <span>Windows</span>
+          </div>
+          <div class="icon-item" data-icon="layui-icon-github">
+            <i class="layui-icon layui-icon-github"></i>
+            <span>GitHub</span>
+          </div>
+          <div class="icon-item" data-icon="layui-icon-gitee">
+            <i class="layui-icon layui-icon-gitee"></i>
+            <span>Gitee</span>
+          </div>
+          <div class="icon-item" data-icon="layui-icon-login-wechat">
+            <i class="layui-icon layui-icon-login-wechat"></i>
+            <span>微信</span>
+          </div>
+          <div class="icon-item" data-icon="layui-icon-login-qq">
+            <i class="layui-icon layui-icon-login-qq"></i>
+            <span>QQ</span>
+          </div>
+          <div class="icon-item" data-icon="layui-icon-login-weibo">
+            <i class="layui-icon layui-icon-login-weibo"></i>
+            <span>微博</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <style>
+  .demo-header {
+    margin-bottom: 16px;
+  }
+  .demo-title {
+    font-size: 18px;
+    font-weight: 600;
+    color: var(--text-primary);
+    margin-bottom: 4px;
+  }
+  .demo-desc {
+    font-size: 13px;
+    color: var(--text-muted);
+  }
+  .icon-usage {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 24px;
+  }
+  .usage-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    padding: 16px;
+    background: var(--bg);
+    border-radius: 8px;
+    min-width: 200px;
+  }
+  .usage-item i {
+    font-size: 32px;
+    color: var(--accent);
+  }
+  .usage-item span {
+    font-size: 13px;
+    color: var(--text-secondary);
+  }
+  .usage-item code {
+    font-size: 11px;
+    color: var(--text-muted);
+    background: var(--card-bg);
+    padding: 4px 8px;
+    border-radius: 4px;
+    word-break: break-all;
+  }
+  .icon-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+    gap: 12px;
+  }
+  .icon-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    padding: 16px 8px;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.15s ease;
+  }
+  .icon-item:hover {
+    background: var(--accent-light);
+  }
+  .icon-item i {
+    font-size: 28px;
+    color: var(--text-primary);
+  }
+  .icon-item span {
+    font-size: 12px;
+    color: var(--text-muted);
+    text-align: center;
+  }
+  </style>
+
+  <script>
+  layui.use(['layer', 'lay'], function(){
+    var layer = layui.layer;
+    var lay = layui.lay;
+    var $ = layui.$;
+    
+    $('.icon-item').on('click', function(){
+      var iconClass = $(this).data('icon');
+      var html = '<i class="layui-icon ' + iconClass + '"></i>';
+      lay.clipboard.writeText({
+        text: html,
+        done: function(){
+          layer.msg('已复制: ' + html, { icon: 1, time: 1500 });
+        }
+      });
+    });
+  });
+  </script>
+</body>
+</html>

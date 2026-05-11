@@ -1,0 +1,520 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>模板引擎组件 - Layui</title>
+  <meta name="keywords" content="模板引擎,laytpl,数据渲染">
+  <meta name="description" content="Layui模板引擎组件使用示例">
+</head>
+<body>
+  <div class="page-content">
+    <div class="demo-header">
+      <h3 class="demo-title">模板引擎组件 (laytpl)</h3>
+      <p class="demo-desc">laytpl 是 Layui 的模板引擎，支持变量输出、循环、条件判断等功能</p>
+    </div>
+
+    <div class="demo-grid">
+      <div class="layui-card">
+        <div class="layui-card-header">
+          <span class="layui-card-title">基础语法</span>
+        </div>
+        <div class="layui-card-body">
+          <div class="syntax-list">
+            <div class="syntax-item">
+              <code>{{= d.field }}</code>
+              <span>输出普通文本（不转义）</span>
+            </div>
+            <div class="syntax-item">
+              <code>{{ d.field }}</code>
+              <span>输出转义文本（防止 XSS）</span>
+            </div>
+            <div class="syntax-item">
+              <code>{{# js语句 }}</code>
+              <span>执行 JavaScript 语句</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="layui-card">
+        <div class="layui-card-header">
+          <span class="layui-card-title">转义 vs 非转义</span>
+        </div>
+        <div class="layui-card-body">
+          <script type="text/html" id="escape-tpl">
+            <div class="result-item">
+              <label>原始内容：</label>
+              <span>{{= d.htmlContent }}</span>
+            </div>
+            <div class="result-item">
+              <label>非转义输出 {{= }}：</label>
+              <span>{{= d.htmlContent }}</span>
+            </div>
+            <div class="result-item">
+              <label>转义输出 {{ }}：</label>
+              <span>{{ d.htmlContent }}</span>
+            </div>
+          </script>
+          <div id="escape-view"></div>
+          <div class="demo-tip">
+            <i class="layui-icon layui-icon-tips"></i>
+            转义输出会将 HTML 标签转为实体，防止 XSS 攻击
+          </div>
+        </div>
+      </div>
+
+      <div class="layui-card">
+        <div class="layui-card-header">
+          <span class="layui-card-title">变量输出</span>
+        </div>
+        <div class="layui-card-body">
+          <script type="text/html" id="demo-tpl">
+            <div class="result-item">
+              <label>标题：</label>
+              <span>{{= d.title }}</span>
+            </div>
+            <div class="result-item">
+              <label>作者：</label>
+              <span>{{= d.author }}</span>
+            </div>
+            <div class="result-item">
+              <label>时间：</label>
+              <span>{{= d.time }}</span>
+            </div>
+          </script>
+          <div id="demo-view"></div>
+        </div>
+      </div>
+
+      <div class="layui-card">
+        <div class="layui-card-header">
+          <span class="layui-card-title">循环渲染</span>
+        </div>
+        <div class="layui-card-body">
+          <script type="text/html" id="loop-tpl">
+            <table class="layui-table" lay-size="sm">
+              <thead>
+                <tr>
+                  <th>序号</th>
+                  <th>姓名</th>
+                  <th>年龄</th>
+                  <th>状态</th>
+                </tr>
+              </thead>
+              <tbody>
+              {{# layui.each(d.list, function(index, item){ }}
+                <tr>
+                  <td>{{= index + 1 }}</td>
+                  <td>{{= item.name }}</td>
+                  <td>{{= item.age }}岁</td>
+                  <td>
+                    {{# if(item.status === 1){ }}
+                      <span class="layui-badge layui-bg-green">在线</span>
+                    {{# } else { }}
+                      <span class="layui-badge layui-bg-gray">离线</span>
+                    {{# } }}
+                  </td>
+                </tr>
+              {{# }); }}
+              </tbody>
+            </table>
+          </script>
+          <div id="loop-view"></div>
+        </div>
+      </div>
+
+      <div class="layui-card">
+        <div class="layui-card-header">
+          <span class="layui-card-title">条件判断</span>
+        </div>
+        <div class="layui-card-body">
+          <script type="text/html" id="condition-tpl">
+            <div class="condition-result">
+              {{# if(d.type === 1){ }}
+                <div class="user-type user-type-normal">
+                  <i class="layui-icon layui-icon-username"></i>
+                  <span>普通用户</span>
+                </div>
+              {{# } else if(d.type === 2){ }}
+                <div class="user-type user-type-vip">
+                  <i class="layui-icon layui-icon-diamond"></i>
+                  <span>VIP用户</span>
+                </div>
+              {{# } else { }}
+                <div class="user-type user-type-admin">
+                  <i class="layui-icon layui-icon-auz"></i>
+                  <span>管理员</span>
+                </div>
+              {{# } }}
+            </div>
+          </script>
+          <div id="condition-view"></div>
+          <div class="btn-group" style="margin-top: 12px;">
+            <button class="layui-btn layui-btn-sm" data-type="1">普通用户</button>
+            <button class="layui-btn layui-btn-sm layui-btn-warm" data-type="2">VIP用户</button>
+            <button class="layui-btn layui-btn-sm layui-btn-danger" data-type="3">管理员</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="layui-card">
+        <div class="layui-card-header">
+          <span class="layui-card-title">自定义分隔符</span>
+        </div>
+        <div class="layui-card-body">
+          <script type="text/html" id="delimiter-tpl">
+            <div class="result-item">
+              <label>标题：</label>
+              <span>[[= d.title ]]</span>
+            </div>
+            <div class="result-item">
+              <label>内容：</label>
+              <span>[[= d.content ]]</span>
+            </div>
+          </script>
+          <div id="delimiter-view"></div>
+          <div class="demo-tip">
+            <i class="layui-icon layui-icon-tips"></i>
+            使用 laytpl.config() 配置自定义分隔符，避免与其他模板引擎冲突
+          </div>
+        </div>
+      </div>
+
+      <div class="layui-card layui-col-md12">
+        <div class="layui-card-header">
+          <span class="layui-card-title">完整示例：用户列表</span>
+        </div>
+        <div class="layui-card-body">
+          <script type="text/html" id="user-list-tpl">
+            <div class="user-list">
+            {{# layui.each(d.users, function(index, user){ }}
+              <div class="user-card">
+                <div class="user-avatar">{{= user.name.charAt(0) }}</div>
+                <div class="user-info">
+                  <div class="user-name">{{= user.name }}</div>
+                  <div class="user-email">{{= user.email }}</div>
+                  <div class="user-tags">
+                    {{# layui.each(user.tags, function(i, tag){ }}
+                      <span class="tag">{{= tag }}</span>
+                    {{# }); }}
+                  </div>
+                </div>
+                <div class="user-actions">
+                  <button class="layui-btn layui-btn-xs layui-btn-primary">编辑</button>
+                  <button class="layui-btn layui-btn-xs layui-btn-danger">删除</button>
+                </div>
+              </div>
+            {{# }); }}
+            {{# if(d.users.length === 0){ }}
+              <div class="empty-tip">暂无数据</div>
+            {{# } }}
+            </div>
+          </script>
+          <div id="user-list-view"></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="demo-code">
+      <h4 class="demo-code-title">使用示例</h4>
+      <pre class="layui-code" lay-options="{title: 'JavaScript'}">
+// 基础用法
+var tpl = document.getElementById('template-id').innerHTML;
+laytpl(tpl).render(data, function(html){
+  document.getElementById('view-id').innerHTML = html;
+});
+
+// 同步渲染（返回渲染结果）
+var html = laytpl(tpl).render(data);
+
+// 转义输出 {{ }} vs 非转义输出 {{= }}
+// {{ d.content }}   - 转义输出，防止 XSS
+// {{= d.content }}  - 原样输出
+
+// 循环渲染
+{{# layui.each(d.list, function(index, item){ }}
+  <li>{{= item.name }}</li>
+{{# }); }}
+
+// 条件判断
+{{# if(d.type === 1){ }}
+  <div>类型1</div>
+{{# } else { }}
+  <div>其他类型</div>
+{{# } }}
+
+// 自定义分隔符（全局配置）
+laytpl.config({
+  open: '[[',
+  close: ']]'
+});
+// 使用后记得恢复默认
+laytpl.config({
+  open: '{{',
+  close: '}}'
+});</pre>
+    </div>
+  </div>
+
+<style>
+.demo-header {
+  margin-bottom: 16px;
+}
+.demo-title {
+  font-size: 18px;
+  font-weight: 600;
+  color: var(--text-primary);
+  margin-bottom: 4px;
+}
+.demo-desc {
+  font-size: 13px;
+  color: var(--text-muted);
+}
+.demo-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 16px;
+  margin-bottom: 16px;
+}
+@media (max-width: 992px) {
+  .demo-grid {
+    grid-template-columns: 1fr;
+  }
+}
+.syntax-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.syntax-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.syntax-item code {
+  background: var(--bg-secondary, #f5f5f5);
+  padding: 4px 10px;
+  border-radius: 4px;
+  font-size: 13px;
+  color: var(--primary, #16baaa);
+  min-width: 140px;
+}
+.syntax-item span {
+  color: var(--text-secondary);
+  font-size: 13px;
+}
+.result-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 0;
+}
+.result-item label {
+  font-weight: 500;
+  color: var(--text-secondary);
+  min-width: 100px;
+  font-size: 13px;
+}
+.result-item span {
+  color: var(--text-primary);
+}
+.demo-tip {
+  margin-top: 12px;
+  padding: 10px 12px;
+  background: var(--bg-secondary, #f5f5f5);
+  border-radius: 6px;
+  font-size: 12px;
+  color: var(--text-secondary);
+}
+.demo-tip i {
+  margin-right: 6px;
+  color: var(--primary, #16baaa);
+}
+.btn-group {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+.condition-result {
+  padding: 10px 0;
+}
+.user-type {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 20px;
+  border-radius: 8px;
+  font-weight: 500;
+}
+.user-type i {
+  font-size: 20px;
+}
+.user-type-normal {
+  background: var(--bg-secondary, #f5f5f5);
+  color: var(--text-primary);
+}
+.user-type-vip {
+  background: rgba(255, 184, 0, 0.15);
+  color: #ffb800;
+}
+.user-type-admin {
+  background: rgba(255, 87, 34, 0.15);
+  color: #ff5722;
+}
+.user-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+.user-card {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 16px;
+  background: var(--bg-secondary, #f5f5f5);
+  border-radius: 8px;
+}
+.user-avatar {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  background: var(--primary, #16baaa);
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 18px;
+  font-weight: 600;
+  flex-shrink: 0;
+}
+.user-info {
+  flex: 1;
+  min-width: 0;
+}
+.user-name {
+  font-weight: 600;
+  color: var(--text-primary);
+  margin-bottom: 2px;
+}
+.user-email {
+  font-size: 12px;
+  color: var(--text-muted);
+  margin-bottom: 6px;
+}
+.user-tags {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+.user-tags .tag {
+  font-size: 11px;
+  padding: 2px 8px;
+  background: var(--primary, #16baaa);
+  color: #fff;
+  border-radius: 10px;
+}
+.user-actions {
+  display: flex;
+  gap: 8px;
+}
+.empty-tip {
+  text-align: center;
+  padding: 40px;
+  color: var(--text-muted);
+}
+.demo-code {
+  margin-top: 16px;
+}
+.demo-code-title {
+  font-size: 14px;
+  font-weight: 600;
+  margin-bottom: 10px;
+}
+.layui-code {
+  border-radius: 8px;
+}
+</style>
+
+<script>
+layui.use(['laytpl'], function(){
+  var laytpl = layui.laytpl;
+  var $ = layui.$;
+  
+  var escapeData = {
+    htmlContent: '<script>alert("XSS")<\/script>'
+  };
+  var escapeTpl = document.getElementById('escape-tpl').innerHTML;
+  laytpl(escapeTpl).render(escapeData, function(html){
+    $('#escape-view').html(html);
+  });
+
+  var data1 = {
+    title: 'Layui模板引擎示例',
+    author: '贤心',
+    time: '2024-01-01'
+  };
+  var tpl1 = document.getElementById('demo-tpl').innerHTML;
+  laytpl(tpl1).render(data1, function(html){
+    $('#demo-view').html(html);
+  });
+
+  var loopData = {
+    list: [
+      {name: '张三', age: 20, status: 1},
+      {name: '李四', age: 25, status: 0},
+      {name: '王五', age: 30, status: 1},
+      {name: '赵六', age: 28, status: 1}
+    ]
+  };
+  var loopTpl = document.getElementById('loop-tpl').innerHTML;
+  laytpl(loopTpl).render(loopData, function(html){
+    $('#loop-view').html(html);
+  });
+
+  var conditionTpl = document.getElementById('condition-tpl').innerHTML;
+  function renderCondition(type) {
+    laytpl(conditionTpl).render({type: type}, function(html){
+      $('#condition-view').html(html);
+    });
+  }
+  renderCondition(2);
+  
+  $('[data-type]').on('click', function(){
+    var type = parseInt($(this).data('type'));
+    renderCondition(type);
+  });
+
+  var delimiterData = {
+    title: '自定义分隔符示例',
+    content: '使用 [[ 和 ]] 作为分隔符'
+  };
+  var delimiterTpl = document.getElementById('delimiter-tpl').innerHTML;
+  
+  laytpl.config({
+    open: '[[',
+    close: ']]'
+  });
+  laytpl(delimiterTpl).render(delimiterData, function(html){
+    $('#delimiter-view').html(html);
+  });
+  laytpl.config({
+    open: '{{',
+    close: '}}'
+  });
+
+  var userListData = {
+    users: [
+      {name: '张三', email: 'zhangsan@example.com', tags: ['前端', 'Vue']},
+      {name: '李四', email: 'lisi@example.com', tags: ['后端', 'Java', 'Spring']},
+      {name: '王五', email: 'wangwu@example.com', tags: ['全栈', 'React', 'Node.js']}
+    ]
+  };
+  var userListTpl = document.getElementById('user-list-tpl').innerHTML;
+  laytpl(userListTpl).render(userListData, function(html){
+    $('#user-list-view').html(html);
+  });
+});
+</script>
+</body>
+</html>

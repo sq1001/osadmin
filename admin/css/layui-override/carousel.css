@@ -1,0 +1,31 @@
+/**
+ * LayUI 轮播主题适配
+ * 仅覆盖颜色、背景色相关属性
+ */
+
+/* ========== 轮播基础 ========== */
+.layui-carousel {
+  background-color: var(--bg);
+}
+
+.layui-carousel > *[carousel-item] > * {
+  background-color: var(--bg);
+}
+
+/* ========== 指示器 ========== */
+.layui-carousel-ind ul li.layui-this {
+  background-color: #fff;
+}
+
+/* ========== 深色主题 ========== */
+[data-theme="dark"] .layui-carousel {
+  background-color: rgba(0, 0, 0, 0.2);
+}
+
+[data-theme="dark"] .layui-carousel > *[carousel-item] > * {
+  background-color: rgba(0, 0, 0, 0.2);
+}
+
+[data-theme="dark"] .layui-carousel-ind ul li.layui-this {
+  background-color: var(--accent);
+}

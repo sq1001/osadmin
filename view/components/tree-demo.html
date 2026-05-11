@@ -1,0 +1,363 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>树形菜单组件 - Layui</title>
+  <meta name="keywords" content="树形菜单,tree,树结构">
+  <meta name="description" content="Layui树形菜单组件使用示例">
+</head>
+<body>
+  <div class="page-content">
+    <div class="layui-card">
+      <div class="layui-card-header">
+        <h3>树形菜单组件 (tree)</h3>
+      </div>
+      <div class="layui-card-body">
+        
+        <fieldset class="layui-elem-field layui-field-title">
+          <legend>基础用法</legend>
+          <div class="layui-field-box">
+            <div id="test1" class="demo-tree"></div>
+          </div>
+        </fieldset>
+
+        <fieldset class="layui-elem-field layui-field-title">
+          <legend>复选框</legend>
+          <div class="layui-field-box">
+            <div id="test2" class="demo-tree"></div>
+            <div style="margin-top: 10px;">
+              <button class="layui-btn" id="getChecked">获取选中数据</button>
+              <span id="checkedResult" style="margin-left: 10px;"></span>
+            </div>
+          </div>
+        </fieldset>
+
+        <fieldset class="layui-elem-field layui-field-title">
+          <legend>手风琴模式</legend>
+          <div class="layui-field-box">
+            <div id="test3" class="demo-tree"></div>
+          </div>
+        </fieldset>
+
+        <fieldset class="layui-elem-field layui-field-title">
+          <legend>开启节点操作图标</legend>
+          <div class="layui-field-box">
+            <div id="test4" class="demo-tree"></div>
+          </div>
+        </fieldset>
+
+        <fieldset class="layui-elem-field layui-field-title">
+          <legend>默认展开/选中</legend>
+          <div class="layui-field-box">
+            <div id="test5" class="demo-tree"></div>
+          </div>
+        </fieldset>
+
+        <fieldset class="layui-elem-field layui-field-title">
+          <legend>禁用节点</legend>
+          <div class="layui-field-box">
+            <div id="test6" class="demo-tree"></div>
+          </div>
+        </fieldset>
+
+        <fieldset class="layui-elem-field layui-field-title">
+          <legend>自定义图标</legend>
+          <div class="layui-field-box">
+            <div id="test7" class="demo-tree"></div>
+          </div>
+        </fieldset>
+
+        <fieldset class="layui-elem-field layui-field-title">
+          <legend>节点搜索</legend>
+          <div class="layui-field-box">
+            <div class="layui-form">
+              <div class="layui-form-item">
+                <div class="layui-inline">
+                  <input type="text" id="searchInput" placeholder="输入关键字搜索" class="layui-input" style="width: 200px;">
+                </div>
+                <div class="layui-inline">
+                  <button class="layui-btn" id="searchBtn">搜索</button>
+                </div>
+              </div>
+            </div>
+            <div id="test8" class="demo-tree"></div>
+          </div>
+        </fieldset>
+
+        <fieldset class="layui-elem-field layui-field-title">
+          <legend>节点点击回调</legend>
+          <div class="layui-field-box">
+            <div id="test9" class="demo-tree"></div>
+            <div id="clickResult" style="margin-top: 10px; padding: 10px; background: var(--bg); border-radius: 4px;">
+              点击节点查看信息
+            </div>
+          </div>
+        </fieldset>
+
+      </div>
+    </div>
+  </div>
+
+  <script>
+  layui.use(['tree', 'layer', 'util', 'jquery'], function(){
+    var tree = layui.tree;
+    var layer = layui.layer;
+    var util = layui.util;
+    var $ = layui.$;
+    
+    var data1 = [{
+      title: '江西',
+      id: 1,
+      children: [{
+        title: '南昌',
+        id: 1000,
+        children: [{
+          title: '青山湖区',
+          id: 10001
+        }, {
+          title: '高新区',
+          id: 10002
+        }]
+      }, {
+        title: '九江',
+        id: 1001
+      }, {
+        title: '赣州',
+        id: 1002
+      }]
+    }, {
+      title: '广西',
+      id: 2,
+      children: [{
+        title: '南宁',
+        id: 2000
+      }, {
+        title: '桂林',
+        id: 2001
+      }]
+    }, {
+      title: '陕西',
+      id: 3,
+      children: [{
+        title: '西安',
+        id: 3000
+      }, {
+        title: '延安',
+        id: 3001
+      }]
+    }];
+
+    var data2 = [{
+      title: '江西省',
+      id: 1,
+      spread: true,
+      children: [{
+        title: '南昌市',
+        id: 1000,
+        spread: true,
+        children: [{
+          title: '青山湖区',
+          id: 10001
+        }, {
+          title: '高新区',
+          id: 10002,
+          checked: true
+        }]
+      }, {
+        title: '九江市',
+        id: 1001
+      }, {
+        title: '赣州市',
+        id: 1002
+      }]
+    }, {
+      title: '广西壮族自治区',
+      id: 2,
+      children: [{
+        title: '南宁市',
+        id: 2000
+      }, {
+        title: '桂林市',
+        id: 2001
+      }]
+    }];
+
+    var data3 = [{
+      title: '文件夹1',
+      id: 1,
+      spread: true,
+      children: [{
+        title: '文件1-1',
+        id: 1000
+      }, {
+        title: '文件1-2',
+        id: 1001
+      }]
+    }, {
+      title: '文件夹2',
+      id: 2,
+      children: [{
+        title: '文件2-1',
+        id: 2000
+      }, {
+        title: '文件2-2',
+        id: 2001
+      }]
+    }];
+
+    var data4 = [{
+      title: '一级目录',
+      id: 1,
+      spread: true,
+      children: [{
+        title: '二级目录',
+        id: 1000,
+        children: [{
+          title: '三级文件',
+          id: 10001
+        }]
+      }]
+    }];
+
+    var data5 = [{
+      title: '默认展开节点',
+      id: 1,
+      spread: true,
+      children: [{
+        title: '默认选中节点',
+        id: 1000,
+        checked: true
+      }, {
+        title: '普通节点',
+        id: 1001
+      }]
+    }, {
+      title: '另一个父节点',
+      id: 2,
+      children: [{
+        title: '子节点',
+        id: 2000
+      }]
+    }];
+
+    var data6 = [{
+      title: '正常节点',
+      id: 1,
+      children: [{
+        title: '正常子节点',
+        id: 1000
+      }]
+    }, {
+      title: '禁用节点',
+      id: 2,
+      disabled: true,
+      children: [{
+        title: '禁用子节点',
+        id: 2000,
+        disabled: true
+      }]
+    }];
+
+    var data7 = [{
+      title: '文件夹',
+      id: 1,
+      icon: 'layui-icon layui-icon-folder',
+      children: [{
+        title: '文档',
+        id: 1000,
+        icon: 'layui-icon layui-icon-file'
+      }, {
+        title: '图片',
+        id: 1001,
+        icon: 'layui-icon layui-icon-picture'
+      }]
+    }, {
+      title: '设置',
+      id: 2,
+      icon: 'layui-icon layui-icon-set'
+    }];
+    
+    tree.render({
+      elem: '#test1',
+      data: data1
+    });
+
+    tree.render({
+      elem: '#test2',
+      data: data2,
+      showCheckbox: true,
+      id: 'demoTree2'
+    });
+
+    tree.render({
+      elem: '#test3',
+      data: data3,
+      accordion: true
+    });
+    
+    tree.render({
+      elem: '#test4',
+      data: data4,
+      edit: ['add', 'update', 'del']
+    });
+
+    tree.render({
+      elem: '#test5',
+      data: data5,
+      showCheckbox: true
+    });
+
+    tree.render({
+      elem: '#test6',
+      data: data6,
+      showCheckbox: true
+    });
+
+    tree.render({
+      elem: '#test7',
+      data: data7
+    });
+
+    tree.render({
+      elem: '#test8',
+      data: data1,
+      id: 'demoTree8'
+    });
+
+    tree.render({
+      elem: '#test9',
+      data: data1,
+      click: function(obj){
+        var data = obj.data;
+        $('#clickResult').html('节点ID：' + data.id + '<br>节点名称：' + data.title);
+      }
+    });
+
+    $('#getChecked').on('click', function(){
+      var checkedData = tree.getChecked('demoTree2');
+      var ids = checkedData.map(function(item){
+        return item.id;
+      });
+      layer.msg('选中了 ' + checkedData.length + ' 个节点');
+      $('#checkedResult').text('[' + ids.join(', ') + ']');
+    });
+
+    $('#searchBtn').on('click', function(){
+      var keyword = $('#searchInput').val();
+      if(keyword){
+        tree.reload('demoTree8', {
+          data: data1.filter(function(item){
+            return item.title.indexOf(keyword) > -1;
+          })
+        });
+      } else {
+        tree.reload('demoTree8', {
+          data: data1
+        });
+      }
+    });
+  });
+  </script>
+</body>
+</html>

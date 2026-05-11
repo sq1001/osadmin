@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>分页组件 - Layui</title>
+  <meta name="keywords" content="分页,laypage,分页器">
+  <meta name="description" content="Layui分页组件使用示例">
+</head>
+<body>
+  <div class="page-content">
+    <div class="layui-card">
+      <div class="layui-card-header">
+        <h3>分页组件 (laypage)</h3>
+      </div>
+      <div class="layui-card-body">
+        
+        <fieldset class="layui-elem-field layui-field-title">
+          <legend>基础用法</legend>
+          <div class="layui-field-box">
+            <div id="test1"></div>
+          </div>
+        </fieldset>
+
+        <fieldset class="layui-elem-field layui-field-title">
+          <legend>自定义主题</legend>
+          <div class="layui-field-box">
+            <div id="test2"></div>
+            <div id="test2-2" style="margin-top: 10px;"></div>
+            <div id="test2-3" style="margin-top: 10px;"></div>
+          </div>
+        </fieldset>
+
+        <fieldset class="layui-elem-field layui-field-title">
+          <legend>自定义文本</legend>
+          <div class="layui-field-box">
+            <div id="test3"></div>
+          </div>
+        </fieldset>
+
+        <fieldset class="layui-elem-field layui-field-title">
+          <legend>开启跳页</legend>
+          <div class="layui-field-box">
+            <div id="test4"></div>
+          </div>
+        </fieldset>
+
+        <fieldset class="layui-elem-field layui-field-title">
+          <legend>完整功能</legend>
+          <div class="layui-field-box">
+            <div id="test5"></div>
+          </div>
+        </fieldset>
+
+        <fieldset class="layui-elem-field layui-field-title">
+          <legend>自定义布局</legend>
+          <div class="layui-field-box">
+            <div id="test6"></div>
+            <div id="test6-2" style="margin-top: 10px;"></div>
+            <div id="test6-3" style="margin-top: 10px;"></div>
+          </div>
+        </fieldset>
+
+        <fieldset class="layui-elem-field layui-field-title">
+          <legend>每页条数选择</legend>
+          <div class="layui-field-box">
+            <div id="test7"></div>
+          </div>
+        </fieldset>
+
+        <fieldset class="layui-elem-field layui-field-title">
+          <legend>显示总数</legend>
+          <div class="layui-field-box">
+            <div id="test8"></div>
+          </div>
+        </fieldset>
+
+        <fieldset class="layui-elem-field layui-field-title">
+          <legend>简单模式</legend>
+          <div class="layui-field-box">
+            <div id="test9"></div>
+          </div>
+        </fieldset>
+
+        <fieldset class="layui-elem-field layui-field-title">
+          <legend>指定连续页码</legend>
+          <div class="layui-field-box">
+            <div id="test10"></div>
+          </div>
+        </fieldset>
+
+        <fieldset class="layui-elem-field layui-field-title">
+          <legend>回调演示</legend>
+          <div class="layui-field-box">
+            <div id="test11"></div>
+            <div id="test11-result" style="margin-top: 10px; padding: 10px; background: var(--bg); border-radius: 4px;">
+              当前页：<span id="currentPage">1</span>，每页显示：<span id="pageSize">10</span> 条
+            </div>
+          </div>
+        </fieldset>
+
+      </div>
+    </div>
+  </div>
+
+  <script>
+  layui.use(['laypage', 'layer'], function(){
+    var laypage = layui.laypage;
+    var layer = layui.layer;
+    
+    laypage.render({
+      elem: 'test1',
+      count: 50
+    });
+    
+    laypage.render({
+      elem: 'test2',
+      count: 100,
+      theme: '#1E9FFF'
+    });
+
+    laypage.render({
+      elem: 'test2-2',
+      count: 100,
+      theme: '#16baaa'
+    });
+
+    laypage.render({
+      elem: 'test2-3',
+      count: 100,
+      theme: '#FF5722'
+    });
+    
+    laypage.render({
+      elem: 'test3',
+      count: 100,
+      first: '首页',
+      last: '尾页',
+      prev: '<em>←</em>',
+      next: '<em>→</em>'
+    });
+    
+    laypage.render({
+      elem: 'test4',
+      count: 100,
+      layout: ['count', 'prev', 'page', 'next', 'limit', 'refresh', 'skip']
+    });
+    
+    laypage.render({
+      elem: 'test5',
+      count: 1000,
+      limit: 20,
+      limits: [10, 20, 30, 40, 50],
+      layout: ['count', 'prev', 'page', 'next', 'limit', 'refresh', 'skip'],
+      jump: function(obj){
+        console.log('当前页：'+ obj.curr);
+        console.log('每页显示：'+ obj.limit);
+      }
+    });
+
+    laypage.render({
+      elem: 'test6',
+      count: 100,
+      layout: ['prev', 'page', 'next']
+    });
+
+    laypage.render({
+      elem: 'test6-2',
+      count: 100,
+      layout: ['count', 'prev', 'page', 'next']
+    });
+
+    laypage.render({
+      elem: 'test6-3',
+      count: 100,
+      layout: ['prev', 'page', 'next', 'skip']
+    });
+
+    laypage.render({
+      elem: 'test7',
+      count: 1000,
+      limit: 20,
+      limits: [10, 20, 30, 50, 100],
+      layout: ['prev', 'page', 'next', 'limit']
+    });
+
+    laypage.render({
+      elem: 'test8',
+      count: 1000,
+      layout: ['count', 'prev', 'page', 'next']
+    });
+
+    laypage.render({
+      elem: 'test9',
+      count: 100,
+      theme: '#1E9FFF',
+      simple: true
+    });
+
+    laypage.render({
+      elem: 'test10',
+      count: 100,
+      groups: 3
+    });
+
+    laypage.render({
+      elem: 'test11',
+      count: 500,
+      limit: 10,
+      limits: [10, 20, 30, 50],
+      layout: ['count', 'prev', 'page', 'next', 'limit', 'skip'],
+      jump: function(obj, first){
+        if(!first){
+          layer.msg('第 '+ obj.curr +' 页');
+        }
+        document.getElementById('currentPage').innerText = obj.curr;
+        document.getElementById('pageSize').innerText = obj.limit;
+      }
+    });
+  });
+  </script>
+</body>
+</html>

@@ -1,0 +1,91 @@
+/**
+ * LayUI 滑块主题适配
+ * 覆盖颜色、背景色、边框、圆角相关属性
+ */
+
+/* ========== 滑块基础 ========== */
+.layui-slider {
+  background-color: var(--bg);
+  border-radius: 20px;
+}
+
+.layui-slider-bar {
+  background-color: var(--accent);
+  border-radius: 20px;
+}
+
+/* ========== 滑块按钮 ========== */
+.layui-slider-wrap-btn {
+  background-color: var(--card-bg);
+  border-color: var(--accent);
+  border-radius: 50%;
+}
+
+.layui-slider-wrap-btn:hover,
+.layui-slider-wrap-btn.layui-slider-hover {
+  border-color: var(--accent);
+}
+
+/* ========== 步骤点 ========== */
+.layui-slider-step {
+  background-color: var(--border);
+  border-radius: 50%;
+}
+
+.layui-slider-step.layui-slider-step-active {
+  background-color: var(--accent);
+}
+
+/* ========== 范围滑块 ========== */
+.layui-slider-tips {
+  background-color: var(--text-primary);
+  color: #fff;
+  border-radius: 4px;
+}
+
+.layui-slider-tips:after {
+  border-top-color: var(--text-primary);
+}
+
+/* ========== 禁用状态 ========== */
+.layui-slider-disabled .layui-slider-bar {
+  background-color: var(--text-muted);
+}
+
+.layui-slider-disabled .layui-slider-wrap-btn {
+  border-color: var(--text-muted);
+}
+
+/* ========== 深色主题 ========== */
+[data-theme="dark"] .layui-slider {
+  background-color: rgba(255, 255, 255, 0.1);
+}
+
+[data-theme="dark"] .layui-slider-bar {
+  background-color: var(--accent);
+}
+
+[data-theme="dark"] .layui-slider-wrap-btn {
+  background-color: var(--card-bg);
+  border-color: var(--accent);
+}
+
+[data-theme="dark"] .layui-slider-step {
+  background-color: var(--border);
+}
+
+[data-theme="dark"] .layui-slider-step.layui-slider-step-active {
+  background-color: var(--accent);
+}
+
+[data-theme="dark"] .layui-slider-tips {
+  background-color: var(--text-primary);
+}
+
+[data-theme="dark"] .layui-slider-disabled .layui-slider-bar {
+  background-color: var(--text-muted);
+}
+
+[data-theme="dark"] .layui-slider-disabled .layui-slider-wrap-btn {
+  border-color: var(--text-muted);
+}
