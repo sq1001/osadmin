@@ -42,6 +42,7 @@
 [data-theme="dark"] .layui-upload-drag {
   background-color: var(--card-bg);
   border-color: var(--border);
+  color: var(--text-muted);
 }
 
 [data-theme="dark"] .layui-upload-drag:hover {
@@ -59,4 +60,8 @@
 
 [data-theme="dark"] .layui-upload-files li:hover {
   background-color: var(--accent-light);
+}
+
+[data-theme="dark"] .layui-upload-choose {
+  color: var(--text-muted);
 }

@@ -22,3 +22,7 @@
 [data-theme="dark"] .layui-progress-bar {
   background-color: var(--accent);
 }
+
+[data-theme="dark"] .layui-progress-text {
+  color: var(--text-secondary);
+}

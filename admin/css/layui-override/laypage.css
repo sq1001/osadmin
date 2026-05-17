@@ -80,3 +80,16 @@
   background-color: transparent;
   border-color: var(--border);
 }
+
+[data-theme="dark"] .layui-laypage a,
+[data-theme="dark"] .layui-laypage span {
+  color: var(--text-secondary);
+}
+
+[data-theme="dark"] .layui-laypage .layui-laypage-spr {
+  color: var(--text-muted);
+}
+
+[data-theme="dark"] .layui-laypage .layui-laypage-skip {
+  color: var(--text-muted);
+}

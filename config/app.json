@@ -1,6 +1,6 @@
 {
   "name": "OSADMIN",
-  "version": "1.7.1",
+  "version": "1.8.0",
   "description": "基于layui原生管理后台系统",
   "site": {
     "name": "OSADMIN",
@@ -15,6 +15,7 @@
   },
   "theme": {
     "defaultMode": "light",
+    "defaultScheme": "indigo",
     "defaultColor": "#16baaa",
     "defaultLayout": "double",
     "tabsVisible": true,
@@ -50,8 +51,76 @@
     "#ffb800": { "hover": "#e6a600", "rgb": "255, 184, 0" },
     "#a233c6": { "hover": "#8e2db0", "rgb": "162, 51, 198" }
   },
+  "schemes": {
+    "indigo": {
+      "name": "靛蓝",
+      "accent": "#6366f1",
+      "accentHover": "#4f46e5",
+      "accentRgb": "99,102,241",
+      "sidebarBg": "#ffffff",
+      "sidebarHover": "#f3f4f6",
+      "sidebarText": "#374151",
+      "contentBg": "#f8fafc",
+      "borderColor": "#e2e8f0"
+    },
+    "emerald": {
+      "name": "翠绿",
+      "accent": "#10b981",
+      "accentHover": "#059669",
+      "accentRgb": "16,185,129",
+      "sidebarBg": "#ecfdf5",
+      "sidebarHover": "rgba(16,185,129,0.1)",
+      "sidebarText": "#064e3b",
+      "contentBg": "#f0fdf4",
+      "borderColor": "#d1fae5"
+    },
+    "ocean": {
+      "name": "海洋蓝",
+      "accent": "#0ea5e9",
+      "accentHover": "#0284c7",
+      "accentRgb": "14,165,233",
+      "sidebarBg": "#f0f9ff",
+      "sidebarHover": "rgba(14,165,233,0.1)",
+      "sidebarText": "#0c4a6e",
+      "contentBg": "#f0f9ff",
+      "borderColor": "#bae6fd"
+    },
+    "amber": {
+      "name": "琥珀",
+      "accent": "#f59e0b",
+      "accentHover": "#d97706",
+      "accentRgb": "245,158,11",
+      "sidebarBg": "#fffbeb",
+      "sidebarHover": "rgba(245,158,11,0.12)",
+      "sidebarText": "#78350f",
+      "contentBg": "#fffbeb",
+      "borderColor": "#fde68a"
+    },
+    "graphite": {
+      "name": "石墨灰",
+      "accent": "#18181b",
+      "accentHover": "#27272a",
+      "accentRgb": "24,24,27",
+      "sidebarBg": "#fafafa",
+      "sidebarHover": "#e4e4e7",
+      "sidebarText": "#18181b",
+      "contentBg": "#f4f4f5",
+      "borderColor": "#e4e4e7"
+    },
+    "rose": {
+      "name": "玫瑰",
+      "accent": "#e11d48",
+      "accentHover": "#be123c",
+      "accentRgb": "225,29,72",
+      "sidebarBg": "#fff1f2",
+      "sidebarHover": "rgba(225,29,72,0.08)",
+      "sidebarText": "#881337",
+      "contentBg": "#fff1f2",
+      "borderColor": "#fecdd3"
+    }
+  },
   "sidebar": {
-    "width": 220,
+    "width": 210,
     "collapsedWidth": 64,
     "submenuWidth": 180
   },
@@ -59,7 +128,7 @@
     "height": 50
   },
   "tabs": {
-    "height": 40,
+    "height": 41,
     "maxTabs": 20
   },
   "storage": {

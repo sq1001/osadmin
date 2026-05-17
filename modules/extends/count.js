@@ -1,5 +1,6 @@
 /**
  * Count 数字动画模块
+ * 性能优化：调整定时器频率，减少 DOM 更新次数
  */
 layui.define(['jquery', 'element'], function (exports) {
 	"use strict";
@@ -9,7 +10,7 @@ layui.define(['jquery', 'element'], function (exports) {
 		element = layui.element;
 
 	var count = new function () {
-		this.version = '1.0.0';
+		this.version = '1.1.0';
 
 		this.up = function (targetEle, options) {
 
@@ -33,7 +34,7 @@ layui.define(['jquery', 'element'], function (exports) {
 				if (t == initial) return;
 				initial = t;
 				$this.innerHTML = initial;
-			}, 30);
+			}, Math.max(regulator, 50)); // 最小间隔 50ms，避免过度频繁更新
 		}
 
 	}

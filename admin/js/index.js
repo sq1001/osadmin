@@ -9,15 +9,16 @@
 (function(window, document) {
   'use strict';
 
-  // 防止重复初始化
-  if (window.__OSLAY_INITIALIZED__) {
+  // ========== 原子锁：防止任何形式的重复执行 ==========
+  if (window.__OSLAY_INIT_LOCK__) {
     return;
   }
+  window.__OSLAY_INIT_LOCK__ = true;
 
   // ========== 基础配置 ==========
-  var script = document.currentScript || document.scripts[document.scripts.length - 1];
-  var scriptSrc = script.src;
-  var scriptPath = scriptSrc.substring(0, scriptSrc.lastIndexOf('/') + 1);
+  var script = document.currentScript || (document.scripts.length > 0 ? document.scripts[document.scripts.length - 1] : null);
+  var scriptSrc = script ? script.src : '';
+  var scriptPath = scriptSrc ? scriptSrc.substring(0, scriptSrc.lastIndexOf('/') + 1) : '';
 
   // 计算 baseUrl
   var baseUrl = (function() {
@@ -25,9 +26,8 @@
       return window.__OSLAY_BASE_URL__;
     }
 
-    var dataBase = script.getAttribute('data-base');
-    if (dataBase) {
-      return dataBase;
+    if (script && script.getAttribute('data-base')) {
+      return script.getAttribute('data-base');
     }
 
     var pathParts = scriptPath.replace(/\/+$/, '').split('/');
@@ -35,8 +35,9 @@
     return pathParts.join('/') + '/';
   })();
 
-  // LayUI 模块配置（主页面和独立页面共用）
-  var layuiModules = {
+  // ========== LayUI 模块配置 ==========
+  // 核心模块（启动必需）
+  var coreModules = {
     routerModule: 'modules/common/router',
     themeModule: 'modules/common/theme',
     permissionModule: 'modules/common/permission',
@@ -44,41 +45,44 @@
     componentRenderer: 'modules/common/component-renderer',
     sidebarComp: 'modules/components/sidebar',
     tabsComp: 'modules/components/tabs',
+    toastMod: 'modules/extends/toast',
+    appMain: 'modules/app'
+  };
+  
+  // 懒加载模块（按需加载）
+  var lazyModules = {
     commonMod: 'modules/extends/common',
     countMod: 'modules/extends/count',
     echartsMod: 'modules/extends/echarts',
     xmSelectMod: 'modules/extends/xm-select',
-    toastMod: 'modules/extends/toast',
     drawerMod: 'modules/extends/drawer',
     tinymceMod: 'modules/extends/tinymce',
     iconPickerMod: 'modules/extends/iconPicker',
-    watermarkMod: 'modules/extends/watermark',
-    appMain: 'modules/app'
+    watermarkMod: 'modules/extends/watermark'
   };
+  
+  // 合并用于 LayUI 配置
+  var allLayuiModules = Object.assign({}, coreModules, lazyModules);
 
-  // ========== 基础初始化（所有页面都执行） ==========
-  if (layui && layui.config) {
-    layui.config({
-      base: baseUrl,
-      version: false
-    }).extend(layuiModules);
+  // ========== 直接初始化（layui.js 已在此脚本之前加载完成）==========
+  
+  // 基础配置：注册所有 LayUI 扩展模块
+  layui.config({
+    base: baseUrl,
+    version: false
+  }).extend(allLayuiModules);
 
-    window.__OSLAY_BASE_URL__ = baseUrl;
-    window.__OSLAY_INITIALIZED__ = true;
-  }
+  window.__OSLAY_BASE_URL__ = baseUrl;
+  window.__OSLAY_INITIALIZED__ = true;
 
   // ========== 检测页面类型 ==========
-  // 判断是否为独立页面（iframe、新窗口、弹窗）
   var isStandalonePage = (function() {
-    // 1. 在 iframe 中
     if (window.self !== window.top) {
       return true;
     }
-    // 2. 有 data-standalone 属性
-    if (script.hasAttribute('data-standalone')) {
+    if (script && script.hasAttribute('data-standalone')) {
       return true;
     }
-    // 3. URL 参数指定
     if (window.location.search.indexOf('__standalone__=1') !== -1) {
       return true;
     }
@@ -96,7 +100,7 @@
   var isReady = false;
 
   var App = {
-    version: '1.7.1',
+    version: '1.8.0',
     name: 'OS Admin',
     debug: false,
     baseUrl: baseUrl,
@@ -105,43 +109,71 @@
     appConfig: null,
     menuConfig: null,
 
+    useLazy: function(moduleName, callback) {
+      var self = this;
+      if (self.modules[moduleName]) {
+        callback(self.modules[moduleName]);
+        return;
+      }
+      
+      layui.use([moduleName], function() {
+        var mod = layui[moduleName];
+        self.modules[moduleName] = mod;
+        callback(mod);
+      });
+    },
+
     init: function() {
       var self = this;
-      var $ = layui.$;
-
-      $.ajax({
-        url: baseUrl + 'config/app.json',
-        dataType: 'json'
+      var $ = layui.jquery;
+      
+      var menuUrl = 'config/menu.json';
+      
+      var appPromise = $.ajax({ 
+        url: baseUrl + 'config/app.json', 
+        dataType: 'json' 
       }).done(function(appConfig) {
         self.appConfig = appConfig;
-        
-        var menuUrl = (appConfig.menu && appConfig.menu.url) ? appConfig.menu.url : 'config/menu.json';
-        var version = appConfig.version || '';
-        var versionSuffix = version ? '?v=' + version : '';
-        
-        $.ajax({
-          url: baseUrl + menuUrl + versionSuffix,
-          dataType: 'json'
-        }).done(function(menuConfig) {
-          self.menuConfig = menuConfig;
-          self.initApp();
+        if (appConfig.menu && appConfig.menu.url) {
+          menuUrl = appConfig.menu.url;
+        }
+      });
+      
+      var menuPromise = $.ajax({ 
+        url: baseUrl + menuUrl, 
+        dataType: 'json' 
+      });
+      
+      $.when(appPromise, menuPromise).then(function(appResult, menuResult) {
+        self.appConfig = self.appConfig || appResult[0];
+        self.menuConfig = menuResult[0];
+        self.initApp();
+      }, function() {
+        appPromise.done(function(appConfig) {
+          self.appConfig = appConfig;
+          var finalMenuUrl = (appConfig.menu && appConfig.menu.url) ? appConfig.menu.url : 'config/menu.json';
+          $.ajax({
+            url: baseUrl + finalMenuUrl,
+            dataType: 'json'
+          }).done(function(menuConfig) {
+            self.menuConfig = menuConfig;
+            self.initApp();
+          }).fail(function() {
+            self.menuConfig = [];
+            self.initApp();
+          });
         }).fail(function() {
-          console.error('[OSLAY] Failed to load menu config');
+          self.appConfig = {};
           self.menuConfig = [];
           self.initApp();
         });
-      }).fail(function() {
-        console.error('[OSLAY] Failed to load app config');
-        self.appConfig = {};
-        self.menuConfig = [];
-        self.initApp();
       });
     },
 
     initApp: function() {
       var self = this;
 
-      layui.use(['appMain', 'permissionModule', 'componentRenderer'], function() {
+      layui.use(Object.keys(coreModules), function() {
         var app = layui.appMain;
         var permission = layui.permissionModule;
         var componentRenderer = layui.componentRenderer;
@@ -155,6 +187,10 @@
           self.registerModules();
           isReady = true;
           self.triggerReady();
+          
+          if (window.OSLAY_HIDE_SKELETON) {
+            window.OSLAY_HIDE_SKELETON();
+          }
 
           if (self.debug) {
             console.log('[' + self.name + '] v' + self.version + ' initialized');
@@ -165,30 +201,19 @@
           self.registerModules();
           isReady = true;
           self.triggerReady();
+          
+          if (window.OSLAY_HIDE_SKELETON) {
+            window.OSLAY_HIDE_SKELETON();
+          }
         });
       });
     },
 
     registerModules: function() {
-      this.modules = {
-        router: layui.routerModule,
-        theme: layui.themeModule,
-        permission: layui.permissionModule,
-        resourceLoader: layui.resourceLoader,
-        componentRenderer: layui.componentRenderer,
-        sidebar: layui.sidebarComp,
-        tabs: layui.tabsComp,
-        common: layui.commonMod,
-        count: layui.countMod,
-        echarts: layui.echartsMod,
-        xmSelect: layui.xmSelectMod,
-        toast: layui.toastMod,
-        drawer: layui.drawerMod,
-        tinymce: layui.tinymceMod,
-        iconPicker: layui.iconPickerMod,
-        watermark: layui.watermarkMod,
-        app: layui.appMain
-      };
+      var self = this;
+      Object.keys(coreModules).forEach(function(key) {
+        self.modules[key] = layui[key];
+      });
     },
 
     ready: function(callback) {

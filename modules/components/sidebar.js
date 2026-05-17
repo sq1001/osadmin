@@ -42,6 +42,18 @@ layui.define(['jquery', 'layer', 'themeModule', 'routerModule', 'commonMod'], fu
       return href.indexOf('http://') === 0 || href.indexOf('https://') === 0 || href.indexOf('//') === 0;
     },
 
+    preloadPageResources: function(href) {
+      if (window.layui && window.layui.resourceLoader) {
+        window.layui.resourceLoader.preloadPageResources(href);
+      }
+    },
+
+    preloadPageResourcesThrottled: function(href) {
+      if (window.layui && window.layui.resourceLoader) {
+        window.layui.resourceLoader.preloadPageResourcesThrottled(href);
+      }
+    },
+
     getMenuItemType: function(item) {
       if (item.type !== undefined) {
         return item.type;
@@ -244,6 +256,16 @@ layui.define(['jquery', 'layer', 'themeModule', 'routerModule', 'commonMod'], fu
 
     bindEvents: function() {
       var self = this;
+
+      $('#sidebarMenu').on('mouseenter', '.menu-item, .submenu-item, .nested-dropdown-item', function(e) {
+        var $this = $(this);
+        var href = $this.data('href');
+        var itemType = $this.data('type');
+        
+        if (itemType === 1 && href && !self.isExternalUrl(href)) {
+          self.preloadPageResourcesThrottled(href);
+        }
+      });
 
       $('#sidebarMenu').on('click', '.menu-item', function(e) {
         e.stopPropagation();

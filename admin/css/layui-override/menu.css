@@ -9,6 +9,10 @@
   border-radius: 6px;
 }
 
+.layui-menu li {
+  color: var(--text-secondary);
+}
+
 .layui-menu li:hover {
   background-color: var(--accent-light);
 }
@@ -18,14 +22,40 @@
   color: var(--accent);
 }
 
+.layui-menu li.layui-disabled,
+.layui-menu li.layui-disabled * {
+  color: var(--text-muted) !important;
+}
+
 /* ========== 菜单组标题 ========== */
 .layui-menu li.layui-menu-item-group:hover {
   background-color: transparent;
 }
 
+.layui-menu .layui-menu-item-group > .layui-menu-body-title {
+  color: var(--text-muted);
+}
+
 /* ========== 菜单分隔线 ========== */
 .layui-menu .layui-menu-item-divider {
   border-bottom-color: var(--border);
+}
+
+/* ========== 空项 ========== */
+.layui-menu .layui-menu-item-none {
+  color: var(--text-muted);
+}
+
+/* ========== 勾选状态 ========== */
+.layui-menu .layui-menu-item-checked,
+.layui-menu .layui-menu-item-checked2 {
+  background-color: var(--accent-light) !important;
+  color: var(--accent);
+}
+
+.layui-menu .layui-menu-item-checked a,
+.layui-menu .layui-menu-item-checked2 a {
+  color: var(--accent);
 }
 
 /* ========== 菜单标题 ========== */
@@ -57,7 +87,7 @@
 }
 
 .layui-dropdown-menu > li > a {
-  color: #5f5f5f;
+  color: var(--text-secondary);
 }
 
 .layui-dropdown-menu > li:hover > a {
@@ -75,6 +105,10 @@
   background-color: var(--card-bg);
 }
 
+[data-theme="dark"] .layui-menu li {
+  color: var(--text-secondary);
+}
+
 [data-theme="dark"] .layui-menu li:hover {
   background-color: var(--accent-light);
 }
@@ -82,6 +116,11 @@
 [data-theme="dark"] .layui-menu li.layui-this {
   background-color: var(--accent-light);
   color: var(--accent);
+}
+
+[data-theme="dark"] .layui-menu li.layui-disabled,
+[data-theme="dark"] .layui-menu li.layui-disabled * {
+  color: var(--text-muted) !important;
 }
 
 [data-theme="dark"] .layui-menu li.layui-menu-item-group:hover {
@@ -115,11 +154,32 @@
   border-color: var(--border);
 }
 
-[data-theme="dark"] .layui-dropdown-menu > li > a {
+[data-theme="dark"] .layui-dropdown-menu > li > a,
+[data-theme="dark"] .layui-dropdown-menu .layui-menu-body-title,
+[data-theme="dark"] .layui-dropdown-menu .layui-menu-body-title a {
   color: var(--text-secondary);
 }
 
 [data-theme="dark"] .layui-dropdown-menu > li:hover > a {
   background-color: var(--accent-light);
+  color: var(--accent);
+}
+
+[data-theme="dark"] .layui-menu .layui-menu-item-group > .layui-menu-body-title {
+  color: var(--text-muted);
+}
+
+[data-theme="dark"] .layui-menu .layui-menu-item-none {
+  color: var(--text-muted);
+}
+
+[data-theme="dark"] .layui-menu .layui-menu-item-checked,
+[data-theme="dark"] .layui-menu .layui-menu-item-checked2 {
+  background-color: var(--accent-light) !important;
+  color: var(--accent);
+}
+
+[data-theme="dark"] .layui-menu .layui-menu-item-checked a,
+[data-theme="dark"] .layui-menu .layui-menu-item-checked2 a {
   color: var(--accent);
 }

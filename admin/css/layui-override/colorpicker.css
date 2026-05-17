@@ -22,24 +22,31 @@
 
 /* ========== 颜色选择器输入框 ========== */
 .layui-colorpicker-main-input input {
-  background-color: var(--card-bg);
-  border-color: var(--border);
-  border-radius: 4px;
+  background-color: var(--card-bg) !important;
+  border-color: var(--border) !important;
+  border-radius: 4px !important;
 }
 
 .layui-colorpicker-main-input input:focus {
-  border-color: var(--accent);
+  border-color: var(--accent) !important;
 }
 
-/* ========== 颜色选择器按钮 ========== */
+/* ========== 颜色选择器按钮组 ========== */
 .layui-colorpicker-main-input button {
-  background-color: var(--accent);
-  border-color: var(--accent);
-  border-radius: 4px;
+  border-color: var(--border) !important;
+}
+
+.layui-colorpicker-main-input button:first-child {
+  border-radius: 4px 0 0 4px !important;
+}
+
+.layui-colorpicker-main-input button:last-child {
+  border-radius: 0 4px 4px 0 !important;
 }
 
 .layui-colorpicker-main-input button:hover {
-  background-color: var(--accent-hover);
+  /* background-color: var(--accent-hover); */
+  box-shadow: 0 2px 8px rgba(99, 102, 241, 0.3);
 }
 
 /* ========== 预设颜色 ========== */
@@ -52,6 +59,7 @@
 .layui-colorpicker-main-clear {
   background-color: var(--bg);
   border-radius: 4px;
+  color: var(--text-secondary);
 }
 
 .layui-colorpicker-main-clear:hover {
@@ -79,15 +87,25 @@
   border-color: var(--border);
 }
 
-[data-theme="dark"] .layui-colorpicker-main-input button {
-  background-color: var(--accent);
-  border-color: var(--accent);
-}
-
 [data-theme="dark"] .layui-colorpicker-main-pre li {
   border-color: var(--border);
 }
 
 [data-theme="dark"] .layui-colorpicker-main-clear {
-  background-color: rgba(255, 255, 255, 0.1);
+  background-color: var(--bg);
+  color: var(--text-secondary);
+  border: 1px solid var(--border);
+}
+
+[data-theme="dark"] .layui-colorpicker-main-clear:hover {
+  background-color: rgba(99, 102, 241, 0.2);
+  border-color: var(--accent);
+}
+
+[data-theme="dark"] .layui-colorpicker-trigger-i.layui-icon-close {
+  color: var(--text-muted);
+}
+
+[data-theme="dark"] .layui-colorpicker-main-input input.layui-input {
+  color: var(--text-primary);
 }

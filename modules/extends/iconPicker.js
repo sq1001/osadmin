@@ -185,10 +185,15 @@ layui.define(['form'], function (exports) {
 							'<div class="layui-iconpicker-icon-limit" id="layui-iconpicker-icon-limit-' +
 							tmp + (i + 1) + '">');
 
+						var fragment = document.createDocumentFragment();
+						var tempDiv = document.createElement('div');
+						
 						for (var j = i * _limit; j < (i + 1) * _limit && j < l; j++) {
-							lm.append(icons[j]);
+							tempDiv.innerHTML = icons[j];
+							fragment.appendChild(tempDiv.firstChild);
 						}
-
+						
+						lm[0].appendChild(fragment);
 						listHtml.append(lm);
 					}
 
@@ -208,9 +213,16 @@ layui.define(['form'], function (exports) {
 						'</div>';
 				} else {
 					var singleContainer = $('<div class="layui-iconpicker-icon-limit">');
+					
+					var singleFragment = document.createDocumentFragment();
+					var tempSingleDiv = document.createElement('div');
+					
 					for (var i = 0; i < l; i++) {
-						singleContainer.append(icons[i]);
+						tempSingleDiv.innerHTML = icons[i];
+						singleFragment.appendChild(tempSingleDiv.firstChild);
 					}
+					
+					singleContainer[0].appendChild(singleFragment);
 					listHtml.append(singleContainer);
 				}
 

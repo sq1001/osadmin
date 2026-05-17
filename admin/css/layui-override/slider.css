@@ -1,6 +1,7 @@
 /**
  * LayUI 滑块主题适配
  * 覆盖颜色、背景色、边框、圆角相关属性
+ * 注意：slider.js 通过 .css() 设置内联样式，关键属性需 !important
  */
 
 /* ========== 滑块基础 ========== */
@@ -10,7 +11,7 @@
 }
 
 .layui-slider-bar {
-  background-color: var(--accent);
+  background-color: var(--accent) !important;
   border-radius: 20px;
 }
 
@@ -38,7 +39,7 @@
 
 /* ========== 范围滑块 ========== */
 .layui-slider-tips {
-  background-color: var(--text-primary);
+  background-color: var(--text-primary) !important;
   color: #fff;
   border-radius: 4px;
 }
@@ -49,7 +50,7 @@
 
 /* ========== 禁用状态 ========== */
 .layui-slider-disabled .layui-slider-bar {
-  background-color: var(--text-muted);
+  background-color: var(--text-muted) !important;
 }
 
 .layui-slider-disabled .layui-slider-wrap-btn {
@@ -61,31 +62,6 @@
   background-color: rgba(255, 255, 255, 0.1);
 }
 
-[data-theme="dark"] .layui-slider-bar {
-  background-color: var(--accent);
-}
-
-[data-theme="dark"] .layui-slider-wrap-btn {
-  background-color: var(--card-bg);
-  border-color: var(--accent);
-}
-
-[data-theme="dark"] .layui-slider-step {
-  background-color: var(--border);
-}
-
-[data-theme="dark"] .layui-slider-step.layui-slider-step-active {
-  background-color: var(--accent);
-}
-
-[data-theme="dark"] .layui-slider-tips {
-  background-color: var(--text-primary);
-}
-
-[data-theme="dark"] .layui-slider-disabled .layui-slider-bar {
-  background-color: var(--text-muted);
-}
-
-[data-theme="dark"] .layui-slider-disabled .layui-slider-wrap-btn {
-  border-color: var(--text-muted);
+[data-theme="dark"] .layui-slider-input-btn i {
+  color: var(--text-muted);
 }

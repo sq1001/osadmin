@@ -192,7 +192,7 @@
 
 .layui-form-checked > div,
 .layui-form-checked:hover > div {
-  color: var(--accent);
+  color: var(--accent) !important;
 }
 
 .layui-form-checked > i,
@@ -217,7 +217,7 @@
 
 .layui-form-checked[lay-skin="primary"] > i {
   border-color: var(--accent) !important;
-  background-color: var(--accent);
+  background-color: var(--accent) !important;
   color: #fff;
 }
 
@@ -257,7 +257,7 @@
 
 .layui-form-onswitch {
   border-color: var(--accent);
-  background-color: var(--accent);
+  background-color: var(--accent) !important;
 }
 
 .layui-form-onswitch > i {
@@ -265,7 +265,7 @@
 }
 
 .layui-form-onswitch > div {
-  color: #fff;
+  color: #fff !important;
 }
 
 /* ========== 单选框 ========== */
@@ -276,7 +276,7 @@
 .layui-form-radioed,
 .layui-form-radioed > i,
 .layui-form-radio:hover > * {
-  color: var(--accent);
+  color: var(--accent) !important;
 }
 
 .layui-radio-disabled > i {
@@ -287,7 +287,7 @@
 .layui-form-danger:focus,
 .layui-form-danger + .layui-form-select .layui-input {
   border-color: var(--danger) !important;
-  box-shadow: 0 0 0 3px rgba(255, 87, 34, 0.1);
+  box-shadow: 0 0 0 3px var(--accent-light);
 }
 
 /* ========== 表单方框风格 ========== */
@@ -398,4 +398,48 @@
 [data-theme="dark"] .layui-form-pane .layui-form-label {
   background-color: rgba(0, 0, 0, 0.2);
   border-color: var(--border);
+}
+
+[data-theme="dark"] .layui-input-affix .layui-icon {
+  color: var(--text-secondary);
+}
+
+[data-theme="dark"] .layui-input-affix .layui-icon-clear {
+  color: var(--text-muted);
+}
+
+[data-theme="dark"] .layui-input-affix .layui-icon:hover {
+  color: var(--text-primary);
+}
+
+[data-theme="dark"] .layui-form-select dl dt {
+  color: var(--text-muted);
+}
+
+[data-theme="dark"] .layui-form-select dl dd.layui-select-tips {
+  color: var(--text-muted);
+}
+
+[data-theme="dark"] .layui-select-none {
+  color: var(--text-muted);
+}
+
+[data-theme="dark"] .layui-form-checkbox[lay-skin="primary"] > div {
+  color: var(--text-secondary);
+}
+
+[data-theme="dark"] .layui-form-switch > div {
+  color: #fff !important;
+}
+
+[data-theme="dark"] .layui-form-radio > i {
+  color: var(--border);
+}
+
+[data-theme="dark"] .layui-checkbox-disabled > div {
+  color: var(--text-muted) !important;
+}
+
+[data-theme="dark"] .layui-radio-disabled > * {
+  color: var(--text-muted) !important;
 }

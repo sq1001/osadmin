@@ -89,8 +89,13 @@
     },
     "xmSelect": {
       "js": "lib/xm-select/xm-select.js",
-      "css": "lib/xm-select/xm-select.css",
+      "css": null,
       "global": "xmSelect"
+    },
+    "tinymce": {
+      "js": "lib/tinymce/tinymce.min.js",
+      "css": null,
+      "global": "tinymce"
     }
   }
 }

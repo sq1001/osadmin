@@ -46,6 +46,12 @@ layui.define(['jquery', 'themeModule', 'routerModule'], function(exports) {
       return href.indexOf('http://') === 0 || href.indexOf('https://') === 0 || href.indexOf('//') === 0;
     },
 
+    preloadPageResourcesThrottled: function(href) {
+      if (window.layui && window.layui.resourceLoader) {
+        window.layui.resourceLoader.preloadPageResourcesThrottled(href);
+      }
+    },
+
     getMenuItemType: function(item) {
       if (item.type !== undefined) {
         return item.type;
@@ -192,6 +198,14 @@ layui.define(['jquery', 'themeModule', 'routerModule'], function(exports) {
 
     bindEvents: function() {
       var self = this;
+
+      $('#tabsBar').on('mouseenter', '.tab-item:not(.active)', function(e) {
+        var tabId = $(this).data('id');
+        var pageInfo = self.getPageInfo(tabId);
+        if (pageInfo && pageInfo.href && !pageInfo.isExternal) {
+          self.preloadPageResourcesThrottled(pageInfo.href);
+        }
+      });
 
       $('#tabsBar').on('click', '.tab-item', function(e) {
         var tabId = $(this).data('id');
@@ -343,8 +357,14 @@ layui.define(['jquery', 'themeModule', 'routerModule'], function(exports) {
 
     scrollTabs: function(distance) {
       var $tabsBar = $('#tabsBar');
-      var currentScroll = $tabsBar.scrollLeft();
-      var maxScroll = $tabsBar[0].scrollWidth - $tabsBar.width();
+      var el = $tabsBar[0];
+      if (!el) return;
+      
+      // 批量读取滚动属性
+      var currentScroll = el.scrollLeft;
+      var scrollWidth = el.scrollWidth;
+      var barWidth = $tabsBar.width();
+      var maxScroll = scrollWidth - barWidth;
       var targetScroll = Math.max(0, Math.min(maxScroll, currentScroll + distance));
       
       $tabsBar.stop(true).animate({
@@ -358,21 +378,22 @@ layui.define(['jquery', 'themeModule', 'routerModule'], function(exports) {
 
       if (!$activeTab.length) return;
 
-      var tabsBarWidth = $tabsBar.width();
-      var tabsBarScrollLeft = $tabsBar.scrollLeft();
+      // 批量读取所有布局属性（一次性强制重排）
+      var barWidth = $tabsBar.width();
+      var tabsBarScrollLeft = $tabsBar[0].scrollLeft;
       var activeTabLeft = $activeTab[0].offsetLeft;
       var activeTabWidth = $activeTab.outerWidth();
       var activeTabRight = activeTabLeft + activeTabWidth;
       
       var visibleLeft = tabsBarScrollLeft + 20;
-      var visibleRight = tabsBarScrollLeft + tabsBarWidth - 20;
+      var visibleRight = tabsBarScrollLeft + barWidth - 20;
 
       var targetScroll = null;
 
       if (activeTabLeft < visibleLeft) {
         targetScroll = Math.max(0, activeTabLeft - 20);
       } else if (activeTabRight > visibleRight) {
-        targetScroll = activeTabRight - tabsBarWidth + 20;
+        targetScroll = activeTabRight - barWidth + 20;
       }
 
       if (targetScroll !== null && Math.abs(targetScroll - tabsBarScrollLeft) > 5) {
@@ -384,10 +405,19 @@ layui.define(['jquery', 'themeModule', 'routerModule'], function(exports) {
 
     updateScrollButtons: function() {
       var $tabsBar = $('#tabsBar');
-      var needScroll = $tabsBar[0].scrollWidth > $tabsBar.width();
+      var el = $tabsBar[0];
+      if (!el) return;
+      
+      // 批量读取所有滚动属性（一次性强制重排）
+      var scrollWidth = el.scrollWidth;
+      var barWidth = $tabsBar.width();
+      var currentScroll = el.scrollLeft;
+      var maxScroll = scrollWidth - barWidth - 1;
 
-      $('#scrollLeftBtn').prop('disabled', !needScroll || $tabsBar.scrollLeft() <= 0);
-      $('#scrollRightBtn').prop('disabled', !needScroll || $tabsBar.scrollLeft() >= $tabsBar[0].scrollWidth - $tabsBar.width() - 1);
+      var needScroll = scrollWidth > barWidth;
+
+      $('#scrollLeftBtn').prop('disabled', !needScroll || currentScroll <= 0);
+      $('#scrollRightBtn').prop('disabled', !needScroll || currentScroll >= maxScroll);
     },
 
     setActive: function(id) {

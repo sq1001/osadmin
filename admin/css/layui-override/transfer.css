@@ -62,3 +62,11 @@
   background-color: rgba(255, 255, 255, 0.1);
   border-color: var(--border);
 }
+
+[data-theme="dark"] .layui-transfer-search .layui-icon-search {
+  color: var(--text-muted);
+}
+
+[data-theme="dark"] .layui-transfer-data .layui-none {
+  color: var(--text-muted);
+}

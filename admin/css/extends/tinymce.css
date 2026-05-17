@@ -277,14 +277,6 @@
   background-color: #3a3a3a !important;
 }
 
-[data-theme="dark"] .tox-edit-area {
-  background: #1a1a1a !important;
-}
-
-[data-theme="dark"] .tox-edit-area__iframe {
-  background: #1a1a1a !important;
-}
-
 [data-theme="dark"] .tox-statusbar {
   background: #262626 !important;
   border-top-color: #3a3a3a !important;
@@ -319,6 +311,63 @@
 [data-theme="dark"] .tox-dialog__footer {
   background: #262626 !important;
   border-top-color: #3a3a3a !important;
+}
+
+/* 暗色文字/图标颜色 */
+[data-theme="dark"] .tox-tbtn .tox-icon svg {
+  fill: var(--text-secondary, #94a3b8) !important;
+}
+
+[data-theme="dark"] .tox-tbtn:hover .tox-icon svg {
+  fill: var(--text-primary, #e2e8f0) !important;
+}
+
+[data-theme="dark"] .tox-tbtn--enabled .tox-icon svg {
+  fill: var(--accent, #16baaa) !important;
+}
+
+[data-theme="dark"] .tox-collection__item-label {
+  color: var(--text-secondary, #94a3b8) !important;
+}
+
+[data-theme="dark"] .tox-collection__item--active .tox-collection__item-label {
+  color: var(--accent, #16baaa) !important;
+}
+
+[data-theme="dark"] .tox-dialog__title {
+  color: var(--text-primary, #e2e8f0) !important;
+}
+
+[data-theme="dark"] .tox-dialog__body-content,
+[data-theme="dark"] .tox-dialog__body-content input,
+[data-theme="dark"] .tox-dialog__body-content textarea {
+  color: var(--text-primary, #e2e8f0) !important;
+}
+
+[data-theme="dark"] .tox-statusbar__path-item {
+  color: var(--text-muted, #475569) !important;
+}
+
+[data-theme="dark"] .tox-statusbar__path-item:hover {
+  color: var(--accent, #16baaa) !important;
+}
+
+[data-theme="dark"] .tox-button:not(.tox-button--primary):not(.tox-button--naked) {
+  color: var(--text-secondary, #94a3b8) !important;
+}
+
+[data-theme="dark"] .tox-tbtn__select-label {
+  color: var(--text-secondary, #94a3b8) !important;
+}
+
+[data-theme="dark"] .tox-tooltip {
+  background-color: #363636 !important;
+  color: var(--text-primary, #e2e8f0) !important;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4) !important;
+}
+
+[data-theme="dark"] .tox-mbtn > span {
+  color: var(--text-secondary, #94a3b8) !important;
 }
 
 /* 工具提示美化 */

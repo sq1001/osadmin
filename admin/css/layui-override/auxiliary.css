@@ -21,7 +21,7 @@
 
 /* ========== 深色主题 ========== */
 [data-theme="dark"] .layui-elem-quote {
-  background-color: rgba(0, 0, 0, 0.2);
+  background-color: rgba(0, 0, 0, 0.25);
 }
 
 [data-theme="dark"] .layui-elem-field {

@@ -60,31 +60,17 @@
 
 /* ========== 深色主题 ========== */
 [data-theme="dark"] .layui-panel {
-  background-color: var(--card-bg);
-  border-color: var(--border);
-}
-
-[data-theme="dark"] .layui-card {
-  background-color: var(--card-bg);
-  border-color: var(--border);
+  color: var(--text-secondary);
 }
 
 [data-theme="dark"] .layui-card-header {
-  border-bottom-color: var(--border);
+  color: var(--text-primary);
 }
 
 [data-theme="dark"] .layui-collapse {
-  border-color: var(--border);
+  color: var(--text-secondary);
 }
 
 [data-theme="dark"] .layui-colla-title {
-  background-color: var(--card-bg);
-}
-
-[data-theme="dark"] .layui-colla-title:hover {
-  background-color: rgba(255, 255, 255, 0.05);
-}
-
-[data-theme="dark"] .layui-colla-content {
-  background-color: var(--card-bg);
+  color: var(--text-primary);
 }

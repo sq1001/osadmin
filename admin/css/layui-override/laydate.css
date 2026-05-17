@@ -23,6 +23,7 @@
 .layui-laydate-list li:hover,
 .layui-laydate-shortcut > li:hover {
   background-color: var(--accent-light);
+  color: var(--accent);
 }
 
 .layui-laydate .layui-this,
@@ -39,6 +40,10 @@
   background-color: transparent;
   border-color: var(--border);
   color: var(--text-secondary);
+}
+
+.layui-laydate-footer span:hover {
+  color: var(--accent);
 }
 
 .layui-laydate-footer span.layui-laydate-preview {
@@ -84,6 +89,11 @@
   background-color: var(--card-bg);
   border-color: var(--border);
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+  color: var(--text-secondary);
+}
+
+[data-theme="dark"] .layui-laydate-header i {
+  color: var(--text-muted);
 }
 
 [data-theme="dark"] .layui-laydate-header {
@@ -99,6 +109,7 @@
 [data-theme="dark"] .layui-laydate-list li:hover,
 [data-theme="dark"] .layui-laydate-shortcut > li:hover {
   background-color: var(--accent-light);
+  color: var(--accent);
 }
 
 [data-theme="dark"] .layui-laydate .layui-this,
@@ -115,6 +126,11 @@
   background-color: transparent;
   border-color: var(--border);
   color: var(--text-secondary);
+}
+
+[data-theme="dark"] .layui-laydate-footer span:hover {
+  /* background-color: var(--accent-light); */
+  color: var(--accent);
 }
 
 [data-theme="dark"] .layui-laydate-footer span.layui-laydate-preview {
@@ -148,8 +164,16 @@
   border-color: var(--border);
 }
 
-[data-theme="dark"] .layui-laydate-linkage.laydate-theme-grid .laydate-selected,
-[data-theme="dark"] .layui-laydate-linkage.laydate-theme-grid .laydate-selected:hover {
+[data-theme="dark"] .layui-laydate-linkage.laydate-theme-grid .layui-laydate-selected,
+[data-theme="dark"] .layui-laydate-linkage.laydate-theme-grid .layui-laydate-selected:hover {
   background-color: var(--accent-light) !important;
   color: var(--accent) !important;
+}
+
+[data-theme="dark"] .layui-laydate-content th {
+  color: var(--text-primary);
+}
+
+[data-theme="dark"] .layui-laydate-content td {
+  color: var(--text-secondary);
 }

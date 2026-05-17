@@ -1,651 +1,1464 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>配色方案预览</title>
-  <style>
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
-    
-    body {
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-      padding: 40px 20px;
-      background: #1a1a1a;
-      color: #fff;
-    }
-    
-    h1 {
-      text-align: center;
-      margin-bottom: 40px;
-      font-weight: 600;
-    }
-    
-    .schemes {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(600px, 1fr));
-      gap: 40px;
-      max-width: 1400px;
-      margin: 0 auto;
-    }
-    
-    .scheme {
-      background: #2a2a2a;
-      border-radius: 16px;
-      padding: 24px;
-    }
-    
-    .scheme-title {
-      font-size: 18px;
-      font-weight: 600;
-      margin-bottom: 20px;
-      padding-bottom: 12px;
-      border-bottom: 1px solid #444;
-    }
-    
-    .theme-row {
-      display: flex;
-      gap: 20px;
-      margin-bottom: 20px;
-    }
-    
-    .theme {
-      flex: 1;
-    }
-    
-    .theme-label {
-      font-size: 12px;
-      color: #888;
-      margin-bottom: 12px;
-      text-transform: uppercase;
-      letter-spacing: 1px;
-    }
-    
-    .preview {
-      border-radius: 12px;
-      overflow: hidden;
-      box-shadow: 0 4px 20px rgba(0,0,0,0.3);
-    }
-    
-    .preview-sidebar {
-      width: 60px;
-      padding: 12px 8px;
-      display: flex;
-      flex-direction: column;
-      gap: 8px;
-    }
-    
-    .preview-main {
-      flex: 1;
-      padding: 16px;
-    }
-    
-    .preview-header {
-      height: 40px;
-      margin-bottom: 16px;
-      border-radius: 8px;
-    }
-    
-    .preview-content {
-      display: flex;
-      flex-direction: column;
-      gap: 12px;
-    }
-    
-    .preview-card {
-      padding: 16px;
-      border-radius: 8px;
-    }
-    
-    .preview-text {
-      height: 12px;
-      border-radius: 4px;
-      margin-bottom: 8px;
-    }
-    
-    .preview-text.short { width: 60%; }
-    .preview-text.medium { width: 80%; }
-    .preview-text.long { width: 100%; }
-    
-    .preview-btn {
-      display: inline-block;
-      padding: 8px 16px;
-      border-radius: 6px;
-      font-size: 12px;
-      margin-top: 8px;
-    }
-    
-    .preview-menu-item {
-      height: 32px;
-      border-radius: 6px;
-      margin-bottom: 4px;
-    }
-    
-    .preview-menu-item.active {
-      background: var(--accent-light);
-    }
-    
-    .color-vars {
-      margin-top: 16px;
-      padding: 12px;
-      background: rgba(0,0,0,0.3);
-      border-radius: 8px;
-      font-size: 11px;
-      font-family: monospace;
-      color: #aaa;
-      line-height: 1.8;
-    }
-    
-    /* GitHub 亮色 */
-    .github-light {
-      --bg: #f6f8fa;
-      --bg-content: #ffffff;
-      --card-bg: #ffffff;
-      --text-primary: #24292f;
-      --text-secondary: #57606a;
-      --text-muted: #8c959f;
-      --border: #d0d7de;
-      --bg-sidebar: #0d1117;
-      --bg-sidebar-hover: #161b22;
-      --accent: #1f6feb;
-      --accent-light: rgba(31, 111, 235, 0.1);
-    }
-    
-    .github-light .preview { background: var(--bg); }
-    .github-light .preview-sidebar { background: var(--bg-sidebar); }
-    .github-light .preview-main { background: var(--bg-content); }
-    .github-light .preview-header { background: var(--card-bg); border: 1px solid var(--border); }
-    .github-light .preview-card { background: var(--card-bg); border: 1px solid var(--border); }
-    .github-light .preview-text { background: var(--text-muted); }
-    .github-light .preview-text.primary { background: var(--text-primary); }
-    .github-light .preview-btn { background: var(--accent); color: #fff; }
-    .github-light .preview-menu-item { background: transparent; }
-    .github-light .preview-menu-item:hover { background: var(--bg-sidebar-hover); }
-    .github-light .preview-menu-item.active { background: var(--accent-light); }
-    
-    /* GitHub 深色 */
-    .github-dark {
-      --bg: #161b22;
-      --bg-content: #0d1117;
-      --card-bg: #21262d;
-      --text-primary: #c9d1d9;
-      --text-secondary: #8b949e;
-      --text-muted: #6e7681;
-      --border: #30363d;
-      --bg-sidebar: #0d1117;
-      --bg-sidebar-hover: #21262d;
-      --accent: #58a6ff;
-      --accent-light: rgba(88, 166, 255, 0.15);
-    }
-    
-    .github-dark .preview { background: var(--bg); }
-    .github-dark .preview-sidebar { background: var(--bg-sidebar); }
-    .github-dark .preview-main { background: var(--bg-content); }
-    .github-dark .preview-header { background: var(--card-bg); border: 1px solid var(--border); }
-    .github-dark .preview-card { background: var(--card-bg); border: 1px solid var(--border); }
-    .github-dark .preview-text { background: var(--text-muted); }
-    .github-dark .preview-text.primary { background: var(--text-primary); }
-    .github-dark .preview-btn { background: var(--accent); color: #000; }
-    .github-dark .preview-menu-item { background: transparent; }
-    .github-dark .preview-menu-item:hover { background: var(--bg-sidebar-hover); }
-    .github-dark .preview-menu-item.active { background: var(--accent-light); }
-    
-    /* Vercel 亮色 */
-    .vercel-light {
-      --bg: #fafafa;
-      --bg-content: #ffffff;
-      --card-bg: #ffffff;
-      --text-primary: #171717;
-      --text-secondary: #525252;
-      --text-muted: #a3a3a3;
-      --border: #e5e5e5;
-      --bg-sidebar: #000000;
-      --bg-sidebar-hover: #171717;
-      --accent: #0070f3;
-      --accent-light: rgba(0, 112, 243, 0.1);
-    }
-    
-    .vercel-light .preview { background: var(--bg); }
-    .vercel-light .preview-sidebar { background: var(--bg-sidebar); }
-    .vercel-light .preview-main { background: var(--bg-content); }
-    .vercel-light .preview-header { background: var(--card-bg); border: 1px solid var(--border); }
-    .vercel-light .preview-card { background: var(--card-bg); border: 1px solid var(--border); }
-    .vercel-light .preview-text { background: var(--text-muted); }
-    .vercel-light .preview-text.primary { background: var(--text-primary); }
-    .vercel-light .preview-btn { background: var(--accent); color: #fff; }
-    .vercel-light .preview-menu-item { background: transparent; }
-    .vercel-light .preview-menu-item:hover { background: var(--bg-sidebar-hover); }
-    .vercel-light .preview-menu-item.active { background: var(--accent-light); }
-    
-    /* Vercel 深色 */
-    .vercel-dark {
-      --bg: #000000;
-      --bg-content: #0a0a0a;
-      --card-bg: #111111;
-      --text-primary: #fafafa;
-      --text-secondary: #a1a1a1;
-      --text-muted: #737373;
-      --border: #262626;
-      --bg-sidebar: #000000;
-      --bg-sidebar-hover: #111111;
-      --accent: #7928ca;
-      --accent-light: rgba(121, 40, 202, 0.15);
-    }
-    
-    .vercel-dark .preview { background: var(--bg); }
-    .vercel-dark .preview-sidebar { background: var(--bg-sidebar); }
-    .vercel-dark .preview-main { background: var(--bg-content); }
-    .vercel-dark .preview-header { background: var(--card-bg); border: 1px solid var(--border); }
-    .vercel-dark .preview-card { background: var(--card-bg); border: 1px solid var(--border); }
-    .vercel-dark .preview-text { background: var(--text-muted); }
-    .vercel-dark .preview-text.primary { background: var(--text-primary); }
-    .vercel-dark .preview-btn { background: var(--accent); color: #fff; }
-    .vercel-dark .preview-menu-item { background: transparent; }
-    .vercel-dark .preview-menu-item:hover { background: var(--bg-sidebar-hover); }
-    .vercel-dark .preview-menu-item.active { background: var(--accent-light); }
-    
-    /* Stripe 亮色 */
-    .stripe-light {
-      --bg: #f6f9fc;
-      --bg-content: #ffffff;
-      --card-bg: #ffffff;
-      --text-primary: #1a1f36;
-      --text-secondary: #424770;
-      --text-muted: #8898aa;
-      --border: #e3e8ee;
-      --bg-sidebar: #1a1f36;
-      --bg-sidebar-hover: #2b3148;
-      --accent: #635bff;
-      --accent-light: rgba(99, 91, 255, 0.1);
-    }
-    
-    .stripe-light .preview { background: var(--bg); }
-    .stripe-light .preview-sidebar { background: var(--bg-sidebar); }
-    .stripe-light .preview-main { background: var(--bg-content); }
-    .stripe-light .preview-header { background: var(--card-bg); border: 1px solid var(--border); }
-    .stripe-light .preview-card { background: var(--card-bg); border: 1px solid var(--border); }
-    .stripe-light .preview-text { background: var(--text-muted); }
-    .stripe-light .preview-text.primary { background: var(--text-primary); }
-    .stripe-light .preview-btn { background: var(--accent); color: #fff; }
-    .stripe-light .preview-menu-item { background: transparent; }
-    .stripe-light .preview-menu-item:hover { background: var(--bg-sidebar-hover); }
-    .stripe-light .preview-menu-item.active { background: var(--accent-light); }
-    
-    /* Stripe 深色 */
-    .stripe-dark {
-      --bg: #0a2540;
-      --bg-content: #0d2b4e;
-      --card-bg: #1a3a5c;
-      --text-primary: #c4d6e8;
-      --text-secondary: #8ba4bc;
-      --text-muted: #5e7a94;
-      --border: #2b4a6b;
-      --bg-sidebar: #0a2540;
-      --bg-sidebar-hover: #1a3a5c;
-      --accent: #7a73ff;
-      --accent-light: rgba(122, 115, 255, 0.15);
-    }
-    
-    .stripe-dark .preview { background: var(--bg); }
-    .stripe-dark .preview-sidebar { background: var(--bg-sidebar); }
-    .stripe-dark .preview-main { background: var(--bg-content); }
-    .stripe-dark .preview-header { background: var(--card-bg); border: 1px solid var(--border); }
-    .stripe-dark .preview-card { background: var(--card-bg); border: 1px solid var(--border); }
-    .stripe-dark .preview-text { background: var(--text-muted); }
-    .stripe-dark .preview-text.primary { background: var(--text-primary); }
-    .stripe-dark .preview-btn { background: var(--accent); color: #fff; }
-    .stripe-dark .preview-menu-item { background: transparent; }
-    .stripe-dark .preview-menu-item:hover { background: var(--bg-sidebar-hover); }
-    .stripe-dark .preview-menu-item.active { background: var(--accent-light); }
-    
-    /* Notion 亮色 */
-    .notion-light {
-      --bg: #f7f6f3;
-      --bg-content: #ffffff;
-      --card-bg: #ffffff;
-      --text-primary: #37352f;
-      --text-secondary: #6b6b6b;
-      --text-muted: #9b9a97;
-      --border: #e9e9e7;
-      --bg-sidebar: #fbfbfa;
-      --bg-sidebar-hover: #ebebea;
-      --accent: #2383e2;
-      --accent-light: rgba(35, 131, 226, 0.1);
-    }
-    
-    .notion-light .preview { background: var(--bg); }
-    .notion-light .preview-sidebar { background: var(--bg-sidebar); border-right: 1px solid var(--border); }
-    .notion-light .preview-main { background: var(--bg-content); }
-    .notion-light .preview-header { background: var(--card-bg); border: 1px solid var(--border); }
-    .notion-light .preview-card { background: var(--card-bg); border: 1px solid var(--border); }
-    .notion-light .preview-text { background: var(--text-muted); }
-    .notion-light .preview-text.primary { background: var(--text-primary); }
-    .notion-light .preview-btn { background: var(--accent); color: #fff; }
-    .notion-light .preview-menu-item { background: transparent; }
-    .notion-light .preview-menu-item:hover { background: var(--bg-sidebar-hover); }
-    .notion-light .preview-menu-item.active { background: var(--accent-light); }
-    
-    /* Notion 深色 */
-    .notion-dark {
-      --bg: #191919;
-      --bg-content: #202020;
-      --card-bg: #2f2f2f;
-      --text-primary: #ebebea;
-      --text-secondary: #9b9a97;
-      --text-muted: #6b6b6b;
-      --border: #373737;
-      --bg-sidebar: #191919;
-      --bg-sidebar-hover: #2f2f2f;
-      --accent: #529cca;
-      --accent-light: rgba(82, 156, 202, 0.15);
-    }
-    
-    .notion-dark .preview { background: var(--bg); }
-    .notion-dark .preview-sidebar { background: var(--bg-sidebar); border-right: 1px solid var(--border); }
-    .notion-dark .preview-main { background: var(--bg-content); }
-    .notion-dark .preview-header { background: var(--card-bg); border: 1px solid var(--border); }
-    .notion-dark .preview-card { background: var(--card-bg); border: 1px solid var(--border); }
-    .notion-dark .preview-text { background: var(--text-muted); }
-    .notion-dark .preview-text.primary { background: var(--text-primary); }
-    .notion-dark .preview-btn { background: var(--accent); color: #000; }
-    .notion-dark .preview-menu-item { background: transparent; }
-    .notion-dark .preview-menu-item:hover { background: var(--bg-sidebar-hover); }
-    .notion-dark .preview-menu-item.active { background: var(--accent-light); }
-    
-    .preview-wrapper {
-      display: flex;
-      min-height: 200px;
-    }
-    
-    .color-dots {
-      display: flex;
-      gap: 8px;
-      margin-top: 12px;
-      flex-wrap: wrap;
-    }
-    
-    .color-dot {
-      width: 24px;
-      height: 24px;
-      border-radius: 50%;
-      border: 2px solid #444;
-    }
-  </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>OS Admin · 全局主题配色方案</title>
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  background: #e8eaed;
+  color: #1e293b;
+  min-height: 100vh;
+}
+
+/* ========== 头部 ========== */
+.header {
+  background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+  padding: 48px 24px 40px;
+  text-align: center;
+}
+
+.header-badge {
+  display: inline-block;
+  padding: 6px 16px;
+  background: rgba(255,255,255,0.1);
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 600;
+  color: rgba(255,255,255,0.7);
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  margin-bottom: 16px;
+}
+
+.header h1 {
+  font-size: 32px;
+  font-weight: 800;
+  color: #fff;
+  margin-bottom: 10px;
+  letter-spacing: -0.5px;
+}
+
+.header p {
+  font-size: 15px;
+  color: rgba(255,255,255,0.6);
+  max-width: 600px;
+  margin: 0 auto;
+  line-height: 1.6;
+}
+
+/* ========== 容器 ========== */
+.container {
+  max-width: 1500px;
+  margin: -30px auto 0;
+  padding: 0 24px 60px;
+  position: relative;
+  z-index: 1;
+}
+
+/* ========== 当前方案提示 ========== */
+.current-alert {
+  background: linear-gradient(135deg, #fff7ed, #ffedd5);
+  border: 1px solid #fed7aa;
+  border-radius: 14px;
+  padding: 20px 24px;
+  margin-bottom: 36px;
+  display: flex;
+  align-items: flex-start;
+  gap: 14px;
+  box-shadow: 0 4px 12px rgba(251,146,60,0.08);
+}
+
+.current-alert-icon {
+  width: 44px;
+  height: 44px;
+  background: linear-gradient(135deg, #f97316, #fb923c);
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 20px;
+  flex-shrink: 0;
+}
+
+.current-alert-content h3 {
+  font-size: 15px;
+  font-weight: 700;
+  color: #9a3412;
+  margin-bottom: 4px;
+}
+
+.current-alert-content p {
+  font-size: 13px;
+  color: #c2410c;
+  line-height: 1.5;
+}
+
+.current-colors {
+  display: flex;
+  gap: 10px;
+  margin-top: 12px;
+  flex-wrap: wrap;
+}
+
+.current-color-item {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 5px 10px;
+  background: rgba(255,255,255,0.7);
+  border-radius: 6px;
+  font-size: 11px;
+  font-family: 'SF Mono', Monaco, 'Cascadia Code', monospace;
+  color: #9a3412;
+}
+
+.current-color-dot {
+  width: 16px;
+  height: 16px;
+  border-radius: 4px;
+  border: 1px solid rgba(0,0,0,0.1);
+}
+
+.arrow-icon {
+  font-size: 18px;
+  color: #f97316;
+  flex-shrink: 0;
+  margin-top: 2px;
+}
+
+/* ========== 方案网格 ========== */
+.schemes-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(460px, 1fr));
+  gap: 24px;
+}
+
+/* ========== 方案卡片 ========== */
+.scheme-card {
+  background: #fff;
+  border-radius: 18px;
+  overflow: hidden;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.04), 0 4px 12px rgba(0,0,0,0.03);
+  transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+  border: 2px solid transparent;
+  cursor: pointer;
+}
+
+.scheme-card:hover {
+  transform: translateY(-6px) scale(1.01);
+  box-shadow: 0 20px 50px rgba(0,0,0,0.12), 0 8px 20px rgba(0,0,0,0.06);
+}
+
+.scheme-card.selected {
+  outline: 3px solid var(--card-accent, #6366f1);
+  outline-offset: 3px;
+}
+
+.scheme-top-bar {
+  height: 6px;
+  background: var(--scheme-accent, #6366f1);
+}
+
+.scheme-body {
+  padding: 0;
+}
+
+/* ===== 模拟后台布局预览 ===== */
+.admin-preview {
+  display: flex;
+  height: 360px;
+  overflow: hidden;
+  position: relative;
+}
+
+/* 侧边栏 */
+.preview-sidebar {
+  width: 200px;
+  min-width: 200px;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+}
+
+.preview-sidebar-logo {
+  padding: 18px 16px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  border-bottom: 1px solid var(--sidebar-border, rgba(0,0,0,0.06));
+}
+
+.preview-logo-icon {
+  width: 32px;
+  height: 32px;
+  border-radius: 9px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 15px;
+  font-weight: 800;
+  color: #fff;
+  flex-shrink: 0;
+}
+
+.preview-logo-text {
+  font-size: 14px;
+  font-weight: 700;
+  letter-spacing: -0.3px;
+}
+
+.preview-menu {
+  flex: 1;
+  padding: 10px 10px;
+  overflow-y: auto;
+}
+
+.menu-group-label {
+  font-size: 10px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1.2px;
+  padding: 10px 10px 6px;
+  opacity: 0.45;
+}
+
+.preview-menu-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 9px 10px;
+  border-radius: 8px;
+  cursor: default;
+  transition: all 0.15s ease;
+  margin-bottom: 1px;
+  font-size: 13px;
+  font-weight: 500;
+}
+
+.preview-menu-item.active {
+  position: relative;
+}
+
+.preview-menu-icon {
+  width: 18px;
+  height: 18px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 14px;
+  flex-shrink: 0;
+}
+
+.preview-menu-badge {
+  margin-left: auto;
+  padding: 2px 7px;
+  border-radius: 10px;
+  font-size: 10px;
+  font-weight: 700;
+}
+
+/* 主内容区 */
+.preview-main {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  background: var(--content-bg, #f8fafc);
+  min-width: 0;
+}
+
+.preview-topbar {
+  height: 52px;
+  background: var(--topbar-bg, #fff);
+  border-bottom: 1px solid var(--border-color, #e2e8f0);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 20px;
+}
+
+.preview-breadcrumb {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 12px;
+  color: var(--muted-color, #94a3b8);
+}
+
+.preview-breadcrumb strong {
+  color: var(--text-color, #1e293b);
+  font-weight: 600;
+}
+
+.preview-topbar-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.preview-action-btn {
+  width: 34px;
+  height: 34px;
+  border-radius: 9px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 15px;
+  background: var(--btn-ghost-bg, #f1f5f9);
+  color: var(--muted-color, #64748b);
+  border: none;
+  cursor: default;
+}
+
+.preview-user {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 5px 10px 5px 5px;
+  background: var(--btn-ghost-bg, #f1f5f9);
+  border-radius: 22px;
+}
+
+.preview-avatar {
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  background: var(--scheme-accent, #6366f1);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 11px;
+  color: #fff;
+  font-weight: 700;
+}
+
+.preview-user-name {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--text-color, #1e293b);
+}
+
+/* 标签页 */
+.preview-tabs {
+  height: 42px;
+  background: var(--topbar-bg, #fff);
+  border-bottom: 1px solid var(--border-color, #e2e8f0);
+  display: flex;
+  align-items: center;
+  padding: 0 20px;
+  gap: 6px;
+}
+
+.preview-tab {
+  padding: 7px 14px;
+  border-radius: 8px;
+  font-size: 12px;
+  font-weight: 500;
+  cursor: default;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.preview-tab-close {
+  font-size: 11px;
+  opacity: 0.4;
+}
+
+/* 内容区 */
+.preview-content {
+  flex: 1;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  overflow-y: auto;
+}
+
+.preview-stats-row {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 14px;
+}
+
+.preview-stat-card {
+  background: var(--card-bg, #fff);
+  border-radius: 12px;
+  padding: 18px;
+  box-shadow: 0 1px 2px rgba(0,0,0,0.04);
+}
+
+.preview-stat-label {
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--muted-color, #94a3b8);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin-bottom: 8px;
+}
+
+.preview-stat-value {
+  font-size: 26px;
+  font-weight: 800;
+  letter-spacing: -1px;
+}
+
+.preview-stat-change {
+  font-size: 11px;
+  font-weight: 600;
+  margin-top: 4px;
+  display: inline-block;
+  padding: 2px 8px;
+  border-radius: 6px;
+}
+
+.preview-table-area {
+  background: var(--card-bg, #fff);
+  border-radius: 12px;
+  padding: 18px;
+  box-shadow: 0 1px 2px rgba(0,0,0,0.04);
+}
+
+.preview-table-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 14px;
+}
+
+.preview-table-title {
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--text-color, #1e293b);
+}
+
+.preview-btn-primary {
+  padding: 7px 16px;
+  border-radius: 8px;
+  font-size: 12px;
+  font-weight: 600;
+  border: none;
+  cursor: default;
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.preview-table-row {
+  display: grid;
+  grid-template-columns: 1fr 120px 100px 80px;
+  align-items: center;
+  padding: 10px 0;
+  border-bottom: 1px solid var(--border-color, #f1f5f9);
+  font-size: 12px;
+}
+
+.preview-table-row:last-child { border-bottom: none; }
+
+.preview-table-name {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-weight: 600;
+  color: var(--text-color, #1e293b);
+}
+
+.preview-status-badge {
+  padding: 4px 10px;
+  border-radius: 6px;
+  font-size: 11px;
+  font-weight: 600;
+}
+
+/* ===== 方案信息区 ===== */
+.scheme-info {
+  padding: 18px 22px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-top: 1px solid #f1f5f9;
+  background: #fafbfc;
+}
+
+.scheme-info-left h3 {
+  font-size: 16px;
+  font-weight: 700;
+  color: #1e293b;
+  margin-bottom: 2px;
+}
+
+.scheme-info-left .scheme-subtitle {
+  font-size: 12px;
+  color: #94a3b8;
+}
+
+.scheme-tag {
+  padding: 5px 12px;
+  border-radius: 16px;
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+/* ===== 色板 ===== */
+.color-swatches {
+  padding: 14px 22px;
+  background: #f8fafc;
+  border-top: 1px solid #f1f5f9;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.swatch-label {
+  font-size: 10px;
+  font-weight: 700;
+  color: #94a3b8;
+  text-transform: uppercase;
+  letter-spacing: 0.8px;
+  margin-right: 4px;
+}
+
+.swatch {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  padding: 4px 8px;
+  background: #fff;
+  border-radius: 6px;
+  font-size: 10px;
+  font-family: 'SF Mono', Monaco, monospace;
+  color: #64748b;
+  box-shadow: 0 1px 2px rgba(0,0,0,0.04);
+}
+
+.swatch-dot {
+  width: 14px;
+  height: 14px;
+  border-radius: 4px;
+  border: 1px solid rgba(0,0,0,0.08);
+}
+
+/* CSS 变量输出 */
+.css-output {
+  padding: 14px 22px;
+  background: #0f172a;
+  border-top: 1px solid #1e293b;
+  font-family: 'SF Mono', Monaco, 'Cascadia Code', monospace;
+  font-size: 11px;
+  line-height: 1.7;
+  color: #94a3b8;
+  white-space: pre-wrap;
+  word-break: break-all;
+}
+
+.css-output .css-key { color: #7dd3fc; }
+.css-output .css-val { color: #86efac; }
+.css-output .css-comment { color: #475569; font-style: italic; }
+
+/* ========== 各方案具体样式 ========== */
+
+/* ---- 方案1: 靛蓝 Indigo ---- */
+[data-theme-scheme="indigo"] {
+  --scheme-accent: #6366f1;
+  --scheme-accent-hover: #4f46e5;
+  --scheme-accent-light: rgba(99,102,241,0.08);
+  --scheme-accent-rgb: 99,102,241;
+  --sidebar-bg: #ffffff;
+  --sidebar-text: #374151;
+  --sidebar-muted: #9ca3af;
+  --sidebar-hover: #f3f4f6;
+  --sidebar-active-bg: linear-gradient(135deg, rgba(99,102,241,0.1), rgba(139,92,246,0.08));
+  --sidebar-active-text: #4f46e5;
+  --sidebar-border: rgba(0,0,0,0.05);
+  --content-bg: #f8fafc;
+  --topbar-bg: #ffffff;
+  --card-bg: #ffffff;
+  --border-color: #e2e8f0;
+  --text-color: #0f172a;
+  --muted-color: #64748b;
+  --btn-ghost-bg: #f1f5f9;
+  --card-accent: #6366f1;
+}
+[data-theme-scheme="indigo"] .preview-sidebar { background: var(--sidebar-bg); }
+[data-theme-scheme="indigo"] .preview-sidebar-logo { border-bottom-color: var(--sidebar-border); }
+[data-theme-scheme="indigo"] .preview-logo-text { color: var(--sidebar-text); }
+[data-theme-scheme="indigo"] .menu-group-label { color: var(--sidebar-muted); }
+[data-theme-scheme="indigo"] .preview-menu-item { color: var(--sidebar-text); }
+[data-theme-scheme="indigo"] .preview-menu-item:hover { background: var(--sidebar-hover); }
+[data-theme-scheme="indigo"] .preview-menu-item.active { background: var(--sidebar-active-bg); color: var(--sidebar-active-text); }
+[data-theme-scheme="indigo"] .preview-menu-badge { background: #ef4444; color: #fff; }
+[data-theme-scheme="indigo"] .preview-logo-icon { background: linear-gradient(135deg, #6366f1, #8b5cf6); }
+[data-theme-scheme="indigo"] .preview-tab { background: #f1f5f9; color: var(--muted-color); }
+[data-theme-scheme="indigo"] .preview-tab.active { background: #fff; color: var(--text-color); box-shadow: 0 1px 3px rgba(0,0,0,0.08); }
+[data-theme-scheme="indigo"] .preview-stat-value { color: var(--scheme-accent); }
+[data-theme-scheme="indigo"] .preview-stat-change.up { background: rgba(16,185,129,0.1); color: #059669; }
+[data-theme-scheme="indigo"] .preview-stat-change.down { background: rgba(239,68,68,0.1); color: #dc2626; }
+[data-theme-scheme="indigo"] .preview-btn-primary { background: var(--scheme-accent); color: #fff; }
+[data-theme-scheme="indigo"] .preview-status-badge.success { background: rgba(16,185,129,0.1); color: #059669; }
+[data-theme-scheme="indigo"] .preview-status-badge.warning { background: rgba(245,158,11,0.1); color: #d97706; }
+[data-theme-scheme="indigo"] .preview-status-badge.danger { background: rgba(239,68,68,0.1); color: #dc2626; }
+
+/* ---- 方案2: 翠绿 Emerald ---- */
+[data-theme-scheme="emerald"] {
+  --scheme-accent: #10b981;
+  --scheme-accent-hover: #059669;
+  --scheme-accent-light: rgba(16,185,129,0.08);
+  --scheme-accent-rgb: 16,185,129;
+  --sidebar-bg: linear-gradient(180deg, #ecfdf5 0%, #d1fae5 100%);
+  --sidebar-text: #064e3b;
+  --sidebar-muted: #6ee7b7;
+  --sidebar-hover: rgba(16,185,129,0.1);
+  --sidebar-active-bg: linear-gradient(135deg, rgba(16,185,129,0.18), rgba(52,211,153,0.12));
+  --sidebar-active-text: #047857;
+  --sidebar-border: rgba(16,185,129,0.15);
+  --content-bg: #f0fdf4;
+  --topbar-bg: #ffffff;
+  --card-bg: #ffffff;
+  --border-color: #d1fae5;
+  --text-color: #022c22;
+  --muted-color: #4b5563;
+  --btn-ghost-bg: #ecfdf5;
+  --card-accent: #10b981;
+}
+[data-theme-scheme="emerald"] .preview-sidebar { background: var(--sidebar-bg); }
+[data-theme-scheme="emerald"] .preview-sidebar-logo { border-bottom-color: var(--sidebar-border); }
+[data-theme-scheme="emerald"] .preview-logo-text { color: var(--sidebar-text); }
+[data-theme-scheme="emerald"] .menu-group-label { color: var(--sidebar-muted); }
+[data-theme-scheme="emerald"] .preview-menu-item { color: var(--sidebar-text); }
+[data-theme-scheme="emerald"] .preview-menu-item:hover { background: var(--sidebar-hover); }
+[data-theme-scheme="emerald"] .preview-menu-item.active { background: var(--sidebar-active-bg); color: var(--sidebar-active-text); }
+[data-theme-scheme="emerald"] .preview-menu-badge { background: #10b981; color: #fff; }
+[data-theme-scheme="emerald"] .preview-logo-icon { background: linear-gradient(135deg, #10b981, #34d399); }
+[data-theme-scheme="emerald"] .preview-tab { background: #d1fae5; color: #064e3b; }
+[data-theme-scheme="emerald"] .preview-tab.active { background: #fff; color: var(--text-color); box-shadow: 0 1px 3px rgba(0,0,0,0.06); }
+[data-theme-scheme="emerald"] .preview-stat-value { color: var(--scheme-accent); }
+[data-theme-scheme="emerald"] .preview-stat-change.up { background: rgba(16,185,129,0.15); color: #047857; }
+[data-theme-scheme="emerald"] .preview-stat-change.down { background: rgba(239,68,68,0.1); color: #dc2626; }
+[data-theme-scheme="emerald"] .preview-btn-primary { background: var(--scheme-accent); color: #fff; }
+[data-theme-scheme="emerald"] .preview-status-badge.success { background: rgba(16,185,129,0.15); color: #047857; }
+[data-theme-scheme="emerald"] .preview-status-badge.warning { background: rgba(245,158,11,0.1); color: #d97706; }
+[data-theme-scheme="emerald"] .preview-status-badge.danger { background: rgba(239,68,68,0.1); color: #dc2626; }
+
+/* ---- 方案3: 海洋蓝 Ocean Blue ---- */
+[data-theme-scheme="ocean"] {
+  --scheme-accent: #0ea5e9;
+  --scheme-accent-hover: #0284c7;
+  --scheme-accent-light: rgba(14,165,233,0.08);
+  --scheme-accent-rgb: 14,165,233;
+  --sidebar-bg: linear-gradient(180deg, #f0f9ff 0%, #e0f2fe 100%);
+  --sidebar-text: #0c4a6e;
+  --sidebar-muted: #7dd3fc;
+  --sidebar-hover: rgba(14,165,233,0.1);
+  --sidebar-active-bg: linear-gradient(135deg, rgba(14,165,233,0.16), rgba(56,189,248,0.1));
+  --sidebar-active-text: #0369a1;
+  --sidebar-border: rgba(14,165,233,0.15);
+  --content-bg: #f0f9ff;
+  --topbar-bg: #ffffff;
+  --card-bg: #ffffff;
+  --border-color: #bae6fd;
+  --text-color: #082f49;
+  --muted-color: #475569;
+  --btn-ghost-bg: #f0f9ff;
+  --card-accent: #0ea5e9;
+}
+[data-theme-scheme="ocean"] .preview-sidebar { background: var(--sidebar-bg); }
+[data-theme-scheme="ocean"] .preview-sidebar-logo { border-bottom-color: var(--sidebar-border); }
+[data-theme-scheme="ocean"] .preview-logo-text { color: var(--sidebar-text); }
+[data-theme-scheme="ocean"] .menu-group-label { color: var(--sidebar-muted); }
+[data-theme-scheme="ocean"] .preview-menu-item { color: var(--sidebar-text); }
+[data-theme-scheme="ocean"] .preview-menu-item:hover { background: var(--sidebar-hover); }
+[data-theme-scheme="ocean"] .preview-menu-item.active { background: var(--sidebar-active-bg); color: var(--sidebar-active-text); }
+[data-theme-scheme="ocean"] .preview-menu-badge { background: #0ea5e9; color: #fff; }
+[data-theme-scheme="ocean"] .preview-logo-icon { background: linear-gradient(135deg, #0ea5e9, #38bdf8); }
+[data-theme-scheme="ocean"] .preview-tab { background: #e0f2fe; color: #0c4a6e; }
+[data-theme-scheme="ocean"] .preview-tab.active { background: #fff; color: var(--text-color); box-shadow: 0 1px 3px rgba(0,0,0,0.06); }
+[data-theme-scheme="ocean"] .preview-stat-value { color: var(--scheme-accent); }
+[data-theme-scheme="ocean"] .preview-stat-change.up { background: rgba(16,185,129,0.1); color: #059669; }
+[data-theme-scheme="ocean"] .preview-stat-change.down { background: rgba(239,68,68,0.1); color: #dc2626; }
+[data-theme-scheme="ocean"] .preview-btn-primary { background: var(--scheme-accent); color: #fff; }
+[data-theme-scheme="ocean"] .preview-status-badge.success { background: rgba(16,185,129,0.1); color: #059669; }
+[data-theme-scheme="ocean"] .preview-status-badge.warning { background: rgba(245,158,11,0.1); color: #d97706; }
+[data-theme-scheme="ocean"] .preview-status-badge.danger { background: rgba(239,68,68,0.1); color: #dc2626; }
+
+/* ---- 方案4: 琥珀 Amber ---- */
+[data-theme-scheme="amber"] {
+  --scheme-accent: #f59e0b;
+  --scheme-accent-hover: #d97706;
+  --scheme-accent-light: rgba(245,158,11,0.08);
+  --scheme-accent-rgb: 245,158,11;
+  --sidebar-bg: linear-gradient(180deg, #fffbeb 0%, #fef3c7 50%, #fff7ed 100%);
+  --sidebar-text: #78350f;
+  --sidebar-muted: #fbbf24;
+  --sidebar-hover: rgba(245,158,11,0.12);
+  --sidebar-active-bg: linear-gradient(135deg, rgba(245,158,11,0.18), rgba(251,191,36,0.12));
+  --sidebar-active-text: #b45309;
+  --sidebar-border: rgba(245,158,11,0.18);
+  --content-bg: #fffbeb;
+  --topbar-bg: #ffffff;
+  --card-bg: #ffffff;
+  --border-color: #fde68a;
+  --text-color: #451a03;
+  --muted-color: #78716c;
+  --btn-ghost-bg: #fef3c7;
+  --card-accent: #f59e0b;
+}
+[data-theme-scheme="amber"] .preview-sidebar { background: var(--sidebar-bg); }
+[data-theme-scheme="amber"] .preview-sidebar-logo { border-bottom-color: var(--sidebar-border); }
+[data-theme-scheme="amber"] .preview-logo-text { color: var(--sidebar-text); }
+[data-theme-scheme="amber"] .menu-group-label { color: var(--sidebar-muted); }
+[data-theme-scheme="amber"] .preview-menu-item { color: var(--sidebar-text); }
+[data-theme-scheme="amber"] .preview-menu-item:hover { background: var(--sidebar-hover); }
+[data-theme-scheme="amber"] .preview-menu-item.active { background: var(--sidebar-active-bg); color: var(--sidebar-active-text); }
+[data-theme-scheme="amber"] .preview-menu-badge { background: #f59e0b; color: #fff; }
+[data-theme-scheme="amber"] .preview-logo-icon { background: linear-gradient(135deg, #f59e0b, #fbbf24); }
+[data-theme-scheme="amber"] .preview-tab { background: #fef3c7; color: #78350f; }
+[data-theme-scheme="amber"] .preview-tab.active { background: #fff; color: var(--text-color); box-shadow: 0 1px 3px rgba(0,0,0,0.06); }
+[data-theme-scheme="amber"] .preview-stat-value { color: var(--scheme-accent); }
+[data-theme-scheme="amber"] .preview-stat-change.up { background: rgba(16,185,129,0.1); color: #059669; }
+[data-theme-scheme="amber"] .preview-stat-change.down { background: rgba(239,68,68,0.1); color: #dc2626; }
+[data-theme-scheme="amber"] .preview-btn-primary { background: var(--scheme-accent); color: #fff; }
+[data-theme-scheme="amber"] .preview-status-badge.success { background: rgba(16,185,129,0.1); color: #059669; }
+[data-theme-scheme="amber"] .preview-status-badge.warning { background: rgba(245,158,11,0.15); color: #b45309; }
+[data-theme-scheme="amber"] .preview-status-badge.danger { background: rgba(239,68,68,0.1); color: #dc2626; }
+
+/* ---- 方案5: 石墨灰 Graphite ---- */
+[data-theme-scheme="graphite"] {
+  --scheme-accent: #18181b;
+  --scheme-accent-hover: #27272a;
+  --scheme-accent-light: rgba(24,24,27,0.06);
+  --scheme-accent-rgb: 24,24,27;
+  --sidebar-bg: #fafafa;
+  --sidebar-text: #18181b;
+  --sidebar-muted: #a1a1aa;
+  --sidebar-hover: #e4e4e7;
+  --sidebar-active-bg: #18181b;
+  --sidebar-active-text: #ffffff;
+  --sidebar-border: #e4e4e7;
+  --content-bg: #f4f4f5;
+  --topbar-bg: #ffffff;
+  --card-bg: #ffffff;
+  --border-color: #e4e4e7;
+  --text-color: #18181b;
+  --muted-color: #71717a;
+  --btn-ghost-bg: #f4f4f5;
+  --card-accent: #18181b;
+}
+[data-theme-scheme="graphite"] .preview-sidebar { background: var(--sidebar-bg); }
+[data-theme-scheme="graphite"] .preview-sidebar-logo { border-bottom-color: var(--sidebar-border); }
+[data-theme-scheme="graphite"] .preview-logo-text { color: var(--sidebar-text); }
+[data-theme-scheme="graphite"] .menu-group-label { color: var(--sidebar-muted); }
+[data-theme-scheme="graphite"] .preview-menu-item { color: var(--sidebar-text); }
+[data-theme-scheme="graphite"] .preview-menu-item:hover { background: var(--sidebar-hover); }
+[data-theme-scheme="graphite"] .preview-menu-item.active { background: var(--sidebar-active-bg); color: var(--sidebar-active-text); }
+[data-theme-scheme="graphite"] .preview-menu-badge { background: #52525b; color: #fff; }
+[data-theme-scheme="graphite"] .preview-logo-icon { background: linear-gradient(135deg, #18181b, #3f3f46); }
+[data-theme-scheme="graphite"] .preview-tab { background: #f4f4f5; color: #52525b; }
+[data-theme-scheme="graphite"] .preview-tab.active { background: #fff; color: var(--text-color); box-shadow: 0 1px 3px rgba(0,0,0,0.08); }
+[data-theme-scheme="graphite"] .preview-stat-value { color: var(--scheme-accent); }
+[data-theme-scheme="graphite"] .preview-stat-change.up { background: rgba(16,185,129,0.1); color: #059669; }
+[data-theme-scheme="graphite"] .preview-stat-change.down { background: rgba(239,68,68,0.1); color: #dc2626; }
+[data-theme-scheme="graphite] .preview-btn-primary { background: var(--scheme-accent); color: #fff; }
+[data-theme-scheme="graphite"] .preview-status-badge.success { background: rgba(16,185,129,0.1); color: #059669; }
+[data-theme-scheme="graphite"] .preview-status-badge.warning { background: rgba(161,161,170,0.2); color: #52525b; }
+[data-theme-scheme="graphite"] .preview-status-badge.danger { background: rgba(239,68,68,0.1); color: #dc2626; }
+
+/* ---- 方案6: 玫瑰 Rose ---- */
+[data-theme-scheme="rose"] {
+  --scheme-accent: #e11d48;
+  --scheme-accent-hover: #be123c;
+  --scheme-accent-light: rgba(225,29,72,0.08);
+  --scheme-accent-rgb: 225,29,72;
+  --sidebar-bg: linear-gradient(180deg, #fff1f2 0%, #ffe4e6 100%);
+  --sidebar-text: #881337;
+  --sidebar-muted: #fb7185;
+  --sidebar-hover: rgba(225,29,72,0.08);
+  --sidebar-active-bg: linear-gradient(135deg, rgba(225,29,72,0.14), rgba(251,113,133,0.08));
+  --sidebar-active-text: #be123c;
+  --sidebar-border: rgba(225,29,72,0.12);
+  --content-bg: #fff1f2;
+  --topbar-bg: #ffffff;
+  --card-bg: #ffffff;
+  --border-color: #fecdd3;
+  --text-color: #4c0519;
+  --muted-color: #78716c;
+  --btn-ghost-bg: #ffe4e6;
+  --card-accent: #e11d48;
+}
+[data-theme-scheme="rose"] .preview-sidebar { background: var(--sidebar-bg); }
+[data-theme-scheme="rose"] .preview-sidebar-logo { border-bottom-color: var(--sidebar-border); }
+[data-theme-scheme="rose"] .preview-logo-text { color: var(--sidebar-text); }
+[data-theme-scheme="rose"] .menu-group-label { color: var(--sidebar-muted); }
+[data-theme-scheme="rose"] .preview-menu-item { color: var(--sidebar-text); }
+[data-theme-scheme="rose"] .preview-menu-item:hover { background: var(--sidebar-hover); }
+[data-theme-scheme="rose"] .preview-menu-item.active { background: var(--sidebar-active-bg); color: var(--sidebar-active-text); }
+[data-theme-scheme="rose"] .preview-menu-badge { background: #e11d48; color: #fff; }
+[data-theme-scheme="rose"] .preview-logo-icon { background: linear-gradient(135deg, #e11d48, #fb7185); }
+[data-theme-scheme="rose"] .preview-tab { background: #ffe4e6; color: #881337; }
+[data-theme-scheme="rose"] .preview-tab.active { background: #fff; color: var(--text-color); box-shadow: 0 1px 3px rgba(0,0,0,0.06); }
+[data-theme-scheme="rose"] .preview-stat-value { color: var(--scheme-accent); }
+[data-theme-scheme="rose"] .preview-stat-change.up { background: rgba(16,185,129,0.1); color: #059669; }
+[data-theme-scheme="rose"] .preview-stat-change.down { background: rgba(239,68,68,0.1); color: #dc2626; }
+[data-theme-scheme="rose"] .preview-btn-primary { background: var(--scheme-accent); color: #fff; }
+[data-theme-scheme="rose"] .preview-status-badge.success { background: rgba(16,185,129,0.1); color: #059669; }
+[data-theme-scheme="rose"] .preview-status-badge.warning { background: rgba(245,158,11,0.1); color: #d97706; }
+[data-theme-scheme="rose"] .preview-status-badge.danger { background: rgba(225,29,72,0.1); color: #be123c; }
+
+/* Tag 样式 */
+.tag-best { background: #ede9fe; color: #7c3aed; }
+.tag-fresh { background: #d1fae5; color: #059669; }
+.tag-pro { background: #dbeafe; color: #2563eb; }
+.tag-warm { background: #fef3c7; color: #d97706; }
+.tag-cool { background: #f3f4f6; color: #374151; }
+.tag-chic { background: #fce7f3; color: #db2777; }
+
+/* 动画 */
+@keyframes cardIn {
+  from { opacity: 0; transform: translateY(24px) scale(0.97); }
+  to { opacity: 1; transform: translateY(0) scale(1); }
+}
+.scheme-card { animation: cardIn 0.5s ease forwards; opacity: 0; }
+.scheme-card:nth-child(1) { animation-delay: 0.04s; }
+.scheme-card:nth-child(2) { animation-delay: 0.09s; }
+.scheme-card:nth-child(3) { animation-delay: 0.14s; }
+.scheme-card:nth-child(4) { animation-delay: 0.19s; }
+.scheme-card:nth-child(5) { animation-delay: 0.24s; }
+.scheme-card:nth-child(6) { animation-delay: 0.29s; }
+
+@media (max-width: 1100px) {
+  .schemes-grid { grid-template-columns: 1fr; }
+  .admin-preview { height: 320px; }
+  .preview-sidebar { width: 170px; min-width: 170px; }
+}
+</style>
 </head>
 <body>
-  <h1>🎨 配色方案预览</h1>
-  
-  <div class="schemes">
-    <!-- GitHub -->
-    <div class="scheme">
-      <div class="scheme-title">📦 GitHub 风格 - 专业稳重</div>
-      <div class="theme-row">
-        <div class="theme">
-          <div class="theme-label">亮色主题</div>
-          <div class="github-light">
-            <div class="preview">
-              <div class="preview-wrapper">
-                <div class="preview-sidebar">
-                  <div class="preview-menu-item active"></div>
-                  <div class="preview-menu-item"></div>
-                  <div class="preview-menu-item"></div>
-                </div>
-                <div class="preview-main">
-                  <div class="preview-header"></div>
-                  <div class="preview-content">
-                    <div class="preview-card">
-                      <div class="preview-text primary long"></div>
-                      <div class="preview-text medium"></div>
-                      <div class="preview-btn">Button</div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div class="color-dots">
-              <div class="color-dot" style="background: #f6f8fa" title="bg"></div>
-              <div class="color-dot" style="background: #0d1117" title="sidebar"></div>
-              <div class="color-dot" style="background: #24292f" title="text"></div>
-              <div class="color-dot" style="background: #1f6feb" title="accent"></div>
-            </div>
-          </div>
+
+<div class="header">
+  <div class="header-badge">Theme System v2.0</div>
+  <h1>🎨 OS Admin 全局主题配色</h1>
+  <p>包含 accent 主色调 + 侧边栏 + 组件色的完整视觉体系设计</p>
+</div>
+
+<div class="container">
+
+<!-- 当前方案警告 -->
+<div class="current-alert">
+  <div class="current-alert-icon">⚡</div>
+  <div class="current-alert-content">
+    <h3>当前方案分析</h3>
+    <p>你的框架使用深色侧边栏 (#151c28) + 青绿主题色 (#16baaa)，整体偏传统。以下 6 套方案均采用<strong>明亮侧边栏 + 现代化配色</strong>。</p>
+    <div class="current-colors">
+      <div class="current-color-item"><span class="current-color-dot" style="background:#151c28;"></span>--bg-sidebar: #151c28</div>
+      <span class="arrow-icon">→</span>
+      <div class="current-color-item"><span class="current-color-dot" style="background:#16baaa;"></span>--accent: #16baaa</div>
+      <span class="arrow-icon">→</span>
+      <strong style="color:#9a3412;font-size:12px;">升级为明亮现代方案 ↓</strong>
+    </div>
+  </div>
+</div>
+
+<div class="schemes-grid">
+
+<!-- ========== 方案1: 靛蓝 Indigo ========== -->
+<div class="scheme-card" data-theme-scheme="indigo" onclick="selectScheme(this)">
+  <div class="scheme-top-bar" style="background:linear-gradient(90deg,#6366f1,#8b5cf6);"></div>
+  <div class="scheme-body">
+    <div class="admin-preview">
+      <div class="preview-sidebar">
+        <div class="preview-sidebar-logo">
+          <div class="preview-logo-icon">O</div>
+          <span class="preview-logo-text">OS Admin</span>
         </div>
-        <div class="theme">
-          <div class="theme-label">深色主题</div>
-          <div class="github-dark">
-            <div class="preview">
-              <div class="preview-wrapper">
-                <div class="preview-sidebar">
-                  <div class="preview-menu-item active"></div>
-                  <div class="preview-menu-item"></div>
-                  <div class="preview-menu-item"></div>
-                </div>
-                <div class="preview-main">
-                  <div class="preview-header"></div>
-                  <div class="preview-content">
-                    <div class="preview-card">
-                      <div class="preview-text primary long"></div>
-                      <div class="preview-text medium"></div>
-                      <div class="preview-btn">Button</div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div class="color-dots">
-              <div class="color-dot" style="background: #161b22" title="bg"></div>
-              <div class="color-dot" style="background: #0d1117" title="sidebar"></div>
-              <div class="color-dot" style="background: #c9d1d9" title="text"></div>
-              <div class="color-dot" style="background: #58a6ff" title="accent"></div>
-            </div>
-          </div>
+        <div class="preview-menu">
+          <div class="menu-group-label">导航</div>
+          <div class="preview-menu-item active"><span class="preview-menu-icon">📊</span><span>控制台</span></div>
+          <div class="preview-menu-item"><span class="preview-menu-icon">👥</span><span>用户管理</span></div>
+          <div class="preview-menu-item"><span class="preview-menu-icon">⚙️</span><span>系统设置</span><span class="preview-menu-badge">5</span></div>
+          <div class="menu-group-label">工具</div>
+          <div class="preview-menu-item"><span class="preview-menu-icon">📄</span><span>文档中心</span></div>
+          <div class="preview-menu-item"><span class="preview-menu-icon">🔔</span><span>消息通知</span><span class="preview-menu-badge">12</span></div>
         </div>
       </div>
-    </div>
-    
-    <!-- Vercel -->
-    <div class="scheme">
-      <div class="scheme-title">⚡ Vercel 风格 - 极简黑白</div>
-      <div class="theme-row">
-        <div class="theme">
-          <div class="theme-label">亮色主题</div>
-          <div class="vercel-light">
-            <div class="preview">
-              <div class="preview-wrapper">
-                <div class="preview-sidebar">
-                  <div class="preview-menu-item active"></div>
-                  <div class="preview-menu-item"></div>
-                  <div class="preview-menu-item"></div>
-                </div>
-                <div class="preview-main">
-                  <div class="preview-header"></div>
-                  <div class="preview-content">
-                    <div class="preview-card">
-                      <div class="preview-text primary long"></div>
-                      <div class="preview-text medium"></div>
-                      <div class="preview-btn">Button</div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div class="color-dots">
-              <div class="color-dot" style="background: #fafafa" title="bg"></div>
-              <div class="color-dot" style="background: #000000" title="sidebar"></div>
-              <div class="color-dot" style="background: #171717" title="text"></div>
-              <div class="color-dot" style="background: #0070f3" title="accent"></div>
-            </div>
+      <div class="preview-main">
+        <div class="preview-topbar">
+          <div class="preview-breadcrumb">首页 / <strong>控制台</strong></div>
+          <div class="preview-topbar-actions">
+            <button class="preview-action-btn">🔄</button>
+            <button class="preview-action-btn">⛶</button>
+            <button class="preview-action-btn">🔔</button>
+            <div class="preview-user"><div class="preview-avatar">A</div><span class="preview-user-name">Admin</span></div>
           </div>
         </div>
-        <div class="theme">
-          <div class="theme-label">深色主题</div>
-          <div class="vercel-dark">
-            <div class="preview">
-              <div class="preview-wrapper">
-                <div class="preview-sidebar">
-                  <div class="preview-menu-item active"></div>
-                  <div class="preview-menu-item"></div>
-                  <div class="preview-menu-item"></div>
-                </div>
-                <div class="preview-main">
-                  <div class="preview-header"></div>
-                  <div class="preview-content">
-                    <div class="preview-card">
-                      <div class="preview-text primary long"></div>
-                      <div class="preview-text medium"></div>
-                      <div class="preview-btn">Button</div>
-                    </div>
-                  </div>
-                </div>
-              </div>
+        <div class="preview-tabs">
+          <span class="preview-tab active">控制台<span class="preview-tab-close">✕</span></span>
+          <span class="preview-tab">用户管理<span class="preview-tab-close">✕</span></span>
+          <span class="preview-tab">设置<span class="preview-tab-close">✕</span></span>
+        </div>
+        <div class="preview-content">
+          <div class="preview-stats-row">
+            <div class="preview-stat-card">
+              <div class="preview-stat-label">总用户数</div>
+              <div class="preview-stat-value">12,846</div>
+              <div class="preview-stat-change up">↑ 12.5%</div>
             </div>
-            <div class="color-dots">
-              <div class="color-dot" style="background: #000000" title="bg"></div>
-              <div class="color-dot" style="background: #000000" title="sidebar"></div>
-              <div class="color-dot" style="background: #fafafa" title="text"></div>
-              <div class="color-dot" style="background: #7928ca" title="accent"></div>
+            <div class="preview-stat-card">
+              <div class="preview-stat-label">活跃会话</div>
+              <div class="preview-stat-value">1,204</div>
+              <div class="preview-stat-change up">↑ 8.2%</div>
+            </div>
+            <div class="preview-stat-card">
+              <div class="preview-stat-label">今日访问</div>
+              <div class="preview-stat-value">38,492</div>
+              <div class="preview-stat-change down">↓ 3.1%</div>
             </div>
           </div>
-        </div>
-      </div>
-    </div>
-    
-    <!-- Stripe -->
-    <div class="scheme">
-      <div class="scheme-title">💎 Stripe 风格 - 暗夜深蓝</div>
-      <div class="theme-row">
-        <div class="theme">
-          <div class="theme-label">亮色主题</div>
-          <div class="stripe-light">
-            <div class="preview">
-              <div class="preview-wrapper">
-                <div class="preview-sidebar">
-                  <div class="preview-menu-item active"></div>
-                  <div class="preview-menu-item"></div>
-                  <div class="preview-menu-item"></div>
-                </div>
-                <div class="preview-main">
-                  <div class="preview-header"></div>
-                  <div class="preview-content">
-                    <div class="preview-card">
-                      <div class="preview-text primary long"></div>
-                      <div class="preview-text medium"></div>
-                      <div class="preview-btn">Button</div>
-                    </div>
-                  </div>
-                </div>
-              </div>
+          <div class="preview-table-area">
+            <div class="preview-table-header">
+              <span class="preview-table-title">最近用户</span>
+              <button class="preview-btn-primary">+ 新增用户</button>
             </div>
-            <div class="color-dots">
-              <div class="color-dot" style="background: #f6f9fc" title="bg"></div>
-              <div class="color-dot" style="background: #1a1f36" title="sidebar"></div>
-              <div class="color-dot" style="background: #1a1f36" title="text"></div>
-              <div class="color-dot" style="background: #635bff" title="accent"></div>
+            <div class="preview-table-row">
+              <span class="preview-table-name">👤 张三丰</span><span>zhang@example.com</span><span class="preview-status-badge success">正常</span><span>管理员</span>
             </div>
-          </div>
-        </div>
-        <div class="theme">
-          <div class="theme-label">深色主题</div>
-          <div class="stripe-dark">
-            <div class="preview">
-              <div class="preview-wrapper">
-                <div class="preview-sidebar">
-                  <div class="preview-menu-item active"></div>
-                  <div class="preview-menu-item"></div>
-                  <div class="preview-menu-item"></div>
-                </div>
-                <div class="preview-main">
-                  <div class="preview-header"></div>
-                  <div class="preview-content">
-                    <div class="preview-card">
-                      <div class="preview-text primary long"></div>
-                      <div class="preview-text medium"></div>
-                      <div class="preview-btn">Button</div>
-                    </div>
-                  </div>
-                </div>
-              </div>
+            <div class="preview-table-row">
+              <span class="preview-table-name">👤 李小龙</span><span>li@example.com</span><span class="preview-status-badge warning">待审</span><span>编辑</span>
             </div>
-            <div class="color-dots">
-              <div class="color-dot" style="background: #0a2540" title="bg"></div>
-              <div class="color-dot" style="background: #0a2540" title="sidebar"></div>
-              <div class="color-dot" style="background: #c4d6e8" title="text"></div>
-              <div class="color-dot" style="background: #7a73ff" title="accent"></div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-    
-    <!-- Notion -->
-    <div class="scheme">
-      <div class="scheme-title">📝 Notion 风格 - 纯净简约</div>
-      <div class="theme-row">
-        <div class="theme">
-          <div class="theme-label">亮色主题</div>
-          <div class="notion-light">
-            <div class="preview">
-              <div class="preview-wrapper">
-                <div class="preview-sidebar">
-                  <div class="preview-menu-item active"></div>
-                  <div class="preview-menu-item"></div>
-                  <div class="preview-menu-item"></div>
-                </div>
-                <div class="preview-main">
-                  <div class="preview-header"></div>
-                  <div class="preview-content">
-                    <div class="preview-card">
-                      <div class="preview-text primary long"></div>
-                      <div class="preview-text medium"></div>
-                      <div class="preview-btn">Button</div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div class="color-dots">
-              <div class="color-dot" style="background: #f7f6f3" title="bg"></div>
-              <div class="color-dot" style="background: #fbfbfa" title="sidebar"></div>
-              <div class="color-dot" style="background: #37352f" title="text"></div>
-              <div class="color-dot" style="background: #2383e2" title="accent"></div>
-            </div>
-          </div>
-        </div>
-        <div class="theme">
-          <div class="theme-label">深色主题</div>
-          <div class="notion-dark">
-            <div class="preview">
-              <div class="preview-wrapper">
-                <div class="preview-sidebar">
-                  <div class="preview-menu-item active"></div>
-                  <div class="preview-menu-item"></div>
-                  <div class="preview-menu-item"></div>
-                </div>
-                <div class="preview-main">
-                  <div class="preview-header"></div>
-                  <div class="preview-content">
-                    <div class="preview-card">
-                      <div class="preview-text primary long"></div>
-                      <div class="preview-text medium"></div>
-                      <div class="preview-btn">Button</div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div class="color-dots">
-              <div class="color-dot" style="background: #191919" title="bg"></div>
-              <div class="color-dot" style="background: #191919" title="sidebar"></div>
-              <div class="color-dot" style="background: #ebebea" title="text"></div>
-              <div class="color-dot" style="background: #529cca" title="accent"></div>
+            <div class="preview-table-row">
+              <span class="preview-table-name">👤 王大锤</span><span>wang@example.com</span><span class="preview-status-badge danger">禁用</span><span>访客</span>
             </div>
           </div>
         </div>
       </div>
     </div>
   </div>
+  <div class="scheme-info">
+    <div class="scheme-info-left">
+      <h3>💜 靛蓝 Indigo</h3>
+      <span class="scheme-subtitle">干净专业 · Linear 风格</span>
+    </div>
+    <span class="scheme-tag tag-best">推荐首选</span>
+  </div>
+  <div class="color-swatches">
+    <span class="swatch-label">色板:</span>
+    <div class="swatch"><span class="swatch-dot" style="background:#ffffff;"></span>#FFFFFF</div>
+    <div class="swatch"><span class="swatch-dot" style="background:#6366f1;"></span>#6366F1</div>
+    <div class="swatch"><span class="swatch-dot" style="background:#f3f4f6;"></span>#F3F4F6</div>
+    <div class="swatch"><span class="swatch-dot" style="background:#0f172a;"></span>#0F172A</div>
+  </div>
+  <div class="css-output"><span class="css-comment">/* 靛蓝 Indigo */</span>
+<span class="css-key">--accent</span>: <span class="css-val">#6366f1</span>;
+<span class="css-key">--accent-hover</span>: <span class="css-val">#4f46e5</span>;
+<span class="css-key">--bg-sidebar</span>: <span class="css-val">#ffffff</span>;
+<span class="css-key">--bg-sidebar-hover</span>: <span class="css-val">#f3f4f6</span>;
+<span class="css-key">--bg-content</span>: <span class="css-val">#f8fafc</span>;</div>
+</div>
+
+<!-- ========== 方案2: 翠绿 Emerald ========== -->
+<div class="scheme-card" data-theme-scheme="emerald" onclick="selectScheme(this)">
+  <div class="scheme-top-bar" style="background:linear-gradient(90deg,#10b981,#34d399);"></div>
+  <div class="scheme-body">
+    <div class="admin-preview">
+      <div class="preview-sidebar">
+        <div class="preview-sidebar-logo">
+          <div class="preview-logo-icon">O</div>
+          <span class="preview-logo-text">OS Admin</span>
+        </div>
+        <div class="preview-menu">
+          <div class="menu-group-label">导航</div>
+          <div class="preview-menu-item active"><span class="preview-menu-icon">📊</span><span>控制台</span></div>
+          <div class="preview-menu-item"><span class="preview-menu-icon">👥</span><span>用户管理</span></div>
+          <div class="preview-menu-item"><span class="preview-menu-icon">⚙️</span><span>系统设置</span><span class="preview-menu-badge">5</span></div>
+          <div class="menu-group-label">工具</div>
+          <div class="preview-menu-item"><span class="preview-menu-icon">📄</span><span>文档中心</span></div>
+          <div class="preview-menu-item"><span class="preview-menu-icon">🔔</span><span>消息通知</span><span class="preview-menu-badge">12</span></div>
+        </div>
+      </div>
+      <div class="preview-main">
+        <div class="preview-topbar">
+          <div class="preview-breadcrumb">首页 / <strong>控制台</strong></div>
+          <div class="preview-topbar-actions">
+            <button class="preview-action-btn">🔄</button>
+            <button class="preview-action-btn">⛶</button>
+            <button class="preview-action-btn">🔔</button>
+            <div class="preview-user"><div class="preview-avatar">A</div><span class="preview-user-name">Admin</span></div>
+          </div>
+        </div>
+        <div class="preview-tabs">
+          <span class="preview-tab active">控制台<span class="preview-tab-close">✕</span></span>
+          <span class="preview-tab">用户管理<span class="preview-tab-close">✕</span></span>
+          <span class="preview-tab">设置<span class="preview-tab-close">✕</span></span>
+        </div>
+        <div class="preview-content">
+          <div class="preview-stats-row">
+            <div class="preview-stat-card">
+              <div class="preview-stat-label">总用户数</div>
+              <div class="preview-stat-value">12,846</div>
+              <div class="preview-stat-change up">↑ 12.5%</div>
+            </div>
+            <div class="preview-stat-card">
+              <div class="preview-stat-label">活跃会话</div>
+              <div class="preview-stat-value">1,204</div>
+              <div class="preview-stat-change up">↑ 8.2%</div>
+            </div>
+            <div class="preview-stat-card">
+              <div class="preview-stat-label">今日访问</div>
+              <div class="preview-stat-value">38,492</div>
+              <div class="preview-stat-change down">↓ 3.1%</div>
+            </div>
+          </div>
+          <div class="preview-table-area">
+            <div class="preview-table-header">
+              <span class="preview-table-title">最近用户</span>
+              <button class="preview-btn-primary">+ 新增用户</button>
+            </div>
+            <div class="preview-table-row">
+              <span class="preview-table-name">👤 张三丰</span><span>zhang@example.com</span><span class="preview-status-badge success">正常</span><span>管理员</span>
+            </div>
+            <div class="preview-table-row">
+              <span class="preview-table-name">👤 李小龙</span><span>li@example.com</span><span class="preview-status-badge warning">待审</span><span>编辑</span>
+            </div>
+            <div class="preview-table-row">
+              <span class="preview-table-name">👤 王大锤</span><span>wang@example.com</span><span class="preview-status-badge danger">禁用</span><span>访客</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="scheme-info">
+    <div class="scheme-info-left">
+      <h3>💚 翠绿 Emerald</h3>
+      <span class="scheme-subtitle">自然清新 · 健康活力</span>
+    </div>
+    <span class="scheme-tag tag-fresh">清新</span>
+  </div>
+  <div class="color-swatches">
+    <span class="swatch-label">色板:</span>
+    <div class="swatch"><span class="swatch-dot" style="background:#ecfdf5;"></span>#ECFDF5</div>
+    <div class="swatch"><span class="swatch-dot" style="background:#10b981;"></span>#10B981</div>
+    <div class="swatch"><span class="swatch-dot" style="background:#d1fae5;"></span>#D1FAE5</div>
+    <div class="swatch"><span class="swatch-dot" style="background:#064e3b;"></span>#064E3B</div>
+  </div>
+  <div class="css-output"><span class="css-comment">/* 翠绿 Emerald */</span>
+<span class="css-key">--accent</span>: <span class="css-val">#10b981</span>;
+<span class="css-key">--accent-hover</span>: <span class="css-val">#059669</span>;
+<span class="css-key">--bg-sidebar</span>: <span class="css-val">#ecfdf5</span>;
+<span class="css-key">--bg-sidebar-hover</span>: <span class="css-val">rgba(16,185,129,0.1)</span>;
+<span class="css-key">--bg-content</span>: <span class="css-val">#f0fdf4</span>;</div>
+</div>
+
+<!-- ========== 方案3: 海洋蓝 Ocean ========== -->
+<div class="scheme-card" data-theme-scheme="ocean" onclick="selectScheme(this)">
+  <div class="scheme-top-bar" style="background:linear-gradient(90deg,#0ea5e9,#38bdf8);"></div>
+  <div class="scheme-body">
+    <div class="admin-preview">
+      <div class="preview-sidebar">
+        <div class="preview-sidebar-logo">
+          <div class="preview-logo-icon">O</div>
+          <span class="preview-logo-text">OS Admin</span>
+        </div>
+        <div class="preview-menu">
+          <div class="menu-group-label">导航</div>
+          <div class="preview-menu-item active"><span class="preview-menu-icon">📊</span><span>控制台</span></div>
+          <div class="preview-menu-item"><span class="preview-menu-icon">👥</span><span>用户管理</span></div>
+          <div class="preview-menu-item"><span class="preview-menu-icon">⚙️</span><span>系统设置</span><span class="preview-menu-badge">5</span></div>
+          <div class="menu-group-label">工具</div>
+          <div class="preview-menu-item"><span class="preview-menu-icon">📄</span><span>文档中心</span></div>
+          <div class="preview-menu-item"><span class="preview-menu-icon">🔔</span><span>消息通知</span><span class="preview-menu-badge">12</span></div>
+        </div>
+      </div>
+      <div class="preview-main">
+        <div class="preview-topbar">
+          <div class="preview-breadcrumb">首页 / <strong>控制台</strong></div>
+          <div class="preview-topbar-actions">
+            <button class="preview-action-btn">🔄</button>
+            <button class="preview-action-btn">⛶</button>
+            <button class="preview-action-btn">🔔</button>
+            <div class="preview-user"><div class="preview-avatar">A</div><span class="preview-user-name">Admin</span></div>
+          </div>
+        </div>
+        <div class="preview-tabs">
+          <span class="preview-tab active">控制台<span class="preview-tab-close">✕</span></span>
+          <span class="preview-tab">用户管理<span class="preview-tab-close">✕</span></span>
+          <span class="preview-tab">设置<span class="preview-tab-close">✕</span></span>
+        </div>
+        <div class="preview-content">
+          <div class="preview-stats-row">
+            <div class="preview-stat-card">
+              <div class="preview-stat-label">总用户数</div>
+              <div class="preview-stat-value">12,846</div>
+              <div class="preview-stat-change up">↑ 12.5%</div>
+            </div>
+            <div class="preview-stat-card">
+              <div class="preview-stat-label">活跃会话</div>
+              <div class="preview-stat-value">1,204</div>
+              <div class="preview-stat-change up">↑ 8.2%</div>
+            </div>
+            <div class="preview-stat-card">
+              <div class="preview-stat-label">今日访问</div>
+              <div class="preview-stat-value">38,492</div>
+              <div class="preview-stat-change down">↓ 3.1%</div>
+            </div>
+          </div>
+          <div class="preview-table-area">
+            <div class="preview-table-header">
+              <span class="preview-table-title">最近用户</span>
+              <button class="preview-btn-primary">+ 新增用户</button>
+            </div>
+            <div class="preview-table-row">
+              <span class="preview-table-name">👤 张三丰</span><span>zhang@example.com</span><span class="preview-status-badge success">正常</span><span>管理员</span>
+            </div>
+            <div class="preview-table-row">
+              <span class="preview-table-name">👤 李小龙</span><span>li@example.com</span><span class="preview-status-badge warning">待审</span><span>编辑</span>
+            </div>
+            <div class="preview-table-row">
+              <span class="preview-table-name">👤 王大锤</span><span>wang@example.com</span><span class="preview-status-badge danger">禁用</span><span>访客</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="scheme-info">
+    <div class="scheme-info-left">
+      <h3>💙 海洋蓝 Ocean</h3>
+      <span class="scheme-subtitle">专业稳重 · 企业级首选</span>
+    </div>
+    <span class="scheme-tag tag-pro">企业级</span>
+  </div>
+  <div class="color-swatches">
+    <span class="swatch-label">色板:</span>
+    <div class="swatch"><span class="swatch-dot" style="background:#f0f9ff;"></span>#F0F9FF</div>
+    <div class="swatch"><span class="swatch-dot" style="background:#0ea5e9;"></span>#0EA5E9</div>
+    <div class="swatch"><span class="swatch-dot" style="background:#e0f2fe;"></span>#E0F2FE</div>
+    <div class="swatch"><span class="swatch-dot" style="background:#0c4a6e;"></span>#0C4A6E</div>
+  </div>
+  <div class="css-output"><span class="css-comment">/* 海洋蓝 Ocean */</span>
+<span class="css-key">--accent</span>: <span class="css-val">#0ea5e9</span>;
+<span class="css-key">--accent-hover</span>: <span class="css-val">#0284c7</span>;
+<span class="css-key">--bg-sidebar</span>: <span class="css-val">#f0f9ff</span>;
+<span class="css-key">--bg-sidebar-hover</span>: <span class="css-val">rgba(14,165,233,0.1)</span>;
+<span class="css-key">--bg-content</span>: <span class="css-val">#f0f9ff</span>;</div>
+</div>
+
+<!-- ========== 方案4: 琥珀 Amber ========== -->
+<div class="scheme-card" data-theme-scheme="amber" onclick="selectScheme(this)">
+  <div class="scheme-top-bar" style="background:linear-gradient(90deg,#f59e0b,#fbbf24);"></div>
+  <div class="scheme-body">
+    <div class="admin-preview">
+      <div class="preview-sidebar">
+        <div class="preview-sidebar-logo">
+          <div class="preview-logo-icon">O</div>
+          <span class="preview-logo-text">OS Admin</span>
+        </div>
+        <div class="preview-menu">
+          <div class="menu-group-label">导航</div>
+          <div class="preview-menu-item active"><span class="preview-menu-icon">📊</span><span>控制台</span></div>
+          <div class="preview-menu-item"><span class="preview-menu-icon">👥</span><span>用户管理</span></div>
+          <div class="preview-menu-item"><span class="preview-menu-icon">⚙️</span><span>系统设置</span><span class="preview-menu-badge">5</span></div>
+          <div class="menu-group-label">工具</div>
+          <div class="preview-menu-item"><span class="preview-menu-icon">📄</span><span>文档中心</span></div>
+          <div class="preview-menu-item"><span class="preview-menu-icon">🔔</span><span>消息通知</span><span class="preview-menu-badge">12</span></div>
+        </div>
+      </div>
+      <div class="preview-main">
+        <div class="preview-topbar">
+          <div class="preview-breadcrumb">首页 / <strong>控制台</strong></div>
+          <div class="preview-topbar-actions">
+            <button class="preview-action-btn">🔄</button>
+            <button class="preview-action-btn">⛶</button>
+            <button class="preview-action-btn">🔔</button>
+            <div class="preview-user"><div class="preview-avatar">A</div><span class="preview-user-name">Admin</span></div>
+          </div>
+        </div>
+        <div class="preview-tabs">
+          <span class="preview-tab active">控制台<span class="preview-tab-close">✕</span></span>
+          <span class="preview-tab">用户管理<span class="preview-tab-close">✕</span></span>
+          <span class="preview-tab">设置<span class="preview-tab-close">✕</span></span>
+        </div>
+        <div class="preview-content">
+          <div class="preview-stats-row">
+            <div class="preview-stat-card">
+              <div class="preview-stat-label">总用户数</div>
+              <div class="preview-stat-value">12,846</div>
+              <div class="preview-stat-change up">↑ 12.5%</div>
+            </div>
+            <div class="preview-stat-card">
+              <div class="preview-stat-label">活跃会话</div>
+              <div class="preview-stat-value">1,204</div>
+              <div class="preview-stat-change up">↑ 8.2%</div>
+            </div>
+            <div class="preview-stat-card">
+              <div class="preview-stat-label">今日访问</div>
+              <div class="preview-stat-value">38,492</div>
+              <div class="preview-stat-change down">↓ 3.1%</div>
+            </div>
+          </div>
+          <div class="preview-table-area">
+            <div class="preview-table-header">
+              <span class="preview-table-title">最近用户</span>
+              <button class="preview-btn-primary">+ 新增用户</button>
+            </div>
+            <div class="preview-table-row">
+              <span class="preview-table-name">👤 张三丰</span><span>zhang@example.com</span><span class="preview-status-badge success">正常</span><span>管理员</span>
+            </div>
+            <div class="preview-table-row">
+              <span class="preview-table-name">👤 李小龙</span><span>li@example.com</span><span class="preview-status-badge warning">待审</span><span>编辑</span>
+            </div>
+            <div class="preview-table-row">
+              <span class="preview-table-name">👤 王大锤</span><span>wang@example.com</span><span class="preview-status-badge danger">禁用</span><span>访客</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="scheme-info">
+    <div class="scheme-info-left">
+      <h3>🧡 琥珀 Amber</h3>
+      <span class="scheme-subtitle">温暖活力 · 创意型产品</span>
+    </div>
+    <span class="scheme-tag tag-warm">温暖</span>
+  </div>
+  <div class="color-swatches">
+    <span class="swatch-label">色板:</span>
+    <div class="swatch"><span class="swatch-dot" style="background:#fffbeb;"></span>#FFFBEB</div>
+    <div class="swatch"><span class="swatch-dot" style="background:#f59e0b;"></span>#F59E0B</div>
+    <div class="swatch"><span class="swatch-dot" style="background:#fef3c7;"></span>#FEF3C7</div>
+    <div class="swatch"><span class="swatch-dot" style="background:#78350f;"></span>#78350F</div>
+  </div>
+  <div class="css-output"><span class="css-comment">/* 琥珀 Amber */</span>
+<span class="css-key">--accent</span>: <span class="css-val">#f59e0b</span>;
+<span class="css-key">--accent-hover</span>: <span class="css-val">#d97706</span>;
+<span class="css-key">--bg-sidebar</span>: <span class="css-val">#fffbeb</span>;
+<span class="css-key">--bg-sidebar-hover</span>: <span class="css-val">rgba(245,158,11,0.12)</span>;
+<span class="css-key">--bg-content</span>: <span class="css-val">#fffbeb</span>;</div>
+</div>
+
+<!-- ========== 方案5: 石墨灰 Graphite ========== -->
+<div class="scheme-card" data-theme-scheme="graphite" onclick="selectScheme(this)">
+  <div class="scheme-top-bar" style="background:linear-gradient(90deg,#18181b,#3f3f46);"></div>
+  <div class="scheme-body">
+    <div class="admin-preview">
+      <div class="preview-sidebar">
+        <div class="preview-sidebar-logo">
+          <div class="preview-logo-icon">O</div>
+          <span class="preview-logo-text">OS Admin</span>
+        </div>
+        <div class="preview-menu">
+          <div class="menu-group-label">导航</div>
+          <div class="preview-menu-item active"><span class="preview-menu-icon">📊</span><span>控制台</span></div>
+          <div class="preview-menu-item"><span class="preview-menu-icon">👥</span><span>用户管理</span></div>
+          <div class="preview-menu-item"><span class="preview-menu-icon">⚙️</span><span>系统设置</span><span class="preview-menu-badge">5</span></div>
+          <div class="menu-group-label">工具</div>
+          <div class="preview-menu-item"><span class="preview-menu-icon">📄</span><span>文档中心</span></div>
+          <div class="preview-menu-item"><span class="preview-menu-icon">🔔</span><span>消息通知</span><span class="preview-menu-badge">12</span></div>
+        </div>
+      </div>
+      <div class="preview-main">
+        <div class="preview-topbar">
+          <div class="preview-breadcrumb">首页 / <strong>控制台</strong></div>
+          <div class="preview-topbar-actions">
+            <button class="preview-action-btn">🔄</button>
+            <button class="preview-action-btn">⛶</button>
+            <button class="preview-action-btn">🔔</button>
+            <div class="preview-user"><div class="preview-avatar">A</div><span class="preview-user-name">Admin</span></div>
+          </div>
+        </div>
+        <div class="preview-tabs">
+          <span class="preview-tab active">控制台<span class="preview-tab-close">✕</span></span>
+          <span class="preview-tab">用户管理<span class="preview-tab-close">✕</span></span>
+          <span class="preview-tab">设置<span class="preview-tab-close">✕</span></span>
+        </div>
+        <div class="preview-content">
+          <div class="preview-stats-row">
+            <div class="preview-stat-card">
+              <div class="preview-stat-label">总用户数</div>
+              <div class="preview-stat-value">12,846</div>
+              <div class="preview-stat-change up">↑ 12.5%</div>
+            </div>
+            <div class="preview-stat-card">
+              <div class="preview-stat-label">活跃会话</div>
+              <div class="preview-stat-value">1,204</div>
+              <div class="preview-stat-change up">↑ 8.2%</div>
+            </div>
+            <div class="preview-stat-card">
+              <div class="preview-stat-label">今日访问</div>
+              <div class="preview-stat-value">38,492</div>
+              <div class="preview-stat-change down">↓ 3.1%</div>
+            </div>
+          </div>
+          <div class="preview-table-area">
+            <div class="preview-table-header">
+              <span class="preview-table-title">最近用户</span>
+              <button class="preview-btn-primary">+ 新增用户</button>
+            </div>
+            <div class="preview-table-row">
+              <span class="preview-table-name">👤 张三丰</span><span>zhang@example.com</span><span class="preview-status-badge success">正常</span><span>管理员</span>
+            </div>
+            <div class="preview-table-row">
+              <span class="preview-table-name">👤 李小龙</span><span>li@example.com</span><span class="preview-status-badge warning">待审</span><span>编辑</span>
+            </div>
+            <div class="preview-table-row">
+              <span class="preview-table-name">👤 王大锤</span><span>wang@example.com</span><span class="preview-status-badge danger">禁用</span><span>访客</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="scheme-info">
+    <div class="scheme-info-left">
+      <h3>◾ 石墨灰 Graphite</h3>
+      <span class="scheme-subtitle">极简高级 · Apple 风格</span>
+    </div>
+    <span class="scheme-tag tag-cool">极简</span>
+  </div>
+  <div class="color-swatches">
+    <span class="swatch-label">色板:</span>
+    <div class="swatch"><span class="swatch-dot" style="background:#fafafa;"></span>#FAFAFA</div>
+    <div class="swatch"><span class="swatch-dot" style="background:#18181b;"></span>#18181B</div>
+    <div class="swatch"><span class="swatch-dot" style="background:#e4e4e7;"></span>#E4E4E7</div>
+    <div class="swatch"><span class="swatch-dot" style="background:#52525b;"></span>#52525B</div>
+  </div>
+  <div class="css-output"><span class="css-comment">/* 石墨灰 Graphite */</span>
+<span class="css-key">--accent</span>: <span class="css-val">#18181b</span>;
+<span class="css-key">--accent-hover</span>: <span class="css-val">#27272a</span>;
+<span class="css-key">--bg-sidebar</span>: <span class="css-val">#fafafa</span>;
+<span class="css-key">--bg-sidebar-hover</span>: <span class="css-val">#e4e4e7</span>;
+<span class="css-key">--bg-content</span>: <span class="css-val">#f4f4f5</span>;</div>
+</div>
+
+<!-- ========== 方案6: 玫瑰 Rose ========== -->
+<div class="scheme-card" data-theme-scheme="rose" onclick="selectScheme(this)">
+  <div class="scheme-top-bar" style="background:linear-gradient(90deg,#e11d48,#fb7185);"></div>
+  <div class="scheme-body">
+    <div class="admin-preview">
+      <div class="preview-sidebar">
+        <div class="preview-sidebar-logo">
+          <div class="preview-logo-icon">O</div>
+          <span class="preview-logo-text">OS Admin</span>
+        </div>
+        <div class="preview-menu">
+          <div class="menu-group-label">导航</div>
+          <div class="preview-menu-item active"><span class="preview-menu-icon">📊</span><span>控制台</span></div>
+          <div class="preview-menu-item"><span class="preview-menu-icon">👥</span><span>用户管理</span></div>
+          <div class="preview-menu-item"><span class="preview-menu-icon">⚙️</span><span>系统设置</span><span class="preview-menu-badge">5</span></div>
+          <div class="menu-group-label">工具</div>
+          <div class="preview-menu-item"><span class="preview-menu-icon">📄</span><span>文档中心</span></div>
+          <div class="preview-menu-item"><span class="preview-menu-icon">🔔</span><span>消息通知</span><span class="preview-menu-badge">12</span></div>
+        </div>
+      </div>
+      <div class="preview-main">
+        <div class="preview-topbar">
+          <div class="preview-breadcrumb">首页 / <strong>控制台</strong></div>
+          <div class="preview-topbar-actions">
+            <button class="preview-action-btn">🔄</button>
+            <button class="preview-action-btn">⛶</button>
+            <button class="preview-action-btn">🔔</button>
+            <div class="preview-user"><div class="preview-avatar">A</div><span class="preview-user-name">Admin</span></div>
+          </div>
+        </div>
+        <div class="preview-tabs">
+          <span class="preview-tab active">控制台<span class="preview-tab-close">✕</span></span>
+          <span class="preview-tab">用户管理<span class="preview-tab-close">✕</span></span>
+          <span class="preview-tab">设置<span class="preview-tab-close">✕</span></span>
+        </div>
+        <div class="preview-content">
+          <div class="preview-stats-row">
+            <div class="preview-stat-card">
+              <div class="preview-stat-label">总用户数</div>
+              <div class="preview-stat-value">12,846</div>
+              <div class="preview-stat-change up">↑ 12.5%</div>
+            </div>
+            <div class="preview-stat-card">
+              <div class="preview-stat-label">活跃会话</div>
+              <div class="preview-stat-value">1,204</div>
+              <div class="preview-stat-change up">↑ 8.2%</div>
+            </div>
+            <div class="preview-stat-card">
+              <div class="preview-stat-label">今日访问</div>
+              <div class="preview-stat-value">38,492</div>
+              <div class="preview-stat-change down">↓ 3.1%</div>
+            </div>
+          </div>
+          <div class="preview-table-area">
+            <div class="preview-table-header">
+              <span class="preview-table-title">最近用户</span>
+              <button class="preview-btn-primary">+ 新增用户</button>
+            </div>
+            <div class="preview-table-row">
+              <span class="preview-table-name">👤 张三丰</span><span>zhang@example.com</span><span class="preview-status-badge success">正常</span><span>管理员</span>
+            </div>
+            <div class="preview-table-row">
+              <span class="preview-table-name">👤 李小龙</span><span>li@example.com</span><span class="preview-status-badge warning">待审</span><span>编辑</span>
+            </div>
+            <div class="preview-table-row">
+              <span class="preview-table-name">👤 王大锤</span><span>wang@example.com</span><span class="preview-status-badge danger">禁用</span><span>访客</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="scheme-info">
+    <div class="scheme-info-left">
+      <h3>🌸 玫瑰 Rose</h3>
+      <span class="scheme-subtitle">优雅时尚 · 设计感强</span>
+    </div>
+    <span class="scheme-tag tag-chic">时尚</span>
+  </div>
+  <div class="color-swatches">
+    <span class="swatch-label">色板:</span>
+    <div class="swatch"><span class="swatch-dot" style="background:#fff1f2;"></span>#FFF1F2</div>
+    <div class="swatch"><span class="swatch-dot" style="background:#e11d48;"></span>#E11D48</div>
+    <div class="swatch"><span class="swatch-dot" style="background:#ffe4e6;"></span>#FFE4E6</div>
+    <div class="swatch"><span class="swatch-dot" style="background:#881337;"></span>#881337</div>
+  </div>
+  <div class="css-output"><span class="css-comment">/* 玫瑰 Rose */</span>
+<span class="css-key">--accent</span>: <span class="css-val">#e11d48</span>;
+<span class="css-key">--accent-hover</span>: <span class="css-val">#be123c</span>;
+<span class="css-key">--bg-sidebar</span>: <span class="css-val">#fff1f2</span>;
+<span class="css-key">--bg-sidebar-hover</span>: <span class="css-val">rgba(225,29,72,0.08)</span>;
+<span class="css-key">--bg-content</span>: <span class="css-val">#fff1f2</span>;</div>
+</div>
+
+</div>
+
+<div style="text-align:center;padding:40px 20px;color:#94a3b8;font-size:13px;">
+  <p>点击任意方案查看效果，底部显示可直接复制的 <strong>CSS 变量</strong></p>
+  <p style="margin-top:8px;">推荐：<strong>靛蓝</strong> 或 <strong>海洋蓝</strong> 作为默认主题 → 专业且通用 🚀</p>
+</div>
+
+</div>
+
+<script>
+function selectScheme(card) {
+  document.querySelectorAll('.scheme-card').forEach(c => c.classList.remove('selected'));
+  card.classList.add('selected');
+  
+  const scheme = card.dataset.themeScheme;
+  
+  const cssMap = {
+    'indigo': `{ accent: '#6366f1', sidebar: '#ffffff', hover: '#f3f4f6' }`,
+    'emerald': `{ accent: '#10b981', sidebar: '#ecfdf5', hover: 'rgba(16,185,129,0.1)' }`,
+    'ocean':   `{ accent: '#0ea5e9', sidebar: '#f0f9ff', hover: 'rgba(14,165,233,0.1)' }`,
+    'amber':   `{ accent: '#f59e0b', sidebar: '#fffbeb', hover: 'rgba(245,158,11,0.12)' }`,
+    'graphite': `{ accent: '#18181b', sidebar: '#fafafa', hover: '#e4e4e7' }`,
+    'rose':    `{ accent: '#e11d48', sidebar: '#fff1f2', hover: 'rgba(225,29,72,0.08)' }`
+  };
+  
+  console.log('%c ✅ 已选择方案: ' + scheme, 'font-size:14px;font-weight:bold;color:' + getComputedStyle(card).getPropertyValue('--scheme-accent'));
+  console.log('%c 配置对象:', 'font-weight:bold;color:#6366f1;', cssMap[scheme]);
+  console.log('%c 💡 将以上值填入 admin.css 的 :root 和 app.json 的 colors 即可生效');
+}
+</script>
+
 </body>
 </html>

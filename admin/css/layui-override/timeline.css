@@ -20,19 +20,3 @@
   background-color: var(--accent);
   color: #fff;
 }
-
-/* ========== 深色主题 ========== */
-[data-theme="dark"] .layui-timeline-item:before {
-  background-color: var(--border);
-}
-
-[data-theme="dark"] .layui-timeline-axis {
-  background-color: var(--card-bg);
-  border-color: var(--accent);
-  color: var(--accent);
-}
-
-[data-theme="dark"] .layui-timeline-axis:hover {
-  background-color: var(--accent);
-  color: #fff;
-}

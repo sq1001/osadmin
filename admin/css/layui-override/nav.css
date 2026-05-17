@@ -4,9 +4,15 @@
  * 支持滑动条和垂直/侧边导航模式
  */
 
+/* ========== 横向导航 ========== */
+.layui-nav .layui-this a,
+.layui-nav .layui-nav-item a:hover {
+  color: var(--accent);
+}
+
 /* ========== 导航滑动条 ========== */
 .layui-nav-bar {
-  background-color: var(--accent);
+  background-color: var(--accent) !important;
 }
 
 .layui-nav .layui-this:after {
@@ -18,23 +24,28 @@
   background-color: var(--card-bg);
   border-color: var(--border);
   border-radius: 6px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+}
+
+.layui-nav-child dd a {
+  color: var(--text-secondary);
 }
 
 .layui-nav-child dd a:hover {
-  background-color: var(--accent-light);
+  background-color: var(--accent-light) !important;
   color: var(--accent);
 }
 
-.layui-nav-child dd.layui-this a {
+.layui-nav-child dd.layui-this {
   background-color: var(--accent-light);
+  color: var(--text-primary);
+}
+
+.layui-nav-child dd.layui-this a {
   color: var(--accent);
 }
 
 /* ========== 垂直导航 ========== */
-.layui-nav-tree {
-  background-color: var(--bg-sidebar);
-}
-
 .layui-nav-tree .layui-this,
 .layui-nav-tree .layui-this > a,
 .layui-nav-tree .layui-this > a:hover,
@@ -45,11 +56,11 @@
 }
 
 .layui-nav-tree .layui-nav-bar {
-  background-color: var(--accent);
+  background-color: var(--accent) !important;
 }
 
 .layui-nav-tree .layui-nav-child {
-  background-color: rgba(0, 0, 0, 0.1);
+  background-color: rgba(0, 0, 0, 0.15);
   border: none;
   box-shadow: none;
 }
@@ -59,14 +70,15 @@
   color: var(--accent);
 }
 
-/* ========== 侧边导航 ========== */
-.layui-nav-side {
-  background-color: var(--bg-sidebar);
+/* ========== 导航浅色背景 ========== */
+.layui-nav.layui-bg-gray .layui-nav-item a,
+.layui-nav-tree.layui-bg-gray a {
+  color: var(--text-secondary);
 }
 
-/* ========== 导航浅色背景 ========== */
-.layui-nav.layui-bg-gray .layui-this a {
-  color: var(--accent);
+.layui-nav.layui-bg-gray .layui-this a,
+.layui-nav-tree.layui-bg-gray .layui-nav-itemed > a {
+  color: var(--accent) !important;
 }
 
 .layui-nav-tree.layui-bg-gray .layui-this,
@@ -78,33 +90,102 @@
 }
 
 .layui-nav-tree.layui-bg-gray .layui-nav-bar {
-  background-color: var(--accent);
+  background-color: var(--accent) !important;
 }
 
 /* ========== 面包屑 ========== */
+.layui-breadcrumb a {
+  color: var(--text-muted) !important;
+}
+
 .layui-breadcrumb a:hover {
   color: var(--accent) !important;
 }
 
+.layui-breadcrumb a cite {
+  color: var(--text-secondary);
+}
+
+.layui-breadcrumb span[lay-separator] {
+  color: var(--text-muted);
+}
+
 /* ========== 深色主题 ========== */
+[data-theme="dark"] .layui-nav .layui-nav-item a {
+  color: var(--sidebar-text);
+}
+
+[data-theme="dark"] .layui-nav .layui-this a,
+[data-theme="dark"] .layui-nav .layui-nav-item a:hover {
+  color: var(--accent);
+}
+
 [data-theme="dark"] .layui-nav-child {
   background-color: var(--card-bg);
   border-color: var(--border);
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
 }
 
-[data-theme="dark"] .layui-nav-child dd a:hover {
-  background-color: var(--accent-light);
+[data-theme="dark"] .layui-nav-child dd a {
+  color: var(--text-secondary);
 }
 
-[data-theme="dark"] .layui-nav-tree {
-  background-color: var(--bg-sidebar);
+[data-theme="dark"] .layui-nav-child dd a:hover {
+  background-color: var(--accent-light) !important;
+  color: var(--accent);
+}
+
+[data-theme="dark"] .layui-nav-child dd.layui-this {
+  background-color: var(--accent-light);
+  color: var(--text-primary);
+}
+
+[data-theme="dark"] .layui-nav-child dd.layui-this a {
+  color: var(--accent);
+}
+
+[data-theme="dark"] .layui-nav-tree .layui-this,
+[data-theme="dark"] .layui-nav-tree .layui-this > a,
+[data-theme="dark"] .layui-nav-tree .layui-this > a:hover,
+[data-theme="dark"] .layui-nav-tree .layui-nav-child dd.layui-this,
+[data-theme="dark"] .layui-nav-tree .layui-nav-child dd.layui-this a {
+  background-color: var(--accent);
+  color: #fff;
+}
+
+[data-theme="dark"] .layui-nav-tree .layui-nav-bar {
+  background-color: var(--accent) !important;
 }
 
 [data-theme="dark"] .layui-nav-tree .layui-nav-child {
-  background-color: rgba(0, 0, 0, 0.2);
+  background-color: rgba(0, 0, 0, 0.25);
 }
 
-[data-theme="dark"] .layui-nav-side {
-  background-color: var(--bg-sidebar);
+[data-theme="dark"] .layui-nav-tree .layui-nav-child a {
+  color: var(--sidebar-text);
+}
+
+[data-theme="dark"] .layui-nav-tree .layui-nav-title a,
+[data-theme="dark"] .layui-nav-itemed > a {
+  color: #fff !important;
+}
+
+[data-theme="dark"] .layui-nav-bar {
+  background-color: var(--accent) !important;
+}
+
+[data-theme="dark"] .layui-breadcrumb a {
+  color: var(--text-muted) !important;
+}
+
+[data-theme="dark"] .layui-breadcrumb a:hover {
+  color: var(--accent) !important;
+}
+
+[data-theme="dark"] .layui-breadcrumb a cite {
+  color: var(--text-secondary);
+}
+
+[data-theme="dark"] .layui-breadcrumb span[lay-separator] {
+  color: var(--text-muted);
 }

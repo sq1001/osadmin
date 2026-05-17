@@ -18,20 +18,29 @@
   z-index: 9999;
 }
 
-/* ========== 深色主题变量 ========== */
+/* ========== Smart Dark 深色主题 — 独立完整配色方案 ========== */
 [data-theme="dark"] {
-  --bg: rgba(0, 0, 0, 0.2);
-  --bg-content: #0f1419;
-  --card-bg: #1a2332;
-  --text-primary: #f1f5f9;
-  --text-secondary: #94a3b8;
+  --bg: #0f131c;
+  --bg-sidebar: #151c28;
+  --bg-sidebar-hover: #1e2940;
+  --sidebar-text: #a1b0c8;
+  --sidebar-text-muted: #64748b;
+
+  --bg-topbar: #1a2235;
+
+  --bg-tabs: #181e30;
+
+  --bg-content: #111620;
+  --card-bg: #151c28;
+  --border: #253048;
+
+  --text-primary: #e2e8f0;
+  --text-secondary: #a1b0c8;
   --text-muted: #64748b;
-  --border: #2d3a4f;
-  --bg-sidebar: #0d1117;
-  --bg-sidebar-hover: #161b22;
+
+  --accent-light: rgba(var(--accent-rgb), 0.15);
 }
 
-/* 深色主题全局文字颜色覆盖 */
 [data-theme="dark"] body {
   color: var(--text-primary) !important;
 }
@@ -66,27 +75,53 @@
 }
 
 [data-theme="dark"] .layui-sidebar {
-  border-right-color: rgba(255, 255, 255, 0.05);
+  border-right-color: rgba(255, 255, 255, 0.06);
+}
+
+[data-theme="dark"] .layui-submenu-panel {
+  border-right-color: rgba(255, 255, 255, 0.06);
+  box-shadow: 4px 0 20px rgba(0, 0, 0, 0.3);
+}
+
+[data-theme="dark"] .layui-dropdown-menu-panel-wrapper::before {
+  background: linear-gradient(to bottom, transparent, rgba(0,0,0,0.1));
+}
+
+[data-theme="dark"] .layui-dropdown-menu-panel {
+  background: var(--bg-sidebar);
+  box-shadow: 4px 4px 20px rgba(0, 0, 0, 0.35);
 }
 
 [data-theme="dark"] .layui-topbar {
-  background: var(--card-bg);
+  background: var(--bg-topbar);
   border-bottom-color: var(--border);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
 }
 
 [data-theme="dark"] .layui-tabs-container {
-  background: var(--card-bg);
+  background: var(--bg-tabs);
   border-bottom-color: var(--border);
 }
 
 [data-theme="dark"] .tab-item {
   background: var(--bg-content);
   border-color: var(--border);
+  color: var(--text-secondary);
 }
 
 [data-theme="dark"] .tab-item:hover,
 [data-theme="dark"] .tab-item.active {
   background: var(--card-bg);
+  color: var(--text-primary);
+}
+
+[data-theme="dark"] .tab-item.active {
+  border-color: var(--accent);
+}
+
+[data-theme="dark"] .layui-tabs-scroll-btn:hover:not(:disabled) {
+  background: var(--bg-content);
+  color: var(--text-primary);
 }
 
 [data-theme="dark"] .layui-theme-config-panel {
@@ -104,6 +139,11 @@
 [data-theme="dark"] .layui-user-dropdown-menu {
   background: var(--card-bg);
   border-color: var(--border);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.35);
+}
+
+[data-theme="dark"] .layui-user-menu-item:hover {
+  background: var(--bg-content);
 }
 
 [data-theme="dark"] .layui-theme-mode-switch {
@@ -131,11 +171,13 @@
 [data-theme="dark"] .layui-theme-btn-secondary {
   background: var(--bg-content);
   border-color: var(--border);
+  color: var(--text-secondary);
 }
 
 [data-theme="dark"] .layui-notification-dropdown {
   background: var(--card-bg);
   border-color: var(--border);
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.35);
 }
 
 [data-theme="dark"] .layui-notification-item:hover {
@@ -145,10 +187,56 @@
 [data-theme="dark"] .layui-tabs-dropdown {
   background: var(--card-bg);
   border-color: var(--border);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
 }
 
 [data-theme="dark"] .tabs-dropdown-item:hover {
   background: var(--bg-content);
+}
+
+[data-theme="dark"] .nested-dropdown-item:hover,
+[data-theme="dark"] .submenu-panel-dropdown-item:hover {
+  background: var(--bg-sidebar-hover);
+}
+
+/* 暗模式: 内部滚动条适配 */
+[data-theme="dark"] .layui-sidebar-menu::-webkit-scrollbar-thumb,
+[data-theme="dark"] .submenu::-webkit-scrollbar-thumb,
+[data-theme="dark"] .layui-submenu-panel-content::-webkit-scrollbar-thumb,
+[data-theme="dark"] .layui-dropdown-menu-panel::-webkit-scrollbar-thumb,
+[data-theme="dark"] .nested-dropdown::-webkit-scrollbar-thumb,
+[data-theme="dark"] .dropdown-submenu::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.15);
+}
+
+[data-theme="dark"] .layui-sidebar-menu::-webkit-scrollbar-thumb:hover,
+[data-theme="dark"] .submenu::-webkit-scrollbar-thumb:hover,
+[data-theme="dark"] .layui-submenu-panel-content::-webkit-scrollbar-thumb:hover,
+[data-theme="dark"] .layui-dropdown-menu-panel::-webkit-scrollbar-thumb:hover,
+[data-theme="dark"] .nested-dropdown::-webkit-scrollbar-thumb:hover,
+[data-theme="dark"] .dropdown-submenu::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.25);
+}
+
+/* 暗模式: 配置面板阴影适配 */
+[data-theme="dark"] .layui-theme-config-panel {
+  box-shadow: -4px 0 24px rgba(0, 0, 0, 0.4);
+}
+
+[data-theme="dark"] .toggle-slider::before {
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.5);
+}
+
+[data-theme="dark"] .layui-theme-mode-btn.active {
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.4);
+}
+
+[data-theme="dark"] .config-tab-btn.active {
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+}
+
+[data-theme="dark"] .scheme-option:hover {
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.35);
 }
 
 .layui-notification-dropdown {
@@ -722,4 +810,222 @@
     width: 100%;
     transform: translateX(100%);
   }
+}
+
+/* ========== 配色 Tab 切换 ========== */
+.config-tab-bar {
+  display: flex;
+  background: var(--bg-content);
+  border-radius: 8px;
+  padding: 3px;
+  margin-bottom: 16px;
+}
+
+.config-tab-btn {
+  flex: 1;
+  padding: 8px 12px;
+  border: none;
+  background: transparent;
+  border-radius: 6px;
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--text-muted);
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.config-tab-btn:hover {
+  color: var(--text-secondary);
+}
+
+.config-tab-btn.active {
+  background: #fff;
+  color: var(--accent);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+  font-weight: 600;
+}
+
+[data-theme="dark"] .config-tab-btn.active {
+  background: var(--card-bg);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+}
+
+.config-tab-content {
+  display: none;
+}
+
+.config-tab-content.active {
+  display: block;
+}
+
+/* ========== 方案卡片选择器 ========== */
+.schemes-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
+}
+
+.scheme-option {
+  position: relative;
+  cursor: pointer;
+  border-radius: 10px;
+  overflow: hidden;
+  border: 2px solid transparent;
+  transition: all 0.2s ease;
+  background: var(--card-bg);
+}
+
+.scheme-option:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.scheme-option.active {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 2px rgba(var(--accent-rgb), 0.15);
+}
+
+.scheme-preview-header {
+  height: 20px;
+  width: 100%;
+}
+
+.scheme-preview-body {
+  display: flex;
+  height: 36px;
+  padding: 6px 8px 4px;
+  gap: 4px;
+}
+
+.scheme-mock-sidebar {
+  width: 18px;
+  height: 100%;
+  border-radius: 3px;
+  flex-shrink: 0;
+  position: relative;
+}
+
+.scheme-mock-sidebar::after {
+  content: '';
+  position: absolute;
+  top: 5px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  opacity: 0.25;
+  background: currentColor;
+}
+
+.scheme-mock-sidebar::before {
+  content: '';
+  position: absolute;
+  bottom: 5px;
+  left: 3px;
+  right: 3px;
+  height: 2px;
+  border-radius: 1px;
+  opacity: 0.15;
+  background: currentColor;
+}
+
+.scheme-mock-content {
+  flex: 1;
+  height: 100%;
+  border-radius: 3px;
+  position: relative;
+  overflow: hidden;
+}
+
+.scheme-mock-content::before {
+  content: '';
+  position: absolute;
+  top: 4px;
+  left: 4px;
+  right: 4px;
+  height: 3px;
+  border-radius: 1.5px;
+  opacity: 0.12;
+  background: currentColor;
+}
+
+.scheme-mock-content::after {
+  content: '';
+  position: absolute;
+  bottom: 4px;
+  left: 4px;
+  width: 40%;
+  height: 3px;
+  border-radius: 1.5px;
+  opacity: 0.08;
+  background: currentColor;
+}
+
+.scheme-name {
+  text-align: center;
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--text-secondary);
+  padding: 4px 0 5px;
+}
+
+/* ========== 经典模式色块行 ========== */
+.color-options-row {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.color-option[data-color] {
+  position: relative;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  cursor: pointer;
+  border: 2px solid transparent;
+  overflow: hidden;
+  transition: all 0.2s ease;
+  flex-shrink: 0;
+}
+
+.color-option[data-color] span {
+  position: absolute;
+  inset: 0;
+}
+
+.color-option[data-color="#16baaa"] span { background: #16baaa; }
+.color-option[data-color="#16b777"] span { background: #16b777; }
+.color-option[data-color="#1e9fff"] span { background: #1e9fff; }
+.color-option[data-color="#ff5722"] span { background: #ff5722; }
+.color-option[data-color="#ffb800"] span { background: #ffb800; }
+.color-option[data-color="#a233c6"] span { background: #a233c6; }
+
+/* ========== 自定义颜色选择器 (LayUI ColorPicker) ========== */
+.custom-color-picker {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
+}
+
+.custom-color-field label {
+  display: block;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--text-muted);
+  margin-bottom: 8px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.color-picker-wrap {
+  display: inline-block;
+}
+
+.color-picker-wrap .layui-colorpicker {
+  width: 100%;
+}
+
+.color-picker-wrap .layui-colorpicker-main {
+  z-index: 2100 !important;
 }

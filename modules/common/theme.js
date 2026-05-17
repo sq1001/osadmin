@@ -1,13 +1,15 @@
 /**
  * 主题模块
- * 管理主题模式、颜色、布局、水印、语言等配置
+ * 管理主题模式、配色方案、布局、水印、语言等配置
+ * v2.0 - 支持框架配色方案(Framework Scheme) + 经典模式(Classic) + 自定义颜色器
  */
-layui.define(['jquery', 'layer', 'form', 'watermarkMod'], function(exports) {
+layui.define(['jquery', 'layer', 'form', 'colorpicker', 'watermarkMod'], function(exports) {
   'use strict';
 
   var $ = layui.jquery;
   var layer = layui.layer;
   var form = layui.form;
+  var colorpicker = layui.colorpicker;
   var Watermark = layui.watermarkMod;
   var appConfig = null;
 
@@ -17,6 +19,7 @@ layui.define(['jquery', 'layer', 'form', 'watermarkMod'], function(exports) {
     defaultState: null,
     _events: {},
     _watermarkInstance: null,
+    _colorPickerInstances: {},
 
     init: function(config) {
       appConfig = config || {};
@@ -27,7 +30,17 @@ layui.define(['jquery', 'layer', 'form', 'watermarkMod'], function(exports) {
 
       this.defaultState = {
         mode: themeConfig.defaultMode || 'light',
+        scheme: themeConfig.defaultScheme || 'indigo',
+        colorMode: 'scheme',
         color: themeConfig.defaultColor || '#16baaa',
+        customColors: {
+          accent: '#6366f1',
+          sidebarBg: '#ffffff',
+          sidebarText: '#374151',
+          contentBg: '#f8fafc',
+          topbarBg: '#ffffff',
+          tabsBg: '#ffffff'
+        },
         layout: themeConfig.defaultLayout || 'double',
         tabsVisible: themeConfig.tabsVisible !== false,
         rememberTabs: themeConfig.rememberTabs !== false,
@@ -62,7 +75,18 @@ layui.define(['jquery', 'layer', 'form', 'watermarkMod'], function(exports) {
       } else {
         this.state = $.extend({}, this.defaultState);
       }
-      this.tempState = $.extend({}, this.state);
+
+      if (!this.state.scheme) {
+        this.state.scheme = this.defaultState.scheme;
+      }
+      if (!this.state.colorMode) {
+        this.state.colorMode = this.defaultState.colorMode;
+      }
+      if (!this.state.customColors) {
+        this.state.customColors = $.extend({}, this.defaultState.customColors);
+      }
+
+      this.tempState = $.extend(true, {}, this.state);
     },
 
     saveState: function() {
@@ -78,7 +102,15 @@ layui.define(['jquery', 'layer', 'form', 'watermarkMod'], function(exports) {
 
     applyTheme: function(state) {
       this.applyMode(state.mode);
-      this.applyColor(state.color);
+
+      if (state.colorMode === 'scheme' && state.scheme) {
+        this.applyScheme(state.scheme);
+      } else if (state.colorMode === 'custom') {
+        this.applyCustomColors(state.customColors);
+      } else {
+        this.applyColor(state.color);
+      }
+
       this.applyLayout(state.layout);
       this.applyTabsVisible(state.tabsVisible);
       this.applyWatermark(state.watermarkEnabled, state.watermarkText);
@@ -89,6 +121,14 @@ layui.define(['jquery', 'layer', 'form', 'watermarkMod'], function(exports) {
     applyMode: function(mode) {
       if (mode === 'dark') {
         $('html').attr('data-theme', 'dark');
+        var root = document.documentElement;
+        var varsToRemove = [
+          '--bg-sidebar', '--bg-sidebar-hover', '--sidebar-text', '--sidebar-text-muted',
+          '--bg-topbar', '--bg-tabs', '--bg-content', '--card-bg', '--border',
+          '--text-primary', '--text-secondary', '--text-muted',
+          '--accent-light'
+        ];
+        varsToRemove.forEach(function(v) { root.style.removeProperty(v); });
       } else {
         $('html').removeAttr('data-theme');
       }
@@ -125,6 +165,61 @@ layui.define(['jquery', 'layer', 'form', 'watermarkMod'], function(exports) {
           pseudoElement: '::view-transition-new(root)'
         });
       });
+    },
+
+    applyScheme: function(schemeId) {
+      var schemes = appConfig.schemes || {};
+      var scheme = schemes[schemeId];
+      if (!scheme) {
+        scheme = schemes['indigo'];
+      }
+      if (!scheme) return;
+
+      var root = document.documentElement;
+
+      if (this.state.mode === 'dark' && this._isColorTooDark(scheme.accent)) {
+        return;
+      }
+
+      root.style.setProperty('--accent', scheme.accent);
+      root.style.setProperty('--accent-hover', scheme.accentHover);
+      root.style.setProperty('--accent-rgb', scheme.accentRgb);
+      root.style.setProperty('--success', scheme.accent);
+
+      if (this.state.mode !== 'dark') {
+        root.style.setProperty('--accent-light', 'rgba(' + scheme.accentRgb + ', 0.1)');
+        root.style.setProperty('--bg-sidebar', scheme.sidebarBg);
+        root.style.setProperty('--bg-sidebar-hover', scheme.sidebarHover);
+        root.style.setProperty('--sidebar-text', scheme.sidebarText);
+        root.style.setProperty('--bg-content', scheme.contentBg);
+        root.style.setProperty('--border', scheme.borderColor);
+      }
+    },
+
+    applyCustomColors: function(customColors) {
+      if (!customColors) return;
+
+      var root = document.documentElement;
+      var accent = customColors.accent || '#6366f1';
+      var accentRgb = this.hexToRgb(accent);
+
+      root.style.setProperty('--accent', accent);
+      root.style.setProperty('--accent-hover', this.darken(accent, 12));
+      root.style.setProperty('--accent-rgb', accentRgb);
+      root.style.setProperty('--success', accent);
+
+      if (this.state.mode !== 'dark') {
+        root.style.setProperty('--accent-light', 'rgba(' + accentRgb + ', 0.1)');
+        root.style.setProperty('--bg-sidebar', customColors.sidebarBg || '#ffffff');
+        root.style.setProperty('--bg-sidebar-hover', this.lightenOrDarken(customColors.sidebarBg, -4));
+        root.style.setProperty('--sidebar-text', customColors.sidebarText || '#374151');
+        root.style.setProperty('--bg-content', customColors.contentBg || '#f8fafc');
+        root.style.setProperty('--bg-topbar', customColors.topbarBg || '#ffffff');
+        root.style.setProperty('--bg-tabs', customColors.tabsBg || '#ffffff');
+
+        var borderLight = this.lightenOrDarken(customColors.sidebarBg, -8);
+        root.style.setProperty('--border', borderLight);
+      }
     },
 
     applyColor: function(color) {
@@ -268,11 +363,12 @@ layui.define(['jquery', 'layer', 'form', 'watermarkMod'], function(exports) {
       if ($panel.hasClass('show')) {
         this.hideConfigPanel();
       } else {
-        this.tempState = $.extend({}, this.state);
+        this.tempState = $.extend(true, {}, this.state);
         this.updateConfigPanel();
         $panel.addClass('show');
         $overlay.addClass('show');
         form.render('select');
+        this.syncColorPickerUI();
       }
     },
 
@@ -287,6 +383,9 @@ layui.define(['jquery', 'layer', 'form', 'watermarkMod'], function(exports) {
       $('.layui-theme-mode-btn').removeClass('active');
       $('.layui-theme-mode-btn[data-mode="' + state.mode + '"]').addClass('active');
       
+      $('.scheme-option').removeClass('active');
+      $('.scheme-option[data-scheme="' + state.scheme + '"]').addClass('active');
+      
       $('.color-option').removeClass('active');
       $('.color-option[data-color="' + state.color + '"]').addClass('active');
       
@@ -298,6 +397,47 @@ layui.define(['jquery', 'layer', 'form', 'watermarkMod'], function(exports) {
       $('#accordionToggle').prop('checked', state.accordion);
       $('#watermarkToggle').prop('checked', state.watermarkEnabled);
       $('#pageAnimationSelect').val(state.pageAnimation);
+
+      $('.config-tab-btn').removeClass('active');
+      $('.config-tab-btn[data-tab="' + state.colorMode + '"]').addClass('active');
+      
+      $('.config-tab-content').removeClass('active');
+      $('#tabContent_' + state.colorMode).addClass('active');
+    },
+
+    syncColorPickerUI: function() {
+      var self = this;
+      var cc = this.tempState.customColors || {};
+
+      var pickerConfigs = [
+        { id: 'pickerAccent', field: 'accent', defaultVal: '#6366f1' },
+        { id: 'pickerSidebarBg', field: 'sidebarBg', defaultVal: '#ffffff' },
+        { id: 'pickerSidebarText', field: 'sidebarText', defaultVal: '#374151' },
+        { id: 'pickerContentBg', field: 'contentBg', defaultVal: '#f8fafc' },
+        { id: 'pickerTopbarBg', field: 'topbarBg', defaultVal: '#ffffff' },
+        { id: 'pickerTabsBg', field: 'tabsBg', defaultVal: '#ffffff' }
+      ];
+
+      pickerConfigs.forEach(function(cfg) {
+        var val = cc[cfg.field] || cfg.defaultVal;
+
+        if (self._colorPickerInstances[cfg.id]) {
+          try { self._colorPickerInstances[cfg.id].destroy(); } catch(e) {}
+        }
+
+        self._colorPickerInstances[cfg.id] = colorpicker.render({
+          elem: '#' + cfg.id,
+          color: val,
+          size: 'sm',
+          done: function(color) {
+            if (!self.tempState.customColors) {
+              self.tempState.customColors = {};
+            }
+            self.tempState.customColors[cfg.field] = color;
+            self.applyCustomColors(self.tempState.customColors);
+          }
+        });
+      });
     },
 
     bindConfigPanelEvents: function() {
@@ -310,11 +450,35 @@ layui.define(['jquery', 'layer', 'form', 'watermarkMod'], function(exports) {
         $(this).addClass('active');
       });
 
+      $(document).on('click', '.scheme-option', function() {
+        var scheme = $(this).data('scheme');
+        self.previewScheme(scheme);
+        $('.scheme-option').removeClass('active');
+        $(this).addClass('active');
+      });
+
       $(document).on('click', '.color-option', function() {
         var color = $(this).data('color');
         self.previewColor(color);
         $('.color-option').removeClass('active');
         $(this).addClass('active');
+      });
+
+      $(document).on('click', '.config-tab-btn', function() {
+        var tab = $(this).data('tab');
+        self.tempState.colorMode = tab;
+        $('.config-tab-btn').removeClass('active');
+        $(this).addClass('active');
+        $('.config-tab-content').removeClass('active');
+        $('#tabContent_' + tab).addClass('active');
+
+        if (tab === 'scheme') {
+          self.previewScheme(self.tempState.scheme);
+        } else if (tab === 'classic') {
+          self.previewColor(self.tempState.color);
+        } else if (tab === 'custom') {
+          self.previewCustomColors();
+        }
       });
 
       $(document).on('click', '.layout-option', function() {
@@ -369,9 +533,21 @@ layui.define(['jquery', 'layer', 'form', 'watermarkMod'], function(exports) {
       }
     },
 
+    previewScheme: function(schemeId) {
+      this.tempState.scheme = schemeId;
+      this.tempState.colorMode = 'scheme';
+      this.applyScheme(schemeId);
+    },
+
     previewColor: function(color) {
       this.tempState.color = color;
+      this.tempState.colorMode = 'classic';
       this.applyColor(color);
+    },
+
+    previewCustomColors: function() {
+      this.tempState.colorMode = 'custom';
+      this.applyCustomColors(this.tempState.customColors);
     },
 
     previewLayout: function(layout) {
@@ -403,7 +579,7 @@ layui.define(['jquery', 'layer', 'form', 'watermarkMod'], function(exports) {
 
     save: function() {
       var wasRememberTabsEnabled = this.state.rememberTabs;
-      this.state = $.extend({}, this.tempState);
+      this.state = $.extend(true, {}, this.tempState);
       
       if (this.saveState()) {
         if (wasRememberTabsEnabled && !this.state.rememberTabs) {
@@ -417,15 +593,15 @@ layui.define(['jquery', 'layer', 'form', 'watermarkMod'], function(exports) {
 
     reset: function() {
       this.clearTabsState();
-      this.state = $.extend({}, this.defaultState);
-      this.tempState = $.extend({}, this.defaultState);
+      this.state = $.extend(true, {}, this.defaultState);
+      this.tempState = $.extend(true, {}, this.defaultState);
       this.saveState();
       this.applyTheme(this.state);
       this.emit('themeReset', this.state);
     },
 
     cancelPreview: function() {
-      this.tempState = $.extend({}, this.state);
+      this.tempState = $.extend(true, {}, this.state);
       this.applyTheme(this.state);
     },
 
@@ -439,15 +615,67 @@ layui.define(['jquery', 'layer', 'form', 'watermarkMod'], function(exports) {
     },
 
     getState: function() {
-      return $.extend({}, this.state);
+      return $.extend(true, {}, this.state);
     },
 
     getTempState: function() {
-      return $.extend({}, this.tempState);
+      return $.extend(true, {}, this.tempState);
     },
 
     getPageAnimation: function() {
       return this.state.pageAnimation || 'fadeIn';
+    },
+
+    hexToRgb: function(hex) {
+      hex = hex.replace('#', '');
+      if (hex.length === 3) {
+        hex = hex[0]+hex[0] + hex[1]+hex[1] + hex[2]+hex[2];
+      }
+      var r = parseInt(hex.substring(0, 2), 16);
+      var g = parseInt(hex.substring(2, 4), 16);
+      var b = parseInt(hex.substring(4, 6), 16);
+      return r + ',' + g + ',' + b;
+    },
+
+    _isColorTooDark: function(hex) {
+      hex = (hex || '').replace('#', '');
+      if (hex.length === 3) {
+        hex = hex[0]+hex[0] + hex[1]+hex[1] + hex[2]+hex[2];
+      }
+      if (hex.length !== 6) return false;
+      var r = parseInt(hex.substring(0, 2), 16);
+      var g = parseInt(hex.substring(2, 4), 16);
+      var b = parseInt(hex.substring(4, 6), 16);
+      var luminance = (0.299 * r + 0.587 * g + 0.114 * b) / 255;
+      return luminance < 0.15;
+    },
+
+    darken: function(hex, percent) {
+      hex = hex.replace('#', '');
+      if (hex.length === 3) {
+        hex = hex[0]+hex[0] + hex[1]+hex[1] + hex[2]+hex[2];
+      }
+      var r = parseInt(hex.substring(0, 2), 16);
+      var g = parseInt(hex.substring(2, 4), 16);
+      var b = parseInt(hex.substring(4, 6), 16);
+      r = Math.max(0, Math.floor(r * (100 - percent) / 100));
+      g = Math.max(0, Math.floor(g * (100 - percent) / 100));
+      b = Math.max(0, Math.floor(b * (100 - percent) / 100));
+      return '#' + ((1 << 24) + (r << 16) + (g << 8) + b).toString(16).slice(1);
+    },
+
+    lightenOrDarken: function(hex, amount) {
+      hex = hex.replace('#', '');
+      if (hex.length === 3) {
+        hex = hex[0]+hex[0] + hex[1]+hex[1] + hex[2]+hex[2];
+      }
+      var r = parseInt(hex.substring(0, 2), 16);
+      var g = parseInt(hex.substring(2, 4), 16);
+      var b = parseInt(hex.substring(4, 6), 16);
+      r = Math.min(255, Math.max(0, r + amount));
+      g = Math.min(255, Math.max(0, g + amount));
+      b = Math.min(255, Math.max(0, b + amount));
+      return '#' + ((1 << 24) + (r << 16) + (g << 8) + b).toString(16).slice(1);
     },
 
     on: function(event, callback) {

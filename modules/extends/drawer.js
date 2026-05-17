@@ -4,6 +4,7 @@
  * 支持 container（挂载容器）和 placement（方向）配置
  * 注意：抽屉组件始终使用 fixed 定位以确保贴合容器边界
  * 因此 fixed 参数在非 body 容器场景下不生效
+ * 性能优化：使用 requestAnimationFrame 节流拖拽/resize 事件
  */
 layui.define(['layer', 'jquery'], function(exports) {
   'use strict';
@@ -15,6 +16,9 @@ layui.define(['layer', 'jquery'], function(exports) {
   var instances = {};
   var routeChangeListenerAdded = false;
   var containerMinIndex = {};
+
+  // requestAnimationFrame 缓存
+  var _rafMap = {};
 
   var placementConfig = {
     right: { offset: 'r', anim: 'slideLeft', area: ['400px', '100%'], zIndex: 99 },
@@ -39,6 +43,10 @@ layui.define(['layer', 'jquery'], function(exports) {
           layer.closeAll();
           instances = {};
           containerMinIndex = {};
+          Object.keys(_rafMap).forEach(function(key) {
+            cancelAnimationFrame(_rafMap[key]);
+            delete _rafMap[key];
+          });
         });
         routeChangeListenerAdded = true;
       }
@@ -47,8 +55,18 @@ layui.define(['layer', 'jquery'], function(exports) {
 
   setTimeout(addRouteChangeListener, 100);
 
+  // RAF 工具函数：节流回调到下一帧
+  function rafThrottle(key, callback) {
+    if (_rafMap[key]) return; // 已有待执行的帧
+    
+    _rafMap[key] = requestAnimationFrame(function() {
+      delete _rafMap[key];
+      callback();
+    });
+  }
+
   var LayDrawer = {
-    version: '1.1.0',
+    version: '1.2.0',
 
     defaults: {
       container: 'body',
@@ -64,27 +82,29 @@ layui.define(['layer', 'jquery'], function(exports) {
     },
 
     _calculateArea: function($container, placement, area) {
-      var rect = $container[0].getBoundingClientRect();
-      var clientHeight = $container[0].clientHeight;
+      var el = $container[0];
+      var rect = el.getBoundingClientRect();
+      var refWidth = rect.width;
+      var refHeight = rect.height;
       var finalWidth, finalHeight;
 
       var defaultArea = placementConfig[placement] ? placementConfig[placement].area : ['400px', '100%'];
       area = area || defaultArea;
 
       if (typeof area[0] === 'string' && area[0].indexOf('%') !== -1) {
-        finalWidth = Math.floor(rect.width * parseFloat(area[0]) / 100);
+        finalWidth = Math.floor(refWidth * parseFloat(area[0]) / 100);
       } else {
-        finalWidth = Math.min(parseInt(area[0]) || rect.width, rect.width);
+        finalWidth = Math.min(parseInt(area[0]) || refWidth, refWidth);
       }
 
       if (placement === 'top' || placement === 'bottom') {
         if (typeof area[1] === 'string' && area[1].indexOf('%') !== -1) {
-          finalHeight = Math.floor(clientHeight * parseFloat(area[1]) / 100);
+          finalHeight = Math.floor(refHeight * parseFloat(area[1]) / 100);
         } else {
-          finalHeight = Math.min(parseInt(area[1]) || 300, clientHeight);
+          finalHeight = Math.min(parseInt(area[1]) || 300, refHeight);
         }
       } else {
-        finalHeight = clientHeight;
+        finalHeight = refHeight;
       }
 
       return { width: finalWidth, height: finalHeight };
@@ -126,25 +146,57 @@ layui.define(['layer', 'jquery'], function(exports) {
     _bindDragEvents: function($elements, $container, opts) {
       if (opts.move === false) return;
       
+      var dragRafKey = 'drag-' + Date.now();
+      var pendingMove = null;
+      
       $elements.$title.off('mousedown.laydrawer').on('mousedown.laydrawer', function(e) {
         var startX = e.clientX;
         var startY = e.clientY;
         var startLeft = parseFloat($elements.$layero.css('left'));
         var startTop = parseFloat($elements.$layero.css('top'));
         
+        // 预先缓存容器和层的尺寸
+        var cachedRect = null;
+        var cachedLayerW = null;
+        var cachedLayerH = null;
+        
         function onMouseMove(e) {
-          var rect = $container[0].getBoundingClientRect();
-          var layerWidth = $elements.$layero.outerWidth();
-          var layerHeight = $elements.$layero.outerHeight();
-          
-          var newLeft = Math.max(rect.left, Math.min(startLeft + e.clientX - startX, rect.right - layerWidth));
-          var newTop = Math.max(rect.top, Math.min(startTop + e.clientY - startY, rect.bottom - layerHeight));
-          
-          $elements.$layero.css({ left: newLeft, top: newTop });
+          // 使用 raf 节流，每帧最多执行一次
+          if (!pendingMove) {
+            pendingMove = true;
+            
+            rafThrottle(dragRafKey, function() {
+              pendingMove = false;
+              
+              // 懒更新：只在需要时重新读取
+              if (!cachedRect) {
+                cachedRect = $container[0].getBoundingClientRect();
+              }
+              if (cachedLayerW === null) {
+                cachedLayerW = $elements.$layero.outerWidth();
+                cachedLayerH = $elements.$layero.outerHeight();
+              }
+              
+              var newLeft = Math.max(cachedRect.left, Math.min(startLeft + e.clientX - startX, cachedRect.right - cachedLayerW));
+              var newTop = Math.max(cachedRect.top, Math.min(startTop + e.clientY - startY, cachedRect.bottom - cachedLayerH));
+              
+              $elements.$layero.css({ left: newLeft, top: newTop });
+              
+              // 样式写入后清除缓存，下次移动会重新读取
+              cachedRect = null;
+            });
+          }
         }
         
         function onMouseUp() {
           $(document).off('mousemove.laydrawer mouseup.laydrawer');
+          pendingMove = null;
+          
+          // 清理 RAF
+          if (_rafMap[dragRafKey]) {
+            cancelAnimationFrame(_rafMap[dragRafKey]);
+            delete _rafMap[dragRafKey];
+          }
         }
         
         $(document).on('mousemove.laydrawer', onMouseMove).on('mouseup.laydrawer', onMouseUp);
@@ -154,61 +206,69 @@ layui.define(['layer', 'jquery'], function(exports) {
 
     _bindResizeEvents: function($elements, $container, $shade, index, placement, isIframe, getState, updateMinPosition) {
       var self = this;
+      var resizeRafKey = 'resize-' + index;
       
       function updatePosition() {
-        var state = getState();
-        var rect = $container[0].getBoundingClientRect();
-        
-        if (state === 'min') {
-          updateMinPosition(rect);
-          return;
-        }
-        
-        if ($shade && $shade.length) {
-          $shade.css({
-            left: rect.left,
-            top: rect.top,
-            width: rect.width,
-            height: rect.height
-          });
-        }
+        // 使用 raf 节流 resize 事件
+        rafThrottle(resizeRafKey, function() {
+          var state = getState();
+          var rect = $container[0].getBoundingClientRect();
+          
+          if (state === 'min') {
+            updateMinPosition(rect);
+            return;
+          }
+          
+          if ($shade && $shade.length) {
+            $shade.css({
+              left: rect.left,
+              top: rect.top,
+              width: rect.width,
+              height: rect.height
+            });
+          }
 
-        if (state === 'max') {
+          if (state === 'max') {
+            $elements.$layero.css({
+              left: rect.left,
+              top: rect.top,
+              width: rect.width,
+              height: rect.height
+            });
+            self._updateContentHeight($elements, rect.height);
+            return;
+          }
+
+          // 批量读取层尺寸
+          var layerWidth = $elements.$layero.outerWidth();
+          var layerHeight = $elements.$layero.outerHeight();
+          
+          layerWidth = Math.min(layerWidth, rect.width);
+          layerHeight = Math.min(layerHeight, rect.height);
+          
+          $elements.$layero.css('width', layerWidth);
+          
+          if (layerHeight < rect.height) {
+            $elements.$layero.css('height', layerHeight);
+          }
+
+          var pos = self._calculatePosition(placement, rect, layerWidth, layerHeight);
+          var newHeight = (placement === 'top' || placement === 'bottom') ? layerHeight : rect.height;
+          
           $elements.$layero.css({
-            left: rect.left,
-            top: rect.top,
-            width: rect.width,
-            height: rect.height
+            left: pos.left,
+            top: placement === 'bottom' ? rect.bottom - layerHeight : pos.top,
+            height: newHeight
           });
-          self._updateContentHeight($elements, rect.height);
-          return;
-        }
 
-        var layerWidth = $elements.$layero.outerWidth();
-        var layerHeight = $elements.$layero.outerHeight();
-        
-        layerWidth = Math.min(layerWidth, rect.width);
-        layerHeight = Math.min(layerHeight, rect.height);
-        
-        $elements.$layero.css('width', layerWidth);
-        
-        if (layerHeight < rect.height) {
-          $elements.$layero.css('height', layerHeight);
-        }
-
-        var pos = self._calculatePosition(placement, rect, layerWidth, layerHeight);
-        var newHeight = (placement === 'top' || placement === 'bottom') ? layerHeight : rect.height;
-        
-        $elements.$layero.css({
-          left: pos.left,
-          top: placement === 'bottom' ? rect.bottom - layerHeight : pos.top,
-          height: newHeight
+          self._updateContentHeight($elements, newHeight);
         });
-
-        self._updateContentHeight($elements, newHeight);
       }
 
       $(window).on('resize.laydrawer-' + index + ' scroll.laydrawer-' + index, updatePosition);
+      
+      // 记录 RAF key 以便清理
+      $elements.$layero.data('resizeRafKey', resizeRafKey);
     },
 
     _setupContainerDrawer: function($elements, $container, $shade, opts, index, placement, getState, updateMinPosition) {
@@ -470,6 +530,13 @@ layui.define(['layer', 'jquery'], function(exports) {
         var inst = instances[layerIndex];
         
         $(window).off('resize.laydrawer-' + layerIndex + ' scroll.laydrawer-' + layerIndex);
+        
+        // 清理 RAF
+        var rafKey = 'resize-' + layerIndex;
+        if (_rafMap[rafKey]) {
+          cancelAnimationFrame(_rafMap[rafKey]);
+          delete _rafMap[rafKey];
+        }
         
         if (inst && inst.$shade && inst.$shade.length) {
           inst.$shade.remove();

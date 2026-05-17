@@ -243,6 +243,92 @@ layui.define(['jquery'], function(exports) {
       return loadedResources[type] && loadedResources[type][url];
     },
 
+    preloadDependency: function(name) {
+      var self = this;
+
+      if (loadedResources.modules[name]) {
+        return $.Deferred().resolve().promise();
+      }
+
+      if (!resourceConfig.externals || !resourceConfig.externals[name]) {
+        return $.Deferred().resolve().promise();
+      }
+
+      var depConfig = resourceConfig.externals[name];
+
+      if (depConfig.js) {
+        var fullJsUrl = this.resolveUrl(depConfig.js);
+        var link = document.createElement('link');
+        link.rel = 'prefetch';
+        link.href = fullJsUrl;
+        document.head.appendChild(link);
+      }
+
+      if (depConfig.css) {
+        var cssArray = Array.isArray(depConfig.css) ? depConfig.css : [depConfig.css];
+        cssArray.forEach(function(css) {
+          var fullCssUrl = self.resolveUrl(css);
+          var link = document.createElement('link');
+          link.rel = 'prefetch';
+          link.href = fullCssUrl;
+          document.head.appendChild(link);
+        });
+      }
+
+      return $.Deferred().resolve().promise();
+    },
+
+    preloadDependencies: function(names) {
+      var self = this;
+      if (!Array.isArray(names)) {
+        names = [names];
+      }
+      names.forEach(function(name) {
+        self.preloadDependency(name);
+      });
+      return this;
+    },
+
+    preloadPageResources: function(pageUrl) {
+      var pageConfig = this.getPageConfig(pageUrl);
+      if (!pageConfig) {
+        return this;
+      }
+
+      var dependencies = pageConfig.dependencies || [];
+      this.preloadDependencies(dependencies);
+
+      return this;
+    },
+
+    preloadWithThrottle: function(pageUrl, throttleMs) {
+      throttleMs = throttleMs || 300;
+      var self = this;
+
+      if (this._preloadTimers && this._preloadTimers[pageUrl]) {
+        clearTimeout(this._preloadTimers[pageUrl]);
+      }
+
+      if (!this._preloadTimers) {
+        this._preloadTimers = {};
+      }
+
+      if (this._lastPreloadUrls && this._lastPreloadUrls[pageUrl]) {
+        return this;
+      }
+
+      this._preloadTimers[pageUrl] = setTimeout(function() {
+        self.preloadPageResources(pageUrl);
+        delete self._preloadTimers[pageUrl];
+      }, throttleMs);
+
+      return this;
+    },
+
+    preloadPageResourcesThrottled: function(pageUrl) {
+      return this.preloadWithThrottle(pageUrl, 300);
+    },
+
     clearCache: function(type) {
       if (type) {
         loadedResources[type] = {};

@@ -32,7 +32,6 @@ layui.define(['jquery', 'util', 'routerModule', 'themeModule', 'sidebarComp', 't
     notificationData: [],
     currentAnimation: 'fadeIn',
     baseUrl: '',
-    version: '1.0.0',
 
     configCache: {
       data: {},
@@ -669,19 +668,34 @@ layui.define(['jquery', 'util', 'routerModule', 'themeModule', 'sidebarComp', 't
     showContent: function(content) {
       var $wrapper = $('#contentWrapper');
       var animation = this.currentAnimation;
-      
+
+      this.cleanupBeforePageChange();
+
       $wrapper.removeClass('page-anim-fadeIn page-anim-slideDown page-anim-slideLeft page-anim-slideRight');
-      
+
       $wrapper.html(content);
-      
+
       var $pageContent = $wrapper.find('.page-content');
       if ($pageContent.length) {
         $pageContent.addClass('page-anim-' + animation);
         $pageContent.addClass('active');
       }
-      
+
       if (window.layui && layui.componentRenderer) {
         layui.componentRenderer.render($wrapper);
+      }
+    },
+
+    cleanupBeforePageChange: function() {
+      if (window.tinymce) {
+        try {
+          var editors = window.tinymce.get();
+          editors.forEach(function(editor) {
+            editor.remove();
+          });
+        } catch (e) {
+          console.warn('[App] TinyMCE cleanup error:', e.message);
+        }
       }
     },
 
@@ -732,12 +746,21 @@ layui.define(['jquery', 'util', 'routerModule', 'themeModule', 'sidebarComp', 't
         }
       });
       
+      var inlineScripts = [];
+      var bodyScripts = doc.querySelectorAll('body script:not([src])');
+      bodyScripts.forEach(function(script) {
+        if (script.textContent && script.textContent.trim()) {
+          inlineScripts.push(script.textContent);
+        }
+      });
+      
       var bodyEl = doc.body;
       var bodyContent = bodyEl ? bodyEl.innerHTML : html;
       
       return {
         body: bodyContent,
-        pageInfo: pageInfo
+        pageInfo: pageInfo,
+        scripts: inlineScripts
       };
     },
 

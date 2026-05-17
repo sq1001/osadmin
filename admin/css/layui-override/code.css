@@ -47,6 +47,12 @@
 /* ========== 深色主题 ========== */
 [data-theme="dark"] .layui-code {
   background-color: rgba(0, 0, 0, 0.2);
+  color: var(--text-primary);
+  border-color: var(--border);
+}
+
+[data-theme="dark"] .layui-code > .layui-code-ln-side {
+  color: var(--text-muted);
 }
 
 [data-theme="dark"] .layui-code-view {
@@ -59,4 +65,16 @@
 
 [data-theme="dark"] .layui-code-ln-side {
   background-color: rgba(0, 0, 0, 0.3);
+}
+
+[data-theme="dark"] .layui-code-header-about {
+  color: var(--text-muted);
+}
+
+[data-theme="dark"] .layui-code-fixbar > span {
+  color: var(--text-muted);
+}
+
+[data-theme="dark"] .layui-code-tools > i.layui-icon-file-b {
+  color: var(--text-muted);
 }

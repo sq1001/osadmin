@@ -8,6 +8,7 @@
  * - 防止水印被删除或修改
  * - 使用 Canvas 优化性能
  * - 支持缓存机制避免重复生成
+ * - 性能优化：批量读取布局属性，减少强制重排
  */
 layui.define(['jquery', 'element'], function(exports) {
 	"use strict";
@@ -62,6 +63,7 @@ layui.define(['jquery', 'element'], function(exports) {
 		this._windowsWidth = 0;
 		this._windowsHeight = 0;
 		this._cacheKey = null;
+		this._rafId = null; // requestAnimationFrame ID
 
 		this._init();
 	}
@@ -100,8 +102,33 @@ layui.define(['jquery', 'element'], function(exports) {
 		},
 
 		_updateDimensions: function() {
-			this._windowsWidth = Math.max(this._parentEle.scrollWidth, this._parentEle.clientWidth);
-			this._windowsHeight = Math.max(this._parentEle.scrollHeight, this._parentEle.clientHeight);
+			var parent = this._parentEle;
+			if (!parent) return;
+			
+			// 批量读取所有布局属性（一次性强制重排）
+			var scrollWidth = parent.scrollWidth;
+			var clientWidth = parent.clientWidth;
+			var scrollHeight = parent.scrollHeight;
+			var clientHeight = parent.clientHeight;
+
+			this._windowsWidth = Math.max(scrollWidth, clientWidth);
+			this._windowsHeight = Math.max(scrollHeight, clientHeight);
+		},
+
+		_updateDimensionsAsync: function() {
+			var self = this;
+			if (self._rafId) {
+				cancelAnimationFrame(self._rafId);
+			}
+			self._rafId = requestAnimationFrame(function() {
+				self._rafId = null;
+				self._updateDimensions();
+				
+				if (self._container) {
+					self._container.style.width = self._windowsWidth + 'px';
+					self._container.style.height = self._windowsHeight + 'px';
+				}
+			});
 		},
 
 		_createWatermark: function() {
@@ -206,15 +233,7 @@ layui.define(['jquery', 'element'], function(exports) {
 			var self = this;
 
 			this._resizeHandler = function() {
-				var oldWidth = self._windowsWidth;
-				var oldHeight = self._windowsHeight;
-
-				self._updateDimensions();
-
-				if (oldWidth !== self._windowsWidth || oldHeight !== self._windowsHeight) {
-					self._container.style.width = self._windowsWidth + 'px';
-					self._container.style.height = self._windowsHeight + 'px';
-				}
+				self._updateDimensionsAsync();
 			};
 
 			window.addEventListener('resize', this._resizeHandler);
@@ -248,6 +267,10 @@ layui.define(['jquery', 'element'], function(exports) {
 		},
 
 		destroy: function() {
+			if (this._rafId) {
+				cancelAnimationFrame(this._rafId);
+				this._rafId = null;
+			}
 			if (this._wmObserver) {
 				this._wmObserver.disconnect();
 				this._wmObserver = null;

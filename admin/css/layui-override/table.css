@@ -1,15 +1,17 @@
 /**
  * LayUI 表格主题适配
  * 仅覆盖颜色、背景色、边框相关属性
+ * 注意：table.js 会通过 jQuery .css() 写入内联样式，background-color 必须加 !important
  */
 
 /* ========== 表格基础 ========== */
 .layui-table {
   background-color: var(--card-bg);
+  color: var(--text-secondary);
 }
 
 .layui-table th {
-  background-color: var(--bg);
+  background-color: var(--bg) !important;
 }
 
 .layui-table th,
@@ -19,30 +21,30 @@
 .layui-table-header,
 .layui-table-total,
 .layui-table-page {
-  border-color: var(--border);
+  border-color: var(--border) !important;
 }
 
 /* ========== 表格状态 ========== */
 .layui-table[lay-even] tbody tr:nth-child(even) {
-  background-color: var(--bg);
+  background-color: var(--bg) !important;
 }
 
 .layui-table-hover {
-  background-color: var(--accent-light);
+  background-color: var(--accent-light) !important;
 }
 
 .layui-table-click {
-  background-color: var(--accent-light);
+  background-color: var(--accent-light) !important;
 }
 
 .layui-table-checked {
-  background-color: rgba(var(--accent-rgb), 0.15);
+  background-color: rgba(var(--accent-rgb), 0.15) !important;
 }
 
 .layui-table-checked.layui-table-hover,
 .layui-table-checked.layui-table-click,
 .layui-table[lay-even] tbody tr:nth-child(even).layui-table-checked {
-  background-color: rgba(var(--accent-rgb), 0.25);
+  background-color: rgba(var(--accent-rgb), 0.25) !important;
 }
 
 /* ========== 表格视图 ========== */
@@ -55,7 +57,7 @@
 }
 
 .layui-table-header {
-  background-color: var(--bg);
+  background-color: var(--bg) !important;
 }
 
 .layui-table-tool {
@@ -101,7 +103,7 @@
 }
 
 .layui-table-total {
-  background-color: var(--bg);
+  background-color: var(--bg) !important;
 }
 
 .layui-table-page {
@@ -119,10 +121,11 @@
 /* ========== 深色主题 ========== */
 [data-theme="dark"] .layui-table {
   background-color: var(--card-bg);
+  color: var(--text-primary);
 }
 
 [data-theme="dark"] .layui-table th {
-  background-color: rgba(0, 0, 0, 0.2);
+  background-color: rgba(0, 0, 0, 0.2) !important;
 }
 
 [data-theme="dark"] .layui-table th,
@@ -132,33 +135,34 @@
 [data-theme="dark"] .layui-table-header,
 [data-theme="dark"] .layui-table-total,
 [data-theme="dark"] .layui-table-page {
-  border-color: var(--border);
+  border-color: var(--border) !important;
 }
 
 [data-theme="dark"] .layui-table[lay-even] tbody tr:nth-child(even) {
-  background-color: rgba(255, 255, 255, 0.02);
+  background-color: rgba(255, 255, 255, 0.04) !important;
 }
 
 [data-theme="dark"] .layui-table-hover {
-  background-color: rgba(255, 255, 255, 0.05);
+  background-color: rgba(255, 255, 255, 0.08) !important;
 }
 
 [data-theme="dark"] .layui-table-click {
-  background-color: rgba(255, 255, 255, 0.08);
+  background-color: rgba(255, 255, 255, 0.12) !important;
 }
 
 [data-theme="dark"] .layui-table-checked {
-  background-color: rgba(var(--accent-rgb), 0.15);
+  background-color: rgba(var(--accent-rgb), 0.15) !important;
 }
 
 [data-theme="dark"] .layui-table-checked.layui-table-hover,
 [data-theme="dark"] .layui-table-checked.layui-table-click,
 [data-theme="dark"] .layui-table[lay-even] tbody tr:nth-child(even).layui-table-checked {
-  background-color: rgba(var(--accent-rgb), 0.25);
+  background-color: rgba(var(--accent-rgb), 0.25) !important;
 }
 
 [data-theme="dark"] .layui-table-view {
   background-color: var(--card-bg);
+  color: var(--text-primary);
 }
 
 [data-theme="dark"] .layui-table-view:after {
@@ -166,7 +170,7 @@
 }
 
 [data-theme="dark"] .layui-table-header {
-  background-color: rgba(0, 0, 0, 0.2);
+  background-color: rgba(0, 0, 0, 0.2) !important;
 }
 
 [data-theme="dark"] .layui-table-tool {
@@ -176,6 +180,7 @@
 [data-theme="dark"] .layui-table-tool .layui-inline[lay-event] {
   background-color: transparent;
   border-color: var(--border);
+  color: var(--text-secondary);
 }
 
 [data-theme="dark"] .layui-table-tool .layui-inline[lay-event]:hover {
@@ -196,6 +201,24 @@
 [data-theme="dark"] .layui-table-edit {
   background-color: var(--card-bg);
   box-shadow: 1px 1px 20px rgba(0, 0, 0, 0.3);
+  color: var(--text-primary);
+}
+
+[data-theme="dark"] .layui-table-loading-icon .layui-icon {
+  color: var(--text-muted);
+}
+
+[data-theme="dark"] .layui-table-body .layui-none {
+  color: var(--text-muted);
+}
+
+[data-theme="dark"] .layui-table-grid-down {
+  color: var(--text-muted);
+}
+
+[data-theme="dark"] .layui-table-tips-main {
+  background-color: var(--card-bg);
+  color: var(--text-primary);
 }
 
 [data-theme="dark"] .layui-table-fixed-l {
@@ -216,7 +239,7 @@
 }
 
 [data-theme="dark"] .layui-table-total {
-  background-color: rgba(0, 0, 0, 0.2);
+  background-color: rgba(0, 0, 0, 0.2) !important;
 }
 
 [data-theme="dark"] .layui-table-page {
@@ -229,4 +252,13 @@
 
 [data-theme="dark"] .layui-table-mend {
   background-color: var(--card-bg);
+}
+
+[data-theme="dark"] .layui-table-cell .layui-table-link {
+  color: var(--accent);
+}
+
+[data-theme="dark"] .layui-table-tips-c {
+  background-color: var(--text-muted);
+  color: var(--bg-content);
 }

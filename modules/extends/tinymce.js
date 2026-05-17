@@ -20,6 +20,7 @@ layui.define(['jquery'], function(exports) {
 
   var tinymceMod = {
     init: function(options) {
+      var isDark = $('html').attr('data-theme') === 'dark';
       var defaults = {
         base_url: layui.cache.base + 'lib/tinymce',
         suffix: '.min',
@@ -51,6 +52,20 @@ layui.define(['jquery'], function(exports) {
         images_upload_url: '/upload/images',
         images_upload_credentials: true,
         setup: function(editor) {
+          editor.on('init', function() {
+            if ($('html').attr('data-theme') === 'dark') {
+              $(editor.getContainer()).find('.tox-edit-area').css('background', '#1a1a1a');
+              $(editor.getContainer()).find('.tox-edit-area__iframe').css('background', '#1a1a1a');
+              var body = editor.getBody();
+              if (body) { body.style.color = '#e2e8f0'; }
+              var doc = editor.getDoc();
+              if (doc && doc.head) {
+                var s = doc.createElement('style');
+                s.textContent = '.mce-content-body[data-mce-placeholder]:not(.mce-visualblocks)::before{color:#94a3b8!important}';
+                doc.head.appendChild(s);
+              }
+            }
+          });
           editor.on('change', function() {
             editor.save();
           });

@@ -14,7 +14,7 @@
 
 /* ========== 指示器 ========== */
 .layui-carousel-ind ul li.layui-this {
-  background-color: #fff;
+  background-color: var(--accent);
 }
 
 /* ========== 深色主题 ========== */
@@ -26,6 +26,6 @@
   background-color: rgba(0, 0, 0, 0.2);
 }
 
-[data-theme="dark"] .layui-carousel-ind ul li.layui-this {
-  background-color: var(--accent);
+[data-theme="dark"] .layui-carousel > *[carousel-item]:before {
+  color: var(--text-muted);
 }

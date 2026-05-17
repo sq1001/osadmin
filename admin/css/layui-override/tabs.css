@@ -186,3 +186,11 @@
   border-color: var(--border);
   border-bottom-color: var(--card-bg);
 }
+
+[data-theme="dark"] .layui-tabs-header li .layui-tabs-close {
+  color: var(--text-muted);
+}
+
+[data-theme="dark"] .layui-tab-title li .layui-tab-close {
+  color: var(--text-muted);
+}

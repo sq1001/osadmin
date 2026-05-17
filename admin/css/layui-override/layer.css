@@ -13,7 +13,7 @@
 }
 
 .layui-layer-shade {
-  background-color: rgba(0, 0, 0, 0.3);
+  background-color: rgba(0, 0, 0, 0.4);
 }
 
 .layui-layer-move {
@@ -262,6 +262,7 @@
 [data-theme="dark"] .layui-layer-btn a {
   background-color: transparent;
   border-color: var(--border);
+  color: var(--text-secondary);
 }
 
 [data-theme="dark"] .layui-layer-btn .layui-layer-btn0 {
@@ -286,17 +287,18 @@
 }
 
 [data-theme="dark"] .layui-layer-tips .layui-layer-content {
-  background-color: var(--text-primary);
+  background-color: var(--bg) !important;
+  color: var(--text-primary);
 }
 
 [data-theme="dark"] .layui-layer-tips i.layui-layer-TipsT,
 [data-theme="dark"] .layui-layer-tips i.layui-layer-TipsB {
-  border-right-color: var(--text-primary);
+  border-right-color: var(--bg) !important;
 }
 
 [data-theme="dark"] .layui-layer-tips i.layui-layer-TipsR,
 [data-theme="dark"] .layui-layer-tips i.layui-layer-TipsL {
-  border-bottom-color: var(--text-primary);
+  border-bottom-color: var(--bg) !important;
 }
 
 [data-theme="dark"] .layui-layer-tab .layui-layer-title span {
@@ -327,6 +329,29 @@
 [data-theme="dark"] .layui-layer-win10 .layui-layer-btn a {
   background-color: transparent;
   border-color: var(--border);
+  color: var(--text-secondary);
+}
+
+[data-theme="dark"] .layui-layer-loading-icon {
+  color: var(--text-muted);
+}
+
+[data-theme="dark"] .layui-layer-photos-prev,
+[data-theme="dark"] .layui-layer-photos-next {
+  color: var(--text-muted);
+}
+
+[data-theme="dark"] .layui-layer-photos-prev:hover,
+[data-theme="dark"] .layui-layer-photos-next:hover {
+  color: var(--text-secondary);
+}
+
+[data-theme="dark"] .layui-layer-win10.layui-layer-dialog .layui-layer-content {
+  color: var(--text-primary);
+}
+
+[data-theme="dark"] .layui-layer-lan .layui-layer-btn a {
+  color: var(--text-secondary);
 }
 
 /* ========== Drawer 动画覆盖 ========== */
