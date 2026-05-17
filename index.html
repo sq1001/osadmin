@@ -14,8 +14,7 @@
   
   <link rel="stylesheet" href="lib/layui/css/layui.css">
   <link rel="stylesheet" href="admin/css/index.css">
-  <script src="admin/js/init.js"></script>
-  
+
   <!-- 骨架屏样式内联 -->
   <style>
     /* 骨架屏动画 */
@@ -706,45 +705,14 @@
       </button>
     </div>
   </div>
-
-  <!-- init.js：同步执行（仅读取 localStorage，无副作用） -->
-  <script src="admin/js/init.js"></script>
   
   <!-- LayUI：必须先于 index.js 加载（保证 layui 全局变量可用） -->
   <script src="lib/layui/layui.js"></script>
-  
+
+  <!-- init.js：页面初始化（sidebar状态 + 骨架屏工具 + Service Worker） -->
+  <script src="admin/js/init.js"></script>
+
   <!-- index.js：主入口，依赖 layui 全局变量 -->
   <script src="admin/js/index.js"></script>
-  
-  <!-- 注册 Service Worker -->
-  <script>
-    if ('serviceWorker' in navigator) {
-      window.addEventListener('load', function() {
-        navigator.serviceWorker.register('admin/js/service-worker.js')
-          .then(function(registration) {
-            console.log('[SW] 注册成功:', registration.scope);
-          })
-          .catch(function(err) {
-            console.log('[SW] 注册失败:', err);
-          });
-      });
-    }
-  </script>
-  
-  <!-- 移除骨架屏的脚本 -->
-  <script>
-    (function() {
-      window.OSLAY_HIDE_SKELETON = function() {
-        var skeleton = document.getElementById('skeletonScreen');
-        var app = document.getElementById('appWrapper');
-        if (skeleton) {
-          skeleton.style.display = 'none';
-        }
-        if (app) {
-          app.classList.add('loaded');
-        }
-      };
-    })();
-  </script>
 </body>
 </html>
