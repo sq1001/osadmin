@@ -149,20 +149,7 @@ layui.define(['jquery', 'util', 'routerModule', 'themeModule', 'sidebarComp', 't
         this.initialized = true;
         console.log('OSLAY initialized');
       } else {
-        $.when(
-          this.loadConfig('config/app.json'),
-          this.loadConfig('config/menu.json')
-        ).done(function(appResult, menuResult) {
-          self.appConfig = appResult[0];
-          self.menuConfig = menuResult[0];
-          
-          self.initModules();
-          self.initialized = true;
-          
-          console.log('OSLAY initialized');
-        }).fail(function(error) {
-          console.error('Failed to load config:', error);
-        });
+        console.error('[App] OSLAY global not found, config not injected');
       }
 
       return this;
@@ -248,7 +235,9 @@ layui.define(['jquery', 'util', 'routerModule', 'themeModule', 'sidebarComp', 't
     loadResourceConfig: function() {
       var self = this;
       var deferred = $.Deferred();
-      var url = 'config/resources.json';
+
+      var resCfg = (this.appConfig && this.appConfig.resources) || {};
+      var url = resCfg.url || 'config/resources.json';
       var cacheKey = url;
 
       var cachedData = this.configCache.get(cacheKey);
@@ -337,6 +326,7 @@ layui.define(['jquery', 'util', 'routerModule', 'themeModule', 'sidebarComp', 't
       
       var userinfoConfig = this.appConfig && this.appConfig.userinfo ? this.appConfig.userinfo : {};
       var userinfoUrl = userinfoConfig.url || 'view/data/userinfo.json';
+      var method = userinfoConfig.method || 'GET';
       var cache = userinfoConfig.cache !== undefined ? userinfoConfig.cache : false;
       
       if (userinfoConfig.enabled === false) {
@@ -346,6 +336,7 @@ layui.define(['jquery', 'util', 'routerModule', 'themeModule', 'sidebarComp', 't
       $.ajax({
         url: this.resolveUrl(userinfoUrl),
         dataType: 'json',
+        type: method,
         cache: cache
       }).done(function(response) {
         if (response && response.code === 0 && response.data) {
@@ -388,6 +379,7 @@ layui.define(['jquery', 'util', 'routerModule', 'themeModule', 'sidebarComp', 't
       
       var notificationConfig = this.appConfig && this.appConfig.notification ? this.appConfig.notification : {};
       var notificationUrl = notificationConfig.url || 'view/data/notifications.json';
+      var method = notificationConfig.method || 'GET';
       var cache = notificationConfig.cache !== undefined ? notificationConfig.cache : false;
       
       if (notificationConfig.enabled === false) {
@@ -399,6 +391,7 @@ layui.define(['jquery', 'util', 'routerModule', 'themeModule', 'sidebarComp', 't
       $.ajax({
         url: this.resolveUrl(notificationUrl),
         dataType: 'json',
+        type: method,
         cache: cache
       }).done(function(data) {
         self.notificationData = data || [];

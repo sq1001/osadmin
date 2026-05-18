@@ -1,6 +1,6 @@
 {
   "name": "OSADMIN",
-  "version": "1.8.0",
+  "version": "1.8.1",
   "description": "基于layui原生管理后台系统",
   "site": {
     "name": "OSADMIN",
@@ -135,6 +135,12 @@
     "themeKey": "themeConfig",
     "tabsKey": "tabsState",
     "langKey": "langConfig"
+  },
+  "resources": {
+    "url": "config/resources.json"
+  },
+  "tinymce": {
+    "uploadUrl": ""
   },
   "menu": {
     "selectId": 0,

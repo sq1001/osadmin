@@ -15,12 +15,14 @@ layui.define(['jquery'], function(exports) {
     init: function(options) {
       var self = this;
       var config = options || {};
-      var url = config.url || '/app/admin/rule/permission';
+      var url = config.url || 'view/data/permission.json';
+      var cache = config.cache !== undefined ? config.cache : true;
 
       return new Promise(function(resolve, reject) {
         $.ajax({
           url: url,
           dataType: 'json',
+          cache: cache,
           success: function(res) {
             self.permissions = res.data || [];
             self.isSuperAdmin = self.permissions.indexOf('*') !== -1;

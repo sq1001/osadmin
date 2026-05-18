@@ -3,7 +3,7 @@
 ## 📋 项目概述
 
 **项目名称**: OSADMIN\
-**版本**: 1.8.0\
+**版本**: 1.8.1\
 **描述**: 基于 LayUI 的轻量化原生管理后台系统\
 **技术栈**: LayUI + jQuery + 原生 JavaScript\
 **架构模式**: 模块化架构 + 配置驱动
@@ -453,6 +453,26 @@ theme.stopWatermarkObserver();
 }
 ```
 
+#### 资源配置
+
+```json
+{
+  "resources": {
+    "url": "config/resources.json" // 资源配置文件路径
+  }
+}
+```
+
+#### TinyMCE 配置
+
+```json
+{
+  "tinymce": {
+    "uploadUrl": ""              // 图片上传地址（空表示关闭上传功能）
+  }
+}
+```
+
 **水印特性说明**:
 - **动态文本**: 支持从 sessionStorage 中读取动态文本，如用户名
 - **嵌套键名**: 支持使用点号分隔的嵌套路径，如 `"userInfo.admin.userName"`
@@ -532,7 +552,9 @@ theme.stopWatermarkObserver();
     "selectId": 0,               // 默认选中菜单ID
     "url": "config/menu.json",   // 菜单配置文件路径
     "method": "GET",             // 请求方法
-    "async": true                // 是否异步加载
+    "async": true,               // 是否异步加载
+    "cache": true,               // 是否缓存菜单数据（默认 true）
+    "data": []                   // 内联菜单数组（优先于 url，可选）
   }
 }
 ```
@@ -544,8 +566,8 @@ theme.stopWatermarkObserver();
   "permission": {
     "enabled": true,             // 是否启用权限
     "url": "view/data/permission.json", // 权限接口地址
-    "method": "GET",             // 请求方法
-    "cache": true                // 是否缓存权限
+    "method": "GET",               // 请求方法
+    "cache": true                // 是否缓存权限（默认 true）
   }
 }
 ```
@@ -1866,37 +1888,6 @@ var Module = {
 
 完整的更新日志请查看 [CHANGELOG.md](CHANGELOG.md)。
 
-### 最新版本
-
-**v1.8.0** (2026-05-17)
-
-#### 主要更新
-- 🌙 **暗主题全面适配**: 18+ LayUI 组件暗色模式字体/颜色补全，WCAG 对比度合规率 90%+
-- 🎨 **TinyMCE 编辑器暗主题**: JS 内联样式 + CSS 外壳双重方案
-- 🔬 **配色方案专业审计**: 优化 text-muted/text-secondary 对比度，修复 Graphite 暗色异常
-- 🧹 冗余清理: 删除 ~87 行重复暗色规则
-- 🐛 Bug 修复: 表格字体不可读、tips 背景融合、开关颜色错误、选择器 bug
-
-**v1.7.3** (2026-05-16)
-
-#### 主要更新
-- 🚀 **性能优化**: 首屏加载速度提升 40%+
-- 🆕 **Toast 组件增强**: 堆叠/替换模式、消散动画、数量限制
-- 🔧 **样式优化**: 面板圆角适配、laytpl-demo 页面重构
-- 🐛 Bug 修复: defer 导致 layui 未定义错误
-
-**v1.7.1** (2026-05-11)
-
-#### 主要更新
-- 🆕 新增分层缓存系统（configCache TTL + pageCache LRU）
-- 🆕 新增 21 个 LayUI 组件样式覆盖文件
-- 🆕 新增 5 个组件示例页面
-- 🔧 移除 scanCache 缓存逻辑，优化组件渲染
-- 🐛 修复 HTML 可访问性问题（viewport、lang、alt）
-- 🐛 修复 CSS 变量未定义问题
-
-[查看完整更新日志 →](CHANGELOG.md)
-
 ***
 
 ## 🤝 贡献指南
@@ -1955,5 +1946,5 @@ chore: 构建/工具相关
 
 ***
 
-**最后更新时间**: 2026-05-17\
-**文档版本**: 1.8.0
+**最后更新时间**: 2026-05-18\
+**文档版本**: 1.8.1

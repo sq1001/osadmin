@@ -100,7 +100,7 @@
   var isReady = false;
 
   var App = {
-    version: '1.8.0',
+    version: '1.8.1',
     name: 'OS Admin',
     debug: false,
     baseUrl: baseUrl,
@@ -126,47 +126,41 @@
     init: function() {
       var self = this;
       var $ = layui.jquery;
-      
-      var menuUrl = 'config/menu.json';
-      
-      var appPromise = $.ajax({ 
-        url: baseUrl + 'config/app.json', 
-        dataType: 'json' 
+
+      $.ajax({
+        url: baseUrl + 'config/app.json',
+        dataType: 'json'
       }).done(function(appConfig) {
         self.appConfig = appConfig;
-        if (appConfig.menu && appConfig.menu.url) {
-          menuUrl = appConfig.menu.url;
+
+        var menuCfg = (appConfig && appConfig.menu) || {};
+
+        if (menuCfg.data && Array.isArray(menuCfg.data)) {
+          self.menuConfig = menuCfg.data;
+          self.initApp();
+          return;
         }
-      });
-      
-      var menuPromise = $.ajax({ 
-        url: baseUrl + menuUrl, 
-        dataType: 'json' 
-      });
-      
-      $.when(appPromise, menuPromise).then(function(appResult, menuResult) {
-        self.appConfig = self.appConfig || appResult[0];
-        self.menuConfig = menuResult[0];
-        self.initApp();
-      }, function() {
-        appPromise.done(function(appConfig) {
-          self.appConfig = appConfig;
-          var finalMenuUrl = (appConfig.menu && appConfig.menu.url) ? appConfig.menu.url : 'config/menu.json';
-          $.ajax({
-            url: baseUrl + finalMenuUrl,
-            dataType: 'json'
-          }).done(function(menuConfig) {
-            self.menuConfig = menuConfig;
-            self.initApp();
-          }).fail(function() {
-            self.menuConfig = [];
-            self.initApp();
-          });
+
+        var menuUrl = menuCfg.url || 'config/menu.json';
+        var cache = menuCfg.cache !== undefined ? menuCfg.cache : true;
+
+        $.ajax({
+          url: baseUrl + menuUrl,
+          dataType: 'json',
+          cache: cache
+        }).done(function(menuConfig) {
+          self.menuConfig = menuConfig;
+          self.initApp();
         }).fail(function() {
-          self.appConfig = {};
+          console.warn('[OSLAY] Failed to load menu from:', menuUrl);
           self.menuConfig = [];
           self.initApp();
         });
+      }).fail(function() {
+        console.error('[OSLAY] Failed to load config/app.json');
+        self.appConfig = {};
+        self.menuConfig = [];
+        self.initApp();
       });
     },
 

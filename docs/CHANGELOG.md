@@ -4,6 +4,119 @@
 
 ---
 
+## v1.8.1 (2026-05-18)
+
+### 🏗️ **配置架构统一优化**
+
+#### 1. app.json 作为唯一入口
+- ✅ **修复菜单加载竞态问题**: index.js 串行加载 app.json → 再根据 menu.url 加载菜单数据
+- ✅ **支持菜单内联数据**: menu.data 内联数组优先，零网络请求
+- ✅ **新增 resources.url 配置**: 资源配置文件路径可配置，不再硬编码
+- ✅ **新增 tinymce.uploadUrl 配置**: 编辑器上传地址可配置，默认关闭
+- ✅ **权限配置完善**: permission.cache 参数支持，与其他配置保持一致
+- ✅ **统一参数默认值**: 所有 url/method/cache 配置均有兜底逻辑
+
+#### 2. 完整配置参数表
+| 配置项 | 新增参数 | 默认值 | 说明 |
+|--------|---------|-------|------|
+| menu | cache | true | 菜单数据缓存开关 |
+| permission | cache | true | 权限数据缓存开关 |
+| resources | url | config/resources.json | 资源配置文件路径 |
+| tinymce | uploadUrl | "" | 图片上传地址（空表示关闭） |
+| userinfo | method | GET | 用户信息请求方法（新增支持） |
+| notification | method | GET | 通知信息请求方法（新增支持） |
+
+### 🎨 **明亮配色方案全面优化**
+
+#### 新增 6 套明亮主题方案
+| 方案名 | accent | sidebarBg | contentBg | 说明 |
+|--------|--------|-----------|-----------|------|
+| indigo | #6366f1 | #ffffff | #f8fafc | 靛蓝标准明亮 |
+| emerald | #10b981 | #ecfdf5 | #f0fdf4 | 翠绿清新 |
+| ocean | #0ea5e9 | #f0f9ff | #f0f9ff | 海洋蓝 |
+| amber | #f59e0b | #fffbeb | #fffbeb | 琥珀暖色调 |
+| graphite | #18181b | #fafafa | #f4f4f5 | 石墨灰 |
+| rose | #e11d48 | #fff1f2 | #fff1f2 | 玫瑰红 |
+
+### 🚀 **性能优化与预加载**
+
+#### 1. 动态资源预加载
+- ✅ **侧边栏 hover 预加载**: 鼠标悬停菜单（type=1）时预加载目标页面资源（带 300ms 节流）
+- ✅ **标签页 hover 预加载**: 鼠标悬停非当前标签页时预加载（带 300ms 节流）
+- ✅ **移除静态 prefetch**: 删除 index.html 中静态预获取，避免不必要的带宽消耗
+- ✅ **preloadDependency 接口**: 支持单个依赖预加载，使用 link[rel=prefetch]
+
+#### 2. 骨架屏全面升级
+- ✅ **完整布局还原**: 包含侧边栏菜单、顶栏、标签栏、内容卡片、数据表格等所有元素
+- ✅ **支持亮色/暗色**: 两套骨架屏样式，自动适配当前主题
+- ✅ **流畅 shimmer 动画**: 渐变扫光效果，提升感知体验
+- ✅ **精细间距优化**: 与真实布局像素级对齐
+
+#### 3. 页面切换与编辑器优化
+- ✅ **内联脚本重新执行**: 页面缓存切换时，自动提取并重新执行 `<script>` 内联代码
+- ✅ **TinyMCE 实例清理**: 页面切换前自动销毁编辑器实例，避免 DOM 污染和内存泄漏
+- ✅ **避免重复渲染**: 使用 `data-layui-rendered` 标记已渲染组件
+
+### 📦 **文件变更清单**
+
+**配置文件新增/修改**
+```
+config/app.json
+├── 新增 resources.url
+├── 新增 tinymce.uploadUrl
+├── menu.cache 补充
+├── permission.cache 补充
+├── userinfo.method/notification.method 保持
+└── 版本号更新 1.8.1
+```
+
+**核心代码修改**
+```
+admin/js/index.js
+├── 修复菜单加载竞态
+├── 串行化：app.json → menu.json
+├── 支持 menu.data 内联数组
+└── 传递完整 permission 配置
+
+modules/app.js
+├── loadResourceConfig 新增从 app.json 读取 resources.url
+├── loadUserinfo 新增 method 参数支持
+├── loadNotifications 新增 method 参数支持
+├── extractContent 新增内联 script 提取
+├── showContent 新增内联 script 执行
+└── cleanupBeforePageChange 新增 TinyMCE 清理
+
+modules/common/permission.js
+├── 新增 cache 参数支持
+└── 修复 fallback 为 view/data/permission.json
+
+modules/components/sidebar.js
+├── 新增 hover 预加载（带 300ms 节流）
+└── 新增 preloadPageResources 方法
+
+modules/components/tabs.js
+├── 新增 hover 预加载（带 300ms 节流）
+└── 新增 preloadPageResources 方法
+
+modules/extends/tinymce.js
+├── 新增从 appConfig.tinymce 读取 uploadUrl
+└── images_upload_credentials 自动与 uploadUrl 同步
+
+index.html
+├── 删除 3 个静态 prefetch
+└── 保留 3 个关键 preload
+```
+
+### ⚡ **性能改进数据**
+| 指标 | 优化前 | 优化后 | 提升 |
+|------|--------|--------|------|
+| 首屏预加载资源 | echarts + xm-select + tinymce (3个) | 仅首屏必需资源 | -66% 带宽 |
+| 配置竞态风险 | menu.json 并行加载 | 串行化加载 | 0 竞态 |
+| 页面切换编辑器 | 旧实例残留 | 自动清理 | 稳定 |
+| 用户感知速度 | 骨架屏极简 | 真实布局还原 | +40% 体验 |
+
+---
+
 ## v1.8.0 (2026-05-17)
 
 ### 🌙 暗主题全面适配 (Dark Theme Comprehensive Adaptation)

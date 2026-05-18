@@ -21,6 +21,9 @@ layui.define(['jquery'], function(exports) {
   var tinymceMod = {
     init: function(options) {
       var isDark = $('html').attr('data-theme') === 'dark';
+      var appConfig = (window.OSLAY && window.OSLAY.appConfig) || {};
+      var tinymceCfg = appConfig.tinymce || {};
+
       var defaults = {
         base_url: layui.cache.base + 'lib/tinymce',
         suffix: '.min',
@@ -49,8 +52,8 @@ layui.define(['jquery'], function(exports) {
         browser_spellcheck: true,
         contextmenu: false,
         placeholder: '请输入内容...',
-        images_upload_url: '/upload/images',
-        images_upload_credentials: true,
+        images_upload_url: tinymceCfg.uploadUrl || '',
+        images_upload_credentials: !!tinymceCfg.uploadUrl,
         setup: function(editor) {
           editor.on('init', function() {
             if ($('html').attr('data-theme') === 'dark') {
