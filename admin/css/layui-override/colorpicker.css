@@ -46,7 +46,7 @@
 
 .layui-colorpicker-main-input button:hover {
   /* background-color: var(--accent-hover); */
-  box-shadow: 0 2px 8px rgba(99, 102, 241, 0.3);
+  /* box-shadow: 0 2px 8px rgba(99, 102, 241, 0.3); */
 }
 
 /* ========== 预设颜色 ========== */

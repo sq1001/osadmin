@@ -51,13 +51,13 @@
 .welcome-title {
   font-size: 18px;
   font-weight: 600;
-  color: #fff;
+  color: var(--welcome-text-primary, #fff);
   margin-bottom: 4px;
 }
 
 .welcome-subtitle {
   font-size: 12px;
-  color: rgba(255, 255, 255, 0.5);
+  color: var(--welcome-text-secondary, rgba(255, 255, 255, 0.5));
 }
 
 .welcome-stats {
@@ -67,7 +67,7 @@
 }
 
 .welcome-stat-item {
-  color: #fff;
+  color: var(--welcome-text-primary, #fff);
 }
 
 .welcome-stat-value {
@@ -78,7 +78,7 @@
 
 .welcome-stat-label {
   font-size: 11px;
-  color: rgba(255, 255, 255, 0.4);
+  color: var(--welcome-text-muted, rgba(255, 255, 255, 0.4));
   margin-top: 2px;
 }
 
@@ -512,6 +512,12 @@
 .product-sales-label {
   font-size: 9px;
   color: var(--text-muted);
+}
+
+[data-theme="dark"] {
+  --welcome-text-primary: #e2e8f0;
+  --welcome-text-secondary: rgba(226, 232, 240, 0.7);
+  --welcome-text-muted: rgba(226, 232, 240, 0.5);
 }
 
 [data-theme="dark"] .welcome-card {

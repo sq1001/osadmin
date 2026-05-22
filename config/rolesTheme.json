@@ -1,0 +1,68 @@
+{
+  "_currentRole": "admin",
+  "_version": "1.0.0",
+  "_description": "子母主题角色配置",
+
+  "roles": {
+    "admin": {
+      "label": "超级管理员",
+      "showPanel": true,
+      "canChangeMode": true,
+      "canChangeScheme": true,
+      "canChangeColor": true,
+      "canChangeLayout": true,
+      "canToggleTabs": true,
+      "canToggleAccordion": true,
+      "canToggleWatermark": true,
+      "canChangeAnimation": true,
+      "canChangeDensity": true,
+      "canChangeSidebarWidth": true,
+      "allowedSchemes": ["*"],
+      "allowedColors": ["*"],
+      "allowedLayouts": ["*"],
+      "defaultConfig": null
+    },
+
+    "employee": {
+      "label": "员工",
+      "showPanel": true,
+      "canChangeMode": true,
+      "canChangeScheme": true,
+      "canChangeColor": false,
+      "canChangeLayout": true,
+      "canToggleTabs": true,
+      "canToggleAccordion": true,
+      "canToggleWatermark": true,
+      "canChangeAnimation": false,
+      "canChangeDensity": true,
+      "canChangeSidebarWidth": true,
+      "allowedSchemes": ["*"],
+      "allowedColors": [],
+      "allowedLayouts": ["*"],
+      "defaultConfig": null
+    },
+
+    "vip": {
+      "label": "会员",
+      "showPanel": false,
+      "canChangeMode": true,
+      "canChangeScheme": false,
+      "canChangeColor": false,
+      "canChangeLayout": false,
+      "canToggleTabs": true,
+      "canToggleAccordion": false,
+      "canToggleWatermark": true,
+      "canChangeAnimation": false,
+      "canChangeDensity": false,
+      "canChangeSidebarWidth": false,
+      "allowedSchemes": ["indigo", "ocean", "emerald"],
+      "allowedColors": [],
+      "allowedLayouts": ["dropdown"],
+      "defaultConfig": {
+        "scheme": "indigo",
+        "mode": "light"
+      }
+    }
+  
+  }
+}

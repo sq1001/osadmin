@@ -3,17 +3,20 @@
 ## 📋 项目概述
 
 **项目名称**: OSADMIN\
-**版本**: 1.8.1\
+**版本**: 1.9.0\
 **描述**: 基于 LayUI 的轻量化原生管理后台系统\
 **技术栈**: LayUI + jQuery + 原生 JavaScript\
-**架构模式**: 模块化架构 + 配置驱动
+**架构模式**: 模块化架构 + 配置驱动\
+**开源协议**: Apache 2.0
 
 ### 核心特性
 
 - ✅ **模块化架构**: 基于 LayUI 模块系统，按需加载
 - ✅ **配置驱动**: JSON 配置文件驱动，灵活可扩展
 - ✅ **权限管理**: 完善的权限控制系统
+- ✅ **子母主题系统**: 基于角色的主题权限配置，支持精细化主题管理
 - ✅ **主题系统**: 支持多主题切换和自定义，暗主题全面适配 18+ LayUI 组件，WCAG 对比度 90%+ 合规
+- ✅ **间距系统**: 7级 CSS 变量间距系统，支持紧凑模式全局缩放
 - ✅ **路由管理**: Hash 路由，支持 ID 和 Code 混合路由
 - ✅ **资源按需加载**: 页面级 CSS/JS 按需加载，支持动态 meta 信息
 - ✅ **智能组件渲染**: 自动检测并渲染 LayUI 组件，支持按需加载模块
@@ -1025,6 +1028,62 @@ router.on('change', function(route) {
 
 ## 🎨 主题系统
 
+### 子母主题权限配置
+
+基于角色的主题权限控制系统，不同角色拥有不同的主题配置权限，实现精细化的主题管理。
+
+#### 角色权限示例
+| 权限项 | admin (超级管理员) | employee (员工) | vip (会员) |
+|--------|:-----------------:|:---------------:|:----------:|
+| 完整配置面板 | ✅ | ✅ | ❌ 切换按钮 |
+| 明暗模式切换 | ✅ | ✅ | ✅ |
+| 配色方案选择 | ✅ 6种 | ✅ 6种 | 🔒 仅白名单3种 |
+| 自定义颜色 | ✅ | ❌ | ❌ |
+| 布局模式 | ✅ 3种 | ✅ 3种 | 🔒 仅下拉菜单 |
+| 紧凑模式 | ✅ | ✅ | ❌ |
+| 侧边栏宽度 | ✅ | ✅ | ❌ |
+| 子菜单宽度 | ✅ | ✅ | ❌ |
+
+#### 核心特性
+- **localStorage 隔离**: 不同角色使用独立的存储键（`osadmin_{role}_themeConfig`）
+- **运行时切换**: 支持通过 `theme.setRole('admin')` 动态切换角色
+- **白名单机制**: 支持方案/配色/布局的白名单限制
+- **默认配置锁定**: 特定角色可强制使用指定配置
+
+### 间距系统与紧凑模式
+
+系统实现了 7 级 CSS 变量间距系统，并支持紧凑模式全局缩放。
+
+#### 间距变量定义
+```css
+:root {
+  --space-xs: 4px;      /* 微间距 - 图标与文字间距 */
+  --space-sm: 8px;      /* 小间距 - 紧凑元素间距 */
+  --space-md: 12px;     /* 中间距 - 默认紧凑模式基准 */
+  --space-base: 16px;   /* 基准间距 - 内容区间距、卡片间距 */
+  --space-lg: 20px;     /* 大间距 - 卡片内边距、表单项间距 */
+  --space-xl: 24px;     /* 超大间距 - 区块间距 */
+  --space-2xl: 32px;    /* 2倍大间距 - 页面级间距 */
+}
+```
+
+#### 紧凑模式
+通过 `[data-density="compact"]` 属性实现全局紧凑缩放，同时支持导航高度变量化：
+- `--nav-item-height`: 52px → 44px
+- `--nav-sub-item-height`: 46px → 38px
+
+### 侧边栏与子菜单宽度配置
+
+支持在主题配置面板中调整侧边栏和子菜单宽度：
+
+| 配置项 | 可调范围 | 默认值 |
+|--------|----------|--------|
+| 侧边栏宽度 | 160-320px | 210px |
+| 子菜单宽度（弹性双列） | 140-240px | 180px |
+| 子菜单宽度（固定双列） | 140-240px | 180px |
+
+> **注意**: 弹性双列和固定双列的子面板宽度是**独立配置**的，使用不同的 CSS 变量。
+
 ### 主题切换
 
 系统支持亮色/暗色主题切换。
@@ -1050,36 +1109,82 @@ theme.setColor('#16baaa');
 {
   "theme": {
     "defaultMode": "light",
+    "defaultScheme": "indigo",
     "defaultColor": "#16baaa",
-    "defaultLayout": "double"
+    "defaultLayout": "double",
+    "tabsVisible": true,
+    "accordion": false,
+    "pageAnimation": "fadeIn"
+  },
+  "sidebar": {
+    "width": 210,
+    "collapsedWidth": 64,
+    "submenuWidth": 180
   }
 }
 ```
 
 ### CSS 变量系统
 
-系统使用 CSS 变量实现主题定制。
+系统使用 CSS 变量实现主题定制和间距管理。
 
 ```css
 :root {
   /* 主题色 */
-  --accent: #16baaa;
-  --accent-hover: #14a090;
+  --accent: #6366f1;
+  --accent-hover: #4f46e5;
+  --accent-light: rgba(99,102,241,0.1);
+  --accent-rgb: 99,102,241;
   
   /* 背景色 */
-  --bg-primary: #ffffff;
-  --bg-secondary: #f5f5f5;
-  --bg-dark: #0f1419;
+  --bg: #f8f8f8;
+  --bg-sidebar: #ffffff;
+  --bg-topbar: #ffffff;
+  --bg-tabs: #ffffff;
+  --bg-content: #f8fafc;
+  --card-bg: #ffffff;
   
   /* 文字色 */
-  --text-primary: #333333;
-  --text-secondary: #666666;
+  --text-primary: rgba(0, 0, 0, 0.85);
+  --text-secondary: #333;
+  --text-muted: #999;
   
   /* 边框色 */
-  --border: #e5e5e5;
+  --border: #e2e8f0;
+  --sidebar-text: #374151;
+  --sidebar-text-muted: #9ca3af;
   
-  /* 阴影 */
-  --shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  /* 尺寸变量 */
+  --sidebar-width: 210px;
+  --sidebar-collapsed: 64px;
+  --submenu-width: 180px;
+  --submenu-fixed-width: 180px;
+  --topbar-height: 50px;
+  --tabs-height: 41px;
+  --nav-item-height: 52px;
+  --nav-sub-item-height: 46px;
+  
+  /* 间距系统 (Spacing Scale) */
+  --space-xs: 4px;      /* 微间距 - 图标与文字间距 */
+  --space-sm: 8px;      /* 小间距 - 紧凑元素间距 */
+  --space-md: 12px;     /* 中间距 - 默认紧凑模式基准 */
+  --space-base: 16px;   /* 基准间距 - 内容区间距、卡片间距 */
+  --space-lg: 20px;     /* 大间距 - 卡片内边距、表单项间距 */
+  --space-xl: 24px;     /* 超大间距 - 区块间距 */
+  --space-2xl: 32px;    /* 2倍大间距 - 页面级间距 */
+}
+
+/* 紧凑模式 */
+[data-density="compact"] {
+  --space-xs: 2px;
+  --space-sm: 6px;
+  --space-md: 8px;
+  --space-base: 10px;
+  --space-lg: 14px;
+  --space-xl: 18px;
+  --space-2xl: 24px;
+  --nav-item-height: 44px;
+  --nav-sub-item-height: 38px;
 }
 ```
 
@@ -1107,6 +1212,156 @@ theme.setColor('#16baaa');
     }
   }
 }
+```
+
+### 子母主题权限配置
+
+基于角色的主题权限控制系统，不同角色拥有不同的主题配置权限，实现精细化的主题管理。
+
+#### 1. 接口返回格式
+
+后端接口需返回以下 JSON 格式：
+
+```json
+{
+  "_currentRole": "admin",
+  "roles": {
+    "admin": {
+      "label": "超级管理员",
+      "showPanel": true,
+      "canChangeMode": true,
+      "canChangeScheme": true,
+      "canChangeColor": true,
+      "canChangeLayout": true,
+      "canChangeDensity": true,
+      "canChangeSidebarWidth": true,
+      "allowedSchemes": ["*"],
+      "allowedColors": ["*"],
+      "allowedLayouts": ["*"]
+    },
+    "employee": {
+      "label": "员工",
+      "showPanel": true,
+      "canChangeMode": true,
+      "canChangeScheme": true,
+      "canChangeColor": false,
+      "canChangeLayout": true,
+      "canChangeDensity": true,
+      "canChangeSidebarWidth": true,
+      "allowedSchemes": ["*"],
+      "allowedColors": [],
+      "allowedLayouts": ["*"]
+    },
+    "vip": {
+      "label": "会员",
+      "showPanel": false,
+      "canChangeMode": true,
+      "canChangeScheme": false,
+      "canChangeColor": false,
+      "canChangeLayout": false,
+      "canChangeDensity": false,
+      "canChangeSidebarWidth": false,
+      "allowedSchemes": ["indigo", "ocean", "emerald"],
+      "allowedColors": [],
+      "allowedLayouts": ["dropdown"],
+      "defaultConfig": {
+        "scheme": "indigo",
+        "mode": "light"
+      }
+    }
+  }
+}
+```
+
+> **重要**: 必须同时返回 `_currentRole` 和 `roles` 两个字段，否则系统会降级为**全权限默认配置**。
+
+#### 2. 配置说明
+
+| 字段 | 类型 | 说明 |
+|------|------|------|
+| `_currentRole` | string | 当前用户角色标识 |
+| `roles` | object | 角色权限配置对象 |
+| `roles[role].label` | string | 角色显示名称 |
+| `roles[role].showPanel` | boolean | 是否显示完整配置面板 |
+| `roles[role].canChangeMode` | boolean | 是否允许切换明暗模式 |
+| `roles[role].canChangeScheme` | boolean | 是否允许切换配色方案 |
+| `roles[role].canChangeColor` | boolean | 是否允许使用自定义颜色 |
+| `roles[role].canChangeLayout` | boolean | 是否允许切换布局模式 |
+| `roles[role].canChangeDensity` | boolean | 是否允许切换紧凑模式 |
+| `roles[role].canChangeSidebarWidth` | boolean | 是否允许调整侧边栏宽度 |
+| `roles[role].allowedSchemes` | array | 允许的配色方案白名单，`["*"]` 表示全部 |
+| `roles[role].allowedColors` | array | 允许的自定义颜色白名单 |
+| `roles[role].allowedLayouts` | array | 允许的布局模式白名单 |
+| `roles[role].defaultConfig` | object | 强制使用的默认配置 |
+
+#### 3. 本地开发配置
+
+本地开发时，可使用 `config/rolesTheme.json` 文件，系统会自动加载。
+
+#### 4. localStorage 隔离
+
+不同角色使用独立的存储键，避免配置冲突：
+
+- `osadmin_admin_themeConfig`
+- `osadmin_employee_themeConfig`
+- `osadmin_vip_themeConfig`
+
+#### 5. 运行时切换角色
+
+```javascript
+var theme = OSLAY.modules.theme;
+
+// 切换到员工角色
+theme.setRole('employee');
+
+// 获取当前角色
+var role = theme.getRole();
+
+// 获取当前角色配置
+var profile = theme.getProfile();
+```
+
+### 间距系统与紧凑模式
+
+#### 1. 框架级组件规范
+
+**职责边界**: 框架只管容器级间距，不侵入组件内部。
+
+| 选择器 | 间距规则 | 用途 |
+|--------|---------|------|
+| `.page-content > .layui-card + .layui-card` | `margin-top: var(--space-base)` | 卡片间间距 |
+| `.layui-card-body`, `.layui-panel-body` | `padding: var(--space-lg)` | 卡片内边距 |
+| `.layui-card-header` | `padding: var(--space-base) var(--space-lg)` | 卡片头部 |
+| `.layui-table td, .layui-table th` | `padding: var(--space-sm) var(--space-base)` | 表格单元格 |
+| `.layui-nav-bar .layui-nav-item a` | `height: var(--nav-item-height)` | 导航项高度 |
+
+#### 2. 紧凑模式切换
+
+```javascript
+var theme = OSLAY.modules.theme;
+
+// 切换到紧凑模式
+theme.setState({ density: 'compact' });
+
+// 切换到舒适模式
+theme.setState({ density: 'comfortable' });
+
+// 切换（布尔值）
+theme.previewDensity('compact');
+```
+
+#### 3. 侧边栏宽度调整
+
+```javascript
+// 调整侧边栏宽度（160-320px）
+theme.setState({ sidebarWidth: 240 });
+
+// 调整子菜单宽度（140-240px）
+theme.setState({ submenuWidth: 200 });
+
+// 实时预览
+theme.previewSidebarWidth(240);
+theme.previewSubmenuWidth(200);
 ```
 
 ***
@@ -1923,7 +2178,7 @@ chore: 构建/工具相关
 
 ## 📄 许可证
 
-本项目采用 MIT 许可证。详见 [LICENSE](LICENSE) 文件。
+本项目采用 Apache License 2.0 开源协议。详见 [LICENSE](LICENSE) 文件。
 
 ***
 
@@ -1946,5 +2201,5 @@ chore: 构建/工具相关
 
 ***
 
-**最后更新时间**: 2026-05-18\
-**文档版本**: 1.8.1
+**最后更新时间**: 2026-05-20\
+**文档版本**: 1.9.0

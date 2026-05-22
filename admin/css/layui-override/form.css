@@ -152,8 +152,8 @@
 }
 
 .layui-form-select dl dd.layui-this {
-  background-color: var(--accent-light);
-  color: var(--accent);
+  background-color: var(--accent-light) !important;
+  color: var(--accent) !important;
 }
 
 .layui-select-disabled .layui-disabled {
@@ -370,7 +370,12 @@
 }
 
 [data-theme="dark"] .layui-form-select dl dd:hover {
-  background-color: var(--accent-light);
+  background-color: var(--accent-light) !important;
+}
+
+[data-theme="dark"] .layui-form-select dl dd.layui-this {
+  background-color: var(--accent-light) !important;
+  color: var(--accent) !important;
 }
 
 [data-theme="dark"] .layui-form-checkbox {

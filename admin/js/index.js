@@ -100,7 +100,7 @@
   var isReady = false;
 
   var App = {
-    version: '1.8.1',
+    version: '1.9.0',
     name: 'OS Admin',
     debug: false,
     baseUrl: baseUrl,
@@ -134,32 +134,69 @@
         self.appConfig = appConfig;
 
         var menuCfg = (appConfig && appConfig.menu) || {};
+        var profilesCfg = (appConfig && appConfig.themeProfiles) || {};
 
+        var menuReq;
         if (menuCfg.data && Array.isArray(menuCfg.data)) {
           self.menuConfig = menuCfg.data;
-          self.initApp();
-          return;
+          window.OSLAY.menuConfig = menuCfg.data;
+          menuReq = $.Deferred().resolve(menuCfg.data).promise();
+        } else {
+          var menuUrl = menuCfg.url || 'config/menu.json';
+          var menuCache = menuCfg.cache !== undefined ? menuCfg.cache : true;
+          menuReq = $.ajax({
+            url: baseUrl + menuUrl,
+            dataType: 'json',
+            cache: menuCache
+          });
         }
 
-        var menuUrl = menuCfg.url || 'config/menu.json';
-        var cache = menuCfg.cache !== undefined ? menuCfg.cache : true;
+        self._loadRolesThemeWithMenu(profilesCfg, menuReq);
 
-        $.ajax({
-          url: baseUrl + menuUrl,
-          dataType: 'json',
-          cache: cache
-        }).done(function(menuConfig) {
-          self.menuConfig = menuConfig;
-          self.initApp();
-        }).fail(function() {
-          console.warn('[OSLAY] Failed to load menu from:', menuUrl);
-          self.menuConfig = [];
-          self.initApp();
-        });
       }).fail(function() {
         console.error('[OSLAY] Failed to load config/app.json');
         self.appConfig = {};
         self.menuConfig = [];
+        window.OSLAY.menuConfig = [];
+        window.OSLAY.rolesTheme = null;
+        self.initApp();
+      });
+    },
+
+    _loadRolesThemeWithMenu: function(profilesCfg, menuReq) {
+      var self = this;
+      var $ = layui.jquery;
+
+      var profileReq;
+      var profileUrl = profilesCfg && profilesCfg.url;
+      if (profileUrl) {
+        var profileCache = profilesCfg.cache !== undefined ? profilesCfg.cache : true;
+        profileReq = $.ajax({
+          url: baseUrl + profileUrl,
+          dataType: 'json',
+          cache: profileCache
+        });
+      } else {
+        profileReq = $.Deferred().resolve(null).promise();
+      }
+
+      menuReq.done(function(menuData) {
+        self.menuConfig = menuData;
+        window.OSLAY.menuConfig = menuData;
+      }).fail(function() {
+        console.warn('[OSLAY] Failed to load menu');
+        self.menuConfig = [];
+        window.OSLAY.menuConfig = [];
+      });
+
+      profileReq.done(function(profilesData) {
+        window.OSLAY.rolesTheme = profilesData;
+      }).fail(function() {
+        console.warn('[OSLAY] Failed to load rolesTheme from:', profileUrl);
+        window.OSLAY.rolesTheme = null;
+      });
+
+      $.when(menuReq, profileReq).always(function() {
         self.initApp();
       });
     },

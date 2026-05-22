@@ -1,6 +1,6 @@
 {
   "name": "OSADMIN",
-  "version": "1.8.1",
+  "version": "1.9.0",
   "description": "基于layui原生管理后台系统",
   "site": {
     "name": "OSADMIN",
@@ -147,6 +147,11 @@
     "url": "config/menu.json",
     "method": "GET",
     "async": true
+  },
+  "themeProfiles": {
+    "url": "config/rolesTheme.json",
+    "method": "GET",
+    "cache": true
   },
   "permission": {
     "enabled": true,

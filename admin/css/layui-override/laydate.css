@@ -58,6 +58,14 @@
   color: var(--accent) !important;
 }
 
+.laydate-footer-btns span:first-child {
+    border-radius: 4px 0 0 4px;
+}
+
+.laydate-footer-btns span:last-child {
+    border-radius: 0 4px 4px 0;
+}
+
 .layui-laydate .layui-laydate-list {
   background-color: var(--card-bg);
 }

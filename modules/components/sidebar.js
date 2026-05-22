@@ -25,9 +25,10 @@ layui.define(['jquery', 'layer', 'themeModule', 'routerModule', 'commonMod'], fu
 
   var Sidebar = {
     collapsed: false,
-    currentSubmenuPanel: null,
-    currentDropdownMenu: null,
-    activeDropdowns: [],
+  currentSubmenuPanel: null,
+  currentDropdownMenu: null,
+  // 保存每个顶级菜单对应的子菜单展开状态
+  submenuPanelExpandedStates: {},
 
     init: function(config) {
       menuData = config ? (config.data || []) : [];
@@ -257,6 +258,7 @@ layui.define(['jquery', 'layer', 'themeModule', 'routerModule', 'commonMod'], fu
     bindEvents: function() {
       var self = this;
 
+      // 菜单项悬浮预加载页面资源
       $('#sidebarMenu').on('mouseenter', '.menu-item, .submenu-item, .nested-dropdown-item', function(e) {
         var $this = $(this);
         var href = $this.data('href');
@@ -291,7 +293,9 @@ layui.define(['jquery', 'layer', 'themeModule', 'routerModule', 'commonMod'], fu
         var isExternal = $this.data('external') === true || $this.data('external') === 'true';
         
         self.handleSubmenuItemClick(pageId, itemType, href, openType, isExternal);
-        self.closeMobileSidebar();
+        if (window.innerWidth <= 768) {
+          self.closeMobileSidebar();
+        }
       });
 
       $('#sidebarMenu').on('click', '.submenu-item-dropdown', function(e) {
@@ -367,13 +371,19 @@ layui.define(['jquery', 'layer', 'themeModule', 'routerModule', 'commonMod'], fu
       });
 
       $(document).on('click', function(e) {
-        if (!$(e.target).closest('.layui-sidebar, .layui-submenu-panel, .layui-dropdown-menu-panel-wrapper, .layui-mobile-menu-fab').length) {
+        if (!$(e.target).closest('.layui-sidebar, .layui-submenu-panel, .layui-dropdown-menu-panel-wrapper, .layui-mobile-menu-fab, .layui-theme-config-panel').length) {
           var state = theme.getState();
-          if (state.layout !== 'fixed-double') {
+          
+          if (state.layout !== 'fixed-double' && state.layout !== 'double') {
             self.hideSubmenuPanel();
             self.hideDropdownMenu();
+            self.closeAllNestedDropdowns();
+          } else if (state.layout === 'double') {
+            self.hideSubmenuPanel();
+            self.hideDropdownMenu();
+          } else {
+            self.hideDropdownMenu();
           }
-          self.closeAllNestedDropdowns();
         }
       });
 
@@ -484,8 +494,11 @@ layui.define(['jquery', 'layer', 'themeModule', 'routerModule', 'commonMod'], fu
       var menu = this.findMenu(menuId);
       if (!menu || !menu.children) return;
 
+      // 获取保存的展开状态
+      var expandedStates = this.submenuPanelExpandedStates[menuId] || {};
+      
       var html = '';
-      html = this.buildSubmenuPanelContent(menu.children, 2);
+      html = this.buildSubmenuPanelContent(menu.children, 2, expandedStates);
 
       $('#submenuPanelTitle').text(menu.title);
       $('#submenuPanelContent').html(html);
@@ -497,14 +510,14 @@ layui.define(['jquery', 'layer', 'themeModule', 'routerModule', 'commonMod'], fu
       
       var currentId = targetPageId || router.getCurrentId();
       if (currentId !== null) {
-        // 直接设置激活状态，不调用setActive
+        // 直接设置激活状态，不调用 setActive
         var state = theme.getState();
         var menuPath = this.findMenuPath(menuData, currentId);
         this.setActiveItems(currentId, menuPath, state);
       }
     },
 
-    buildSubmenuPanelContent: function(children, level) {
+    buildSubmenuPanelContent: function(children, level, expandedStates) {
       var self = this;
       var html = '';
       
@@ -514,15 +527,16 @@ layui.define(['jquery', 'layer', 'themeModule', 'routerModule', 'commonMod'], fu
         var isDirectory = childType === 0;
         var itemId = child.id !== undefined ? child.id : child.code;
         var isExternal = !isDirectory && child.href && self.isExternalUrl(child.href);
+        var isExpanded = expandedStates && expandedStates[itemId] === true;
         
         if (isDirectory) {
-          html += '<div class="submenu-panel-group" data-id="' + itemId + '" data-type="' + childType + '">';
+          html += '<div class="submenu-panel-group' + (isExpanded ? ' open' : '') + '" data-id="' + itemId + '" data-type="' + childType + '">';
           html += '<div class="submenu-panel-item submenu-panel-group-title" data-id="' + itemId + '" data-level="' + level + '" data-has-dropdown="true">';
           html += '<span class="menu-icon"><i class="layui-icon ' + childIcon + '"></i></span>';
           html += '<span class="menu-text">' + child.title + '</span>';
-          html += '<span class="menu-dropdown-arrow"><i class="layui-icon layui-icon-down"></i></span>';
+          html += '<span class="menu-dropdown-arrow"><i class="layui-icon ' + (isExpanded ? 'layui-icon-up' : 'layui-icon-down') + '"></i></span>';
           html += '</div>';
-          html += self.buildSubmenuPanelDropdown(child.children, level + 1);
+          html += self.buildSubmenuPanelDropdown(child.children, level + 1, expandedStates, isExpanded);
           html += '</div>';
         } else {
           html += '<a class="submenu-panel-item" data-id="' + itemId + '" data-level="' + level + '" data-type="' + childType + '"';
@@ -545,9 +559,9 @@ layui.define(['jquery', 'layer', 'themeModule', 'routerModule', 'commonMod'], fu
       return html;
     },
 
-    buildSubmenuPanelDropdown: function(children, level) {
+    buildSubmenuPanelDropdown: function(children, level, expandedStates, parentExpanded) {
       var self = this;
-      var html = '<div class="submenu-panel-dropdown" data-level="' + level + '">';
+      var html = '<div class="submenu-panel-dropdown' + (parentExpanded ? ' show' : '') + '" data-level="' + level + '">';
       
       children.forEach(function(child) {
         var childIcon = child.icon || 'layui-icon-circle';
@@ -555,15 +569,16 @@ layui.define(['jquery', 'layer', 'themeModule', 'routerModule', 'commonMod'], fu
         var isDirectory = childType === 0;
         var itemId = child.id !== undefined ? child.id : child.code;
         var isExternal = !isDirectory && child.href && self.isExternalUrl(child.href);
+        var isExpanded = expandedStates && expandedStates[itemId] === true;
         
         if (isDirectory) {
-          html += '<div class="submenu-panel-dropdown-group" data-id="' + itemId + '" data-type="' + childType + '">';
+          html += '<div class="submenu-panel-dropdown-group' + (isExpanded ? ' open' : '') + '" data-id="' + itemId + '" data-type="' + childType + '">';
           html += '<a class="submenu-panel-dropdown-item" data-id="' + itemId + '" data-level="' + level + '" data-has-dropdown="true">';
           html += '<span class="menu-icon"><i class="layui-icon ' + childIcon + '"></i></span>';
           html += '<span class="menu-text">' + child.title + '</span>';
           html += '<span class="menu-dropdown-arrow"><i class="layui-icon layui-icon-right"></i></span>';
           html += '</a>';
-          html += self.buildSubmenuPanelDropdown(child.children, level + 1);
+          html += self.buildSubmenuPanelDropdown(child.children, level + 1, expandedStates, isExpanded);
           html += '</div>';
         } else {
           html += '<a class="submenu-panel-dropdown-item" data-id="' + itemId + '" data-level="' + level + '" data-type="' + childType + '"';
@@ -606,6 +621,7 @@ layui.define(['jquery', 'layer', 'themeModule', 'routerModule', 'commonMod'], fu
         e.preventDefault();
         var $group = $(this).closest('.submenu-panel-group');
         var $dropdown = $group.find('.submenu-panel-dropdown').first();
+        var itemId = $group.data('id');
         var wasOpen = $group.hasClass('open');
         var state = theme.getState();
         
@@ -614,12 +630,28 @@ layui.define(['jquery', 'layer', 'themeModule', 'routerModule', 'commonMod'], fu
             $(this).removeClass('open');
             $(this).find('.submenu-panel-dropdown.show').removeClass('show');
             $(this).find('.menu-dropdown-arrow i').removeClass('layui-icon-up').addClass('layui-icon-down');
+            // 更新状态
+            var siblingId = $(this).data('id');
+            if (self.currentSubmenuPanel && siblingId) {
+              if (!self.submenuPanelExpandedStates[self.currentSubmenuPanel]) {
+                self.submenuPanelExpandedStates[self.currentSubmenuPanel] = {};
+              }
+              self.submenuPanelExpandedStates[self.currentSubmenuPanel][siblingId] = false;
+            }
           });
         }
         
         $group.toggleClass('open', !wasOpen);
         $dropdown.toggleClass('show', !wasOpen);
         $(this).find('.menu-dropdown-arrow i').toggleClass('layui-icon-down layui-icon-up');
+        
+        // 保存展开状态
+        if (self.currentSubmenuPanel && itemId) {
+          if (!self.submenuPanelExpandedStates[self.currentSubmenuPanel]) {
+            self.submenuPanelExpandedStates[self.currentSubmenuPanel] = {};
+          }
+          self.submenuPanelExpandedStates[self.currentSubmenuPanel][itemId] = !wasOpen;
+        }
       });
 
       $('#submenuPanelContent').off('click', '.submenu-panel-dropdown-item[data-has-dropdown="true"]').on('click', '.submenu-panel-dropdown-item[data-has-dropdown="true"]', function(e) {
@@ -627,6 +659,7 @@ layui.define(['jquery', 'layer', 'themeModule', 'routerModule', 'commonMod'], fu
         e.stopPropagation();
         var $group = $(this).closest('.submenu-panel-dropdown-group');
         var $dropdown = $group.find('.submenu-panel-dropdown').first();
+        var itemId = $group.data('id');
         var wasOpen = $group.hasClass('open');
         var state = theme.getState();
         
@@ -634,11 +667,27 @@ layui.define(['jquery', 'layer', 'themeModule', 'routerModule', 'commonMod'], fu
           $group.siblings('.submenu-panel-dropdown-group.open').each(function() {
             $(this).removeClass('open');
             $(this).find('.submenu-panel-dropdown.show').removeClass('show');
+            // 更新状态
+            var siblingId = $(this).data('id');
+            if (self.currentSubmenuPanel && siblingId) {
+              if (!self.submenuPanelExpandedStates[self.currentSubmenuPanel]) {
+                self.submenuPanelExpandedStates[self.currentSubmenuPanel] = {};
+              }
+              self.submenuPanelExpandedStates[self.currentSubmenuPanel][siblingId] = false;
+            }
           });
         }
         
         $group.toggleClass('open', !wasOpen);
         $dropdown.toggleClass('show', !wasOpen);
+        
+        // 保存展开状态
+        if (self.currentSubmenuPanel && itemId) {
+          if (!self.submenuPanelExpandedStates[self.currentSubmenuPanel]) {
+            self.submenuPanelExpandedStates[self.currentSubmenuPanel] = {};
+          }
+          self.submenuPanelExpandedStates[self.currentSubmenuPanel][itemId] = !wasOpen;
+        }
       });
 
       $('#submenuPanelContent').off('click', '.submenu-panel-dropdown-item:not([data-has-dropdown="true"])').on('click', '.submenu-panel-dropdown-item:not([data-has-dropdown="true"])', function(e) {
@@ -667,15 +716,17 @@ layui.define(['jquery', 'layer', 'themeModule', 'routerModule', 'commonMod'], fu
 
       this.currentDropdownMenu = menuId;
 
-      var html = this.buildDropdownMenuContent(menu.children, 2);
-
-      $('#dropdownMenuContent').html(html);
-
+      // ✅ 读取触发元素位置
       var rect = $triggerEl[0].getBoundingClientRect();
       var panelWidth = 180;
       var viewportWidth = window.innerWidth;
+
+      var html = this.buildDropdownMenuContent(menu.children, 2);
+
+      $('#dropdownMenuContent').html(html);
       
-      var leftPos = rect.right + 8;
+      // 让悬浮菜单直接对齐侧边栏右侧（64px位置）
+      var leftPos = 64;
       if (leftPos + panelWidth > viewportWidth - 16) {
         leftPos = viewportWidth - panelWidth - 16;
       }
@@ -690,13 +741,17 @@ layui.define(['jquery', 'layer', 'themeModule', 'routerModule', 'commonMod'], fu
       var maxHeight = window.innerHeight - topPos - 16;
       if (maxHeight < 100) maxHeight = 100;
 
+      // 计算三角指示器的位置：让它始终指向触发元素的中心
+      var triggerCenter = rect.top + rect.height / 2;
+      var arrowTop = triggerCenter - topPos - 6;
+      arrowTop = Math.max(8, Math.min(arrowTop, estimatedHeight - 16));
+
       var $wrapper = $('#dropdownMenuPanelWrapper');
-      $wrapper.css({
-        left: leftPos + 'px',
-        top: topPos + 'px'
-      }).addClass('show');
+      var $panel = $wrapper.find('.layui-dropdown-menu-panel');
       
-      $wrapper.find('.layui-dropdown-menu-panel').css('max-height', maxHeight + 'px');
+      $wrapper[0].style.cssText = 'left:' + leftPos + 'px;top:' + topPos + 'px;--arrow-top:' + arrowTop + 'px;';
+      $panel[0].style.maxHeight = maxHeight + 'px';
+      $wrapper.addClass('show');
       
       this.bindDropdownMenuEvents();
       
@@ -815,6 +870,10 @@ layui.define(['jquery', 'layer', 'themeModule', 'routerModule', 'commonMod'], fu
       $('.submenu-panel-dropdown.show').removeClass('show');
       $('.dropdown-menu-group.open').removeClass('open');
       $('.dropdown-submenu.show').removeClass('show');
+      
+      if (this.currentSubmenuPanel && this.submenuPanelExpandedStates[this.currentSubmenuPanel]) {
+        this.submenuPanelExpandedStates[this.currentSubmenuPanel] = {};
+      }
     },
 
     findMenu: function(menuId) {
@@ -904,29 +963,19 @@ layui.define(['jquery', 'layer', 'themeModule', 'routerModule', 'commonMod'], fu
         });
       }
 
-      var panelShown = false;
-      
       if (isMobile) {
         this.setActiveItems(pageId, menuPath, state);
       }
       else if ((state.layout === 'double' || state.layout === 'fixed-double') && menuPath.length > 0 && $triggerItem) {
         if (this.currentSubmenuPanel !== topItemId) {
           this.showSubmenuPanel(topItemId, $triggerItem, pageId);
-          panelShown = true;
         } else {
           this.setActiveItems(pageId, menuPath, state);
         }
       }
       else if (state.layout === 'dropdown' && this.collapsed && menuPath.length > 0 && $triggerItem) {
-        var $wrapper = $('#dropdownMenuPanelWrapper');
-        var needShowDropdown = !$wrapper.hasClass('show') || this.currentDropdownMenu !== topItemId;
-        
-        if (needShowDropdown) {
-          this.showDropdownMenu(topItemId, $triggerItem, pageId);
-          panelShown = true;
-        } else {
-          this.setActiveItems(pageId, menuPath, state);
-        }
+        // ✅ 页面切换时不自动弹出下拉菜单，只设置激活状态
+        this.setActiveItems(pageId, menuPath, state);
       }
       else {
         this.setActiveItems(pageId, menuPath, state);

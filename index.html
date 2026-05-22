@@ -6,6 +6,40 @@
   <meta name="keywords" content="">
   <meta name="description" content="">
   <title>Loading...</title>
+
+  <!-- 作用：性能优化，在页面渲染前设置主题配置-->
+  <script>
+    (function() {
+      try {
+        var role = localStorage.getItem('osadmin_global_role') || 'admin';
+        var storageKey = 'osadmin_' + role + '_themeConfig';
+        var themeConfig = JSON.parse(localStorage.getItem(storageKey));
+        if (!themeConfig) {
+          var keys = Object.keys(localStorage).filter(function(k) { return k.indexOf('_themeConfig') > -1; });
+          if (keys.length > 0) {
+            themeConfig = JSON.parse(localStorage.getItem(keys[0]));
+          }
+        }
+        if (themeConfig) {
+          if (themeConfig.mode === 'dark') {
+            document.documentElement.setAttribute('data-theme', 'dark');
+          }
+          if (themeConfig.layout) {
+            document.body.setAttribute('data-layout', themeConfig.layout);
+          }
+          if (themeConfig.density === 'compact') {
+            document.body.setAttribute('data-density', 'compact');
+          }
+          if (themeConfig.sidebarWidth) {
+            document.documentElement.style.setProperty('--sidebar-width', themeConfig.sidebarWidth + 'px');
+          }
+          if (themeConfig.submenuWidth) {
+            document.documentElement.style.setProperty('--submenu-width', themeConfig.submenuWidth + 'px');
+          }
+        }
+      } catch (e) {}
+    })();
+  </script>
   
   <!-- 预加载关键资源 -->
   <link rel="preload" href="lib/layui/css/layui.css" as="style">
@@ -222,8 +256,10 @@
       flex: 1;
     }
   </style>
+ 
 </head>
 <body>
+  
   <!-- 骨架屏 -->
   <div id="skeletonScreen">
     <div class="layui-admin-wrapper">
@@ -431,7 +467,7 @@
         </div>
       </header>
 
-      <div class="layui-tabs-container" id="tabsContainer">
+      <div class="layui-tabs-container hidden" id="tabsContainer">
         <button class="layui-tabs-scroll-btn" id="scrollLeftBtn" aria-label="向左滚动">
           <i class="layui-icon layui-icon-left"></i>
         </button>
@@ -483,7 +519,7 @@
         <span>修改配置后需点击保存才能生效</span>
       </div>
 
-      <div class="config-section">
+      <div class="config-section" data-permission="changeMode">
         <div class="config-section-title">外观模式</div>
         <div class="layui-theme-mode-switch">
           <button class="layui-theme-mode-btn active" data-mode="light">
@@ -495,110 +531,106 @@
         </div>
       </div>
 
-      <div class="config-section">
-          <div class="config-section-title">主题配色</div>
-          
-          <div class="config-tab-bar">
-            <button type="button" class="config-tab-btn active" data-tab="scheme">框架配色</button>
-            <button type="button" class="config-tab-btn" data-tab="classic">经典模式</button>
-            <button type="button" class="config-tab-btn" data-tab="custom">自定义</button>
-          </div>
-
-          <div id="tabContent_scheme" class="config-tab-content active">
-            <div class="schemes-grid">
-              <div class="scheme-option active" data-scheme="indigo">
-                <div class="scheme-preview-header" style="background:linear-gradient(135deg,#6366f1,#8b5cf6);"></div>
-                <div class="scheme-preview-body">
-                  <div class="scheme-mock-sidebar" style="background:#ffffff;color:#374151;"></div>
-                  <div class="scheme-mock-content" style="background:#f8fafc;color:#374151;"></div>
-                </div>
-                <div class="scheme-name">靛蓝</div>
+      <div class="config-section" data-permission="changeScheme changeColor">
+        <div class="config-section-title">主题配色</div>
+        <div class="config-tab-bar">
+          <button type="button" class="config-tab-btn active" data-tab="scheme">框架配色</button>
+          <button type="button" class="config-tab-btn" data-tab="classic">经典模式</button>
+          <button type="button" class="config-tab-btn" data-tab="custom">自定义</button>
+        </div>
+        <div id="tabContent_scheme" class="config-tab-content active">
+          <div class="schemes-grid">
+            <div class="scheme-option active" data-scheme="indigo">
+              <div class="scheme-preview-header" style="background:linear-gradient(135deg,#6366f1,#8b5cf6);"></div>
+              <div class="scheme-preview-body">
+                <div class="scheme-mock-sidebar" style="background:#ffffff;color:#374151;"></div>
+                <div class="scheme-mock-content" style="background:#f8fafc;color:#374151;"></div>
               </div>
-              <div class="scheme-option" data-scheme="emerald">
-                <div class="scheme-preview-header" style="background:linear-gradient(135deg,#10b981,#34d399);"></div>
-                <div class="scheme-preview-body">
-                  <div class="scheme-mock-sidebar" style="background:#ecfdf5;color:#064e3b;"></div>
-                  <div class="scheme-mock-content" style="background:#f0fdf4;color:#064e3b;"></div>
-                </div>
-                <div class="scheme-name">翠绿</div>
-              </div>
-              <div class="scheme-option" data-scheme="ocean">
-                <div class="scheme-preview-header" style="background:linear-gradient(135deg,#0ea5e9,#38bdf8);"></div>
-                <div class="scheme-preview-body">
-                  <div class="scheme-mock-sidebar" style="background:#f0f9ff;color:#0c4a6e;"></div>
-                  <div class="scheme-mock-content" style="background:#f0f9ff;color:#0c4a6e;"></div>
-                </div>
-                <div class="scheme-name">海洋蓝</div>
-              </div>
-              <div class="scheme-option" data-scheme="amber">
-                <div class="scheme-preview-header" style="background:linear-gradient(135deg,#f59e0b,#fbbf24);"></div>
-                <div class="scheme-preview-body">
-                  <div class="scheme-mock-sidebar" style="background:#fffbeb;color:#78350f;"></div>
-                  <div class="scheme-mock-content" style="background:#fffbeb;color:#78350f;"></div>
-                </div>
-                <div class="scheme-name">琥珀</div>
-              </div>
-              <div class="scheme-option" data-scheme="graphite">
-                <div class="scheme-preview-header" style="background:linear-gradient(135deg,#18181b,#3f3f46);"></div>
-                <div class="scheme-preview-body">
-                  <div class="scheme-mock-sidebar" style="background:#fafafa;color:#18181b;"></div>
-                  <div class="scheme-mock-content" style="background:#f4f4f5;color:#18181b;"></div>
-                </div>
-                <div class="scheme-name">石墨灰</div>
-              </div>
-              <div class="scheme-option" data-scheme="rose">
-                <div class="scheme-preview-header" style="background:linear-gradient(135deg,#e11d48,#fb7185);"></div>
-                <div class="scheme-preview-body">
-                  <div class="scheme-mock-sidebar" style="background:#fff1f2;color:#881337;"></div>
-                  <div class="scheme-mock-content" style="background:#fff1f2;color:#881337;"></div>
-                </div>
-                <div class="scheme-name">玫瑰</div>
-              </div>
+              <div class="scheme-name">靛蓝</div>
             </div>
-          </div>
-
-          <div id="tabContent_classic" class="config-tab-content">
-            <div class="color-options-row">
-              <div class="color-option active" data-color="#16baaa" title="青绿"><span></span></div>
-              <div class="color-option" data-color="#16b777" title="绿色"><span></span></div>
-              <div class="color-option" data-color="#1e9fff" title="蓝色"><span></span></div>
-              <div class="color-option" data-color="#ff5722" title="橙红"><span></span></div>
-              <div class="color-option" data-color="#ffb800" title="金色"><span></span></div>
-              <div class="color-option" data-color="#a233c6" title="紫色"><span></span></div>
+            <div class="scheme-option" data-scheme="emerald">
+              <div class="scheme-preview-header" style="background:linear-gradient(135deg,#10b981,#34d399);"></div>
+              <div class="scheme-preview-body">
+                <div class="scheme-mock-sidebar" style="background:#ecfdf5;color:#064e3b;"></div>
+                <div class="scheme-mock-content" style="background:#f0fdf4;color:#064e3b;"></div>
+              </div>
+              <div class="scheme-name">翠绿</div>
             </div>
-          </div>
-
-          <div id="tabContent_custom" class="config-tab-content">
-            <div class="custom-color-picker">
-              <div class="custom-color-field">
-                <label>主色调</label>
-                <div id="pickerAccent" class="color-picker-wrap"></div>
+            <div class="scheme-option" data-scheme="ocean">
+              <div class="scheme-preview-header" style="background:linear-gradient(135deg,#0ea5e9,#38bdf8);"></div>
+              <div class="scheme-preview-body">
+                <div class="scheme-mock-sidebar" style="background:#f0f9ff;color:#0c4a6e;"></div>
+                <div class="scheme-mock-content" style="background:#f0f9ff;color:#0c4a6e;"></div>
               </div>
-              <div class="custom-color-field">
-                <label>侧边栏背景</label>
-                <div id="pickerSidebarBg" class="color-picker-wrap"></div>
+              <div class="scheme-name">海洋蓝</div>
+            </div>
+            <div class="scheme-option" data-scheme="amber">
+              <div class="scheme-preview-header" style="background:linear-gradient(135deg,#f59e0b,#fbbf24);"></div>
+              <div class="scheme-preview-body">
+                <div class="scheme-mock-sidebar" style="background:#fffbeb;color:#78350f;"></div>
+                <div class="scheme-mock-content" style="background:#fffbeb;color:#78350f;"></div>
               </div>
-              <div class="custom-color-field">
-                <label>侧边栏文字</label>
-                <div id="pickerSidebarText" class="color-picker-wrap"></div>
+              <div class="scheme-name">琥珀</div>
+            </div>
+            <div class="scheme-option" data-scheme="graphite">
+              <div class="scheme-preview-header" style="background:linear-gradient(135deg,#18181b,#3f3f46);"></div>
+              <div class="scheme-preview-body">
+                <div class="scheme-mock-sidebar" style="background:#fafafa;color:#18181b;"></div>
+                <div class="scheme-mock-content" style="background:#f4f4f5;color:#18181b;"></div>
               </div>
-              <div class="custom-color-field">
-                <label>内容区背景</label>
-                <div id="pickerContentBg" class="color-picker-wrap"></div>
+              <div class="scheme-name">石墨灰</div>
+            </div>
+            <div class="scheme-option" data-scheme="rose">
+              <div class="scheme-preview-header" style="background:linear-gradient(135deg,#e11d48,#fb7185);"></div>
+              <div class="scheme-preview-body">
+                <div class="scheme-mock-sidebar" style="background:#fff1f2;color:#881337;"></div>
+                <div class="scheme-mock-content" style="background:#fff1f2;color:#881337;"></div>
               </div>
-              <div class="custom-color-field">
-                <label>顶部栏背景</label>
-                <div id="pickerTopbarBg" class="color-picker-wrap"></div>
-              </div>
-              <div class="custom-color-field">
-                <label>标签栏背景</label>
-                <div id="pickerTabsBg" class="color-picker-wrap"></div>
-              </div>
+              <div class="scheme-name">玫瑰</div>
             </div>
           </div>
         </div>
+        <div id="tabContent_classic" class="config-tab-content">
+          <div class="color-options-row">
+            <div class="color-option active" data-color="#16baaa" title="青绿"><span></span></div>
+            <div class="color-option" data-color="#16b777" title="绿色"><span></span></div>
+            <div class="color-option" data-color="#1e9fff" title="蓝色"><span></span></div>
+            <div class="color-option" data-color="#ff5722" title="橙红"><span></span></div>
+            <div class="color-option" data-color="#ffb800" title="金色"><span></span></div>
+            <div class="color-option" data-color="#a233c6" title="紫色"><span></span></div>
+          </div>
+        </div>
+        <div id="tabContent_custom" class="config-tab-content">
+          <div class="custom-color-picker">
+            <div class="custom-color-field">
+              <label>主色调</label>
+              <div id="pickerAccent" class="color-picker-wrap"></div>
+            </div>
+            <div class="custom-color-field">
+              <label>侧边栏背景</label>
+              <div id="pickerSidebarBg" class="color-picker-wrap"></div>
+            </div>
+            <div class="custom-color-field">
+              <label>侧边栏文字</label>
+              <div id="pickerSidebarText" class="color-picker-wrap"></div>
+            </div>
+            <div class="custom-color-field">
+              <label>内容区背景</label>
+              <div id="pickerContentBg" class="color-picker-wrap"></div>
+            </div>
+            <div class="custom-color-field">
+              <label>顶部栏背景</label>
+              <div id="pickerTopbarBg" class="color-picker-wrap"></div>
+            </div>
+            <div class="custom-color-field">
+              <label>标签栏背景</label>
+              <div id="pickerTabsBg" class="color-picker-wrap"></div>
+            </div>
+          </div>
+        </div>
+      </div>
 
-      <div class="config-section">
+      <div class="config-section" data-permission="changeLayout">
         <div class="config-section-title">框体布局</div>
         <div class="layout-options">
           <div class="layout-option active" data-layout="double">
@@ -634,9 +666,58 @@
         </div>
       </div>
 
-      <div class="config-section">
+      <div class="config-section" data-permission="changeSidebarWidth">
+        <div class="config-section-title">侧边栏宽度</div>
+        <div class="config-item layout-config-item" data-layouts="double,dropdown">
+          <div class="config-item-label-wrapper">
+            <span class="config-item-label">侧栏宽度</span>
+            <span class="config-item-desc">调整左侧导航栏宽度</span>
+          </div>
+          <div class="sidebar-width-controls">
+            <button type="button" class="sidebar-width-preset" data-width="190">窄</button>
+            <button type="button" class="sidebar-width-preset active" data-width="210">默认</button>
+            <button type="button" class="sidebar-width-preset" data-width="240">宽</button>
+            <div class="sidebar-width-custom">
+              <input type="number" id="sidebarWidthInput" min="160" max="320" value="210" class="sidebar-width-input">
+              <span class="sidebar-width-unit">px</span>
+            </div>
+          </div>
+        </div>      
+        <div class="config-item layout-config-item" data-layouts="double">
+          <div class="config-item-label-wrapper">
+            <span class="config-item-label">子面板宽度</span>
+            <span class="config-item-desc">调整弹性双列子面板宽度</span>
+          </div>
+          <div class="sidebar-width-controls">
+            <button type="button" class="sidebar-width-preset" data-width="160">窄</button>
+            <button type="button" class="sidebar-width-preset active" data-width="180">默认</button>
+            <button type="button" class="sidebar-width-preset" data-width="200">宽</button>
+            <div class="sidebar-width-custom">
+              <input type="number" id="submenuWidthInput" min="140" max="240" value="180" class="sidebar-width-input">
+              <span class="sidebar-width-unit">px</span>
+            </div>
+          </div>
+        </div>      
+        <div class="config-item layout-config-item" data-layouts="fixed-double">
+          <div class="config-item-label-wrapper">
+            <span class="config-item-label">子面板宽度</span>
+            <span class="config-item-desc">调整固定双列子面板宽度</span>
+          </div>
+          <div class="sidebar-width-controls">
+            <button type="button" class="sidebar-width-preset" data-width="160">窄</button>
+            <button type="button" class="sidebar-width-preset active" data-width="180">默认</button>
+            <button type="button" class="sidebar-width-preset" data-width="200">宽</button>
+            <div class="sidebar-width-custom">
+              <input type="number" id="submenuFixedWidthInput" min="140" max="240" value="180" class="sidebar-width-input">
+              <span class="sidebar-width-unit">px</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="config-section" data-permission="toggleTabs toggleAccordion toggleWatermark">
         <div class="config-section-title">功能开关</div>
-        <div class="config-item">
+        <div class="config-item" data-permission="toggleTabs">
           <div class="config-item-label-wrapper">
             <span class="config-item-label">标签页栏</span>
             <span class="config-item-desc">显示/隐藏多标签页导航</span>
@@ -646,7 +727,7 @@
             <span class="toggle-slider"></span>
           </label>
         </div>
-        <div class="config-item">
+        <div class="config-item" data-permission="toggleTabs">
           <div class="config-item-label-wrapper">
             <span class="config-item-label">标签页记忆</span>
             <span class="config-item-desc">刷新页面后恢复已打开标签页</span>
@@ -656,7 +737,7 @@
             <span class="toggle-slider"></span>
           </label>
         </div>
-        <div class="config-item">
+        <div class="config-item" data-permission="toggleAccordion">
           <div class="config-item-label-wrapper">
             <span class="config-item-label">菜单手风琴</span>
             <span class="config-item-desc">展开一个菜单时自动收起其他</span>
@@ -666,7 +747,7 @@
             <span class="toggle-slider"></span>
           </label>
         </div>
-        <div class="config-item">
+        <div class="config-item" data-permission="toggleWatermark">
           <div class="config-item-label-wrapper">
             <span class="config-item-label">水印</span>
             <span class="config-item-desc">在内容区域显示用户水印</span>
@@ -676,9 +757,19 @@
             <span class="toggle-slider"></span>
           </label>
         </div>
+        <div class="config-item" data-permission="changeDensity">
+          <div class="config-item-label-wrapper">
+            <span class="config-item-label">紧凑模式</span>
+            <span class="config-item-desc">缩小间距，提高信息密度</span>
+          </div>
+          <label class="toggle-switch">
+            <input type="checkbox" id="densityToggle">
+            <span class="toggle-slider"></span>
+          </label>
+        </div>
       </div>
 
-      <div class="config-section">
+      <div class="config-section" data-permission="changeAnimation">
         <div class="config-section-title">页面动画</div>
         <div class="config-item">
           <div class="config-item-label-wrapper">
