@@ -1055,6 +1055,27 @@ layui.define(['jquery', 'util', 'routerModule', 'themeModule', 'sidebarComp', 't
       });
 
       this.initMobileMenuButton();
+      
+      $(document).on('submit', 'form', function(e) {
+        var $form = $(this);
+        var method = ($form.attr('method') || 'get').toLowerCase();
+        
+        if (method === 'get') {
+          e.preventDefault();
+          
+          var formData = $form.serialize();
+          if (!formData || formData.length === 0) {
+            return false;
+          }
+          
+          var currentHash = location.hash || '#/';
+          var basePath = currentHash.split('?')[0];
+          var newHash = basePath + '?' + formData;
+          
+          location.hash = newHash;
+          return false;
+        }
+      });
     },
 
     initMobileMenuButton: function() {

@@ -1,7 +1,7 @@
 {
   "_currentRole": "admin",
   "_version": "1.0.0",
-  "_description": "子母主题角色配置",
+  "_description": "角色主题角色配置",
 
   "roles": {
     "admin": {

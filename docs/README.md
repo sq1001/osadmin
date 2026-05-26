@@ -3,7 +3,7 @@
 ## 📋 项目概述
 
 **项目名称**: OSADMIN\
-**版本**: 1.9.0\
+**版本**: 1.9.1\
 **描述**: 基于 LayUI 的轻量化原生管理后台系统\
 **技术栈**: LayUI + jQuery + 原生 JavaScript\
 **架构模式**: 模块化架构 + 配置驱动\
@@ -14,10 +14,10 @@
 - ✅ **模块化架构**: 基于 LayUI 模块系统，按需加载
 - ✅ **配置驱动**: JSON 配置文件驱动，灵活可扩展
 - ✅ **权限管理**: 完善的权限控制系统
-- ✅ **子母主题系统**: 基于角色的主题权限配置，支持精细化主题管理
+- ✅ **角色主题系统**: 基于角色的主题权限配置，支持精细化主题管理
 - ✅ **主题系统**: 支持多主题切换和自定义，暗主题全面适配 18+ LayUI 组件，WCAG 对比度 90%+ 合规
 - ✅ **间距系统**: 7级 CSS 变量间距系统，支持紧凑模式全局缩放
-- ✅ **路由管理**: Hash 路由，支持 ID 和 Code 混合路由
+- ✅ **路由管理**: Hash 路由，支持 ID 和 Code 混合路由，完整查询参数支持
 - ✅ **资源按需加载**: 页面级 CSS/JS 按需加载，支持动态 meta 信息
 - ✅ **智能组件渲染**: 自动检测并渲染 LayUI 组件，支持按需加载模块
 - ✅ **水印系统**: Canvas 水印，支持防删除保护和动态文本
@@ -992,6 +992,7 @@ layui.use(['moduleName'], function() {
 Hash 路由格式:
 http://example.com/#/view/dashboard
 http://example.com/#/view/user
+http://example.com/#/view/dashboard?id=123&keyword=test
 ```
 
 #### 路由跳转
@@ -1024,11 +1025,29 @@ router.on('change', function(route) {
 });
 ```
 
+#### 查询参数支持
+
+路由系统完整支持查询参数，可通过以下方式获取：
+
+```javascript
+// 获取所有查询参数（对象形式）
+var params = layui.routerModule.getQueryParams();
+// 输出: { id: "123", keyword: "test" }
+
+// 获取单个参数
+var keyword = layui.routerModule.getQueryParam('keyword');
+// 输出: "test"
+
+// 获取原始查询字符串
+var queryString = layui.routerModule.getQueryString();
+// 输出: "id=123&keyword=test"
+```
+
 ***
 
 ## 🎨 主题系统
 
-### 子母主题权限配置
+### 角色主题权限配置
 
 基于角色的主题权限控制系统，不同角色拥有不同的主题配置权限，实现精细化的主题管理。
 
@@ -1214,7 +1233,7 @@ theme.setColor('#16baaa');
 }
 ```
 
-### 子母主题权限配置
+### 角色主题权限配置
 
 基于角色的主题权限控制系统，不同角色拥有不同的主题配置权限，实现精细化的主题管理。
 
@@ -2126,6 +2145,9 @@ var Module = {
 | ------------------- | ---------------- | ------ | ------- |
 | go(path)            | String           | void   | 跳转到指定路由 |
 | getCurrent()        | -                | String | 获取当前路由  |
+| getQueryParams()    | -                | Object | 获取查询参数对象 |
+| getQueryParam(name) | String           | String | 获取单个查询参数 |
+| getQueryString()    | -                | String | 获取原始查询字符串 |
 | on(event, callback) | String, Function | void   | 监听路由事件  |
 
 ### 主题模块 API
@@ -2201,5 +2223,5 @@ chore: 构建/工具相关
 
 ***
 
-**最后更新时间**: 2026-05-20\
-**文档版本**: 1.9.0
+**最后更新时间**: 2026-05-26\
+**文档版本**: 1.9.1

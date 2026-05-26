@@ -4,11 +4,289 @@
 
 ---
 
+## v1.9.1 (2026-05-26)
+
+### 🔧 **路由系统查询参数支持升级**
+
+#### 1. Hash 路由参数解析优化
+**问题**: 在 Hash 路由模式下，当 URL 包含查询参数时（如 `/#/view/page?id=123`），路由系统错误地将参数部分当作路由路径解析。
+
+**修复方案**: 在 [router.js](file:///d:/MyProject/osadmin/modules/common/router.js#L119-L132) 的 `getCurrentPath()` 方法中：
+
+```javascript
+getCurrentPath: function() {
+  if (this.mode === 'hash') {
+    var hash = window.location.hash.slice(1);
+    
+    // 关键改进：只取 ? 前面的部分作为路由路径
+    var routePath = hash.split('?')[0];
+    
+    return routePath || '/';
+  }
+}
+```
+
+**影响范围**: [router.js:119-132](file:///d:/MyProject/osadmin/modules/common/router.js#L119-L132)
+
+#### 2. 新增查询参数 API 方法
+为路由系统添加了完整的查询参数支持：
+
+| 方法 | 功能 | 行号 |
+|------|------|------|
+| `getQueryString()` | 获取原始查询字符串 | [134-141](file:///d:/MyProject/osadmin/modules/common/router.js#L134-L141) |
+| `getQueryParams()` | 解析参数为对象（支持原生 URLSearchParams） | [143-173](file:///d:/MyProject/osadmin/modules/common/router.js#L143-L173) |
+| `getQueryParam(name)` | 获取单个参数值 | [175-185](file:///d:/MyProject/osadmin/modules/common/router.js#L175-L185) |
+
+**使用示例**:
+```javascript
+// 获取所有参数（对象形式）
+var params = layui.routerModule.getQueryParams();
+// 输出: { id: "123", keyword: "test" }
+
+// 获取单个参数
+var keyword = layui.routerModule.getQueryParam('keyword');
+// 输出: "test"
+
+// 获取原始查询字符串
+var queryString = layui.routerModule.getQueryString();
+// 输出: "id=123&keyword=test"
+```
+
+#### 3. GET 表单提交智能优化
+**问题**: 在 Hash 模式下使用 `<form method="get">` 提交表单时，浏览器会错误地将 hash 拼接到 URL 末尾，导致格式混乱：
+```
+错误格式: /houtai?id=&pid=&name=#/rule/index
+```
+
+**解决方案**: 在 [app.js:1059-1078](file:///d:/MyProject/osadmin/modules/app.js#L1059-L1078) 添加全局拦截器，将表单参数正确拼接到 hash 路由后面：
+
+```javascript
+// 全局拦截 GET 表单提交
+$(document).on('submit', 'form', function(e) {
+  var $form = $(this);
+  var method = ($form.attr('method') || 'get').toLowerCase();
+  
+  if (method === 'get') {
+    e.preventDefault();
+    
+    var formData = $form.serialize();
+    if (!formData || formData.length === 0) {
+      return false;
+    }
+    
+    // 获取当前 hash 路由路径
+    var currentHash = location.hash || '#/';
+    
+    // 分离基础路径和已有参数
+    var basePath = currentHash.split('?')[0];
+    
+    // 构建新的 hash：路由路径?表单参数
+    var newHash = basePath + '?' + formData;
+    
+    // 更新 hash（不刷新页面，只更新 URL）
+    location.hash = newHash;
+    return false;
+  }
+});
+```
+
+**正确格式**:
+```
+正确格式: /#/view/components/form-comprehensive?id=&pid=&name=
+```
+
+**优势对比**:
+| 特性 | 修复前 ❌ | 修复后 ✅ |
+|------|----------|----------|
+| URL 格式 | `/action?params=#hash` | `/#/path?params` |
+| 是否离开 SPA | 可能跳转 | 留在当前页面 |
+| 参数位置 | 在中间 | 在 hash 后面 |
+| 浏览器历史 | 不支持 | 完全支持 |
+| 可分享性 | URL 丑陋 | URL 整洁可分享 |
+
+#### 4. URLSearchParams 原生 API 集成
+**优化**: 在 `getQueryParams()` 方法中优先使用浏览器原生 `URLSearchParams` API，同时保持旧浏览器兼容性：
+
+```javascript
+getQueryParams: function() {
+  var queryString = this.getQueryString();
+  var params = {};
+
+  if (!queryString) {
+    return params;
+  }
+
+  if ('URLSearchParams' in window) {
+    // 优先使用原生 API（更标准、更可靠）
+    var searchParams = new URLSearchParams(queryString);
+    searchParams.forEach(function(value, key) {
+      params[key] = value;
+    });
+  } else {
+    // 旧浏览器降级方案
+    queryString.split('&').forEach(function(pair) {
+      // ... 手动解析逻辑
+    });
+  }
+
+  return params;
+}
+```
+
+**浏览器支持**: Chrome 49+, Firefox 44+, Safari 10.1+, Edge 17+（99% 现代浏览器）
+
+---
+
+### 📦 **文件变更清单**
+
+**核心代码修改**
+```
+modules/common/router.js  [新增功能]
+├── 升级 getCurrentPath() 方法（第119-132行）
+│   └── 新增路由路径和查询参数分离逻辑
+├── 新增 getQueryString() 方法（第134-141行）
+│   └── 获取原始查询字符串
+├── 新增 getQueryParams() 方法（第143-173行）
+│   ├── 优先使用原生 URLSearchParams API
+│   └── 保留旧浏览器降级方案
+└── 新增 getQueryParam() 方法（第175-185行）
+    └── 获取单个参数值
+
+modules/app.js  [全局拦截]
+├── 新增 GET 表单提交拦截器（第1059-1078行）
+│   ├── 阻止浏览器默认行为
+│   ├── 提取表单数据
+│   ├── 拼接参数到 hash 路由
+│   └── 更新 URL（不刷新页面）
+└── 不破坏原路径结构
+```
+
+**文档更新**
+```
+docs/CHANGELOG.md
+├── 版本号更新至 v1.9.1
+└── 新增路由系统查询参数支持说明
+
+docs/README.md
+├── 版本号更新至 1.9.1
+├── 更新日期至 2026-05-26
+├── 新增路由系统查询参数 API 文档（第1028-1044行）
+└── 新增路由模块 API 说明（第2142-2151行）
+```
+
+---
+
+### 🎯 **技术特性总结**
+
+| 特性 | 状态 | 说明 |
+|------|------|------|
+| Hash 路由参数解析 | ✅ 已修复 | 正确分离路由路径和查询参数 |
+| GET 表单提交 | ✅ 已优化 | 参数正确拼接到 hash 路由后面 |
+| URLSearchParams | ✅ 已支持 | 优先使用原生 API |
+| 浏览器历史 | ✅ 支持 | hashchange 事件正常工作 |
+| SPA 体验 | ✅ 保持 | 页面无刷新，用户体验流畅 |
+| 向后兼容 | ✅ 完整 | 旧浏览器仍有降级方案 |
+
+---
+
+### 🧪 **测试验证清单**
+
+1. **基本功能测试**
+   - [ ] 访问 `/#/view/components/form-comprehensive?id=123&keyword=test`
+   - [ ] `router.getCurrentPath()` 返回 `/view/components/form-comprehensive`（不含参数）
+   - [ ] `router.getQueryParams()` 返回 `{ id: "123", keyword: "test" }`
+
+2. **表单提交测试**
+   - [ ] 在表单页面填写字段并提交
+   - [ ] 观察 URL 变化：`/#/path?字段1=&字段2=`
+   - [ ] 页面不刷新，保持在当前 SPA
+
+3. **浏览器前进/后退**
+   - [ ] 提交表单后点击后退按钮
+   - [ ] URL 正确回到之前的状态
+   - [ ] 参数值正确恢复
+
+---
+
+### 💡 **使用场景示例**
+
+#### 场景1：搜索功能
+```javascript
+// 用户在搜索框输入关键词
+var searchForm = $('form.search-form');
+
+searchForm.on('submit', function(e) {
+  e.preventDefault();
+  
+  var keyword = $('input[name="keyword"]').val();
+  
+  // 更新 hash（自动拼接参数）
+  location.hash = '#/view/product/list?keyword=' + encodeURIComponent(keyword);
+});
+```
+
+#### 场景2：筛选功能
+```javascript
+// 页面加载时读取 URL 参数
+layui.use(['routerModule'], function() {
+  var router = layui.routerModule;
+  
+  var params = router.getQueryParams();
+  
+  if (params.category) {
+    loadProductsByCategory(params.category);
+  }
+  
+  if (params.page) {
+    goToPage(parseInt(params.page));
+  }
+});
+```
+
+#### 场景3：分页+筛选组合
+```javascript
+// 用户选择筛选条件
+$('#filterForm').on('submit', function(e) {
+  e.preventDefault();
+  
+  var params = $(this).serialize();
+  // 结果: category=electronics&sort=price&page=1
+  
+  var currentPath = location.hash.split('?')[0];
+  // 结果: #/view/product/list
+  
+  location.hash = currentPath + '?' + params;
+  // 结果: #/view/product/list?category=electronics&sort=price&page=1
+});
+```
+
+---
+
+### 🔗 **相关资源**
+
+- **路由模块文档**: [README.md 第1028-1044行](file:///d:/MyProject/osadmin/docs/README.md#L1028-L1044)
+- **路由 API 文档**: [README.md 第2142-2151行](file:///d:/MyProject/osadmin/docs/README.md#L2142-L2151)
+- **浏览器兼容性**: [caniuse.com/urlsearchparams](https://caniuse.com/urlsearchparams)
+
+---
+
+### 📋 **相关问题**
+
+- **相关 Issue**: 双层弹层问题、GET 表单提交 URL 混乱
+- **根本原因**: Hash 模式 SPA 与浏览器原生表单提交行为冲突
+- **解决方案**: 拦截表单提交，重构 URL 生成逻辑
+
+---
+
+**🔖 版本亮点**: 路由系统查询参数支持升级，GET 表单提交智能优化，符合 Vue Router / React Router 标准实践！
+
+---
+
 ## v1.9.0 (2026-05-22)
 
-### 🎉 **独家功能：子母主题权限配置系统**
+### 🎉 **独家功能：角色主题权限配置系统**
 
-#### 1. 子母主题概念
+#### 1. 角色主题概念
 基于角色的主题权限控制系统，不同角色拥有不同的主题配置权限，实现精细化的主题管理。
 
 #### 2. 角色权限配置
@@ -643,12 +921,12 @@ admin/css/layui-override/progress.css        # 进度条暗色文字补充
 admin/css/layui-override/carousel.css        # 轮播 loading 暗色补充
 admin/css/layui-override/tabs.css            # 标签页关闭按钮暗色 + 选择器修复
 admin/css/layui-override/laypage.css         # 分页暗色文字补充
-admin/css/layui-override/flow.css            # 流加载暗色文字补充
-admin/css/layui-override/colorpicker.css     # 颜色选择器暗色补充
-admin/css/layui-override/laydate.css         # 日期选择器暗色补充
+admin/css/layui-override/flow.css           # 流加载暗色文字补充
+admin/css/layui-override/colorpicker.css    # 颜色选择器暗色补充
+admin/css/layui-override/laydate.css        # 日期选择器暗色补充
 admin/css/layui-override/slider.css          # 滑块暗色 + 冗余清理
 admin/css/layui-override/table.css           # 表格根 color 声明（关键修复）
-admin/css/extends/tinymce.css               # 编辑器外壳暗色规则 + 冗余清理
+admin/css/layui-override/tinymce.css         # 编辑器外壳暗色规则 + 冗余清理
 ```
 
 **JS 文件修改 (1 个)**
@@ -660,7 +938,7 @@ modules/extends/tinymce.js                   # editor.on('init') 暗色内联样
 **删除冗余的文件/规则**
 ```
 layui-override/timeline.css                  # 删除整段 13 行暗色规则（与亮色相同）
-layui-override/badge.css                     # 删除整段 32 行暗色规则（与亮色相同）
+layui-override/badge.css                    # 删除整段 32 行暗色规则（与亮色相同）
 ```
 
 ---

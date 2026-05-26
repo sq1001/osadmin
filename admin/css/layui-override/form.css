@@ -287,7 +287,7 @@
 .layui-form-danger:focus,
 .layui-form-danger + .layui-form-select .layui-input {
   border-color: var(--danger) !important;
-  box-shadow: 0 0 0 3px var(--accent-light);
+  box-shadow: 0 0 0 3px rgba(255, 87, 34, 0.15);
 }
 
 /* ========== 表单方框风格 ========== */

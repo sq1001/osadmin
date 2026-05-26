@@ -119,13 +119,68 @@ layui.define(['jquery'], function(exports) {
     getCurrentPath: function() {
       if (this.mode === 'hash') {
         var hash = window.location.hash.slice(1);
-        return hash || '/';
+
+        var routePath = hash.split('?')[0];
+        return routePath || '/';
       } else {
         var path = window.location.pathname;
         if (this.base !== '/') {
           path = path.replace(this.base, '');
         }
         return path || '/';
+      }
+    },
+
+    getQueryString: function() {
+      if (this.mode === 'hash') {
+        var hash = window.location.hash.slice(1);
+        return hash.split('?')[1] || '';
+      } else {
+        return window.location.search.slice(1) || '';
+      }
+    },
+
+    getQueryParams: function() {
+      var queryString = this.getQueryString();
+      var params = {};
+
+      if (!queryString) {
+        return params;
+      }
+
+      if ('URLSearchParams' in window) {
+        var searchParams = new URLSearchParams(queryString);
+        searchParams.forEach(function(value, key) {
+          params[key] = value;
+        });
+      } else {
+        queryString.split('&').forEach(function(pair) {
+          if (!pair) return;
+
+          var idx = pair.indexOf('=');
+          var key = idx > -1 ? pair.substring(0, idx) : pair;
+          var val = idx > -1 ? pair.substring(idx + 1) : '';
+
+          try {
+            params[decodeURIComponent(key)] = decodeURIComponent(val);
+          } catch(e) {
+            params[key] = val;
+          }
+        });
+      }
+
+      return params;
+    },
+
+    getQueryParam: function(name) {
+      var queryString = this.getQueryString();
+      
+      if ('URLSearchParams' in window) {
+        var searchParams = new URLSearchParams(queryString);
+        return searchParams.get(name);
+      } else {
+        var params = this.getQueryParams();
+        return params[name] !== undefined ? params[name] : null;
       }
     },
 
