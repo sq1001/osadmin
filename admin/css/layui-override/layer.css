@@ -20,6 +20,10 @@
   background-color: var(--card-bg);
 }
 
+.layui-layer-iframe iframe {
+  border-radius: 8px;
+}
+
 /* ========== 标题栏 ========== */
 .layui-layer-title {
   background-color: var(--bg);

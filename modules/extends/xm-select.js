@@ -18,5 +18,18 @@ layui.define(['jquery'], function(exports) {
     xmSelectOriginal = window.xmSelect;
   }
 
+  (function() {
+    var styleId = 'xm-select-theme-override';
+    if (!document.getElementById(styleId)) {
+      var style = document.createElement('style');
+      style.id = styleId;
+      style.textContent =
+        'xm-select > .xm-body .xm-option.selected.hide-icon .xm-option-content {' +
+        '  color: var(--accent, #6366f1) !important;' +
+        '}';
+      document.head.appendChild(style);
+    }
+  })();
+
   exports(MOD_NAME, xmSelectOriginal);
 });

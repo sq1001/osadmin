@@ -156,7 +156,7 @@
               <div class="layui-input-prefix">
                 <i class="layui-icon layui-icon-location"></i>
               </div>
-              <input type="text" placeholder="带前缀无分割框和后缀有分割框" class="layui-input">
+              <input type="text" placeholder="带前缀无分割框和后置有分割框" class="layui-input">
               <div class="layui-input-suffix layui-input-split">
                 <i class="layui-icon layui-icon-edit"></i>
               </div>
@@ -167,7 +167,7 @@
               <div class="layui-input-prefix layui-input-split">
                 <i class="layui-icon layui-icon-location"></i>
               </div>
-              <input type="text" placeholder="带前缀有分割框和后缀无分割框" class="layui-input">
+              <input type="text" placeholder="带前缀有分割框和后置无分割框" class="layui-input">
               <div class="layui-input-suffix">
                 <i class="layui-icon layui-icon-edit"></i>
               </div>
@@ -392,6 +392,644 @@
           </div>
         </div>
       </form>
+    </div>
+  </div>
+
+  <!-- ========================================== -->
+  <!-- radio-card: 卡片风格单选框（纯CSS · 主题适配 · 跨浏览器） -->
+  <!-- ========================================== -->
+  <div class="layui-card">
+    <div class="layui-card-header">
+      <span class="layui-card-title">卡片风格单选框（radio-card 组件）</span>
+    </div>
+    <div class="layui-card-body">
+      <style>
+        /* ========== radio-card: 纯CSS卡片风格单选框 ========== */
+
+        /* 容器 - 仅做定位容器 */
+        .radio-card {
+          position: relative;
+          display: flex;
+          align-items: flex-start;
+          user-select: none;
+          cursor: pointer;
+          height: 100%;
+          box-sizing: border-box;
+        }
+
+        /* 隐藏原生 radio（但保留可聚焦和键盘操作） */
+        .radio-card > input[type="radio"] {
+          position: absolute;
+          opacity: 0;
+          width: 0;
+          height: 0;
+          margin: 0;
+          padding: 0;
+          border: none;
+          outline: none;
+        }
+
+        /* 聚焦时可见轮廓（无障碍支持）- 只作用于 body */
+        .radio-card > input[type="radio"]:focus-visible ~ .radio-card__body {
+          outline: 2px solid var(--accent, #16b777);
+          outline-offset: 2px;
+        }
+
+        /* 内容包裹层 - 承载所有视觉样式 */
+        .radio-card__body {
+          position: relative;
+          display: flex;
+          align-items: flex-start;
+          gap: 12px;
+          padding: 16px;
+          border-radius: var(--radius-lg, 10px);
+          border: 1px solid var(--border, #e5e5e5);
+          background: var(--card-bg, #fff);
+          color: var(--text-primary, #000);
+          transition: all 0.25s ease;
+          width: 100%;
+          box-sizing: border-box;
+        }
+
+        /* 悬停效果 */
+        .radio-card:hover .radio-card__body {
+          border-color: var(--accent, #16b777);
+          box-shadow: 0 2px 8px rgba(99, 102, 241, 0.08);
+          transform: translateY(-1px);
+        }
+
+        /* ========== 选中状态 - 核心：纯CSS :checked 伪类 ========== */
+        .radio-card > input[type="radio"]:checked ~ .radio-card__body {
+          border-color: var(--accent, #16b777) !important;
+          background: color-mix(in srgb, var(--accent, #16b777) 8%, transparent) !important;
+          box-shadow: 0 0 0 1px var(--accent, #16b777), 0 4px 12px rgba(99, 102, 241, 0.12) !important;
+          transform: none !important;
+        }
+
+        /* 禁用状态 - 只作用于 disabled 的卡片，不影响正常悬浮 */
+        .radio-card > input[type="radio"]:disabled ~ .radio-card__body,
+        .radio-card.disabled .radio-card__body,
+        .radio-card.disabled:hover .radio-card__body {
+          opacity: 0.55 !important;
+          filter: grayscale(0.3);
+          cursor: not-allowed !important;
+          pointer-events: auto;
+          transform: none !important;
+          box-shadow: none !important;
+          border-color: var(--border, #e5e5e5) !important;
+        }
+        .radio-card.disabled {
+          cursor: not-allowed;
+        }
+
+        /* 图标区域 */
+        .radio-card__icon {
+          flex-shrink: 0;
+          width: 48px;
+          height: 48px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          border-radius: 12px;
+          background: var(--bg-content, #f8f9fa);
+          font-size: 24px;
+          color: var(--text-secondary, #666);
+          transition: all 0.25s ease;
+        }
+
+        /* 选中时图标变色 */
+        .radio-card > input[type="radio"]:checked ~ .radio-card__body .radio-card__icon {
+          background: var(--accent-light, rgba(99,102,241,0.1));
+          color: var(--accent, #16b777);
+          transform: scale(1.05);
+        }
+
+        /* 内容区域 */
+        .radio-card__content {
+          flex: 1;
+          min-width: 0;
+        }
+
+        /* 标题 */
+        .radio-card__title {
+          font-size: 15px;
+          font-weight: 600;
+          color: var(--text-primary, #000);
+          margin-bottom: 4px;
+          line-height: 1.4;
+        }
+
+        /* 描述文字 */
+        .radio-card__desc {
+          font-size: 13px;
+          color: var(--text-muted, #999);
+          line-height: 1.5;
+          display: -webkit-box;
+          -webkit-line-clamp: 2;
+          -webkit-box-orient: vertical;
+          overflow: hidden;
+          text-overflow: ellipsis;
+        }
+
+        /* ========== 右下角三角+对勾标记 ========== */
+        .radio-card__check {
+          position: absolute;
+          bottom: 0;
+          right: 0;
+          width: 0;
+          height: 0;
+          pointer-events: none;
+        }
+
+        /* 三角背景 */
+        .radio-card__check::before {
+          content: '';
+          position: absolute;
+          bottom: 0;
+          right: 0;
+          width: 0;
+          height: 0;
+          border-style: solid;
+          border-width: 0 0 22px 22px;
+          border-color: transparent transparent var(--border, #ddd) transparent;
+          border-bottom-right-radius: var(--radius-lg, 10px);
+          transition: all 0.25s ease;
+        }
+
+        /* 对勾图标 */
+        .radio-card__check::after {
+          content: '\e605';
+          position: absolute;
+          bottom: 3px;
+          right: 3px;
+          font-family: 'layui-icon' !important;
+          font-size: 10px;
+          color: #fff;
+          line-height: 1;
+          z-index: 2;
+          opacity: 0;
+          transform: scale(0.5);
+          transition: all 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+
+        /* 选中时三角变色 + 对勾显示 */
+        .radio-card > input[type="radio"]:checked ~ .radio-card__body .radio-card__check::before {
+          border-color: transparent transparent var(--accent, #16b777) transparent;
+          box-shadow: -2px -2px 6px rgba(99,102,241,0.15);
+        }
+
+        .radio-card > input[type="radio"]:checked ~ .radio-card__body .radio-card__check::after {
+          opacity: 1;
+          transform: scale(1);
+        }
+
+        /* 禁用时三角变灰 */
+        .radio-card > input[type="radio"]:disabled ~ .radio-card__body .radio-card__check::before {
+          border-color: transparent transparent var(--border-light, #d5d5d5) transparent;
+          box-shadow: none;
+        }
+
+        .radio-card > input[type="radio"]:disabled ~ .radio-card__body .radio-card__check::after,
+        .radio-card.disabled .radio-card__check::after {
+          color: var(--text-muted, #aaa) !important;
+          opacity: 0.4 !important;
+          transform: scale(0.8) !important;
+        }
+
+        /* 暗色模式适配 */
+        [data-theme="dark"] .radio-card__body {
+          border-color: rgba(255,255,255,0.1);
+        }
+        [data-theme="dark"] .radio-card:hover .radio-card__body {
+          border-color: var(--accent, #6366f1);
+          box-shadow: 0 2px 12px rgba(99, 102, 241, 0.15);
+        }
+        [data-theme="dark"] .radio-card__icon {
+          background: rgba(255,255,255,0.05);
+        }
+        [data-theme="dark"] .radio-card__check::before {
+          border-color: transparent transparent rgba(255,255,255,0.08) transparent;
+        }
+        [data-theme="dark"] .radio-card > input[type="radio"]:checked ~ .radio-card__body .radio-card__check::before {
+          border-color: transparent transparent var(--accent, #6366f1) transparent;
+          box-shadow: -2px -2px 8px rgba(99,102,241,0.25);
+        }
+        [data-theme="dark"] .radio-card > input[type="radio"]:disabled ~ .radio-card__body .radio-card__check::before {
+          border-color: transparent transparent rgba(255,255,255,0.04) transparent;
+        }
+      </style>
+
+      <h3 style="font-weight:600; margin-bottom: 16px; color: var(--text-primary);">浏览器选择（纯CSS实现 · 主题适配 · 全浏览器兼容）</h3>
+      
+      <div class="layui-row layui-col-space12">
+        <!-- Chrome -->
+        <div class="layui-col-xs12 layui-col-sm6 layui-col-md3">
+          <label class="radio-card">
+            <input type="radio" name="browserSelect" value="chrome">
+            <div class="radio-card__body">
+              <div class="radio-card__icon">
+                <i class="layui-icon layui-icon-chrome"></i>
+              </div>
+              <div class="radio-card__content">
+                <div class="radio-card__title">Chrome</div>
+                <div class="radio-card__desc">由 Google 开发，全球使用率最高的网页浏览器</div>
+              </div>
+              <span class="radio-card__check"></span>
+            </div>
+          </label>
+        </div>
+        
+        <!-- Edge (checked) -->
+        <div class="layui-col-xs12 layui-col-sm6 layui-col-md3">
+          <label class="radio-card">
+            <input type="radio" name="browserSelect" value="edge" checked>
+            <div class="radio-card__body">
+              <div class="radio-card__icon">
+                <i class="layui-icon layui-icon-edge"></i>
+              </div>
+              <div class="radio-card__content">
+                <div class="radio-card__title">Edge</div>
+                <div class="radio-card__desc">Microsoft 出品，基于 Chromium 内核的新一代浏览器</div>
+              </div>
+              <span class="radio-card__check"></span>
+            </div>
+          </label>
+        </div>
+        
+        <!-- Firefox (disabled) -->
+        <div class="layui-col-xs12 layui-col-sm6 layui-col-md3">
+          <label class="radio-card disabled">
+            <input type="radio" name="browserSelect" value="firefox" disabled>
+            <div class="radio-card__body">
+              <div class="radio-card__icon">
+                <i class="layui-icon layui-icon-firefox"></i>
+              </div>
+              <div class="radio-card__content">
+                <div class="radio-card__title">Firefox</div>
+                <div class="radio-card__desc">Mozilla 基金会开发，开源免费的隐私优先浏览器</div>
+              </div>
+              <span class="radio-card__check"></span>
+            </div>
+          </label>
+        </div>
+        
+        <!-- IE (disabled checked) -->
+        <div class="layui-col-xs12 layui-col-sm6 layui-col-md3">
+          <label class="radio-card disabled">
+            <input type="radio" name="browserSelect" value="ie" disabled checked>
+            <div class="radio-card__body">
+              <div class="radio-card__icon">
+                <i class="layui-icon layui-icon-ie"></i>
+              </div>
+              <div class="radio-card__content">
+                <div class="radio-card__title">Internet Explorer</div>
+                <div class="radio-card__desc">微软经典浏览器，已被 Edge 取代，不建议继续使用</div>
+              </div>
+              <span class="radio-card__check"></span>
+            </div>
+          </label>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ========================================== -->
+  <!-- plan-card: 方案卡片风格单选框（现代化设计） -->
+  <!-- ========================================== -->
+  <div class="layui-card">
+    <div class="layui-card-header">
+      <span class="layui-card-title">方案卡片风格单选框（plan-card 组件）</span>
+    </div>
+    <div class="layui-card-body">
+      <style>
+        /* ========== plan-card: 方案卡片风格单选框（重构版） ========== */
+
+        .plan-card-group {
+          display: grid;
+          gap: 12px;
+          --cols: repeat(auto-fill, minmax(220px, 1fr));
+          grid-template-columns: var(--cols);
+        }
+
+        @media (min-width: 992px) { .plan-card-group { --cols: repeat(4, 1fr); } }
+        @media (min-width: 768px) and (max-width: 991px) { .plan-card-group { --cols: repeat(2, 1fr); } }
+        @media (max-width: 767px) { .plan-card-group { --cols: 1fr; } }
+
+        .plan-card {
+          position: relative;
+          user-select: none;
+          display: block;
+        }
+
+        .plan-card > input[type="radio"] {
+          position: absolute;
+          opacity: 0;
+          width: 0;
+          height: 0;
+          margin: 0;
+          padding: 0;
+          border: none;
+          outline: none;
+        }
+
+        .plan-card > input[type="radio"]:focus-visible ~ .plan-card__wrap {
+          outline: 2px solid var(--accent, #6366f1);
+          outline-offset: 2px;
+        }
+
+        /* 卡片主体 - 用 border-top 实现顶部彩色标识 */
+        .plan-card__wrap {
+          position: relative;
+          padding: 20px;
+          padding-top: 24px;
+          border-radius: var(--radius-xl, 14px);
+          border: 1.5px solid var(--border, #e8e8e8);
+          border-top: 4px solid var(--top-color, transparent);
+          background: var(--card-bg, #fff);
+          cursor: pointer;
+          transition: all 0.28s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+        }
+
+        .plan-card__wrap::before {
+          content: '';
+          position: absolute;
+          inset: 0;
+          background: radial-gradient(circle at 50% 0%, var(--accent-soft, rgba(99,102,241,0.06)), transparent 70%);
+          opacity: 0;
+          transition: opacity 0.28s ease;
+          pointer-events: none;
+          border-radius: inherit;
+        }
+
+        /* 悬停 */
+        .plan-card:hover .plan-card__wrap {
+          border-color: var(--accent, #6366f1);
+          border-top-color: var(--top-color, var(--accent, #6366f1));
+          transform: translateY(-2px);
+          box-shadow: 0 8px 24px -4px rgba(99, 102, 241, 0.18);
+        }
+
+        .plan-card:hover .plan-card__wrap::before {
+          opacity: 1;
+        }
+
+        .plan-card:hover .plan-card__wrap .plan-card__icon {
+          transform: scale(1.05);
+        }
+
+        .plan-card:hover .plan-card__wrap .plan-card__tick {
+          border-color: var(--accent, #6366f1);
+          transform: scale(1.05);
+        }
+
+        /* 选中态 - 跟随主题色，统一视觉 */
+        .plan-card > input[type="radio"]:checked ~ .plan-card__wrap {
+          border-left: 1.5px solid var(--accent, #6366f1) !important;
+          border-right: 1.5px solid var(--accent, #6366f1) !important;
+          border-bottom: 1.5px solid var(--accent, #6366f1) !important;
+          border-top: 5px solid var(--accent, #6366f1) !important;
+          background: linear-gradient(135deg, var(--card-bg, #fff) 0%, color-mix(in srgb, var(--accent, #6366f1) 4%, var(--card-bg, #fff)) 100%) !important;
+          transform: none !important;
+          box-shadow: 0 4px 16px rgba(99, 102, 241, 0.15),
+                      0 -2px 8px color-mix(in srgb, var(--accent, #6366f1) 30%, transparent) !important;
+        }
+
+        .plan-card > input[type="radio"]:checked ~ .plan-card__wrap::before {
+          opacity: 1 !important;
+        }
+
+        .plan-card > input[type="radio"]:checked ~ .plan-card__wrap .plan-card__icon {
+          background: var(--accent, #6366f1);
+          color: #fff;
+          box-shadow: 0 4px 12px rgba(99, 102, 241, 0.35);
+          transform: scale(1.06) rotate(-3deg);
+        }
+
+        .plan-card > input[type="radio"]:checked ~ .plan-card__wrap .plan-card__name {
+          color: var(--accent, #6366f1);
+        }
+
+        .plan-card > input[type="radio"]:checked ~ .plan-card__wrap .plan-card__tick {
+          background: var(--accent, #6366f1);
+          border-color: var(--accent, #6366f1);
+          transform: scale(1.1);
+        }
+
+        .plan-card > input[type="radio"]:checked ~ .plan-card__wrap .plan-card__tick svg {
+          stroke: #fff;
+          stroke-dashoffset: 0;
+        }
+
+        /* 禁用状态 */
+        .plan-card > input[type="radio"]:disabled ~ .plan-card__wrap,
+        .plan-card.disabled .plan-card__wrap,
+        .plan-card.disabled:hover .plan-card__wrap {
+          cursor: not-allowed !important;
+          opacity: 0.45;
+          filter: saturate(0);
+          pointer-events: auto;
+          transform: none !important;
+          box-shadow: none !important;
+          border-left: 1.5px solid var(--border, #e8e8e8) !important;
+          border-right: 1.5px solid var(--border, #e8e8e8) !important;
+          border-bottom: 1.5px solid var(--border, #e8e8e8) !important;
+          border-top: 4px solid var(--top-color, var(--border, #e8e8e8)) !important;
+        }
+
+        .plan-card > input[type="radio"]:disabled ~ .plan-card__wrap .plan-card__tick,
+        .plan-card.disabled .plan-card__tick {
+          border-style: dashed;
+          opacity: 0.4;
+        }
+
+        /* 内容布局 */
+        .plan-card__body {
+          display: flex;
+          align-items: center;
+          gap: 14px;
+          position: relative;
+          z-index: 1;
+        }
+
+        /* 图标 */
+        .plan-card__icon {
+          width: 44px;
+          height: 44px;
+          border-radius: 12px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          font-size: 22px;
+          background: var(--icon-bg, #f0f0ff);
+          color: var(--accent, #6366f1);
+          flex-shrink: 0;
+          transition: all 0.28s ease;
+        }
+
+        /* 文字区域 */
+        .plan-card__info {
+          flex: 1;
+          min-width: 0;
+        }
+
+        .plan-card__name {
+          font-size: 15px;
+          font-weight: 600;
+          color: var(--text-primary, #111);
+          margin-bottom: 2px;
+          letter-spacing: -0.01em;
+          transition: color 0.28s ease;
+        }
+
+        .plan-card__hint {
+          font-size: 12px;
+          color: var(--text-muted, #999);
+          white-space: nowrap;
+          overflow: hidden;
+          text-overflow: ellipsis;
+        }
+
+        /* 右侧勾选 SVG */
+        .plan-card__tick {
+          width: 22px;
+          height: 22px;
+          border-radius: 50%;
+          border: 2px solid var(--border-light, #ddd);
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          flex-shrink: 0;
+          transition: all 0.28s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+        }
+
+        .plan-card__tick svg {
+          width: 11px;
+          height: 11px;
+          stroke: var(--accent, #6366f1);
+          stroke-width: 2.5;
+          fill: none;
+          stroke-dasharray: 18;
+          stroke-dashoffset: 18;
+          transition: stroke-dashoffset 0.3s ease 0.1s;
+        }
+
+        /* 暗色模式 */
+        [data-theme="dark"] .plan-card__wrap {
+          border-color: rgba(255,255,255,0.08);
+          border-top-color: var(--top-color, rgba(255,255,255,0.08));
+        }
+        [data-theme="dark"] .plan-card__icon {
+          background: rgba(99,102,241,0.12);
+        }
+        [data-theme="dark"] .plan-card__tick {
+          border-color: rgba(255,255,255,0.12);
+        }
+        [data-theme="dark"] .plan-card:hover .plan-card__wrap {
+          box-shadow: 0 8px 24px -4px rgba(99, 102, 241, 0.25);
+        }
+        [data-theme="dark"] .plan-card:hover .plan-card__wrap .plan-card__tick {
+          border-color: var(--accent, #6366f1);
+        }
+        [data-theme="dark"] .plan-card > input[type="radio"]:checked ~ .plan-card__wrap {
+          border-left: 1.5px solid var(--accent, #6366f1) !important;
+          border-right: 1.5px solid var(--accent, #6366f1) !important;
+          border-bottom: 1.5px solid var(--accent, #6366f1) !important;
+          border-top: 5px solid var(--accent, #6366f1) !important;
+          box-shadow: 0 4px 16px rgba(99, 102, 241, 0.25) !important,
+                      0 -2px 8px color-mix(in srgb, var(--accent, #6366f1) 35%, transparent) !important;
+        }
+        [data-theme="dark"] .plan-card > input[type="radio"]:checked ~ .plan-card__wrap .plan-card__icon {
+          box-shadow: 0 4px 12px rgba(99, 102, 241, 0.5);
+        }
+        [data-theme="dark"] .plan-card > input[type="radio"]:checked ~ .plan-card__wrap .plan-card__tick {
+          background: var(--accent, #6366f1);
+          border-color: var(--accent, #6366f1);
+        }
+        [data-theme="dark"] .plan-card > input[type="radio"]:disabled ~ .plan-card__wrap,
+        [data-theme="dark"] .plan-card.disabled .plan-card__wrap {
+          opacity: 0.35;
+        }
+      </style>
+
+      <h3 style="font-weight:600; margin-bottom: 16px; color: var(--text-primary);">支付方式选择（纯CSS实现 · 多彩方案卡）</h3>
+      
+      <div class="plan-card-group">
+        <!-- 支付宝 -->
+        <label class="plan-card">
+          <input type="radio" name="paymentPlan" value="alipay" checked>
+          <div class="plan-card__wrap" style="--top-color: #1677FF;">
+            <div class="plan-card__body">
+              <div class="plan-card__icon" style="--icon-bg: #E6F0FF; --accent: #1677FF;">
+                <i class="layui-icon layui-icon-dollar"></i>
+              </div>
+              <div class="plan-card__info">
+                <div class="plan-card__name">支付宝</div>
+                <div class="plan-card__hint">推荐使用，即时到账</div>
+              </div>
+              <div class="plan-card__tick">
+                <svg viewBox="0 0 12 12"><path d="M2 6l3 3 5-6"/></svg>
+              </div>
+            </div>
+          </div>
+        </label>
+
+        <!-- 微信支付 -->
+        <label class="plan-card">
+          <input type="radio" name="paymentPlan" value="wechat">
+          <div class="plan-card__wrap" style="--top-color: #07C160;">
+            <div class="plan-card__body">
+              <div class="plan-card__icon" style="--icon-bg: #E6F7ED; --accent: #07C160;">
+                <i class="layui-icon layui-icon-login-wechat"></i>
+              </div>
+              <div class="plan-card__info">
+                <div class="plan-card__name">微信支付</div>
+                <div class="plan-card__hint">扫码支付，便捷安全</div>
+              </div>
+              <div class="plan-card__tick">
+                <svg viewBox="0 0 12 12"><path d="M2 6l3 3 5-6"/></svg>
+              </div>
+            </div>
+          </div>
+        </label>
+
+        <!-- 银行卡 -->
+        <label class="plan-card">
+          <input type="radio" name="paymentPlan" value="bank">
+          <div class="plan-card__wrap" style="--top-color: #F7931E;">
+            <div class="plan-card__body">
+              <div class="plan-card__icon" style="--icon-bg: #FFF4E5; --accent: #F7931E;">
+                <i class="layui-icon layui-icon-template-1"></i>
+              </div>
+              <div class="plan-card__info">
+                <div class="plan-card__name">银行卡</div>
+                <div class="plan-card__hint">支持主流银行借记卡</div>
+              </div>
+              <div class="plan-card__tick">
+                <svg viewBox="0 0 12 12"><path d="M2 6l3 3 5-6"/></svg>
+              </div>
+            </div>
+          </div>
+        </label>
+
+        <!-- 花呗 (disabled) -->
+        <label class="plan-card disabled">
+          <input type="radio" name="paymentPlan" value="huabei" disabled>
+          <div class="plan-card__wrap" style="--top-color: #00A0E9;">
+            <div class="plan-card__body">
+              <div class="plan-card__icon" style="--icon-bg: #E6F7FD; --accent: #00A0E9;">
+                <i class="layui-icon layui-icon-rmb"></i>
+              </div>
+              <div class="plan-card__info">
+                <div class="plan-card__name">花呗</div>
+                <div class="plan-card__hint">暂未开通该服务</div>
+              </div>
+              <div class="plan-card__tick">
+                <svg viewBox="0 0 12 12"><path d="M2 6l3 3 5-6"/></svg>
+              </div>
+            </div>
+          </div>
+        </label>
+      </div>
     </div>
   </div>
 
