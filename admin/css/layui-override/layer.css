@@ -245,7 +245,8 @@
 }
 
 [data-theme="dark"] .layui-layer-title {
-  background-color: rgba(0, 0, 0, 0.2);
+  /* background-color: rgba(0, 0, 0, 0.2); */
+  background-color: var(--bg-sidebar-hover);
   border-bottom-color: var(--border);
   color: var(--text-primary);
 }
