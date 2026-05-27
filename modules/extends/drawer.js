@@ -21,10 +21,10 @@ layui.define(['layer', 'jquery'], function(exports) {
   var _rafMap = {};
 
   var placementConfig = {
-    right: { offset: 'r', anim: 'slideLeft', area: ['400px', '100%'], zIndex: 99 },
-    left: { offset: 'l', anim: 'slideRight', area: ['400px', '100%'], zIndex: 99 },
-    top: { offset: 't', anim: 'slideDown', area: ['100%', '300px'], zIndex: 99 },
-    bottom: { offset: 'b', anim: 'slideUp', area: ['100%', '300px'], zIndex: 99 }
+    right: { offset: 'r', anim: 'slideLeft', area: ['400px', '100%'] },
+    left: { offset: 'l', anim: 'slideRight', area: ['400px', '100%'] },
+    top: { offset: 't', anim: 'slideDown', area: ['100%', '300px'] },
+    bottom: { offset: 'b', anim: 'slideUp', area: ['100%', '300px'] }
   };
 
   var borderRadiusMap = {
@@ -33,6 +33,53 @@ layui.define(['layer', 'jquery'], function(exports) {
     top: '0 0 8px 8px',
     bottom: '8px 8px 0 0'
   };
+
+  function getMaxZIndex(container, base) {
+    base = base || 1000;
+    var maxZ = 0;
+    
+    try {
+      var $container = $(container);
+      var containerEl = $container[0];
+      
+      if (!containerEl) {
+        return base;
+      }
+      
+      var allElements = containerEl.querySelectorAll('*');
+      var containerRect = containerEl.getBoundingClientRect();
+      
+      for (var i = 0; i < allElements.length; i++) {
+        var el = allElements[i];
+        var style = getComputedStyle(el);
+        var z = parseInt(style.zIndex);
+        
+        if (z > 0) {
+          var elRect = el.getBoundingClientRect();
+          
+          var isInContainer = (
+            elRect.left >= containerRect.left &&
+            elRect.right <= containerRect.right &&
+            elRect.top >= containerRect.top &&
+            elRect.bottom <= containerRect.bottom
+          );
+          
+          if (isInContainer && z > maxZ) {
+            maxZ = z;
+          }
+        }
+      }
+      
+      var containerZ = parseInt(getComputedStyle(containerEl).zIndex) || 0;
+      if (containerZ > maxZ) {
+        maxZ = containerZ;
+      }
+    } catch (e) {
+      console.warn('[Drawer] 获取最大z-index失败:', e.message);
+    }
+    
+    return Math.max(maxZ + 1, base);
+  }
 
   function addRouteChangeListener() {
     if (routeChangeListenerAdded) return;
@@ -149,26 +196,25 @@ layui.define(['layer', 'jquery'], function(exports) {
       var dragRafKey = 'drag-' + Date.now();
       var pendingMove = null;
       
-      $elements.$title.off('mousedown.laydrawer').on('mousedown.laydrawer', function(e) {
+      $elements.$title.css('cursor', 'move').off('mousedown.laydrawer').on('mousedown.laydrawer', function(e) {
         var startX = e.clientX;
         var startY = e.clientY;
         var startLeft = parseFloat($elements.$layero.css('left'));
         var startTop = parseFloat($elements.$layero.css('top'));
         
-        // 预先缓存容器和层的尺寸
+        $('body').css('cursor', 'move');
+        
         var cachedRect = null;
         var cachedLayerW = null;
         var cachedLayerH = null;
         
         function onMouseMove(e) {
-          // 使用 raf 节流，每帧最多执行一次
           if (!pendingMove) {
             pendingMove = true;
             
             rafThrottle(dragRafKey, function() {
               pendingMove = false;
               
-              // 懒更新：只在需要时重新读取
               if (!cachedRect) {
                 cachedRect = $container[0].getBoundingClientRect();
               }
@@ -182,7 +228,6 @@ layui.define(['layer', 'jquery'], function(exports) {
               
               $elements.$layero.css({ left: newLeft, top: newTop });
               
-              // 样式写入后清除缓存，下次移动会重新读取
               cachedRect = null;
             });
           }
@@ -191,8 +236,8 @@ layui.define(['layer', 'jquery'], function(exports) {
         function onMouseUp() {
           $(document).off('mousemove.laydrawer mouseup.laydrawer');
           pendingMove = null;
+          $('body').css('cursor', '');
           
-          // 清理 RAF
           if (_rafMap[dragRafKey]) {
             cancelAnimationFrame(_rafMap[dragRafKey]);
             delete _rafMap[dragRafKey];
@@ -390,7 +435,7 @@ layui.define(['layer', 'jquery'], function(exports) {
         layerOpts.offset = [pos.top + 'px', pos.left + 'px'];
 
         if (!layerOpts.zIndex) {
-          layerOpts.zIndex = pConfig.zIndex || 99;
+          layerOpts.zIndex = getMaxZIndex($container, 666);
         }
 
         layerOpts.shade = false;
@@ -404,7 +449,7 @@ layui.define(['layer', 'jquery'], function(exports) {
             top: cachedContainerRect.top,
             width: cachedContainerRect.width,
             height: cachedContainerRect.height,
-            'z-index': layerOpts.zIndex - 1,
+            'z-index': layerOpts.zIndex - 10,
             'background-color': 'rgb(0, 0, 0)',
             'opacity': (opts.shade || 0.3)
           });
@@ -430,7 +475,7 @@ layui.define(['layer', 'jquery'], function(exports) {
         layerIndex = index;
 
         if (!isBodyContainer && $shade) {
-          $shade.css('z-index', parseInt($elements.$layero.css('z-index')) - 1);
+          $shade.css('z-index', parseInt($elements.$layero.css('z-index')) - 10);
         } else if (isBodyContainer) {
           $shade = $('#layui-layer-shade' + index);
         }
@@ -455,7 +500,10 @@ layui.define(['layer', 'jquery'], function(exports) {
 
           $elements.$layero.css({
             left: left + 'px',
-            top: top + 'px'
+            top: top + 'px',
+            width: layerWidth + 'px',
+            height: layerHeight + 'px',
+            'border-radius': '8px'
           });
         }
 
