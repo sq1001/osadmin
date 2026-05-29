@@ -57,6 +57,7 @@
     xmSelectMod: 'modules/extends/xm-select',
     drawerMod: 'modules/extends/drawer',
     tinymceMod: 'modules/extends/tinymce',
+    xlsxMod: 'modules/extends/xlsx',
     iconPickerMod: 'modules/extends/iconPicker',
     watermarkMod: 'modules/extends/watermark'
   };

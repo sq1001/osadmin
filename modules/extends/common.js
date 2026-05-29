@@ -1,13 +1,14 @@
 /**
  * Common 常用工具模块
  */
-layui.define(['jquery', 'layer', 'table'], function (exports) {
+layui.define(['jquery', 'layer', 'table', 'xlsxMod'], function (exports) {
 	'use strict';
 
 	var MOD_NAME = 'commonMod';
 	var $ = layui.jquery;
 	var table = layui.table;
 	var layer = layui.layer;
+	var XLSX = layui.xlsxMod;
 
 	var common = {
 		version: '1.0.2',
@@ -28,7 +29,7 @@ layui.define(['jquery', 'layer', 'table'], function (exports) {
 		},
 
 		exportXlsx: function (data, tableOptions, fileName) {
-			if (!window.XLSX) {
+			if (!XLSX) {
 				layer.msg('SheetJS 未加载，无法导出 Excel', { icon: 2 });
 				return;
 			}
