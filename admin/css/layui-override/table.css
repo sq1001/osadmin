@@ -87,15 +87,28 @@
   background-color: var(--card-bg);
 }
 
+.layui-table-view .layui-table td[data-edit]:hover:after {
+  border-color: var(--accent);
+  border-radius: 6px;
+}
+
 .layui-table-fixed-l {
+  background-color: var(--card-bg);
+  border-right-color: var(--border) !important;
 }
 
 .layui-table-fixed-r {
+  background-color: var(--card-bg);
+  border-left-color: var(--border) !important;
 }
 
 .layui-table-col-set,
 .layui-table-grid-down {
   background-color: var(--card-bg);
+}
+
+.layui-table-grid-down {
+  border-radius: 0 6px 6px 0;
 }
 
 .layui-table-grid-down:hover {
@@ -112,10 +125,24 @@
 
 .layui-table-tips-main {
   background-color: var(--card-bg);
+  border-radius: 6px;
 }
 
 .layui-table-mend {
   background-color: var(--card-bg);
+}
+
+.layui-table-patch {
+  background-color: var(--card-bg) !important;
+}
+
+.layui-table-cell-c:hover {
+  border-color: var(--accent);
+}
+
+.layui-table-tips-c:before {
+  top: -3px;
+  right: 0.5px;
 }
 
 /* ========== 深色主题 ========== */
@@ -136,6 +163,15 @@
 [data-theme="dark"] .layui-table-total,
 [data-theme="dark"] .layui-table-page {
   border-color: var(--border) !important;
+}
+
+[data-theme="dark"] .layui-table[lay-skin='line'],
+[data-theme="dark"] .layui-table[lay-skin='row'] {
+  border-color: var(--border) !important;
+}
+
+[data-theme="dark"] .layui-table-body::-webkit-scrollbar-corner {
+  background-color: var(--card-bg);
 }
 
 [data-theme="dark"] .layui-table[lay-even] tbody tr:nth-child(even) {
@@ -222,20 +258,59 @@
 }
 
 [data-theme="dark"] .layui-table-fixed-l {
+  background-color: var(--card-bg);
   box-shadow: 1px 0 8px rgba(0, 0, 0, 0.3);
+  border-right-color: var(--border);
+}
+
+[data-theme="dark"] .layui-table-fixed-l .layui-table-header,
+[data-theme="dark"] .layui-table-fixed-l .layui-table-body {
+  background-color: var(--card-bg);
 }
 
 [data-theme="dark"] .layui-table-fixed-r {
+  background-color: var(--card-bg);
   box-shadow: -1px 0 8px rgba(0, 0, 0, 0.3);
+  border-left-color: var(--border);
+}
+
+[data-theme="dark"] .layui-table-fixed-r .layui-table-header,
+[data-theme="dark"] .layui-table-fixed-r .layui-table-body {
+  background-color: var(--card-bg);
 }
 
 [data-theme="dark"] .layui-table-col-set,
 [data-theme="dark"] .layui-table-grid-down {
   background-color: var(--card-bg);
+  border-left: none;
 }
 
 [data-theme="dark"] .layui-table-grid-down:hover {
   background-color: rgba(255, 255, 255, 0.05);
+}
+
+[data-theme="dark"] .layui-table-sort .layui-table-sort-asc {
+  border-bottom-color: var(--text-muted);
+}
+
+[data-theme="dark"] .layui-table-sort .layui-table-sort-desc {
+  border-top-color: var(--text-muted);
+}
+
+[data-theme="dark"] .layui-table-sort .layui-table-sort-asc:hover {
+  border-bottom-color: var(--text-primary);
+}
+
+[data-theme="dark"] .layui-table-sort .layui-table-sort-desc:hover {
+  border-top-color: var(--text-primary);
+}
+
+[data-theme="dark"] .layui-table-sort[lay-sort='asc'] .layui-table-sort-asc {
+  border-bottom-color: var(--accent) !important;
+}
+
+[data-theme="dark"] .layui-table-sort[lay-sort='desc'] .layui-table-sort-desc {
+  border-top-color: var(--accent) !important;
 }
 
 [data-theme="dark"] .layui-table-total {
@@ -252,6 +327,16 @@
 
 [data-theme="dark"] .layui-table-mend {
   background-color: var(--card-bg);
+  border-left-color: var(--border) !important;
+}
+
+[data-theme="dark"] .layui-table-patch,
+[data-theme="dark"] .layui-table-total .layui-table-patch {
+  background-color: var(--card-bg) !important;
+}
+
+[data-theme="dark"] .layui-table-cell-c {
+  background-color: var(--accent-light);
 }
 
 [data-theme="dark"] .layui-table-cell .layui-table-link {

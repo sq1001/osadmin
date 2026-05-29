@@ -78,6 +78,13 @@ a {
 .top-search-from .toggle-btn a:hover {
     color: #333;
 }
+
+[data-theme="dark"] .top-search-from .toggle-btn a {
+    color: #aaa;
+}
+[data-theme="dark"] .top-search-from .toggle-btn a:hover {
+    color: #e0e0e0;
+}
 @media screen and (max-width:768px) {
     .top-search-from .layui-form-label {
         width: 80px;

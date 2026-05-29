@@ -8,108 +8,91 @@
 <body>
 <div class="page-content">
   <div class="demo-header">
-    <h3 class="demo-title">表格组件</h3>
-    <p class="demo-desc">Layui 表格组件的完整示例，包含数据表格、分页、排序、工具栏等功能</p>
+    <h3 class="demo-title">表格组件 — 综合演示</h3>
+    <p class="demo-desc">包含自定义工具栏、获取数据、表格重载、单元格编辑、合计行、导出等功能</p>
   </div>
 
-  <div class="layui-card">
-    <div class="layui-card-header">
-      <span class="layui-card-title">基础数据表格</span>
-    </div>
-    <div class="layui-card-body" style="padding: 0;">
-      <table id="demoTable" lay-filter="demoTable"></table>
-    </div>
-  </div>
-
-  <div class="layui-card" style="margin-top: 16px;">
-    <div class="layui-card-header">
-      <span class="layui-card-title">带工具栏表格</span>
-    </div>
-    <div class="layui-card-body" style="padding: 0;">
+  <!-- ========== 综合表格 ========== -->
+  <div class="layui-card" style="margin-bottom:16px;">
+    <div class="layui-card-body" style="padding:0;">
       <script type="text/html" id="toolbarDemo">
         <div class="layui-btn-container">
-          <button class="layui-btn layui-btn-sm" lay-event="add"><i class="layui-icon layui-icon-addition"></i> 新增</button>
-          <button class="layui-btn layui-btn-sm layui-btn-normal" lay-event="update"><i class="layui-icon layui-icon-edit"></i> 编辑</button>
-          <button class="layui-btn layui-btn-sm layui-btn-danger" lay-event="delete"><i class="layui-icon layui-icon-delete"></i> 删除</button>
+          <button class="layui-btn layui-btn-sm" lay-event="getCheckData">获取选中行</button>
+          <button class="layui-btn layui-btn-sm" lay-event="getData">获取当前页</button>
+          <button class="layui-btn layui-btn-sm" id="dropdownButton">
+            下拉按钮 <i class="layui-icon layui-icon-down layui-font-12"></i>
+          </button>
+          <button class="layui-btn layui-btn-sm layui-bg-blue" id="reloadTest">
+            重载测试 <i class="layui-icon layui-icon-down layui-font-12"></i>
+          </button>
+          <button class="layui-btn layui-btn-sm layui-btn-primary" id="rowMode">
+            <span>{{= d.lineStyle ? '多行' : '单行' }}模式</span>
+            <i class="layui-icon layui-icon-down layui-font-12"></i>
+          </button>
         </div>
       </script>
-      <table id="toolbarTable" lay-filter="toolbarTable"></table>
+
+      <script type="text/html" id="toolDemo">
+        <div class="layui-clear-space">
+          <button class="layui-btn layui-btn-xs" lay-event="edit">编辑</button>
+          <button class="layui-btn layui-btn-xs" lay-event="more">
+            更多 <i class="layui-icon layui-icon-down"></i>
+          </button>
+        </div>
+      </script>
+
+      <table class="layui-hide" id="testTable" lay-filter="testTable"></table>
     </div>
   </div>
 
-  <div class="layui-card" style="margin-top: 16px;">
-    <div class="layui-card-header">
-      <span class="layui-card-title">表格样式 - 行边框</span>
-    </div>
-    <div class="layui-card-body" style="padding: 0;">
-      <table id="lineTable" lay-filter="lineTable"></table>
-    </div>
+  <!-- ========== 单元格内联编辑模式 ========== -->
+  <div class="demo-header" style="margin-top:24px;">
+    <h3 class="demo-title">单元格内联编辑模式</h3>
+    <p class="demo-desc">展示 select 下拉、dropdown 下拉、laydate 日期、colorpicker 颜色、textarea 多行文本等多种内联编辑方式</p>
   </div>
 
-  <div class="layui-card" style="margin-top: 16px;">
-    <div class="layui-card-header">
-      <span class="layui-card-title">表格样式 - 列边框</span>
-    </div>
-    <div class="layui-card-body" style="padding: 0;">
-      <table id="gridTable" lay-filter="gridTable"></table>
-    </div>
-  </div>
+  <div class="layui-card" style="margin:0;">
+    <div class="layui-card-body" style="padding:0;">
 
-  <div class="layui-card" style="margin-top: 16px;">
-    <div class="layui-card-header">
-      <span class="layui-card-title">表格样式 - 斑马线</span>
-    </div>
-    <div class="layui-card-body" style="padding: 0;">
-      <table id="evenTable" lay-filter="evenTable"></table>
-    </div>
-  </div>
+      <!-- select 模板 -->
+      <script type="text/html" id="TPL-edit-select">
+        {{# var cityList = d.cityList || ['北京','上海','广州','深圳','杭州']; }}
+        <select name="city" lay-filter="edit-select-demo" lay-append-to="body">
+          <option value="">选择城市</option>
+          {{# layui.each(cityList, function(i, v){ }}
+          <option value="{{= v }}" {{= v === d.city ? 'selected' : '' }}>{{= v }}</option>
+          {{# }); }}
+        </select>
+      </script>
 
-  <div class="layui-card" style="margin-top: 16px;">
-    <div class="layui-card-header">
-      <span class="layui-card-title">表格样式 - 边框风格</span>
-    </div>
-    <div class="layui-card-body" style="padding: 0;">
-      <table id="noborderTable" lay-filter="noborderTable"></table>
-    </div>
-  </div>
+      <!-- dropdown 模板 -->
+      <script type="text/html" id="TPL-edit-dropdown">
+        <button class="layui-btn layui-btn-primary layui-btn-xs edit-dropdown-btn">
+          <span>{{= d.sex || '选择' }}</span>
+          <i class="layui-icon layui-icon-down layui-font-12"></i>
+        </button>
+      </script>
 
-  <div class="layui-card" style="margin-top: 16px;">
-    <div class="layui-card-header">
-      <span class="layui-card-title">固定列</span>
-    </div>
-    <div class="layui-card-body" style="padding: 0;">
-      <table id="fixedTable" lay-filter="fixedTable"></table>
-    </div>
-  </div>
+      <!-- laydate 模板 -->
+      <script type="text/html" id="TPL-edit-laydate">
+        <input class="layui-input edit-laydate-demo" placeholder="选择日期" value="{{= d.date || '' }}" style="width:140px;height:32px;padding:0 8px;">
+      </script>
 
-  <div class="layui-card" style="margin-top: 16px;">
-    <div class="layui-card-header">
-      <span class="layui-card-title">表格展开行</span>
-    </div>
-    <div class="layui-card-body" style="padding: 0;">
-      <table id="expandTable" lay-filter="expandTable"></table>
+      <!-- colorpicker 模板 -->
+      <script type="text/html" id="TPL-edit-colorpicker">
+        {{# var color = d.color || ['#16baaa','#16b777','#1E9FFF','#FF5722','#FFB800','#393D49'][Math.round(Math.random()*5)]; }}
+        <div class="edit-colorpicker-demo" lay-options="{color: '{{= color }}'}"></div>
+      </script>
+
+      <!-- switch 模板 -->
+      <script type="text/html" id="TPL-edit-switch">
+        <input type="checkbox" name="status" value="{{= d.id }}" lay-skin="switch" lay-text="启用|禁用" {{= d.status ? 'checked' : '' }} lay-filter="edit-switch-demo">
+      </script>
+
+      <table class="layui-hide" id="editModesTable" lay-filter="editModesTable"></table>
     </div>
   </div>
 </div>
-
-<script type="text/html" id="statusTpl">
-  <input type="checkbox" name="status" value="{{d.id}}" lay-skin="switch" lay-text="启用|禁用" lay-filter="statusSwitch" {{ d.status == 1 ? 'checked' : '' }}>
-</script>
-
-<script type="text/html" id="operateTpl">
-  <a class="layui-btn layui-btn-xs" lay-event="edit"><i class="layui-icon layui-icon-edit"></i>编辑</a>
-  <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del"><i class="layui-icon layui-icon-delete"></i>删除</a>
-</script>
-
-<script type="text/html" id="expandTpl">
-  <div style="padding: 10px 20px;">
-    <p><strong>详细信息：</strong></p>
-    <p>用户名：{{d.username}}</p>
-    <p>邮箱：{{d.email}}</p>
-    <p>角色：{{d.role}}</p>
-    <p>创建时间：{{d.createTime}}</p>
-  </div>
-</script>
 
 <style>
 .demo-header {
@@ -125,231 +108,474 @@
   font-size: 13px;
   color: var(--text-muted);
 }
-[data-theme="dark"] .layui-table-view {
-  border-color: var(--border);
+.layui-clear-space {
+  display: flex;
+  align-items: center;
+  gap: 6px;
 }
-[data-theme="dark"] .layui-table th {
-  background: var(--bg-content);
-  border-color: var(--border);
-  color: var(--text-secondary);
-}
-[data-theme="dark"] .layui-table td {
-  border-color: var(--border);
-  color: var(--text-primary);
-}
-[data-theme="dark"] .layui-table tbody tr:hover {
-  background: rgba(var(--accent-rgb), 0.05);
-}
-[data-theme="dark"] .layui-table-page {
-  border-color: var(--border);
-}
-[data-theme="dark"] .layui-table-page .layui-laypage a,
-[data-theme="dark"] .layui-table-page .layui-laypage span {
-  background: var(--card-bg);
-  border-color: var(--border);
-  color: var(--text-secondary);
-}
-[data-theme="dark"] .layui-table-page .layui-laypage a:hover {
-  color: var(--accent);
-}
-[data-theme="dark"] .layui-table-page .layui-laypage .layui-laypage-curr .layui-laypage-em {
-  background: var(--accent);
-}
-[data-theme="dark"] .layui-table-tool {
-  background: var(--bg-content);
-  border-color: var(--border);
-}
+.layui-font-12 { font-size: 12px; }
+
+/* ========== 内联编辑模式样式 ========== */
+#editModesTable + .layui-table-view .layui-table-cell { height: 50px; line-height: 40px; }
+#editModesTable + .layui-table-view .layui-table-cell .layui-colorpicker { width: 38px; height: 38px; }
+#editModesTable + .layui-table-view .layui-table-cell select { height: 34px; padding: 0 8px; border-radius: 4px; }
+.edit-dropdown-btn { padding: 0 10px; height: 30px; line-height: 28px; font-size: 13px; }
+.edit-colorpicker-demo { width: 36px; height: 36px; cursor: pointer; }
 </style>
 
 <script>
-layui.use(['table', 'layer'], function() {
+layui.use(['table', 'layer', 'dropdown', 'form', 'jquery', 'commonMod', 'laydate', 'colorpicker'], function() {
   var table = layui.table;
   var layer = layui.layer;
+  var dropdown = layui.dropdown;
+  var form = layui.form;
+  var $ = layui.jquery;
+  var common = layui.commonMod;
+  var laydate = layui.laydate;
+  var colorpicker = layui.colorpicker;
 
   var mockData = [];
-  for (var i = 1; i <= 50; i++) {
+  var cities = ['北京', '上海', '广州', '深圳', '杭州'];
+  var roles = ['超级管理员', '管理员', '编辑员', '运营人员', '访客'];
+  var signs = ['热爱技术，追求极致', '代码改变世界', '简单可信赖', '让优秀成为习惯'];
+
+  for (var i = 1; i <= 200; i++) {
     mockData.push({
       id: i,
-      username: '用户' + i,
+      username: 'user' + String(i).padStart(4, '0'),
       email: 'user' + i + '@example.com',
-      role: ['管理员', '编辑', '用户'][Math.floor(Math.random() * 3)],
-      status: Math.random() > 0.3 ? 1 : 0,
-      createTime: '2024-0' + (Math.floor(Math.random() * 9) + 1) + '-' + (Math.floor(Math.random() * 28) + 1)
+      sex: Math.random() > 0.5 ? '男' : '女',
+      city: cities[Math.floor(Math.random() * cities.length)],
+      sign: signs[Math.floor(Math.random() * signs.length)],
+      experience: Math.floor(Math.random() * 100) + 1,
+      checkin: Math.floor(Math.random() * 30),
+      ip: '192.168.' + Math.floor(Math.random() * 255) + '.' + Math.floor(Math.random() * 255),
+      logins: Math.floor(Math.random() * 500) + 10,
+      joinTime: '2024-' + String(Math.floor(Math.random() * 12) + 1).padStart(2, '0') + '-' + String(Math.floor(Math.random() * 28) + 1).padStart(2, '0'),
+      role: roles[Math.floor(Math.random() * roles.length)],
+      score: Math.floor(Math.random() * 10000) + 1000,
+      classify: ['作家', '教师', '学生', '工程师', '设计师'][Math.floor(Math.random() * 5)],
+      wealth: Math.floor(Math.random() * 9999999) + 100000,
+      status: Math.random() > 0.2 ? 1 : 0
     });
   }
 
   table.render({
-    elem: '#demoTable',
+    elem: '#testTable',
+    url: '',
     data: mockData,
-    page: true,
-    limit: 10,
-    limits: [10, 20, 30, 50],
-    cols: [[
-      { type: 'checkbox', fixed: 'left' },
-      { field: 'id', title: 'ID', width: 80, sort: true, fixed: 'left' },
-      { field: 'username', title: '用户名', width: 120 },
-      { field: 'email', title: '邮箱', width: 200 },
-      { field: 'role', title: '角色', width: 100 },
-      { field: 'status', title: '状态', width: 100, templet: '#statusTpl' },
-      { field: 'createTime', title: '创建时间', width: 150, sort: true },
-      { title: '操作', width: 150, fixed: 'right', templet: '#operateTpl' }
-    ]],
-    skin: 'line',
-    even: true
-  });
-
-  table.render({
-    elem: '#toolbarTable',
     toolbar: '#toolbarDemo',
-    defaultToolbar: ['filter', 'exports', 'print'],
-    data: mockData.slice(0, 20),
-    page: true,
-    limit: 10,
-    cols: [[
-      { type: 'checkbox', fixed: 'left' },
-      { field: 'id', title: 'ID', width: 80, sort: true },
-      { field: 'username', title: '用户名', width: 120 },
-      { field: 'email', title: '邮箱', width: 200 },
-      { field: 'role', title: '角色', width: 100 },
-      { field: 'status', title: '状态', width: 100, templet: '#statusTpl' },
-      { field: 'createTime', title: '创建时间', width: 150, sort: true }
-    ]],
-    skin: 'line',
-    even: true
-  });
+    defaultToolbar: [
+      'filter',
+      {
+        name: 'exports',
+        onClick: function(obj) {
+          var options = obj.config;
+          var currentPageData = layui.table.getData(obj.config.id);
 
-  table.render({
-    elem: '#lineTable',
-    data: mockData.slice(0, 10),
-    page: false,
-    cols: [[
-      { field: 'id', title: 'ID', width: 80, sort: true },
-      { field: 'username', title: '用户名', width: 120 },
-      { field: 'email', title: '邮箱', width: 200 },
-      { field: 'role', title: '角色', width: 100 }
-    ]],
-    skin: 'line'
-  });
+          obj.openPanel({
+            list: [
+              '<li data-type="csv">导出 CSV 文件</li>',
+              '<li data-type="xlsx">导出 Excel 文件</li>',
+              '<li data-type="txt">导出 TXT 文件</li>'
+            ].join(''),
+            done: function(panel, list) {
+              list.on('click', function() {
+                var type = $(this).data('type');
+                if (!type) return;
 
-  table.render({
-    elem: '#gridTable',
-    data: mockData.slice(0, 10),
-    page: false,
-    cols: [[
-      { field: 'id', title: 'ID', width: 80, sort: true },
-      { field: 'username', title: '用户名', width: 120 },
-      { field: 'email', title: '邮箱', width: 200 },
-      { field: 'role', title: '角色', width: 100 }
-    ]],
-    skin: 'grid'
-  });
+                switch (type) {
+                  case 'csv':
+                    layui.table.exportFile(options.id, null, 'csv');
+                    break;
 
-  table.render({
-    elem: '#evenTable',
-    data: mockData.slice(0, 10),
-    page: false,
-    cols: [[
-      { field: 'id', title: 'ID', width: 80, sort: true },
-      { field: 'username', title: '用户名', width: 120 },
-      { field: 'email', title: '邮箱', width: 200 },
-      { field: 'role', title: '角色', width: 100 }
-    ]],
-    even: true
-  });
+                  case 'xlsx':
+                    common.exportXlsx(currentPageData, options, '用户数据.xlsx');
+                    break;
 
-  table.render({
-    elem: '#noborderTable',
-    data: mockData.slice(0, 10),
-    page: false,
-    cols: [[
-      { field: 'id', title: 'ID', width: 80, sort: true },
-      { field: 'username', title: '用户名', width: 120 },
-      { field: 'email', title: '邮箱', width: 200 },
-      { field: 'role', title: '角色', width: 100 }
-    ]],
-    skin: 'noborder'
-  });
-
-  table.render({
-    elem: '#fixedTable',
-    data: mockData.slice(0, 10),
-    page: false,
-    cols: [[
-      { field: 'id', title: 'ID', width: 80, fixed: 'left' },
-      { field: 'username', title: '用户名', width: 120 },
-      { field: 'email', title: '邮箱', width: 200 },
-      { field: 'role', title: '角色', width: 100 },
-      { field: 'status', title: '状态', width: 100 },
-      { field: 'createTime', title: '创建时间', width: 150 },
-      { field: 'sign', title: '签名', width: 200 },
-      { field: 'experience', title: '积分', width: 100 },
-      { field: 'score', title: '评分', width: 100 },
-      { field: 'classify', title: '职业', width: 100 },
-      { field: 'wealth', title: '财富', width: 100, fixed: 'right' }
-    ]],
-    width: 800
-  });
-
-  table.render({
-    elem: '#expandTable',
-    data: mockData.slice(0, 10),
-    page: false,
-    cols: [[
-      { type: 'numbers' },
-      { field: 'id', title: 'ID', width: 80 },
-      { field: 'username', title: '用户名', width: 120 },
-      { field: 'email', title: '邮箱' },
-      { field: 'role', title: '角色', width: 100 }
-    ]],
-    expandRow: true,
-    expandTpl: '#expandTpl'
-  });
-
-  table.on('toolbar(toolbarTable)', function(obj) {
-    var checkStatus = table.checkStatus(obj.config.id);
-    var data = checkStatus.data;
-
-    switch (obj.event) {
-      case 'add':
-        layer.msg('新增操作');
-        break;
-      case 'update':
-        if (data.length === 0) {
-          layer.msg('请选择一行数据');
-        } else if (data.length > 1) {
-          layer.msg('只能编辑一行数据');
-        } else {
-          layer.msg('编辑：' + JSON.stringify(data[0]));
-        }
-        break;
-      case 'delete':
-        if (data.length === 0) {
-          layer.msg('请选择要删除的数据');
-        } else {
-          layer.confirm('确定删除选中的 ' + data.length + ' 条数据吗？', function(index) {
-            layer.close(index);
-            layer.msg('删除成功');
+                  case 'txt':
+                    common.exportTxt(currentPageData, options, '用户数据.txt');
+                    break;
+                }
+              });
+            }
           });
         }
+      },
+      'print'
+    ],
+    height: 'full-90',
+    cellMinWidth: 80,
+    totalRow: true,
+    page: true,
+    limit: 15,
+    limits: [10, 15, 20, 30, 50],
+    loading: true,
+    initSort: { field: 'id', type: 'desc' },
+    cols: [[
+      {type: 'checkbox', fixed: 'left'},
+      {field:'id', fixed:'left', width:70, title:'ID', sort:true, totalRow:'合计：'},
+      {field:'username', width:110, title:'用户'},
+      {field:'email', title:'邮箱', width:155, edit:'text'},
+      {field:'sex', width:70, title:'性别', sort:true},
+      {field:'city', width:95, title:'城市'},
+      {field:'sign', title:'签名', edit:'textarea', minWidth:200},
+      {field:'experience', width:85, title:'积分', sort:true, totalRow:'{{= d.TOTAL_NUMS }}'},
+      {field:'checkin', width:85, title:'打卡', sort:true, totalRow:'{{= parseInt(d.TOTAL_NUMS) }} 次'},
+      {field:'ip', width:115, title:'IP'},
+      {field:'logins', width:115, title:'登录次数', sort:true},
+      {field:'joinTime', width:115, title:'加入时间', sort:true},
+      {field:'role', width:135, title:'角色'},
+      {field:'score', width:85, title:'评分', sort:true},
+      {fixed:'right', title:'操作', width:130, templet:'#toolDemo'}
+    ]],
+    skin: 'line',
+    even: true,
+    done: function() {
+      var tableId = this.id;
+
+      dropdown.render({
+        elem: '#dropdownButton',
+        data: [
+          {id: 'add', title: '添加'},
+          {id: 'update', title: '编辑'},
+          {id: 'delete', title: '删除'}
+        ],
+        click: function(obj) {
+          var checkStatus = table.checkStatus(tableId);
+          var data = checkStatus.data;
+          switch (obj.id) {
+            case 'add':
+              layer.prompt({ formType: 0, title: '新增用户' }, function(value, index) {
+                layer.close(index);
+                layer.msg('新增用户：' + value);
+              });
+              break;
+            case 'update':
+              if (data.length !== 1) return layer.msg('请选择一行进行编辑');
+              layer.open({
+                title: '编辑 — ID: ' + data[0].id,
+                type: 1,
+                area: ['450px', '380px'],
+                shadeClose: true,
+                content:
+                  '<form class="layui-form" style="padding:20px;">' +
+                  '  <div class="layui-form-item"><label class="layui-form-label">用户名</label>' +
+                  '    <div class="layui-input-block"><input type="text" value="' + data[0].username + '" class="layui-input" disabled></div></div>' +
+                  '  <div class="layui-form-item"><label class="layui-form-label">邮箱</label>' +
+                  '    <div class="layui-input-block"><input type="text" value="' + data[0].email + '" class="layui-input" id="editEmail"></div></div>' +
+                  '  <div class="layui-form-item"><label class="layui-form-label">角色</label>' +
+                  '    <div class="layui-input-block"><select id="editRole">' +
+                  roles.map(function(r) { return '<option' + (r === data[0].role ? ' selected' : '') + '>' + r + '</option>'; }).join('') +
+                  '    </select></div></div>' +
+                  '  <div class="layui-form-item"><label class="layui-form-label">签名</label>' +
+                  '    <div class="layui-input-block"><textarea class="layui-textarea" id="editSign">' + (data[0].sign || '') + '</textarea></div></div>' +
+                  '</form>',
+                btn: ['确定', '取消'],
+                yes: function(idx, dom) {
+                  obj.update({
+                    email: dom.find('#editEmail').val().trim() || data[0].email,
+                    role: dom.find('#editRole').val() || data[0].role,
+                    sign: dom.find('#editSign').val().trim() || data[0].sign
+                  }, data[0].LAY_TABLE_INDEX);
+                  layer.close(idx);
+                  layer.msg('修改成功', { icon: 1 });
+                }
+              });
+              break;
+            case 'delete':
+              if (data.length === 0) return layer.msg('请选择要删除的数据');
+              layer.confirm(
+                '确定删除选中的 <strong>' + data.length + '</strong> 条数据吗？',
+                { icon: 3, title: '提示' },
+                function(index) {
+                  layer.close(index);
+                  layer.msg('已删除 ' + data.length + ' 条数据', { icon: 1 });
+                }
+              );
+              break;
+          }
+        }
+      });
+
+      dropdown.render({
+        elem: '#reloadTest',
+        data: [
+          {id: 'reload', title: '重载（参数重置）'},
+          {id: 'reload-deep', title: '重载（参数叠加）'},
+          {id: 'reloadData', title: '仅重载数据'}
+        ],
+        click: function(obj) {
+          switch (obj.id) {
+            case 'reload':
+              table.reload(tableId, {
+                where: { abc: '123456' }
+              });
+              break;
+            case 'reload-deep':
+              table.reload(tableId, {
+                where: { abc: 123, test: '新的test' }
+              }, true);
+              break;
+            case 'reloadData':
+              table.reloadData(tableId, {
+                where: { abc: '123456' },
+                scrollPos: 'fixed'
+              });
+              break;
+          }
+          layer.msg('可观察 Network 请求参数的变化');
+        }
+      });
+
+      dropdown.render({
+        elem: '#rowMode',
+        data: [
+          {id: 'default-row', title: '单行模式（默认）'},
+          {id: 'multi-row', title: '多行模式'}
+        ],
+        click: function(obj) {
+          switch (obj.id) {
+            case 'default-row':
+              table.reload(tableId, { lineStyle: null });
+              layer.msg('已设为单行');
+              break;
+            case 'multi-row':
+              table.reload(tableId, { lineStyle: 'height: 95px;' });
+              layer.msg('已设为多行');
+              break;
+          }
+        }
+      });
+    }
+  });
+
+  // ========== 工具栏事件 ==========
+  table.on('toolbar(testTable)', function(obj) {
+    var id = obj.config.id;
+    switch (obj.event) {
+      case 'getCheckData':
+        var checkData = table.checkStatus(id).data;
+        layer.alert(JSON.stringify(checkData, null, 2), { title: '选中行数据', area: ['500px', '400px'] });
+        break;
+      case 'getData':
+        var pageData = table.getData(id);
+        layer.alert(JSON.stringify(pageData, null, 2), { title: '当前页数据', area: ['500px', '400px'] });
         break;
     }
   });
 
-  table.on('tool(toolbarTable)', function(obj) {
+  // ========== 行工具事件 ==========
+  table.on('tool(testTable)', function(obj) {
     var data = obj.data;
+    if (obj.event === 'edit') {
+      layer.open({
+        title: '编辑 — ' + data.username,
+        type: 1,
+        area: ['450px', '380px'],
+        shadeClose: true,
+        content:
+          '<form class="layui-form" style="padding:20px;">' +
+          '  <div class="layui-form-item"><label class="layui-form-label">用户名</label>' +
+          '    <div class="layui-input-block"><input type="text" value="' + data.username + '" class="layui-input" disabled></div></div>' +
+          '  <div class="layui-form-item"><label class="layui-form-label">邮箱</label>' +
+          '    <div class="layui-input-block"><input type="text" value="' + data.email + '" class="layui-input" id="rowEditEmail"></div></div>' +
+          '  <div class="layui-form-item"><label class="layui-form-label">角色</label>' +
+          '    <div class="layui-input-block"><select id="rowEditRole">' +
+          roles.map(function(r) { return '<option' + (r === data.role ? ' selected' : '') + '>' + r + '</option>'; }).join('') +
+          '    </select></div></div>' +
+          '  <div class="layui-form-item"><label class="layui-form-label">签名</label>' +
+          '    <div class="layui-input-block"><textarea class="layui-textarea" id="rowEditSign">' + (data.sign || '') + '</textarea></div></div>' +
+          '</form>',
+        btn: ['确定', '取消'],
+        yes: function(idx, dom) {
+          obj.update({
+            email: dom.find('#rowEditEmail').val().trim() || data.email,
+            role: dom.find('#rowEditRole').val() || data.role,
+            sign: dom.find('#rowEditSign').val().trim() || data.sign
+          });
+          layer.close(idx);
+          layer.msg('修改成功', { icon: 1 });
+        }
+      });
 
-    switch (obj.event) {
-      case 'edit':
-        layer.msg('编辑：' + data.username);
-        break;
-      case 'del':
-        layer.confirm('确定删除该用户吗？', function(index) {
-          obj.del();
-          layer.close(index);
-          layer.msg('删除成功');
-        });
-        break;
+    } else if (obj.event === 'more') {
+      dropdown.render({
+        elem: this,
+        show: true,
+        data: [{title: '查看', id: 'detail'}, {title: '删除', id: 'del'}],
+        click: function(menudata) {
+          if (menudata.id === 'detail') {
+            layer.open({ title: '查看 — ' + data.username, type: 1, area: ['500px', '400px'],
+              content: '<div style="padding:20px;line-height:2">' +
+              '<p><b>ID:</b> ' + data.id + '</p><p><b>用户:</b> ' + data.username + '</p>' +
+              '<p><b>邮箱:</b> ' + data.email + '</p><p><b>性别:</b> ' + data.sex + '</p>' +
+              '<p><b>城市:</b> ' + data.city + '</p><p><b>积分:</b> ' + data.experience + '</p>' +
+              '<p><b>IP:</b> ' + data.ip + '</p><p><b>角色:</b> ' + data.role + '</p>' +
+              '<p><b>签名:</b> ' + data.sign + '</p></div>'
+            });
+          } else if (menudata.id === 'del') {
+            layer.confirm('确定删除「<strong>' + data.username + '</strong>」吗？', { icon: 3, title: '确认删除' }, function(index) {
+              obj.del();
+              layer.close(index);
+              layer.msg('已删除', { icon: 1 });
+            });
+          }
+        },
+        id: 'xldown-tool-more',
+        align: 'right',
+        style: 'box-shadow: 1px 1px 10px rgb(0 0 0 / 12%);'
+      });
     }
+  });
+
+  // 表格滚动时关闭下拉菜单
+  var tableInst = table.getOptions('testTable');
+  if (tableInst && tableInst.elem && tableInst.elem.next()) {
+    tableInst.elem.next().find('.layui-table-main').on('scroll', function() {
+      dropdown.close('xldown-tool-more');
+    });
+  }
+
+  // ========== 复选框事件 ==========
+  table.on('checkbox(testTable)', function(obj) {});
+
+  // ========== 单元格编辑事件 ==========
+  table.on('edit(testTable)', function(obj) {
+    var field = obj.field;
+    var value = obj.value;
+    if (field === 'email') {
+      if (!/^([a-zA-Z0-9_\.\-])+\@(([a-zA-Z0-9\-])+\.)+([a-zA-Z0-9]{2,4})+$/.test(value)) {
+        layer.tips('邮箱格式不正确，请重新编辑', this, { tips: 1 });
+        return obj.reedit();
+      }
+    }
+    layer.msg('编辑成功：' + field + ' → ' + value, { icon: 1 });
+    var update = {};
+    update[field] = value;
+    obj.update(update);
+  });
+
+  // ========== 排序事件 ==========
+  table.on('sort(testTable)', function(obj) {
+    table.reload('testTable', {
+      initSort: obj
+    });
+  });
+
+  // ========== 内联编辑模式表格 ==========
+  var editMockData = [];
+  var editCities = ['北京', '上海', '广州', '深圳', '杭州'];
+  var editColors = ['#16baaa', '#16b777', '#1E9FFF', '#FF5722', '#FFB800', '#393D49'];
+
+  for (var i = 1; i <= 15; i++) {
+    editMockData.push({
+      id: i,
+      username: '编辑员' + String(i).padStart(3, '0'),
+      city: editCities[Math.floor(Math.random() * editCities.length)],
+      sex: ['男', '女', '保密'][Math.floor(Math.random() * 3)],
+      date: '2025-0' + Math.floor(Math.random() * 9 + 1) + '-' + String(Math.floor(Math.random() * 28) + 1).padStart(2, '0'),
+      color: editColors[Math.floor(Math.random() * editColors.length)],
+      status: Math.random() > 0.3 ? 1 : 0,
+      remark: ['待审核处理中', '已通过审批', '需要补充材料', '已完成归档'][Math.floor(Math.random() * 4)]
+    });
+  }
+
+  table.render({
+    elem: '#editModesTable',
+    data: editMockData,
+    page: false,
+    height: 'full-520',
+    cellMinWidth: 100,
+    cols: [[
+      {field:'id', width:60, title:'ID', align:'center'},
+      {field:'username', width:110, title:'用户名'},
+      {field:'city', title:'select 下拉', minWidth:150, templet:'#TPL-edit-select'},
+      {field:'sex', title:'dropdown 下拉', width:140, unresize:true, align:'center', templet:'#TPL-edit-dropdown'},
+      {field:'date', title:'laydate 日期', minWidth:160, templet:'#TPL-edit-laydate'},
+      {field:'color', title:'colorpicker 颜色', width:110, unresize:true, align:'center', templet:'#TPL-edit-colorpicker'},
+      {field:'status', title:'switch 开关', width:120, unresize:true, align:'center', templet:'#TPL-edit-switch'},
+      {field:'remark', title:'textarea 文本', edit:'textarea', minWidth:180}
+    ]],
+    skin: 'line',
+    even: true,
+    done: function(res, curr, count) {
+      var opts = this;
+
+      table.getRowData = function(tableId, elem) {
+        var index = $(elem).closest('tr').data('index');
+        return table.cache[tableId][index] || {};
+      };
+
+      var showData = function(data) {
+        layer.msg('当前行数据：<br>' + JSON.stringify(data, null, 2), {
+          offset: '16px',
+          anim: 'slideDown',
+          time: 3000
+        });
+      };
+
+      // select 编辑
+      form.on('select(edit-select-demo)', function(obj) {
+        var data = table.getRowData(opts.id, obj.elem);
+        data.city = obj.value;
+        showData(data);
+      });
+
+      // dropdown 编辑
+      dropdown.render({
+        elem: '.edit-dropdown-btn',
+        data: [
+          {title: '男', id: 'male'},
+          {title: '女', id: 'female'},
+          {title: '保密', id: 'secret'}
+        ],
+        click: function(obj) {
+          var data = table.getRowData(opts.id, this.elem);
+          this.elem.find('span').html(obj.title);
+          data.sex = obj.title;
+          showData(data);
+        }
+      });
+
+      // laydate 编辑
+      laydate.render({
+        elem: '.edit-laydate-demo',
+        trigger: 'click',
+        done: function(value) {
+          var data = table.getRowData(opts.id, this.elem);
+          data.date = value;
+          showData(data);
+        }
+      });
+
+      // colorpicker 编辑
+      colorpicker.render({
+        elem: '.edit-colorpicker-demo',
+        done: function(color) {
+          var data = table.getRowData(opts.id, this.elem);
+          data.color = color;
+          showData(data);
+        }
+      });
+    }
+  });
+
+  // switch 开关事件
+  form.on('switch(edit-switch-demo)', function(obj) {
+    var tr = $(this).closest('tr');
+    var index = tr.data('index');
+    var data = table.cache['editModesTable'][index];
+    if (data) {
+      data.status = obj.elem.checked ? 1 : 0;
+      layer.msg('状态更新：' + (obj.elem.checked ? '启用' : '禁用'), { icon: 1 });
+    }
+  });
+
+  // textarea 编辑事件
+  table.on('edit(editModesTable)', function(obj) {
+    layer.msg('文本编辑：' + obj.field + ' → ' + obj.value, { icon: 1 });
+    obj.update({ [obj.field]: obj.value });
   });
 });
 </script>

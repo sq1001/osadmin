@@ -3,172 +3,536 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>树形表格组件 - Layui</title>
-  <meta name="keywords" content="树形表格,treeTable,树表">
-  <meta name="description" content="Layui树形表格组件使用示例">
+  <title>树形表格组件</title>
 </head>
 <body>
-  <div class="page-content">
-    <div class="layui-card">
-      <div class="layui-card-header">
-        <h3>树形表格组件 (treeTable)</h3>
-      </div>
-      <div class="layui-card-body">
-        
-        <fieldset class="layui-elem-field layui-field-title">
-          <legend>基础用法</legend>
-          <div class="layui-field-box">
-            <table id="demo" lay-filter="test"></table>
-          </div>
-        </fieldset>
-
-      </div>
-    </div>
+<div class="page-content">
+  <div class="demo-header">
+    <h3 class="demo-title">树形表格组件 — 综合演示</h3>
+    <p class="demo-desc">包含工具栏、节点展开/折叠、增删改查、复选框联动、导出等功能</p>
   </div>
 
-  <script type="text/html" id="toolbarDemo">
-    <div class="layui-btn-container">
-      <button class="layui-btn layui-btn-sm" lay-event="getChecked">获取选中数据</button>
-      <button class="layui-btn layui-btn-sm" lay-event="reload">重载表格</button>
-      <button class="layui-btn layui-btn-sm" lay-event="expandAll">展开全部</button>
-      <button class="layui-btn layui-btn-sm" lay-event="collapseAll">折叠全部</button>
+  <div class="layui-card" style="margin:0;">
+    <div class="layui-card-body" style="padding:0;">
+      <script type="text/html" id="treeToolbarDemo">
+        <div class="layui-btn-container">
+          <button class="layui-btn layui-btn-sm" lay-event="getCheckedData">获取选中数据</button>
+          <button class="layui-btn layui-btn-sm" lay-event="getAllData">获取全部数据</button>
+          <button class="layui-btn layui-btn-sm" id="addNodeBtn">
+            添加节点 <i class="layui-icon layui-icon-down layui-font-12"></i>
+          </button>
+          <button class="layui-btn layui-btn-sm layui-bg-blue" id="expandBtn">
+            展开/折叠 <i class="layui-icon layui-icon-down layui-font-12"></i>
+          </button>
+          <button class="layui-btn layui-btn-sm layui-btn-primary" id="reloadTreeBtn">
+            重载表格 <i class="layui-icon layui-icon-down layui-font-12"></i>
+          </button>
+        </div>
+      </script>
+
+      <script type="text/html" id="barDemo">
+        <div class="layui-clear-space">
+          <button class="layui-btn layui-btn-xs" lay-event="edit">编辑</button>
+          <button class="layui-btn layui-btn-xs" lay-event="addChild">添加子项</button>
+          <button class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</button>
+        </div>
+      </script>
+
+      <table class="layui-hide" id="treeTable" lay-filter="treeTable"></table>
     </div>
-  </script>
+  </div>
+</div>
 
-  <script type="text/html" id="barDemo">
-    <a class="layui-btn layui-btn-xs" lay-event="edit">编辑</a>
-    <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
-  </script>
+<style>
+.demo-header {
+  margin-bottom: 16px;
+}
+.demo-title {
+  font-size: 18px;
+  font-weight: 600;
+  color: var(--text-primary);
+  margin-bottom: 4px;
+}
+.demo-desc {
+  font-size: 13px;
+  color: var(--text-muted);
+}
+.layui-clear-space {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.layui-font-12 { font-size: 12px; }
+</style>
 
-  <script>
-  layui.use(['treeTable'], function(){
-    var treeTable = layui.treeTable;
-    var $ = layui.$;
-    
-    var data = [
-      {
-        id: 1,
-        name: '研发部',
-        manager: '张三',
-        memberCount: 20,
-        createTime: '2024-01-01',
+<script>
+layui.use(['treeTable', 'layer', 'dropdown', 'form', 'jquery', 'commonMod'], function() {
+  var treeTable = layui.treeTable;
+  var layer = layui.layer;
+  var dropdown = layui.dropdown;
+  var form = layui.form;
+  var $ = layui.jquery;
+  var common = layui.commonMod;
+
+  var treeIns;
+
+  function generateMockData() {
+    var depts = [
+      { id: 1, name: '研发中心', manager: '张三', code: 'RD001', status: 1, level: 1, headcount: 86, sort: 1, createTime: '2024-01-15', remark: '核心技术部门',
         children: [
-          {
-            id: 11,
-            name: '前端组',
-            manager: '李四',
-            memberCount: 8,
-            createTime: '2024-01-15'
+          { id: 11, name: '前端开发组', manager: '李四', code: 'FE001', status: 1, level: 2, headcount: 24, sort: 1, createTime: '2024-02-01', remark: '负责Web/H5/小程序前端',
+            children: [
+              { id: 111, name: 'Vue 团队', manager: '王五', code: 'VUE01', status: 1, level: 3, headcount: 10, sort: 1, createTime: '2024-03-10', remark: '' },
+              { id: 112, name: 'React 团队', manager: '赵六', code: 'RCT01', status: 1, level: 3, headcount: 8, sort: 2, createTime: '2024-03-10', remark: '' },
+              { id: 113, name: '小程序组', manager: '孙七', code: 'MINI1', status: 0, level: 3, headcount: 6, sort: 3, createTime: '2024-05-20', remark: '暂停招聘' }
+            ]
           },
-          {
-            id: 12,
-            name: '后端组',
-            manager: '王五',
-            memberCount: 12,
-            createTime: '2024-01-15'
-          }
+          { id: 12, name: '后端开发组', manager: '周八', code: 'BE001', status: 1, level: 2, headcount: 38, sort: 2, createTime: '2024-02-01', remark: '',
+            children: [
+              { id: 121, name: 'Java 服务端', manager: '吴九', code: 'JAVA1', status: 1, level: 3, headcount: 18, sort: 1, createTime: '2024-03-15', remark: '' },
+              { id: 122, name: 'Go 微服务', manager: '郑十', code: 'GO001', status: 1, level: 3, headcount: 12, sort: 2, createTime: '2024-04-01', remark: '新架构方向' },
+              { id: 123, name: 'Python 数据', manager: '冯一', code: 'PYTH1', status: 1, level: 3, headcount: 8, sort: 3, createTime: '2024-04-15', remark: '' }
+            ]
+          },
+          { id: 13, name: '测试保障组', manager: '陈二', code: 'QA001', status: 1, level: 2, headcount: 24, sort: 3, createTime: '2024-02-15', remark: '含自动化测试' }
         ]
       },
-      {
-        id: 2,
-        name: '市场部',
-        manager: '赵六',
-        memberCount: 15,
-        createTime: '2024-02-01',
+      { id: 2, name: '市场营销部', manager: '褚三', code: 'MKT001', status: 1, level: 1, headcount: 35, sort: 2, createTime: '2024-01-15', remark: '',
         children: [
-          {
-            id: 21,
-            name: '销售组',
-            manager: '孙七',
-            memberCount: 10,
-            createTime: '2024-02-15'
+          { id: 21, name: '品牌推广组', manager: '卫四', code: 'BRD01', status: 1, level: 2, headcount: 8, sort: 1, createTime: '2024-02-20', remark: '' },
+          { id: 22, name: '渠道销售组', manager: '蒋五', code: 'CHN01', status: 1, level: 2, headcount: 18, sort: 2, createTime: '2024-02-20', remark: '',
+            children: [
+              { id: 221, name: '华东大区', manager: '沈六', code: 'EC01', status: 1, level: 3, headcount: 6, sort: 1, createTime: '2024-06-01', remark: '' },
+              { id: 222, name: '华南大区', manager: '韩七', code: 'SC01', status: 0, level: 3, headcount: 5, sort: 2, createTime: '2024-06-01', remark: '人员调整中' },
+              { id: 223, name: '华北大区', manager: '杨八', code: 'NC01', status: 1, level: 3, headcount: 7, sort: 3, createTime: '2024-06-01', remark: '' }
+            ]
           },
-          {
-            id: 22,
-            name: '推广组',
-            manager: '周八',
-            memberCount: 5,
-            createTime: '2024-02-15'
-          }
+          { id: 23, name: '客户成功组', manager: '朱九', code: 'CS001', status: 1, level: 2, headcount: 9, sort: 3, createTime: '2024-03-01', remark: '' }
         ]
       },
-      {
-        id: 3,
-        name: '人事部',
-        manager: '吴九',
-        memberCount: 8,
-        createTime: '2024-03-01'
-      }
+      { id: 3, name: '产品运营部', manager: '秦十', code: 'POD1', status: 1, level: 1, headcount: 28, sort: 3, createTime: '2024-01-15', remark: '',
+        children: [
+          { id: 31, name: '产品设计组', manager: '尤一', code: 'PD01', status: 1, level: 2, headcount: 10, sort: 1, createTime: '2024-02-25', remark: '' },
+          { id: 32, name: '用户运营组', manager: '许二', code: 'UOP01', status: 1, level: 2, headcount: 10, sort: 2, createTime: '2024-02-25', remark: '' },
+          { id: 33, name: '内容运营组', manager: '何三', code: 'COP01', status: 0, level: 2, headcount: 8, sort: 3, createTime: '2024-04-10', remark: '待重组' }
+        ]
+      },
+      { id: 4, name: '人力资源部', manager: '吕四', code: 'HR001', status: 1, level: 1, headcount: 12, sort: 4, createTime: '2024-01-20', remark: '支持全公司' },
+      { id: 5, name: '财务管理部', manager: '施五', code: 'FIN1', status: 1, level: 1, headcount: 10, sort: 5, createTime: '2024-01-20', remark: '',
+        children: [
+          { id: 51, name: '会计核算组', manager: '张六', code: 'ACC1', status: 1, level: 2, headcount: 6, sort: 1, createTime: '2024-03-01', remark: '' },
+          { id: 52, name: '资金管理组', manager: '孔七', code: 'TRE1', status: 1, level: 2, headcount: 4, sort: 2, createTime: '2024-03-01', remark: '' }
+        ]
+      },
+      { id: 6, name: '行政支持部', manager: '曹八', code: 'ADM1', status: 0, level: 1, headcount: 8, sort: 6, createTime: '2024-01-25', remark: '外包过渡中' }
     ];
-    
-    var insTb = treeTable.render({
-      elem: '#demo',
-      data: data,
-      tree: {
-        customName: {
-          id: 'id',
-          pid: 'parentId',
-          children: 'children'
-        },
-        view: {
-          expandAll: true
+    return depts;
+  }
+
+  var mockData = generateMockData();
+
+  treeIns = treeTable.render({
+    elem: '#treeTable',
+    data: mockData,
+    toolbar: '#treeToolbarDemo',
+    defaultToolbar: [
+      'filter',
+      {
+        name: 'exports',
+        onClick: function(obj) {
+          var options = obj.config;
+          var currentPageData = layui.table.getData(obj.config.id);
+
+          obj.openPanel({
+            list: [
+              '<li data-type="csv">导出 CSV 文件</li>',
+              '<li data-type="xlsx">导出 Excel 文件</li>',
+              '<li data-type="txt">导出 TXT 文件</li>'
+            ].join(''),
+            done: function(panel, list) {
+              list.on('click', function() {
+                var type = $(this).data('type');
+                if (!type) return;
+
+                switch (type) {
+                  case 'csv':
+                    layui.table.exportFile(options.id, null, 'csv');
+                    break;
+
+                  case 'xlsx':
+                    common.exportXlsx(currentPageData, options, '部门数据.xlsx');
+                    break;
+
+                  case 'txt':
+                    common.exportTxt(currentPageData, options, '部门数据.txt');
+                    break;
+                }
+              });
+            }
+          });
         }
       },
-      toolbar: '#toolbarDemo',
-      defaultToolbar: ['filter', 'exports', 'print'],
-      cols: [[
-        {type: 'checkbox', fixed: 'left'},
-        {field: 'id', title: 'ID', width: 80, sort: true},
-        {field: 'name', title: '部门名称', width: 200},
-        {field: 'manager', title: '负责人', width: 120},
-        {field: 'memberCount', title: '人数', width: 100, sort: true},
-        {field: 'createTime', title: '创建时间', width: 180},
-        {fixed: 'right', title: '操作', toolbar: '#barDemo', width: 150}
-      ]],
-      page: false
-    });
-    
-    treeTable.on('toolbar(test)', function(obj){
-      var checkStatus = treeTable.checkStatus(obj.config.id);
-      
-      switch(obj.event){
-        case 'getChecked':
-          var data = checkStatus.data;
-          layer.alert(JSON.stringify(data));
-          break;
-        case 'reload':
-          insTb.reload();
-          break;
-        case 'expandAll':
-          insTb.expandAll(true);
-          break;
-        case 'collapseAll':
-          insTb.expandAll(false);
-          break;
-      }
-    });
-    
-    treeTable.on('tool(test)', function(obj){
-      var data = obj.data;
-      
-      if(obj.event === 'del'){
-        layer.confirm('真的删除行么', function(index){
-          obj.del();
-          layer.close(index);
-        });
-      } else if(obj.event === 'edit'){
-        layer.prompt({
-          formType: 2,
-          value: data.name
-        }, function(value, index){
-          obj.update({
-            name: value
-          });
-          layer.close(index);
-        });
-      }
-    });
+      'print'
+    ],
+    height: 'full-90',
+    page: true,
+    limit: 15,
+    limits: [10, 15, 20, 30],
+    tree: {
+      customName: {
+        id: 'id',
+        pid: 'parentId',
+        children: 'children'
+      },
+      view: {
+        expandAllDefault: false,
+        showIcon: false,
+        dblClickExpand: false
+      },
+      async: false
+    },
+    cols: [[
+      {type: 'checkbox', fixed: 'left'},
+      {field: 'id', title: 'ID', width: 70, sort: true},
+      {field: 'name', title: '部门名称', width: 200, edit: 'text'},
+      {field: 'manager', title: '负责人', width: 105},
+      {field: 'code', title: '编码', width: 100},
+      {field: 'level', title: '层级', width: 70, align: 'center',
+        templet: function(d) {
+          var map = {1:'<span style="color:#16b777;">一级</span>',2:'<span style="color:#1890ff;">二级</span>',3:'<span style="color:#fa8c16;">三级</span>'};
+          return map[d.level] || '<span style="color:#999;">-</span>';
+        }
+      },
+      {field: 'headcount', title: '人数', width: 95, align: 'center', sort: true,
+        templet: function(d) {
+          if (!d.headcount) return '<span style="color:#ccc;">-</span>';
+          return '<span style="font-weight:600;color:var(--accent);">' + d.headcount + '</span>';
+        }
+      },
+      {field: 'status', title: '状态', width: 78, align: 'center',
+        templet: function(d) {
+          return d.status === 1
+            ? '<span class="layui-badge layui-bg-green" style="border-radius:2px;font-size:11px;line-height:18px;padding:0 6px;">启用</span>'
+            : '<span class="layui-badge layui-bg-gray" style="border-radius:2px;font-size:11px;line-height:18px;padding:0 6px;">停用</span>';
+        }
+      },
+      {field: 'sort', title: '排序', width: 85, align: 'center', sort: true,
+        templet: function(d) {
+          return d.sort != null ? d.sort : '-';
+        }
+      },
+      {field: 'createTime', title: '创建时间', width: 155, sort: true},
+      {field: 'remark', title: '备注', width: 75, edit: 'text',
+        templet: function(d) {
+          var text = d.remark || '';
+          if (!text) return '<span style="color:#ccc;">-</span>';
+          if (text.length > 12) text = text.substring(0, 12) + '…';
+          return '<span title="' + (d.remark||'') + '">' + text + '</span>';
+        }
+      },
+      {field: 'children', title: '子数', width: 64, align: 'center',
+        templet: function(d) {
+          var count = (d.children && d.children.length) || 0;
+          if (count === 0) return '<span style="color:#ccc;">-</span>';
+          return '<span style="color:var(--accent);font-weight:600;">' + count + '</span>';
+        }
+      },
+      {title:'操作', fixed: 'right', width: 185, toolbar:'#barDemo'}
+    ]],
+    skin: 'line',
+    even: true,
+    cellExpandedMode: 'tips',
+    done: function(res, curr, count) {
+
+      dropdown.render({
+        elem: '#addNodeBtn',
+        data: [
+          {id: 'addRoot', title: '添加顶级节点'},
+          {id: 'addChild', title: '添加子节点（选中行）'}
+        ],
+        click: function(obj) {
+          switch (obj.id) {
+            case 'addRoot':
+              addNode(null);
+              break;
+            case 'addChild':
+              var checked = treeTable.checkStatus('treeTable');
+              if (!checked.data || checked.data.length === 0) {
+                return layer.msg('请先选中一个父节点');
+              }
+              if (checked.data.length > 1) {
+                return layer.msg('只能选择一个父节点');
+              }
+              addNode(checked.data[0]);
+              break;
+          }
+        }
+      });
+
+      dropdown.render({
+        elem: '#expandBtn',
+        data: [
+          {id: 'expandAll', title: '展开全部节点'},
+          {id: 'collapseAll', title: '折叠全部节点'},
+          {id: 'expandCurrent', title: '展开到当前层级'}
+        ],
+        click: function(obj) {
+          switch (obj.id) {
+            case 'expandAll':
+              treeIns.expandAll(true);
+              layer.msg('已展开全部节点', { icon: 1 });
+              break;
+            case 'collapseAll':
+              treeIns.expandAll(false);
+              layer.msg('已折叠全部节点', { icon: 1 });
+              break;
+            case 'expandCurrent':
+              layer.prompt({ formType: 0, title: '输入展开层级（1~4）' }, function(val, idx) {
+                layer.close(idx);
+                var level = parseInt(val) || 2;
+                level = Math.max(1, Math.min(4, level));
+                treeIns.expandAll(true, { expandLevel: level });
+                layer.msg('已展开到第 ' + level + ' 层级', { icon: 1 });
+              });
+              break;
+          }
+        }
+      });
+
+      dropdown.render({
+        elem: '#reloadTreeBtn',
+        data: [
+          {id: 'reload', title: '重载（参数重置）'},
+          {id: 'reload-deep', title: '重载（参数叠加）'},
+          {id: 'refreshData', title: '刷新数据'}
+        ],
+        click: function(obj) {
+          switch (obj.id) {
+            case 'reload':
+              treeIns.reload({
+                where: { t: Date.now() }
+              });
+              break;
+            case 'reload-deep':
+              treeIns.reload({
+                where: { t: Date.now(), extra: 'param' }
+              }, true);
+              break;
+            case 'refreshData':
+              treeIns.reloadData({
+                where: { t: Date.now() }
+              });
+              break;
+          }
+          layer.msg('树形表格已重新加载');
+        }
+      });
+    }
   });
-  </script>
+
+  // ========== 工具栏事件 ==========
+  treeTable.on('toolbar(treeTable)', function(obj) {
+    var id = obj.config.id;
+    switch (obj.event) {
+      case 'getCheckedData':
+        var checkData = treeTable.checkStatus(id);
+        var checkedList = checkData.data;
+        if (!checkedList || checkedList.length === 0) {
+          return layer.msg('请先勾选数据');
+        }
+        layer.alert(JSON.stringify(checkedList, null, 2), {
+          title: '选中数据（' + checkedList.length + ' 条）',
+          area: ['500px', '400px']
+        });
+        break;
+
+      case 'getAllData':
+        var allData = treeTable.getData(id);
+        layer.alert(JSON.stringify(allData, null, 2), {
+          title: '全部数据',
+          area: ['500px', '450px']
+        });
+        break;
+    }
+  });
+
+  // ========== 行工具事件 ==========
+  treeTable.on('tool(treeTable)', function(obj) {
+    var data = obj.data;
+    if (obj.event === 'edit') {
+      layer.open({
+        title: '编辑节点 — ' + data.name,
+        type: 1,
+        area: ['520px', '420px'],
+        shadeClose: true,
+        content:
+          '<form class="layui-form" style="padding:20px;">' +
+          '  <div class="layui-form-item"><label class="layui-form-label">ID</label>' +
+          '    <div class="layui-input-block"><input type="text" value="' + data.id + '" class="layui-input" disabled></div></div>' +
+          '  <div class="layui-form-item"><label class="layui-form-label">部门名称</label>' +
+          '    <div class="layui-input-block"><input type="text" value="' + data.name + '" class="layui-input" id="editName"></div></div>' +
+          '  <div class="layui-form-item"><label class="layui-form-label">负责人</label>' +
+          '    <div class="layui-input-block"><input type="text" value="' + (data.manager || '') + '" class="layui-input" id="editManager"></div></div>' +
+          '  <div class="layui-form-item"><label class="layui-form-label">编码</label>' +
+          '    <div class="layui-input-block"><input type="text" value="' + (data.code || '') + '" class="layui-input" id="editCode"></div></div>' +
+          '  <div class="layui-form-item"><label class="layui-form-label">人数</label>' +
+          '    <div class="layui-input-block"><input type="number" value="' + (data.headcount || 0) + '" class="layui-input" id="editHeadcount" placeholder="0"></div></div>' +
+          '  <div class="layui-form-item"><label class="layui-form-label">排序</label>' +
+          '    <div class="layui-input-block"><input type="number" value="' + (data.sort || 0) + '" class="layui-input" id="editSort" placeholder="0"></div></div>' +
+          '  <div class="layui-form-item"><label class="layui-form-label">备注</label>' +
+          '    <div class="layui-input-block"><input type="text" value="' + (data.remark || '') + '" class="layui-input" id="editRemark" placeholder="选填"></div></div>' +
+          '</form>',
+        btn: ['确定', '取消'],
+        yes: function(idx, dom) {
+          obj.update({
+            name: dom.find('#editName').val().trim() || data.name,
+            manager: dom.find('#editManager').val().trim() || data.manager,
+            code: dom.find('#editCode').val().trim() || data.code,
+            headcount: parseInt(dom.find('#editHeadcount').val()) || data.headcount || 0,
+            sort: parseInt(dom.find('#editSort').val()) || data.sort || 0,
+            remark: dom.find('#editRemark').val().trim()
+          });
+          layer.close(idx);
+          layer.msg('修改成功', { icon: 1 });
+        }
+      });
+
+    } else if (obj.event === 'addChild') {
+      addNode(data);
+
+    } else if (obj.event === 'del') {
+      var childCount = (data.children && data.children.length) || 0;
+      var msg = '确定要删除「<strong>' + data.name + '</strong>」吗？';
+      if (childCount > 0) {
+        msg += '<br><br><span style="color:#ff5722;">⚠ 该节点下有 <strong>' + childCount + '</strong> 个子节点，将一并删除！</span>';
+      }
+      layer.confirm(msg, { icon: 3, title: '确认删除' }, function(index) {
+        obj.del();
+        layer.close(index);
+        layer.msg('已删除节点', { icon: 1 });
+      });
+    }
+  });
+
+  // ========== 节点操作事件 ==========
+  treeTable.on('nodeCollapse(treeTable)', function(obj) {});
+
+  treeTable.on('nodeExpand(treeTable)', function(obj) {});
+
+  // ========== 复选框事件 ==========
+  treeTable.on('checkbox(treeTable)', function(obj) {
+    console.log('[treeTable] checkbox:', obj);
+  });
+
+  // ========== 单元格编辑事件 ==========
+  treeTable.on('edit(treeTable)', function(obj) {
+    var field = obj.field;
+    var value = obj.value;
+    if (field === 'name') {
+      if (!value || !value.trim()) {
+        layer.tips('名称不能为空', this, { tips: 1 });
+        return obj.reedit();
+      }
+    }
+    layer.msg('编辑成功：' + field + ' → ' + value, { icon: 1 });
+    var update = {};
+    update[field] = value;
+    obj.update(update);
+  });
+
+  // ========== 排序事件 ==========
+  treeTable.on('sort(treeTable)', function(obj) {
+    console.log('[treeTable] sort:', obj);
+  });
+
+  // ========== 辅助函数：添加节点 ==========
+  function addNode(parentData) {
+    var maxId = getMaxId(mockData);
+    var newId = maxId + 1;
+
+    var defaultParent = parentData ? parentData.name : '(顶级)';
+    var parentId = parentData ? parentData.id : null;
+
+    layer.open({
+      title: parentData ? '添加「' + parentData.name + '」的子节点' : '添加顶级节点',
+      type: 1,
+      area: ['480px', '420px'],
+      shadeClose: true,
+      content:
+        '<form class="layui-form" style="padding:20px;">' +
+        '  <div class="layui-form-item"><label class="layui-form-label">父节点</label>' +
+        '    <div class="layui-input-block"><input type="text" value="' + defaultParent + '" class="layui-input" disabled></div></div>' +
+        '  <div class="layui-form-item"><label class="layui-form-label">部门名称 <span style="color:red">*</span></label>' +
+        '    <div class="layui-input-block"><input type="text" placeholder="请输入部门名称" class="layui-input" id="newNodeName"></div></div>' +
+        '  <div class="layui-form-item"><label class="layui-form-label">负责人</label>' +
+        '    <div class="layui-input-block"><input type="text" placeholder="请输入负责人姓名" class="layui-input" id="newManager"></div></div>' +
+        '  <div class="layui-form-item"><label class="layui-form-label">编码</label>' +
+        '    <div class="layui-input-block"><input type="text" placeholder="如：DEPT001" class="layui-input" id="newCode"></div></div>' +
+        '  <div class="layui-form-item"><label class="layui-form-label">人数</label>' +
+        '    <div class="layui-input-block"><input type="number" value="0" class="layui-input" id="newHeadcount" placeholder="0"></div></div>' +
+        '  <div class="layui-form-item"><label class="layui-form-label">备注</label>' +
+        '    <div class="layui-input-block"><input type="text" placeholder="选填" class="layui-input" id="newRemark"></div></div>' +
+        '</form>',
+      btn: ['确定', '取消'],
+      yes: function(idx, dom) {
+        var name = dom.find('#newNodeName').val().trim();
+        if (!name) {
+          layer.tips('请输入部门名称', '#newNodeName', { tips: 1 });
+          return;
+        }
+
+        var newNode = {
+          id: newId,
+          name: name,
+          manager: dom.find('#newManager').val().trim(),
+          code: dom.find('#newCode').val().trim() || ('NODE' + newId),
+          status: 1,
+          level: parentData ? (parentData.level || 0) + 1 : 1,
+          headcount: parseInt(dom.find('#newHeadcount').val()) || 0,
+          sort: newId,
+          createTime: new Date().toISOString().slice(0,10),
+          remark: dom.find('#newRemark').val().trim(),
+          parentId: parentId,
+          children: []
+        };
+
+        if (parentData) {
+          if (!parentData.children) {
+            parentData.children = [];
+          }
+          parentData.children.push(newNode);
+
+          if (parentData.LAY_TABLE_INDEX !== undefined) {
+            obj.update({ children: parentData.children }, parentData.LAY_TABLE_INDEX);
+          } else {
+            treeIns.reloadData({});
+          }
+        } else {
+          mockData.push(newNode);
+          treeIns.reloadData({});
+        }
+
+        layer.close(idx);
+        layer.msg('节点添加成功：' + name, { icon: 1 });
+      }
+    });
+  }
+
+  function getMaxId(nodes) {
+    var maxId = 0;
+    function traverse(list) {
+      for (var i = 0; i < list.length; i++) {
+        if (list[i].id > maxId) maxId = list[i].id;
+        if (list[i].children && list[i].children.length) {
+          traverse(list[i].children);
+        }
+      }
+    }
+    traverse(nodes);
+    return maxId;
+  }
+
+});
+</script>
 </body>
 </html>

@@ -25,8 +25,9 @@
     },
     "view/components/table-demo.html": {
       "title": "表格组件",
-      "keywords": "表格,数据表格,分页,排序",
-      "description": "Layui数据表格组件使用示例"
+      "keywords": "表格,数据表格,分页,排序,导出",
+      "description": "Layui数据表格组件使用示例，支持CSV/Excel/TXT导出",
+      "dependencies": ["xlsx"]
     },
     "view/components/echarts-demo.html": {
       "title": "ECharts图表",
@@ -96,6 +97,11 @@
       "js": "lib/tinymce/tinymce.min.js",
       "css": null,
       "global": "tinymce"
+    },
+    "xlsx": {
+      "js": "lib/sheet/xlsx.full.min.js",
+      "css": null,
+      "global": "XLSX"
     }
   }
 }

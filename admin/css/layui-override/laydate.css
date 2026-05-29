@@ -165,6 +165,11 @@
   border-left-color: var(--border);
 }
 
+[data-theme="dark"] .layui-laydate-range .laydate-main-list-1 .layui-laydate-header,
+[data-theme="dark"] .layui-laydate-range .laydate-main-list-1 .layui-laydate-content {
+  border-left-color: var(--border) !important;
+}
+
 [data-theme="dark"] .laydate-theme-grid .layui-laydate-content td,
 [data-theme="dark"] .laydate-theme-grid .layui-laydate-content thead,
 [data-theme="dark"] .laydate-theme-grid .laydate-year-list > li,

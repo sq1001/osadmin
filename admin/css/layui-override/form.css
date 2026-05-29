@@ -28,7 +28,12 @@
 .layui-textarea[disabled] {
   background-color: var(--bg);
   cursor: not-allowed;
-  color: var(--text-muted);
+}
+
+/* 原生数字输入框 spinner */
+input[type="number"]::-webkit-inner-spin-button,
+input[type="number"]::-webkit-outer-spin-button {
+  opacity: 1;
 }
 
 /* ========== 输入框前后缀容器 ========== */
@@ -329,6 +334,12 @@
 [data-theme="dark"] .layui-input[disabled],
 [data-theme="dark"] .layui-textarea[disabled] {
   background-color: rgba(0, 0, 0, 0.3);
+}
+
+/* 暗主题：原生数字输入框 spinner 反色 */
+[data-theme="dark"] input[type="number"]::-webkit-inner-spin-button,
+[data-theme="dark"] input[type="number"]::-webkit-outer-spin-button {
+  filter: invert(1);
 }
 
 [data-theme="dark"] .layui-input-wrap .layui-input-prefix,

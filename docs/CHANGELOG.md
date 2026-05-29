@@ -4,6 +4,40 @@
 
 ---
 
+## v1.9.2 (2026-05-27)
+
+### ✨ 新功能
+- **数据导出模块** — common.js 新增 Excel（XLSX）和 TXT 导出功能，支持自动解析表头、列宽自适应；submitForm 增强支持 method/contentType/reloadTable/closeDialog/loading 等参数配置
+
+### 🎨 样式优化
+- **表格暗主题全面补全** — 固定列背景、排序箭头、编辑态边框、工具提示、滚动条角落、单元格 hover 等大量暗色模式样式缺失修复（+85行）
+- **弹窗 tips 层暗色修正** — 背景色从 `--bg` 调整为 `--bg-content`，视觉层次更合理
+- **数字输入框 spinner** — 显示原生控件，暗主题下自动反色适配
+- **分页器暗色增强** — 按钮 hover 态、select 下拉选项背景色补全
+- **滑块提示层暗色** — 气泡背景与箭头颜色适配
+- **日期范围选择器** — 暗模式下双面板分隔线补全
+- **搜索表单切换按钮** — 暗色模式文字颜色适配
+
+### 📦 依赖新增
+- SheetJS (xlsx) — 表格数据导出 Excel 支持
+
+### 📝 文件变更
+| 文件 | 说明 |
+|------|------|
+| `modules/extends/common.js` | 导出功能 + submitForm 增强 (v1.0.0→v1.0.2) |
+| `admin/css/layui-override/table.css` | 表格暗主题样式大幅补全 (+85行) |
+| `admin/css/layui-override/form.css` | 数字输入框 spinner 样式 |
+| `admin/css/layui-override/layer.css` | tips 层暗色背景修正 |
+| `admin/css/layui-override/laypage.css` | 分页器暗色增强 |
+| `admin/css/layui-override/slider.css` | 滑块提示层暗色 |
+| `admin/css/layui-override/laydate.css` | 日期范围分隔线 |
+| `admin/css/extends/resetForm.css` | 搜索按钮暗色 |
+| `config/resources.json` | 新增 xlsx 依赖 |
+| `view/components/*.html` ×8 | Demo 页面内容更新 |
+| `lib/sheet/` | 新增 SheetJS 库文件 |
+
+---
+
 ## v1.9.1 (2026-05-26)
 
 ### 🔧 **路由系统查询参数支持升级**

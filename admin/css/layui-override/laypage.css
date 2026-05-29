@@ -66,7 +66,6 @@
 }
 
 [data-theme="dark"] .layui-laypage a:hover {
-  border-color: var(--accent);
   color: var(--accent);
 }
 
@@ -79,6 +78,17 @@
 [data-theme="dark"] .layui-laypage select {
   background-color: transparent;
   border-color: var(--border);
+  color: var(--text-primary);
+}
+
+[data-theme="dark"] .layui-laypage button:hover {
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
+[data-theme="dark"] .layui-laypage select option {
+  background-color: var(--card-bg);
+  color: var(--text-primary);
 }
 
 [data-theme="dark"] .layui-laypage a,

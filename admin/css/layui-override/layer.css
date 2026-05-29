@@ -292,18 +292,18 @@
 }
 
 [data-theme="dark"] .layui-layer-tips .layui-layer-content {
-  background-color: var(--bg) !important;
+  background-color: var(--bg-content) !important;
   color: var(--text-primary);
 }
 
 [data-theme="dark"] .layui-layer-tips i.layui-layer-TipsT,
 [data-theme="dark"] .layui-layer-tips i.layui-layer-TipsB {
-  border-right-color: var(--bg) !important;
+  border-right-color: var(--bg-content) !important;
 }
 
 [data-theme="dark"] .layui-layer-tips i.layui-layer-TipsR,
 [data-theme="dark"] .layui-layer-tips i.layui-layer-TipsL {
-  border-bottom-color: var(--bg) !important;
+  border-bottom-color: var(--bg-content) !important;
 }
 
 [data-theme="dark"] .layui-layer-tab .layui-layer-title span {

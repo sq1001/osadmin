@@ -65,3 +65,12 @@
 [data-theme="dark"] .layui-slider-input-btn i {
   color: var(--text-muted);
 }
+
+[data-theme="dark"] .layui-slider-tips {
+  background-color: var(--bg-content) !important;
+  color: var(--text-primary);
+}
+
+[data-theme="dark"] .layui-slider-tips:after {
+  border-top-color: var(--bg-content);
+}
