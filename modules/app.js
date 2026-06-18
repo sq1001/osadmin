@@ -257,9 +257,21 @@ layui.define(['jquery', 'util', 'routerModule', 'themeModule', 'sidebarComp', 't
         return deferred.promise();
       }
 
-      var versionedUrl = url;
+      // 智能路径处理：支持相对路径、绝对路径、外部URL
+      var resolvedUrl = url;
+      if (url.indexOf('http://') !== 0 && url.indexOf('https://') !== 0 && url.indexOf('//') !== 0) {
+        if (url.charAt(0) !== '/') {
+          var base = this.baseUrl;
+          if (base.charAt(base.length - 1) !== '/') {
+            base += '/';
+          }
+          resolvedUrl = base + url;
+        }
+      }
+
+      var versionedUrl = resolvedUrl;
       if (this.appConfig && this.appConfig.version) {
-        versionedUrl = url + '?v=' + this.appConfig.version;
+        versionedUrl = resolvedUrl + '?v=' + this.appConfig.version;
       }
 
       $.ajax({
@@ -990,7 +1002,7 @@ layui.define(['jquery', 'util', 'routerModule', 'themeModule', 'sidebarComp', 't
             self.handleLogout();
           });
         } else if (action === 'settings') {
-          router.navigateByCode('view/user-profile');
+          router.navigateByCode('view/template/user-profile');
         }
         $('#userDropdownMenu').removeClass('show');
       });

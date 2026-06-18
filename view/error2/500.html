@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>500 - 服务器错误</title>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@500;600;700;800&family=Noto+Sans+SC:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../../admin/css/view/error2.css">
+</head>
+<body>
+<canvas class="auth-canvas-bg" id="bgCvs"></canvas>
+<div class="auth-error-container">
+    <div class="auth-error-illustration auth-anim auth-anim-1">
+        <svg viewBox="0 0 300 240" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <!-- 服务器阴影 -->
+            <ellipse cx="150" cy="215" rx="55" ry="8" fill="#8b5cf6" opacity=".08"/>
+            <!-- 服务器主体 -->
+            <rect x="85" y="50" width="130" height="140" rx="10" fill="url(#server-grad)" stroke="#8b5cf6" stroke-width="2"/>
+            <!-- 服务器顶部面板 -->
+            <rect x="95" y="60" width="110" height="30" rx="5" fill="#fff" opacity=".1"/>
+            <!-- 指示灯行 -->
+            <circle cx="110" cy="75" r="3" fill="#a78bfa" opacity=".7"/>
+            <circle cx="122" cy="75" r="3" fill="#a78bfa" opacity=".5"/>
+            <circle cx="134" cy="75" r="3" fill="#ef4444" opacity=".8"/>
+            <!-- 服务器中部面板 -->
+            <rect x="95" y="100" width="110" height="30" rx="5" fill="#fff" opacity=".08"/>
+            <!-- 中部指示灯 -->
+            <circle cx="110" cy="115" r="3" fill="#a78bfa" opacity=".5"/>
+            <circle cx="122" cy="115" r="3" fill="#a78bfa" opacity=".3"/>
+            <!-- 服务器底部面板 -->
+            <rect x="95" y="140" width="110" height="30" rx="5" fill="#fff" opacity=".06"/>
+            <!-- 底部指示灯 -->
+            <circle cx="110" cy="155" r="3" fill="#ef4444" opacity=".6"/>
+            <circle cx="122" cy="155" r="3" fill="#a78bfa" opacity=".3"/>
+            <!-- 破碎齿轮 - 右上 -->
+            <g transform="translate(230,55)">
+                <circle cx="0" cy="0" r="22" fill="none" stroke="#a78bfa" stroke-width="3" opacity=".5" stroke-dasharray="8 6"/>
+                <circle cx="0" cy="0" r="8" fill="#8b5cf6" opacity=".3"/>
+                <!-- 齿轮齿 (部分断裂) -->
+                <rect x="-3" y="-26" width="6" height="8" rx="1" fill="#a78bfa" opacity=".4"/>
+                <rect x="-3" y="18" width="6" height="8" rx="1" fill="#a78bfa" opacity=".4"/>
+                <rect x="18" y="-3" width="8" height="6" rx="1" fill="#a78bfa" opacity=".4"/>
+                <rect x="-26" y="-3" width="8" height="6" rx="1" fill="#a78bfa" opacity=".3" transform="rotate(15)"/>
+                <!-- 裂纹 -->
+                <line x1="-5" y1="-5" x2="8" y2="10" stroke="#ef4444" stroke-width="1.5" opacity=".5"/>
+                <line x1="8" y1="10" x2="3" y2="18" stroke="#ef4444" stroke-width="1" opacity=".4"/>
+            </g>
+            <!-- 警告三角 -->
+            <g transform="translate(60,40)">
+                <path d="M0 0 L12 20 L-12 20 Z" fill="none" stroke="#f59e0b" stroke-width="2" stroke-linejoin="round" opacity=".7"/>
+                <text x="0" y="16" text-anchor="middle" font-family="Plus Jakarta Sans" font-weight="700" font-size="12" fill="#f59e0b" opacity=".7">!</text>
+            </g>
+            <!-- 烟雾/蒸汽 -->
+            <circle cx="170" cy="42" r="4" fill="#a78bfa" opacity=".15"/>
+            <circle cx="180" cy="35" r="3" fill="#a78bfa" opacity=".1"/>
+            <circle cx="165" cy="30" r="2.5" fill="#a78bfa" opacity=".08"/>
+            <!-- 小碎片 -->
+            <rect x="225" y="90" width="4" height="4" rx="1" fill="#a78bfa" opacity=".3" transform="rotate(30 227 92)"/>
+            <rect x="240" y="100" width="3" height="3" rx=".5" fill="#8b5cf6" opacity=".25" transform="rotate(-15 241 101)"/>
+            <defs>
+                <linearGradient id="server-grad" x1="85" y1="50" x2="215" y2="190" gradientUnits="userSpaceOnUse">
+                    <stop offset="0%" stop-color="#8b5cf6"/>
+                    <stop offset="100%" stop-color="#a78bfa"/>
+                </linearGradient>
+            </defs>
+        </svg>
+    </div>
+    <div class="auth-error-code auth-anim auth-anim-2">500<span class="auth-glitch">500</span></div>
+    <div class="auth-error-message auth-anim auth-anim-2">服务器错误</div>
+</div>
+<script>
+(function(){
+    var c=document.getElementById('bgCvs'),ctx=c.getContext('2d'),w,h,pts=[];
+    function resize(){w=c.width=innerWidth;h=c.height=innerHeight;}
+    resize();window.addEventListener('resize',resize);
+    for(var i=0;i<35;i++) pts.push({x:Math.random()*w,y:Math.random()*h,vx:(Math.random()-.5)*.4,vy:(Math.random()-.5)*.4,r:Math.random()*2+1});
+    function draw(){
+        ctx.clearRect(0,0,w,h);
+        for(var i=0;i<pts.length;i++){
+            var p=pts[i];
+            p.x+=p.vx;p.y+=p.vy;
+            if(p.x<0)p.x=w;if(p.x>w)p.x=0;if(p.y<0)p.y=h;if(p.y>h)p.y=0;
+            ctx.beginPath();ctx.arc(p.x,p.y,p.r,0,Math.PI*2);
+            ctx.fillStyle='rgba(139,92,246,.13)';ctx.fill();
+            for(var j=i+1;j<pts.length;j++){
+                var q=pts[j],dx=p.x-q.x,dy=p.y-q.y,d=Math.sqrt(dx*dx+dy*dy);
+                if(d<130){ctx.beginPath();ctx.moveTo(p.x,p.y);ctx.lineTo(q.x,q.y);
+                ctx.strokeStyle='rgba(139,92,246,'+(0.13*(1-d/130))+')';ctx.lineWidth=.6;ctx.stroke();}
+            }
+        }
+        requestAnimationFrame(draw);
+    }
+    draw();
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>404 - 页面未找到</title>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@500;600;700;800&family=Noto+Sans+SC:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../../admin/css/view/error2.css">
+</head>
+<body>
+<canvas class="auth-canvas-bg" id="bgCvs"></canvas>
+<div class="auth-error-container">
+    <div class="auth-error-illustration auth-anim auth-anim-1">
+        <svg viewBox="0 0 300 240" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <!-- 云朵 左 -->
+            <ellipse cx="60" cy="60" rx="28" ry="16" fill="#e0efff"/>
+            <ellipse cx="80" cy="52" rx="22" ry="14" fill="#e0efff"/>
+            <ellipse cx="45" cy="55" rx="18" ry="12" fill="#e0efff"/>
+            <!-- 云朵 右 -->
+            <ellipse cx="240" cy="80" rx="24" ry="14" fill="#e0efff"/>
+            <ellipse cx="258" cy="73" rx="20" ry="12" fill="#e0efff"/>
+            <ellipse cx="225" cy="76" rx="16" ry="10" fill="#e0efff"/>
+            <!-- 热气球绳索 -->
+            <line x1="150" y1="148" x2="140" y2="185" stroke="#0072e3" stroke-width="1.5" opacity=".5"/>
+            <line x1="150" y1="148" x2="160" y2="185" stroke="#0072e3" stroke-width="1.5" opacity=".5"/>
+            <line x1="150" y1="148" x2="150" y2="188" stroke="#0072e3" stroke-width="1.5" opacity=".5"/>
+            <!-- 吊篮 -->
+            <rect x="132" y="185" width="36" height="20" rx="4" fill="#0072e3" opacity=".8"/>
+            <rect x="136" y="189" width="28" height="12" rx="2" fill="#005bbf" opacity=".6"/>
+            <!-- 气球主体 -->
+            <path d="M150 28 C110 28 85 60 85 95 C85 130 115 152 140 148 L160 148 C185 152 215 130 215 95 C215 60 190 28 150 28Z" fill="url(#balloon-grad)"/>
+            <!-- 气球条纹 -->
+            <path d="M130 35 C125 60 125 100 135 146" stroke="#fff" stroke-width="2" opacity=".25"/>
+            <path d="M170 35 C175 60 175 100 165 146" stroke="#fff" stroke-width="2" opacity=".25"/>
+            <path d="M150 28 L150 148" stroke="#fff" stroke-width="1.5" opacity=".15"/>
+            <!-- 气球高光 -->
+            <ellipse cx="125" cy="80" rx="12" ry="28" fill="#fff" opacity=".15" transform="rotate(-10 125 80)"/>
+            <!-- 问号 1 -->
+            <text x="90" y="115" font-family="Plus Jakarta Sans" font-weight="700" font-size="22" fill="#00b4d8" opacity=".5">?</text>
+            <!-- 问号 2 -->
+            <text x="205" y="100" font-family="Plus Jakarta Sans" font-weight="700" font-size="18" fill="#0072e3" opacity=".4">?</text>
+            <!-- 问号 3 -->
+            <text x="175" y="60" font-family="Plus Jakarta Sans" font-weight="600" font-size="14" fill="#00b4d8" opacity=".35">?</text>
+            <!-- 小云 底部 -->
+            <ellipse cx="110" cy="210" rx="30" ry="10" fill="#d0e4f7" opacity=".5"/>
+            <ellipse cx="190" cy="220" rx="25" ry="8" fill="#d0e4f7" opacity=".4"/>
+            <defs>
+                <linearGradient id="balloon-grad" x1="85" y1="28" x2="215" y2="148" gradientUnits="userSpaceOnUse">
+                    <stop offset="0%" stop-color="#0072e3"/>
+                    <stop offset="100%" stop-color="#00b4d8"/>
+                </linearGradient>
+            </defs>
+        </svg>
+    </div>
+    <div class="auth-error-code auth-anim auth-anim-2">404<span class="auth-glitch">404</span></div>
+    <div class="auth-error-message auth-anim auth-anim-2">页面未找到</div>
+</div>
+<script>
+(function(){
+    var c=document.getElementById('bgCvs'),ctx=c.getContext('2d'),w,h,pts=[];
+    function resize(){w=c.width=innerWidth;h=c.height=innerHeight;}
+    resize();window.addEventListener('resize',resize);
+    for(var i=0;i<35;i++) pts.push({x:Math.random()*w,y:Math.random()*h,vx:(Math.random()-.5)*.4,vy:(Math.random()-.5)*.4,r:Math.random()*2+1});
+    function draw(){
+        ctx.clearRect(0,0,w,h);
+        for(var i=0;i<pts.length;i++){
+            var p=pts[i];
+            p.x+=p.vx;p.y+=p.vy;
+            if(p.x<0)p.x=w;if(p.x>w)p.x=0;if(p.y<0)p.y=h;if(p.y>h)p.y=0;
+            ctx.beginPath();ctx.arc(p.x,p.y,p.r,0,Math.PI*2);
+            ctx.fillStyle='rgba(0,114,227,.13)';ctx.fill();
+            for(var j=i+1;j<pts.length;j++){
+                var q=pts[j],dx=p.x-q.x,dy=p.y-q.y,d=Math.sqrt(dx*dx+dy*dy);
+                if(d<130){ctx.beginPath();ctx.moveTo(p.x,p.y);ctx.lineTo(q.x,q.y);
+                ctx.strokeStyle='rgba(0,114,227,'+(0.13*(1-d/130))+')';ctx.lineWidth=.6;ctx.stroke();}
+            }
+        }
+        requestAnimationFrame(draw);
+    }
+    draw();
+})();
+</script>
+</body>
+</html>

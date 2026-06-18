@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>403 - 访问被拒绝</title>
+    <link rel="stylesheet" href="../../admin/css/view/error.css">
+</head>
+<body class="error-page error-403">
+    <div class="error-container">
+        <div class="error-illustration">
+            <svg viewBox="0 0 400 320" xmlns="http://www.w3.org/2000/svg">
+                <!-- 天空渐变 -->
+                <defs>
+                    <linearGradient id="sky403" x1="0%" y1="0%" x2="0%" y2="100%">
+                        <stop offset="0%" style="stop-color:#fff1f2;stop-opacity:1"/>
+                        <stop offset="100%" style="stop-color:#fee2e2;stop-opacity:1"/>
+                    </linearGradient>
+                </defs>
+                <rect width="400" height="320" fill="url(#sky403)" rx="12"/>
+
+                <!-- 远处花丛 -->
+                <ellipse cx="60" cy="260" rx="40" ry="20" fill="#fecdd3" opacity="0.4"/>
+                <ellipse cx="340" cy="255" rx="35" ry="18" fill="#fecdd3" opacity="0.4"/>
+
+                <!-- 地面 -->
+                <path d="M0 270 Q100 260 200 265 Q300 255 400 262 L400 320 L0 320Z" fill="#86efac" opacity="0.3"/>
+                <path d="M0 285 Q100 278 200 282 Q300 275 400 280 L400 320 L0 320Z" fill="#4ade80" opacity="0.2"/>
+
+                <!-- 围栏 - 左段 -->
+                <rect x="60" y="190" width="6" height="75" rx="2" fill="#92400e"/>
+                <rect x="110" y="190" width="6" height="75" rx="2" fill="#92400e"/>
+                <rect x="160" y="190" width="6" height="75" rx="2" fill="#92400e"/>
+                <!-- 横杆 -->
+                <rect x="58" y="205" width="112" height="5" rx="2" fill="#b45309"/>
+                <rect x="58" y="235" width="112" height="5" rx="2" fill="#b45309"/>
+                <!-- 尖顶 -->
+                <polygon points="63,190 60,185 66,185" fill="#92400e"/>
+                <polygon points="113,190 110,185 116,185" fill="#92400e"/>
+                <polygon points="163,190 160,185 166,185" fill="#92400e"/>
+
+                <!-- 围栏 - 右段 -->
+                <rect x="230" y="190" width="6" height="75" rx="2" fill="#92400e"/>
+                <rect x="280" y="190" width="6" height="75" rx="2" fill="#92400e"/>
+                <rect x="330" y="190" width="6" height="75" rx="2" fill="#92400e"/>
+                <!-- 横杆 -->
+                <rect x="228" y="205" width="110" height="5" rx="2" fill="#b45309"/>
+                <rect x="228" y="235" width="110" height="5" rx="2" fill="#b45309"/>
+                <!-- 尖顶 -->
+                <polygon points="233,190 230,185 236,185" fill="#92400e"/>
+                <polygon points="283,190 280,185 286,185" fill="#92400e"/>
+                <polygon points="333,190 330,185 336,185" fill="#92400e"/>
+
+                <!-- 中间大门 -->
+                <rect x="168" y="165" width="60" height="100" rx="4" fill="#92400e"/>
+                <rect x="172" y="169" width="52" height="92" rx="3" fill="#b45309"/>
+                <!-- 门板装饰 -->
+                <rect x="178" y="178" width="18" height="30" rx="2" fill="#92400e" opacity="0.3"/>
+                <rect x="200" y="178" width="18" height="30" rx="2" fill="#92400e" opacity="0.3"/>
+                <rect x="178" y="218" width="18" height="30" rx="2" fill="#92400e" opacity="0.3"/>
+                <rect x="200" y="218" width="18" height="30" rx="2" fill="#92400e" opacity="0.3"/>
+                <!-- 门拱 -->
+                <path d="M168 169 Q198 140 228 169" fill="#92400e"/>
+                <path d="M172 169 Q198 144 224 169" fill="#b45309"/>
+                <!-- 门锁 -->
+                <circle cx="198" cy="215" r="8" fill="#fbbf24"/>
+                <circle cx="198" cy="215" r="5" fill="#92400e"/>
+                <rect x="196" y="218" width="4" height="8" rx="1" fill="#92400e"/>
+
+                <!-- 门内花园 - 隐约可见 -->
+                <ellipse cx="198" cy="250" rx="20" ry="8" fill="#f87171" opacity="0.15"/>
+                <!-- 玫瑰花 -->
+                <circle cx="190" cy="245" r="5" fill="#f87171" opacity="0.2"/>
+                <circle cx="206" cy="242" r="4" fill="#fb7185" opacity="0.2"/>
+                <circle cx="198" cy="240" r="3.5" fill="#f87171" opacity="0.15"/>
+
+                <!-- 钥匙 - 掉落在地 -->
+                <g transform="translate(260, 268) rotate(25)">
+                    <ellipse cx="0" cy="0" rx="8" ry="6" fill="#fbbf24" opacity="0.8"/>
+                    <ellipse cx="0" cy="0" rx="5" ry="3.5" fill="#fde047" opacity="0.7"/>
+                    <rect x="-2" y="5" width="4" height="18" rx="1.5" fill="#fbbf24" opacity="0.8"/>
+                    <rect x="2" y="16" width="6" height="3" rx="1" fill="#fbbf24" opacity="0.8"/>
+                    <rect x="2" y="10" width="5" height="3" rx="1" fill="#fbbf24" opacity="0.8"/>
+                </g>
+
+                <!-- 花朵装饰 -->
+                <g transform="translate(80, 255)">
+                    <line x1="0" y1="0" x2="0" y2="15" stroke="#16a34a" stroke-width="2"/>
+                    <circle cx="0" cy="-2" r="5" fill="#f87171" opacity="0.6"/>
+                    <circle cx="0" cy="-2" r="2.5" fill="#fbbf24" opacity="0.5"/>
+                </g>
+                <g transform="translate(320, 250)">
+                    <line x1="0" y1="0" x2="0" y2="12" stroke="#16a34a" stroke-width="2"/>
+                    <circle cx="0" cy="-2" r="4.5" fill="#fb7185" opacity="0.6"/>
+                    <circle cx="0" cy="-2" r="2" fill="#fbbf24" opacity="0.5"/>
+                </g>
+                <g transform="translate(350, 258)">
+                    <line x1="0" y1="0" x2="0" y2="10" stroke="#16a34a" stroke-width="1.5"/>
+                    <circle cx="0" cy="-2" r="3.5" fill="#f87171" opacity="0.5"/>
+                    <circle cx="0" cy="-2" r="1.5" fill="#fde047" opacity="0.4"/>
+                </g>
+
+                <!-- 云朵 -->
+                <ellipse cx="90" cy="55" rx="32" ry="16" fill="#fff" opacity="0.6"/>
+                <ellipse cx="112" cy="50" rx="25" ry="14" fill="#fff" opacity="0.6"/>
+                <ellipse cx="300" cy="45" rx="28" ry="14" fill="#fff" opacity="0.5"/>
+                <ellipse cx="318" cy="40" rx="20" ry="12" fill="#fff" opacity="0.5"/>
+            </svg>
+        </div>
+        <div class="error-code">403</div>
+        <div class="error-message">访问被拒绝</div>
+    </div>
+</body>
+</html>

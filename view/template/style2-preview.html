@@ -1,0 +1,333 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>风格2 - 科技渐变模板</title>
+</head>
+<body>
+<div class="page-content">
+  <div class="demo-header">
+    <h3 class="demo-title">风格2 - 科技渐变模板</h3>
+    <p class="demo-desc">渐变背景、浮动气泡、Canvas粒子动画、几何插画风格，包含认证页面与错误页面共 8 个模板，点击按钮在新窗口中预览完整效果</p>
+  </div>
+
+  <div class="layui-card">
+    <div class="layui-card-header">
+      <span class="layui-card-title">认证页面</span>
+    </div>
+    <div class="layui-card-body">
+      <p class="demo-tip">认证页面采用左右分栏布局，左侧为渐变背景+浮动气泡+几何插画，右侧为功能表单，Canvas粒子连线动画贯穿全局</p>
+
+      <div class="template-list">
+        <div class="template-item">
+          <div class="template-info">
+            <div class="template-icon" style="background: linear-gradient(135deg, #b8dbff, #4a9aff);">
+              <i class="layui-icon layui-icon-login-wechat"></i>
+            </div>
+            <div class="template-detail">
+              <div class="template-name">用户登录</div>
+              <div class="template-desc">蓝色渐变，办公场景插画，Canvas粒子背景，支持Google/Apple/GitHub/微信登录</div>
+              <div class="template-tags">
+                <span class="tag">蓝色渐变</span>
+                <span class="tag">粒子动画</span>
+                <span class="tag">社交登录</span>
+              </div>
+            </div>
+          </div>
+          <div class="template-action">
+            <button class="layui-btn layui-btn-sm" onclick="openPage('/view/auth2/login.html')"><i class="layui-icon layui-icon-screen-full"></i> 新窗口打开</button>
+          </div>
+        </div>
+
+        <div class="template-item">
+          <div class="template-info">
+            <div class="template-icon" style="background: linear-gradient(135deg, #b8e6d0, #3aab7a);">
+              <i class="layui-icon layui-icon-username"></i>
+            </div>
+            <div class="template-detail">
+              <div class="template-name">用户注册</div>
+              <div class="template-desc">绿色渐变，花盆植物插画，密码强度检测，表单验证完善</div>
+              <div class="template-tags">
+                <span class="tag">绿色渐变</span>
+                <span class="tag">植物插画</span>
+                <span class="tag">密码强度</span>
+              </div>
+            </div>
+          </div>
+          <div class="template-action">
+            <button class="layui-btn layui-btn-sm" onclick="openPage('/view/auth2/register.html')"><i class="layui-icon layui-icon-screen-full"></i> 新窗口打开</button>
+          </div>
+        </div>
+
+        <div class="template-item">
+          <div class="template-info">
+            <div class="template-icon" style="background: linear-gradient(135deg, #cfc4f8, #7b68d9);">
+              <i class="layui-icon layui-icon-password"></i>
+            </div>
+            <div class="template-detail">
+              <div class="template-name">忘记密码</div>
+              <div class="template-desc">紫色渐变，信封锁钥插画，三步式重置流程：邮箱验证 → 输入验证码 → 重设密码</div>
+              <div class="template-tags">
+                <span class="tag">紫色渐变</span>
+                <span class="tag">三步流程</span>
+                <span class="tag">6位验证码</span>
+              </div>
+            </div>
+          </div>
+          <div class="template-action">
+            <button class="layui-btn layui-btn-sm" onclick="openPage('/view/auth2/forgot-password.html')"><i class="layui-icon layui-icon-screen-full"></i> 新窗口打开</button>
+          </div>
+        </div>
+
+        <div class="template-item">
+          <div class="template-info">
+            <div class="template-icon" style="background: linear-gradient(135deg, #c7d2fe, #6366f1);">
+              <i class="layui-icon layui-icon-release"></i>
+            </div>
+            <div class="template-detail">
+              <div class="template-name">锁屏页面</div>
+              <div class="template-desc">靛蓝深色渐变，全屏锁定界面，大号时间背景，用户头像与密码解锁</div>
+              <div class="template-tags">
+                <span class="tag">深色渐变</span>
+                <span class="tag">实时时钟</span>
+                <span class="tag">全屏锁定</span>
+              </div>
+            </div>
+          </div>
+          <div class="template-action">
+            <button class="layui-btn layui-btn-sm" onclick="openPage('/view/auth2/lock-screen.html')"><i class="layui-icon layui-icon-screen-full"></i> 新窗口打开</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="layui-card">
+    <div class="layui-card-header">
+      <span class="layui-card-title">错误页面</span>
+    </div>
+    <div class="layui-card-body">
+      <p class="demo-tip">错误页面采用左右分栏布局，左侧为主题色渐变插画，右侧为错误码大字+状态徽章+操作按钮，Glitch故障动画效果</p>
+
+      <div class="template-list">
+        <div class="template-item">
+          <div class="template-info">
+            <div class="template-icon" style="background: linear-gradient(135deg, #ffd6d6, #e87c7c);">
+              <i class="layui-icon layui-icon-404"></i>
+            </div>
+            <div class="template-detail">
+              <div class="template-name">404 页面未找到</div>
+              <div class="template-desc">粉色渐变，热气球插画，Glitch故障动画，实时时钟与错误统计</div>
+              <div class="template-tags">
+                <span class="tag">粉色渐变</span>
+                <span class="tag">热气球插画</span>
+                <span class="tag">Glitch动画</span>
+              </div>
+            </div>
+          </div>
+          <div class="template-action">
+            <button class="layui-btn layui-btn-sm" onclick="openPage('/view/error2/404.html')"><i class="layui-icon layui-icon-screen-full"></i> 新窗口打开</button>
+          </div>
+        </div>
+
+        <div class="template-item">
+          <div class="template-info">
+            <div class="template-icon" style="background: linear-gradient(135deg, #fecaca, #ef4444);">
+              <i class="layui-icon layui-icon-close"></i>
+            </div>
+            <div class="template-detail">
+              <div class="template-name">403 访问被拒绝</div>
+              <div class="template-desc">红色渐变，盾牌守卫插画，权限级别提示，安全元素装饰</div>
+              <div class="template-tags">
+                <span class="tag">红色渐变</span>
+                <span class="tag">盾牌插画</span>
+                <span class="tag">权限提示</span>
+              </div>
+            </div>
+          </div>
+          <div class="template-action">
+            <button class="layui-btn layui-btn-sm" onclick="openPage('/view/error2/403.html')"><i class="layui-icon layui-icon-screen-full"></i> 新窗口打开</button>
+          </div>
+        </div>
+
+        <div class="template-item">
+          <div class="template-info">
+            <div class="template-icon" style="background: linear-gradient(135deg, #ddd6fe, #8b5cf6);">
+              <i class="layui-icon layui-icon-close-fill"></i>
+            </div>
+            <div class="template-detail">
+              <div class="template-name">500 服务器错误</div>
+              <div class="template-desc">紫色渐变，服务器故障插画，旋转齿轮与警告三角，火花效果</div>
+              <div class="template-tags">
+                <span class="tag">紫色渐变</span>
+                <span class="tag">服务器插画</span>
+                <span class="tag">故障动画</span>
+              </div>
+            </div>
+          </div>
+          <div class="template-action">
+            <button class="layui-btn layui-btn-sm" onclick="openPage('/view/error2/500.html')"><i class="layui-icon layui-icon-screen-full"></i> 新窗口打开</button>
+          </div>
+        </div>
+
+        <div class="template-item">
+          <div class="template-info">
+            <div class="template-icon" style="background: linear-gradient(135deg, #bae6fd, #0ea5e9);">
+              <i class="layui-icon layui-icon-set"></i>
+            </div>
+            <div class="template-detail">
+              <div class="template-name">系统维护页</div>
+              <div class="template-desc">天蓝渐变，工具齿轮插画，维护进度条，预计恢复时间倒计时</div>
+              <div class="template-tags">
+                <span class="tag">天蓝渐变</span>
+                <span class="tag">齿轮插画</span>
+                <span class="tag">进度条</span>
+              </div>
+            </div>
+          </div>
+          <div class="template-action">
+            <button class="layui-btn layui-btn-sm" onclick="openPage('/view/error2/maintenance.html')"><i class="layui-icon layui-icon-screen-full"></i> 新窗口打开</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="layui-card">
+    <div class="layui-card-header">
+      <span class="layui-card-title">设计规范</span>
+    </div>
+    <div class="layui-card-body">
+      <pre class="layui-code" lay-options="{header: true, title: '风格2 设计参数'}">
+设计风格：科技渐变 (Tech Gradient)
+插画元素：几何图形、浮动气泡、粒子连线
+配色方案：多色渐变，每个页面独立主题色
+布局方式：PC 端左右 47/53 分栏，移动端隐藏左栏
+背景特效：Canvas 粒子 + 连线动画
+输入框：圆角 10px / 高度 40px / 聚焦发光效果
+验证码：Canvas 生成，网格纹理 + 干扰线 + 噪点
+响应式：960px 断点，移动端单栏表单
+图标规范：全部使用 SVG 图标，禁止 emoji
+字体方案：Plus Jakarta Sans + Noto Sans SC</pre>
+    </div>
+  </div>
+</div>
+
+<style>
+.template-list {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.template-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16px;
+  background: var(--bg);
+  border-radius: 8px;
+  border: 1px solid var(--border);
+  transition: border-color 0.2s;
+}
+
+.template-item:hover {
+  border-color: var(--primary);
+}
+
+.template-info {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  flex: 1;
+  min-width: 0;
+}
+
+.template-icon {
+  width: 48px;
+  height: 48px;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.template-icon .layui-icon {
+  font-size: 24px;
+  color: #fff;
+}
+
+.template-detail {
+  flex: 1;
+  min-width: 0;
+}
+
+.template-name {
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--text-primary);
+  margin-bottom: 4px;
+}
+
+.template-desc {
+  font-size: 13px;
+  color: var(--text-secondary);
+  margin-bottom: 8px;
+  line-height: 1.5;
+}
+
+.template-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.template-tags .tag {
+  font-size: 12px;
+  padding: 2px 8px;
+  border-radius: 10px;
+  background: var(--primary-light, rgba(0, 150, 136, 0.08));
+  color: var(--primary, #009688);
+}
+
+.template-action {
+  flex-shrink: 0;
+  margin-left: 16px;
+}
+
+.demo-tip {
+  margin-bottom: 15px;
+  padding: 10px 15px;
+  background: var(--accent-light, rgba(0, 150, 136, 0.08));
+  border-radius: 4px;
+  color: var(--accent, #009688);
+  font-size: 13px;
+}
+
+@media (max-width: 768px) {
+  .template-item {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 12px;
+  }
+
+  .template-action {
+    margin-left: 0;
+    width: 100%;
+  }
+
+  .template-action .layui-btn {
+    width: 100%;
+  }
+}
+</style>
+
+<script>
+function openPage(url) {
+  window.open(url, '_blank');
+}
+</script>
+</body>
+</html>

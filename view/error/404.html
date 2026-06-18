@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>404 - 页面未找到</title>
+    <link rel="stylesheet" href="../../admin/css/view/error.css">
+</head>
+<body class="error-page error-404">
+    <div class="error-container">
+        <div class="error-illustration">
+            <svg viewBox="0 0 400 320" xmlns="http://www.w3.org/2000/svg">
+                <!-- 天空渐变 -->
+                <defs>
+                    <linearGradient id="sky404" x1="0%" y1="0%" x2="0%" y2="100%">
+                        <stop offset="0%" style="stop-color:#fff7ed;stop-opacity:1"/>
+                        <stop offset="100%" style="stop-color:#ffedd5;stop-opacity:1"/>
+                    </linearGradient>
+                </defs>
+                <rect width="400" height="320" fill="url(#sky404)" rx="12"/>
+
+                <!-- 远山 -->
+                <path d="M0 240 Q50 190 100 210 Q150 180 200 200 Q250 170 300 195 Q350 180 400 200 L400 320 L0 320Z" fill="#fed7aa" opacity="0.5"/>
+                <path d="M0 260 Q80 220 160 240 Q240 215 320 235 Q370 220 400 230 L400 320 L0 320Z" fill="#fdba74" opacity="0.4"/>
+
+                <!-- 地面 -->
+                <path d="M0 270 Q100 255 200 265 Q300 250 400 260 L400 320 L0 320Z" fill="#86efac" opacity="0.35"/>
+                <path d="M0 285 Q100 275 200 280 Q300 270 400 278 L400 320 L0 320Z" fill="#4ade80" opacity="0.25"/>
+
+                <!-- 左侧大树 -->
+                <rect x="55" y="140" width="16" height="130" rx="4" fill="#92400e"/>
+                <rect x="58" y="145" width="4" height="120" rx="2" fill="#78350f" opacity="0.3"/>
+                <ellipse cx="63" cy="120" rx="45" ry="40" fill="#f97316" opacity="0.7"/>
+                <ellipse cx="50" cy="110" rx="30" ry="28" fill="#fb923c" opacity="0.6"/>
+                <ellipse cx="80" cy="105" rx="28" ry="26" fill="#fdba74" opacity="0.5"/>
+                <ellipse cx="63" cy="95" rx="22" ry="20" fill="#f97316" opacity="0.4"/>
+
+                <!-- 右侧大树 -->
+                <rect x="320" y="150" width="14" height="120" rx="4" fill="#92400e"/>
+                <ellipse cx="327" cy="130" rx="40" ry="35" fill="#f97316" opacity="0.7"/>
+                <ellipse cx="315" cy="120" rx="26" ry="24" fill="#fb923c" opacity="0.6"/>
+                <ellipse cx="340" cy="115" rx="24" ry="22" fill="#fdba74" opacity="0.5"/>
+
+                <!-- 小树 -->
+                <rect x="180" y="200" width="8" height="65" rx="3" fill="#92400e"/>
+                <ellipse cx="184" cy="190" rx="22" ry="20" fill="#fb923c" opacity="0.6"/>
+                <ellipse cx="184" cy="182" rx="16" ry="14" fill="#fdba74" opacity="0.5"/>
+
+                <!-- 分叉路口 - 左路 -->
+                <path d="M200 290 Q160 270 120 260" stroke="#a16207" stroke-width="5" fill="none" stroke-linecap="round" opacity="0.4"/>
+                <!-- 分叉路口 - 右路 -->
+                <path d="M200 290 Q240 268 280 258" stroke="#a16207" stroke-width="5" fill="none" stroke-linecap="round" opacity="0.4"/>
+
+                <!-- 路标牌 -->
+                <rect x="196" y="200" width="6" height="88" rx="2" fill="#92400e"/>
+                <!-- 左指示牌 -->
+                <rect x="130" y="200" width="72" height="28" rx="5" fill="#fbbf24"/>
+                <rect x="132" y="202" width="68" height="24" rx="4" fill="#fde047"/>
+                <text x="166" y="219" text-anchor="middle" font-size="11" fill="#92400e" font-weight="600" font-family="sans-serif">???</text>
+                <!-- 右指示牌 -->
+                <rect x="198" y="200" width="72" height="28" rx="5" fill="#fbbf24"/>
+                <rect x="200" y="202" width="68" height="24" rx="4" fill="#fde047"/>
+                <text x="234" y="219" text-anchor="middle" font-size="11" fill="#92400e" font-weight="600" font-family="sans-serif">???</text>
+
+                <!-- 指南针 -->
+                <g transform="translate(280, 170)">
+                    <circle cx="0" cy="0" r="18" fill="#fff" opacity="0.9" stroke="#f97316" stroke-width="2"/>
+                    <circle cx="0" cy="0" r="14" fill="#fff7ed" opacity="0.8"/>
+                    <!-- 北指针 -->
+                    <polygon points="0,-11 -4,2 0,-1 4,2" fill="#ef4444"/>
+                    <!-- 南指针 -->
+                    <polygon points="0,11 -4,-2 0,1 4,-2" fill="#94a3b8"/>
+                    <!-- 中心点 -->
+                    <circle cx="0" cy="0" r="2" fill="#92400e"/>
+                    <!-- N标记 -->
+                    <text x="0" y="-20" text-anchor="middle" font-size="7" fill="#ef4444" font-weight="700" font-family="sans-serif">N</text>
+                </g>
+
+                <!-- 落叶动画 -->
+                <ellipse cx="140" cy="160" rx="7" ry="4" fill="#fb923c" transform="rotate(30 140 160)" opacity="0.7">
+                    <animateTransform attributeName="transform" type="rotate" from="30 140 160" to="390 140 160" dur="6s" repeatCount="indefinite"/>
+                    <animate attributeName="cy" values="160;240;160" dur="8s" repeatCount="indefinite"/>
+                </ellipse>
+                <ellipse cx="260" cy="140" rx="6" ry="3.5" fill="#fdba74" transform="rotate(-20 260 140)" opacity="0.6">
+                    <animateTransform attributeName="transform" type="rotate" from="-20 260 140" to="340 260 140" dur="7s" repeatCount="indefinite"/>
+                    <animate attributeName="cy" values="140;230;140" dur="9s" repeatCount="indefinite"/>
+                </ellipse>
+                <ellipse cx="100" cy="180" rx="5" ry="3" fill="#f97316" transform="rotate(45 100 180)" opacity="0.5">
+                    <animateTransform attributeName="transform" type="rotate" from="45 100 180" to="405 100 180" dur="5s" repeatCount="indefinite"/>
+                    <animate attributeName="cy" values="180;250;180" dur="7s" repeatCount="indefinite"/>
+                </ellipse>
+
+                <!-- 云朵 -->
+                <ellipse cx="100" cy="50" rx="35" ry="18" fill="#fff" opacity="0.7"/>
+                <ellipse cx="125" cy="45" rx="28" ry="15" fill="#fff" opacity="0.7"/>
+                <ellipse cx="300" cy="60" rx="30" ry="16" fill="#fff" opacity="0.6"/>
+                <ellipse cx="320" cy="55" rx="22" ry="13" fill="#fff" opacity="0.6"/>
+            </svg>
+        </div>
+        <div class="error-code">404</div>
+        <div class="error-message">页面未找到</div>
+    </div>
+</body>
+</html>

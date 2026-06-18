@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>注册 - OSAdmin</title>
+    <link rel="stylesheet" href="../../admin/css/view/auth.css">
+</head>
+<body class="auth-page register-page">
+    <div class="auth-container">
+        <div class="auth-left">
+            <div class="illustration">
+                <svg viewBox="0 0 480 420" xmlns="http://www.w3.org/2000/svg">
+                    <rect width="480" height="420" fill="url(#gardenGradient)"/>
+                    <defs>
+                        <linearGradient id="gardenGradient" x1="0%" y1="0%" x2="0%" y2="100%">
+                            <stop offset="0%" style="stop-color:#fdf2f8;stop-opacity:1" />
+                            <stop offset="100%" style="stop-color:#fefce8;stop-opacity:1" />
+                        </linearGradient>
+                    </defs>
+                    <ellipse cx="240" cy="380" rx="220" ry="40" fill="#bef264"/>
+                    <ellipse cx="240" cy="375" rx="200" ry="35" fill="#a3e635"/>
+                    <circle cx="400" cy="60" r="35" fill="#fde047" opacity="0.9"/>
+                    <circle cx="400" cy="60" r="45" fill="#fde047" opacity="0.3"/>
+                    <g transform="translate(100, 280)">
+                        <line x1="0" y1="0" x2="0" y2="60" stroke="#22c55e" stroke-width="3"/>
+                        <ellipse cx="-8" cy="30" rx="12" ry="6" fill="#4ade80"/>
+                        <circle cx="-10" cy="-5" r="12" fill="#f472b6"/>
+                        <circle cx="10" cy="-5" r="12" fill="#f472b6"/>
+                        <circle cx="0" cy="-18" r="12" fill="#f472b6"/>
+                        <circle cx="0" cy="8" r="12" fill="#f472b6"/>
+                        <circle cx="0" cy="-5" r="8" fill="#fde047"/>
+                    </g>
+                    <g transform="translate(200, 260)">
+                        <line x1="0" y1="0" x2="0" y2="80" stroke="#22c55e" stroke-width="3"/>
+                        <ellipse cx="10" cy="40" rx="12" ry="6" fill="#4ade80"/>
+                        <circle cx="-12" cy="-8" r="14" fill="#c084fc"/>
+                        <circle cx="12" cy="-8" r="14" fill="#c084fc"/>
+                        <circle cx="0" cy="-22" r="14" fill="#c084fc"/>
+                        <circle cx="0" cy="6" r="14" fill="#c084fc"/>
+                        <circle cx="0" cy="-8" r="10" fill="#fde047"/>
+                    </g>
+                    <g transform="translate(350, 290)">
+                        <line x1="0" y1="0" x2="0" y2="50" stroke="#22c55e" stroke-width="3"/>
+                        <ellipse cx="8" cy="25" rx="10" ry="5" fill="#4ade80"/>
+                        <circle cx="-10" cy="-6" r="11" fill="#fde047"/>
+                        <circle cx="10" cy="-6" r="11" fill="#fde047"/>
+                        <circle cx="0" cy="-17" r="11" fill="#fde047"/>
+                        <circle cx="0" cy="5" r="11" fill="#fde047"/>
+                        <circle cx="0" cy="-6" r="7" fill="#fb923c"/>
+                    </g>
+                    <g transform="translate(380, 270)">
+                        <line x1="0" y1="0" x2="0" y2="70" stroke="#22c55e" stroke-width="3"/>
+                        <ellipse cx="-10" cy="35" rx="14" ry="7" fill="#4ade80"/>
+                        <circle cx="-13" cy="-7" r="13" fill="#fb923c"/>
+                        <circle cx="13" cy="-7" r="13" fill="#fb923c"/>
+                        <circle cx="0" cy="-20" r="13" fill="#fb923c"/>
+                        <circle cx="0" cy="6" r="13" fill="#fb923c"/>
+                        <circle cx="0" cy="-7" r="9" fill="#fde047"/>
+                    </g>
+                    <g transform="translate(150, 300)">
+                        <line x1="0" y1="0" x2="0" y2="55" stroke="#22c55e" stroke-width="3"/>
+                        <ellipse cx="9" cy="28" rx="11" ry="6" fill="#4ade80"/>
+                        <circle cx="-11" cy="-6" r="12" fill="#f87171"/>
+                        <circle cx="11" cy="-6" r="12" fill="#f87171"/>
+                        <circle cx="0" cy="-18" r="12" fill="#f87171"/>
+                        <circle cx="0" cy="6" r="12" fill="#f87171"/>
+                        <circle cx="0" cy="-6" r="8" fill="#fde047"/>
+                    </g>
+                    <g transform="translate(280, 120)">
+                        <ellipse cx="0" cy="0" rx="3" ry="8" fill="#475569"/>
+                        <circle cx="0" cy="-10" r="4" fill="#1e293b"/>
+                        <ellipse cx="-12" cy="-5" rx="14" ry="18" fill="#f472b6" opacity="0.8"/>
+                        <ellipse cx="12" cy="-5" rx="14" ry="18" fill="#f472b6" opacity="0.8"/>
+                        <ellipse cx="-12" cy="8" rx="10" ry="12" fill="#f472b6" opacity="0.7"/>
+                        <ellipse cx="12" cy="8" rx="10" ry="12" fill="#f472b6" opacity="0.7"/>
+                    </g>
+                    <g transform="translate(180, 160)">
+                        <ellipse cx="0" cy="0" rx="2.5" ry="7" fill="#475569"/>
+                        <circle cx="0" cy="-9" r="3.5" fill="#1e293b"/>
+                        <ellipse cx="-10" cy="-4" rx="12" ry="15" fill="#fde047" opacity="0.8"/>
+                        <ellipse cx="10" cy="-4" rx="12" ry="15" fill="#fde047" opacity="0.8"/>
+                        <ellipse cx="-10" cy="7" rx="8" ry="10" fill="#fde047" opacity="0.7"/>
+                        <ellipse cx="10" cy="7" rx="8" ry="10" fill="#fde047" opacity="0.7"/>
+                    </g>
+                    <path d="M 50 350 Q 45 330, 40 310" fill="none" stroke="#22c55e" stroke-width="2"/>
+                    <path d="M 60 355 Q 58 335, 56 315" fill="none" stroke="#22c55e" stroke-width="2"/>
+                    <path d="M 420 360 Q 422 340, 424 320" fill="none" stroke="#22c55e" stroke-width="2"/>
+                    <path d="M 430 358 Q 435 338, 440 318" fill="none" stroke="#22c55e" stroke-width="2"/>
+                </svg>
+            </div>
+        </div>
+
+        <div class="auth-right">
+            <div class="auth-form-wrapper">
+                <div class="auth-header">
+                    <h1 class="auth-title">创建账户</h1>
+                    <p class="auth-subtitle">开始您的旅程</p>
+                </div>
+
+                <form class="auth-form" id="registerForm">
+                    <div class="form-group">
+                        <label for="username" class="sr-only">用户名</label>
+                        <div class="input-wrapper">
+                            <svg class="input-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                                <circle cx="12" cy="7" r="4"></circle>
+                            </svg>
+                            <input type="text" id="username" name="username" placeholder="请输入用户名" required>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="password" class="sr-only">密码</label>
+                        <div class="input-wrapper">
+                            <svg class="input-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
+                                <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
+                            </svg>
+                            <input type="password" id="password" name="password" placeholder="请输入密码" required>
+                            <button type="button" class="password-toggle" aria-label="切换密码可见性">
+                                <svg class="eye-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+                                    <circle cx="12" cy="12" r="3"></circle>
+                                </svg>
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="email" class="sr-only">邮箱</label>
+                        <div class="input-wrapper">
+                            <svg class="input-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path>
+                                <polyline points="22,6 12,13 2,6"></polyline>
+                            </svg>
+                            <input type="email" id="email" name="email" placeholder="请输入邮箱地址" required>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="captcha" class="sr-only">验证码</label>
+                        <div class="captcha-wrapper">
+                            <div class="input-wrapper captcha-input">
+                                <svg class="input-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
+                                </svg>
+                                <input type="text" id="captcha" name="captcha" placeholder="验证码" maxlength="4" required>
+                            </div>
+                            <canvas class="captcha-canvas" id="captchaCvs" width="120" height="48" title="点击刷新验证码"></canvas>
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <label class="checkbox-label">
+                            <input type="checkbox" name="agree" required>
+                            <span>我已阅读并同意<a href="#" class="link-text">服务条款</a></span>
+                        </label>
+                    </div>
+
+                    <button type="submit" class="btn-primary">注册</button>
+
+                    <div class="social-register">
+                        <div class="divider"><span>或使用三方注册</span></div>
+                        <div class="social-login">
+                            <button type="button" class="social-btn" aria-label="微信注册">
+                                <svg class="social-icon" viewBox="0 0 24 24"><path d="M8.691 2.188C3.891 2.188 0 5.476 0 9.53c0 2.212 1.17 4.203 3.002 5.55a.59.59 0 01.213.665l-.39 1.48c-.019.07-.048.141-.048.213 0 .163.13.295.29.295a.326.326 0 00.167-.054l1.903-1.114a.864.864 0 01.717-.098 10.16 10.16 0 002.837.403c.276 0 .543-.027.811-.05-.857-2.578.157-4.972 1.932-6.446 1.703-1.415 3.882-1.98 5.853-1.838-.576-3.583-4.196-6.348-8.596-6.348zM5.785 5.991c.642 0 1.162.529 1.162 1.18a1.17 1.17 0 01-1.162 1.178A1.17 1.17 0 014.623 7.17c0-.651.52-1.18 1.162-1.18zm5.813 0c.642 0 1.162.529 1.162 1.18a1.17 1.17 0 01-1.162 1.178 1.17 1.17 0 01-1.162-1.178c0-.651.52-1.18 1.162-1.18zm5.34 2.867c-1.797-.052-3.746.512-5.28 1.786-1.72 1.428-2.687 3.72-1.78 6.22.942 2.453 3.666 4.229 6.884 4.229.826 0 1.622-.12 2.361-.336a.722.722 0 01.598.082l1.584.926a.272.272 0 00.14.045c.134 0 .24-.11.24-.245 0-.06-.024-.12-.04-.178l-.325-1.233a.49.49 0 01.177-.554C23.028 18.553 24 16.803 24 14.861c0-3.252-2.83-5.94-7.062-6.003zm-2.735 2.96c.535 0 .969.44.969.982a.976.976 0 01-.969.983.976.976 0 01-.969-.983c0-.542.434-.982.97-.982zm4.842 0c.535 0 .969.44.969.982a.976.976 0 01-.969.983.976.976 0 01-.969-.983c0-.542.434-.982.97-.982z" fill="#07C160"/></svg>
+                            </button>
+                            <button type="button" class="social-btn" aria-label="QQ注册">
+                                <svg class="social-icon" viewBox="0 0 24 24"><path d="M21.395 15.035a39.548 39.548 0 0 0-.803-2.264l-1.079-2.695c.001-.032.014-.562.014-.836C19.526 4.632 17.351 0 12 0S4.474 4.632 4.474 9.241c0 .274.013.804.014.836l-1.08 2.695a38.97 38.97 0 0 0-.802 2.264c-1.021 3.283-.69 4.643-.438 4.673.54.065 2.103-2.472 2.103-2.472 0 1.469.756 3.387 2.394 4.771-.612.188-1.363.479-1.845.835-.434.32-.379.646-.301.778.343.578 5.883.703 7.479.703 1.596 0 7.135-.125 7.478-.703.078-.132.132-.458-.301-.778-.481-.356-1.233-.646-1.845-.835 1.638-1.384 2.394-3.302 2.394-4.771 0 0 1.563 2.537 2.103 2.472.251-.03.581-1.39-.438-4.673z" fill="#12B7F5"/></svg>
+                            </button>
+                            <button type="button" class="social-btn" aria-label="Google注册">
+                                <svg class="social-icon" viewBox="0 0 24 24"><path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92a5.06 5.06 0 01-2.2 3.32v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.1z" fill="#4285F4"/><path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/><path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z" fill="#FBBC05"/><path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/></svg>
+                            </button>
+                            <button type="button" class="social-btn" aria-label="GitHub注册">
+                                <svg class="social-icon" viewBox="0 0 24 24"><path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12" fill="#24292e"/></svg>
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="auth-footer">
+                        <span>已有账户？</span>
+                        <a href="login.html" class="link-text">立即登录</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <div class="mobile-decoration">
+        <svg viewBox="0 0 400 180" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice">
+            <defs>
+                <linearGradient id="mobileBgRegister" x1="0%" y1="0%" x2="100%" y2="100%">
+                    <stop offset="0%" style="stop-color:#f472b6;stop-opacity:1" />
+                    <stop offset="100%" style="stop-color:#fbbf24;stop-opacity:1" />
+                </linearGradient>
+            </defs>
+            <rect width="400" height="180" fill="url(#mobileBgRegister)"/>
+            <circle cx="100" cy="65" r="35" fill="#ffffff" opacity="0.15"/>
+            <circle cx="300" cy="120" r="30" fill="#ffffff" opacity="0.12"/>
+            <g transform="translate(120, 105)">
+                <circle cx="0" cy="0" r="9" fill="#fbbf24" opacity="0.3"/>
+                <circle cx="-12" cy="-12" r="7" fill="#ffffff" opacity="0.4"/>
+                <circle cx="12" cy="-12" r="7" fill="#ffffff" opacity="0.4"/>
+                <circle cx="0" cy="-22" r="7" fill="#ffffff" opacity="0.4"/>
+                <circle cx="0" cy="10" r="7" fill="#ffffff" opacity="0.4"/>
+            </g>
+            <g transform="translate(280, 65)">
+                <circle cx="0" cy="0" r="7" fill="#fbbf24" opacity="0.3"/>
+                <circle cx="-10" cy="-10" r="6" fill="#ffffff" opacity="0.35"/>
+                <circle cx="10" cy="-10" r="6" fill="#ffffff" opacity="0.35"/>
+                <circle cx="0" cy="-18" r="6" fill="#ffffff" opacity="0.35"/>
+                <circle cx="0" cy="9" r="6" fill="#ffffff" opacity="0.35"/>
+            </g>
+            <path d="M 30,130 Q 80,85 130,110 T 230,100 T 330,125" stroke="#ffffff" stroke-width="2.5" fill="none" opacity="0.2"/>
+        </svg>
+    </div>
+
+    <script>
+    (function () {
+        'use strict';
+
+        document.querySelectorAll('.password-toggle').forEach(btn => {
+            btn.addEventListener('click', function() {
+                const input = this.previousElementSibling;
+                if (input.type === 'password') {
+                    input.type = 'text';
+                    this.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17.94 17.94A10.07 10.07 0 0112 20c-7 0-11-8-11-8a18.45 18.45 0 015.06-5.94M9.9 4.24A9.12 9.12 0 0112 4c7 0 11 8 11 8a18.5 18.5 0 01-2.16 3.19m-6.72-1.07a3 3 0 11-4.24-4.24"/><line x1="1" y1="1" x2="23" y2="23"/></svg>';
+                } else {
+                    input.type = 'password';
+                    this.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>';
+                }
+            });
+        });
+
+        // 验证码生成
+        var captchaCode = '';
+        function generateCaptcha() {
+            var canvas = document.getElementById('captchaCvs');
+            var c = canvas.getContext('2d');
+            var w = canvas.width, h = canvas.height;
+            var chars = 'ABCDEFGHJKLMNPQRSTUVWXYZabcdefghjkmnpqrstuvwxyz23456789';
+            captchaCode = '';
+            for (var i = 0; i < 4; i++) captchaCode += chars.charAt(Math.floor(Math.random() * chars.length));
+
+            c.fillStyle = '#f6f9fc';
+            c.fillRect(0, 0, w, h);
+
+            c.strokeStyle = 'rgba(0,0,0,.03)';
+            c.lineWidth = 0.5;
+            for (var x = 0; x < w; x += 8) { c.beginPath(); c.moveTo(x, 0); c.lineTo(x, h); c.stroke(); }
+            for (var y = 0; y < h; y += 8) { c.beginPath(); c.moveTo(0, y); c.lineTo(w, y); c.stroke(); }
+
+            for (var i = 0; i < 60; i++) {
+                c.fillStyle = 'rgba(' + Math.floor(Math.random() * 200) + ',' + Math.floor(Math.random() * 200) + ',' + Math.floor(Math.random() * 200) + ',.25)';
+                c.fillRect(Math.random() * w, Math.random() * h, 2, 2);
+            }
+
+            for (var i = 0; i < 3; i++) {
+                c.beginPath();
+                c.moveTo(Math.random() * w, Math.random() * h);
+                c.lineTo(Math.random() * w, Math.random() * h);
+                c.strokeStyle = 'rgba(59,130,246,.12)';
+                c.lineWidth = 1;
+                c.stroke();
+            }
+
+            var colors = ['#2563eb', '#1d4ed8', '#3b82f6', '#1e40af'];
+            for (var i = 0; i < 4; i++) {
+                c.save();
+                c.font = (18 + Math.random() * 6) + 'px sans-serif';
+                c.fillStyle = colors[i % colors.length];
+                c.translate(18 + i * 25, h / 2 + 6);
+                c.rotate((Math.random() - 0.5) * 0.5);
+                c.fillText(captchaCode[i], 0, 0);
+                c.restore();
+            }
+        }
+        generateCaptcha();
+
+        // 验证码点击刷新
+        document.getElementById('captchaCvs').addEventListener('click', generateCaptcha);
+
+        document.getElementById('registerForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            var cap = document.getElementById('captcha').value.trim();
+            if (!cap || cap.toLowerCase() !== captchaCode.toLowerCase()) {
+                alert('验证码不正确');
+                generateCaptcha();
+                document.getElementById('captcha').value = '';
+                return;
+            }
+            console.log('注册表单提交');
+        });
+    })();
+    </script>
+</body>
+</html>

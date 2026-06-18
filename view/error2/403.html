@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>403 - 访问被拒绝</title>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@500;600;700;800&family=Noto+Sans+SC:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../../admin/css/view/error2.css">
+</head>
+<body>
+<canvas class="auth-canvas-bg" id="bgCvs"></canvas>
+<div class="auth-error-container">
+    <div class="auth-error-illustration auth-anim auth-anim-1">
+        <svg viewBox="0 0 300 240" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <!-- 盾牌阴影 -->
+            <ellipse cx="150" cy="210" rx="50" ry="8" fill="#ef4444" opacity=".08"/>
+            <!-- 盾牌主体 -->
+            <path d="M150 30 L220 60 L220 130 C220 175 185 205 150 220 C115 205 80 175 80 130 L80 60 Z" fill="url(#shield-grad)" stroke="#ef4444" stroke-width="2.5"/>
+            <!-- 盾牌高光 -->
+            <path d="M150 38 L212 64 L212 130 C212 170 182 197 150 210 L150 38Z" fill="#fff" opacity=".08"/>
+            <!-- 盾牌内边框 -->
+            <path d="M150 48 L205 72 L205 130 C205 165 180 190 150 202 C120 190 95 165 95 130 L95 72 Z" stroke="#f87171" stroke-width="1" fill="none" opacity=".4"/>
+            <!-- 锁体 -->
+            <rect x="128" y="120" width="44" height="36" rx="6" fill="#fff" opacity=".9"/>
+            <rect x="132" y="124" width="36" height="28" rx="4" fill="#ef4444" opacity=".15"/>
+            <!-- 锁环 -->
+            <path d="M135 120 L135 105 C135 90 145 82 150 82 C155 82 165 90 165 105 L165 120" stroke="#fff" stroke-width="5" stroke-linecap="round" fill="none" opacity=".9"/>
+            <path d="M138 120 L138 106 C138 93 146 86 150 86 C154 86 162 93 162 106 L162 120" stroke="#ef4444" stroke-width="2" stroke-linecap="round" fill="none" opacity=".3"/>
+            <!-- 锁孔 -->
+            <circle cx="150" cy="135" r="4" fill="#ef4444" opacity=".6"/>
+            <rect x="148" y="137" width="4" height="8" rx="1" fill="#ef4444" opacity=".6"/>
+            <!-- 装饰线 -->
+            <line x1="110" y1="170" x2="190" y2="170" stroke="#f87171" stroke-width="1" opacity=".2"/>
+        </svg>
+    </div>
+    <div class="auth-error-code auth-anim auth-anim-2">403<span class="auth-glitch">403</span></div>
+    <div class="auth-error-message auth-anim auth-anim-2">访问被拒绝</div>
+</div>
+<script>
+(function(){
+    var c=document.getElementById('bgCvs'),ctx=c.getContext('2d'),w,h,pts=[];
+    function resize(){w=c.width=innerWidth;h=c.height=innerHeight;}
+    resize();window.addEventListener('resize',resize);
+    for(var i=0;i<35;i++) pts.push({x:Math.random()*w,y:Math.random()*h,vx:(Math.random()-.5)*.4,vy:(Math.random()-.5)*.4,r:Math.random()*2+1});
+    function draw(){
+        ctx.clearRect(0,0,w,h);
+        for(var i=0;i<pts.length;i++){
+            var p=pts[i];
+            p.x+=p.vx;p.y+=p.vy;
+            if(p.x<0)p.x=w;if(p.x>w)p.x=0;if(p.y<0)p.y=h;if(p.y>h)p.y=0;
+            ctx.beginPath();ctx.arc(p.x,p.y,p.r,0,Math.PI*2);
+            ctx.fillStyle='rgba(229,72,77,.13)';ctx.fill();
+            for(var j=i+1;j<pts.length;j++){
+                var q=pts[j],dx=p.x-q.x,dy=p.y-q.y,d=Math.sqrt(dx*dx+dy*dy);
+                if(d<130){ctx.beginPath();ctx.moveTo(p.x,p.y);ctx.lineTo(q.x,q.y);
+                ctx.strokeStyle='rgba(229,72,77,'+(0.13*(1-d/130))+')';ctx.lineWidth=.6;ctx.stroke();}
+            }
+        }
+        requestAnimationFrame(draw);
+    }
+    draw();
+})();
+</script>
+</body>
+</html>

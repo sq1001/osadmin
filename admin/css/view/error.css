@@ -1,0 +1,92 @@
+/* ===== 风格1 - 错误页面样式（简洁居中） ===== */
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html, body {
+    min-height: 100%;
+}
+
+body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+    min-height: 100vh;
+    color: #1f2937;
+}
+
+body.error-page {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 24px;
+}
+
+body.error-404 {
+    background: radial-gradient(circle at top, #fffaf1 0%, #ffedd5 42%, #fff7ed 100%);
+}
+
+body.error-403 {
+    background: radial-gradient(circle at top, #fff1f2 0%, #fee2e2 42%, #fff7f7 100%);
+}
+
+body.error-500 {
+    background: radial-gradient(circle at top, #faf5ff 0%, #f3e8ff 42%, #fdf4ff 100%);
+}
+
+body.error-maintenance {
+    background: radial-gradient(circle at top, #f0f9ff 0%, #e0f2fe 42%, #f0f9ff 100%);
+}
+
+/* ===== 居中容器 ===== */
+.error-container {
+    text-align: center;
+    max-width: 420px;
+    width: 100%;
+}
+
+/* ===== 插画 ===== */
+.error-illustration {
+    margin-bottom: 24px;
+}
+
+.error-illustration svg {
+    width: 100%;
+    max-width: 380px;
+    height: auto;
+    display: block;
+    margin: 0 auto;
+}
+
+/* ===== 错误码 ===== */
+.error-code {
+    font-size: 56px;
+    line-height: 1;
+    font-weight: 800;
+    letter-spacing: -2px;
+    color: #0f172a;
+    margin-bottom: 8px;
+}
+
+/* ===== 提示文字 ===== */
+.error-message {
+    font-size: 15px;
+    color: #475569;
+    font-weight: 500;
+}
+
+/* ===== 响应式 ===== */
+@media (max-width: 480px) {
+    .error-code {
+        font-size: 44px;
+    }
+
+    .error-message {
+        font-size: 13px;
+    }
+
+    .error-illustration svg {
+        max-width: 300px;
+    }
+}

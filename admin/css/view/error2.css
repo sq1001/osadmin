@@ -1,0 +1,124 @@
+/* ===== 风格2 - 错误页面样式（居中单栏，简洁） ===== */
+
+:root {
+    --auth-bg: #f0f6ff;
+    --auth-card: #fff;
+    --auth-fg: #0c1a2e;
+    --auth-fg2: #3d5a80;
+    --auth-muted: #8ba3be;
+    --auth-accent: #0072e3;
+    --auth-accent-hover: #005bbf;
+    --auth-accent-light: #dde9f7;
+    --auth-accent-lighter: #eef5fc;
+    --auth-accent-glow: rgba(0, 114, 227, .12);
+    --auth-border: #dce5ef;
+    --auth-danger: #e5484d;
+    --auth-danger-light: #fff0f0;
+    --auth-success: #30a46c;
+    --auth-success-light: #e9f9ee;
+    --auth-warning: #e5920a;
+    --auth-radius: 12px;
+    --auth-radius-lg: 20px;
+    --auth-shadow: 0 1px 2px rgba(0, 50, 120, .04), 0 4px 24px rgba(0, 50, 120, .07);
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body {
+    font-family: 'Noto Sans SC', 'Plus Jakarta Sans', sans-serif;
+    background: var(--auth-bg);
+    color: var(--auth-fg);
+    overflow: hidden;
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* ===== Canvas 粒子背景 ===== */
+.auth-canvas-bg {
+    position: fixed;
+    inset: 0;
+    z-index: 0;
+    pointer-events: none;
+}
+
+/* ===== 居中容器 ===== */
+.auth-error-container {
+    position: relative;
+    z-index: 10;
+    text-align: center;
+    padding: 24px;
+    max-width: 420px;
+    width: 100%;
+}
+
+/* ===== 插画 ===== */
+.auth-error-illustration {
+    margin-bottom: 20px;
+}
+.auth-error-illustration svg {
+    width: 100%;
+    max-width: 280px;
+    height: auto;
+    display: block;
+    margin: 0 auto;
+    animation: auth-illust-float 6s ease-in-out infinite;
+}
+@keyframes auth-illust-float {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-6px); }
+}
+
+/* ===== 错误码 ===== */
+.auth-error-code {
+    font-family: 'Plus Jakarta Sans';
+    font-weight: 800;
+    font-size: 56px;
+    line-height: 1;
+    letter-spacing: -2px;
+    color: var(--auth-fg);
+    margin-bottom: 8px;
+    position: relative;
+}
+.auth-error-code .auth-glitch {
+    position: absolute;
+    inset: 0;
+    color: var(--auth-danger);
+    opacity: 0;
+    animation: auth-glitch-anim 5s ease-in-out infinite;
+}
+@keyframes auth-glitch-anim {
+    0%, 88%, 100% { opacity: 0; transform: translate(0); }
+    90% { opacity: .5; transform: translate(2px, -1px); }
+    93% { opacity: 0; }
+    95% { opacity: .3; transform: translate(-2px, 1px); }
+    98% { opacity: 0; }
+}
+
+/* ===== 提示文字 ===== */
+.auth-error-message {
+    font-size: 15px;
+    color: var(--auth-fg2);
+    font-weight: 500;
+}
+
+/* ===== 动画 ===== */
+.auth-anim { animation: auth-fade-up .5s cubic-bezier(.16, 1, .3, 1) both; }
+.auth-anim-1 { animation-delay: .05s; }
+.auth-anim-2 { animation-delay: .15s; }
+@keyframes auth-fade-up { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: translateY(0); } }
+
+/* ===== 响应式 ===== */
+@media (max-width: 480px) {
+    .auth-error-code { font-size: 44px; }
+    .auth-error-message { font-size: 13px; }
+    .auth-error-illustration svg { max-width: 220px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after {
+        animation-duration: .01ms !important;
+        transition-duration: .01ms !important;
+    }
+}

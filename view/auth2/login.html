@@ -1,0 +1,541 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>登录 - OSAdmin</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@500;600;700;800&family=Noto+Sans+SC:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../../admin/css/view/auth2.css">
+</head>
+<body>
+
+<!-- Canvas 粒子背景 -->
+<canvas class="auth-canvas-bg" id="bgCvs"></canvas>
+
+<!-- Toast 容器 -->
+<div class="auth-toast-box" id="TB"></div>
+
+<!-- 主分栏布局 -->
+<div class="auth-split">
+
+    <!-- 左侧：蓝色渐变 + 浮动气泡 + 插画 -->
+    <div class="auth-split-left auth-bg-blue">
+        <div class="auth-float-bubble auth-float-1"></div>
+        <div class="auth-float-bubble auth-float-2"></div>
+        <div class="auth-float-bubble auth-float-3"></div>
+        <div class="auth-float-bubble auth-float-4"></div>
+
+        <div class="auth-left-content">
+            <!-- 登录场景 SVG 插画 -->
+            <div class="auth-illustration auth-anim auth-anim-1">
+                <svg viewBox="0 0 400 320" xmlns="http://www.w3.org/2000/svg">
+                    <defs>
+                        <linearGradient id="loginOrb1" x1="0" y1="0" x2="1" y2="1">
+                            <stop offset="0%" stop-color="#fff"/>
+                            <stop offset="100%" stop-color="#d0e4f7"/>
+                        </linearGradient>
+                        <linearGradient id="loginOrb2" x1="0" y1="0" x2="1" y2="1">
+                            <stop offset="0%" stop-color="#00b4d8"/>
+                            <stop offset="100%" stop-color="#0072e3"/>
+                        </linearGradient>
+                        <linearGradient id="loginOrb3" x1="0" y1="0" x2="1" y2="1">
+                            <stop offset="0%" stop-color="#e0ecfa"/>
+                            <stop offset="100%" stop-color="#b8d4f0"/>
+                        </linearGradient>
+                        <linearGradient id="deskTop" x1="0" y1="0" x2="0" y2="1">
+                            <stop offset="0%" stop-color="#fff"/>
+                            <stop offset="100%" stop-color="#d0e4f7"/>
+                        </linearGradient>
+                        <linearGradient id="screenGlow" x1="0" y1="0" x2="0" y2="1">
+                            <stop offset="0%" stop-color="#0072e3"/>
+                            <stop offset="100%" stop-color="#004da6"/>
+                        </linearGradient>
+                    </defs>
+
+                    <!-- 外圈轨道 -->
+                    <ellipse cx="200" cy="120" rx="140" ry="85" fill="none" stroke="#fff" stroke-width="1" opacity="0.08"/>
+                    <ellipse cx="200" cy="120" rx="115" ry="68" fill="none" stroke="#fff" stroke-width="0.8" opacity="0.06"/>
+
+                    <!-- 轨道上的小光点 -->
+                    <circle r="3" fill="#00b4d8" opacity="0.6">
+                        <animateMotion dur="8s" repeatCount="indefinite" path="M200,35 A85,85 0 1,1 199,35"/>
+                    </circle>
+                    <circle r="2" fill="#4a9aff" opacity="0.5">
+                        <animateMotion dur="12s" repeatCount="indefinite" path="M200,52 A68,68 0 1,0 201,52"/>
+                    </circle>
+
+                    <!-- 中心大球 -->
+                    <circle cx="200" cy="110" r="45" fill="url(#loginOrb2)" opacity="0.9"/>
+                    <ellipse cx="190" cy="95" rx="18" ry="13" fill="#fff" opacity="0.25"/>
+                    <!-- 球内盾牌图标 -->
+                    <g transform="translate(200, 108)">
+                        <path d="M0,-16 L14,-10 L14,4 C14,12 8,18 0,22 C-8,18 -14,12 -14,4 L-14,-10 Z" fill="#fff" opacity="0.85"/>
+                        <circle cx="0" cy="2" r="4" fill="#0072e3" opacity="0.7"/>
+                        <rect x="-2" y="5" width="4" height="7" rx="1" fill="#0072e3" opacity="0.7"/>
+                    </g>
+
+                    <!-- 卫星球 - 左上：钥匙 -->
+                    <circle cx="110" cy="70" r="18" fill="url(#loginOrb1)" opacity="0.7"/>
+                    <circle cx="110" cy="70" r="18" fill="none" stroke="#4a9aff" stroke-width="1.5" opacity="0.3"/>
+                    <g transform="translate(110, 68)">
+                        <circle cx="0" cy="-3" r="4.5" fill="#0072e3" opacity="0.6"/>
+                        <circle cx="0" cy="-3" r="2" fill="#fff" opacity="0.5"/>
+                        <rect x="-1.2" y="1" width="2.4" height="8" rx="0.8" fill="#0072e3" opacity="0.6"/>
+                        <rect x="1.2" y="6" width="2.5" height="1.5" rx="0.5" fill="#0072e3" opacity="0.6"/>
+                    </g>
+
+                    <!-- 卫星球 - 右下：锁 -->
+                    <circle cx="295" cy="155" r="16" fill="url(#loginOrb3)" opacity="0.7"/>
+                    <circle cx="295" cy="155" r="16" fill="none" stroke="#00b4d8" stroke-width="1.5" opacity="0.3"/>
+                    <g transform="translate(295, 153)">
+                        <path d="M-4,-5 C-4,-10 4,-10 4,-5" stroke="#0072e3" stroke-width="2" fill="none" opacity="0.6"/>
+                        <rect x="-5" y="-5" width="10" height="8" rx="2" fill="#0072e3" opacity="0.6"/>
+                    </g>
+
+                    <!-- 卫星球 - 右上：勾 -->
+                    <circle cx="280" cy="68" r="12" fill="url(#loginOrb1)" opacity="0.6"/>
+                    <circle cx="280" cy="68" r="12" fill="none" stroke="#4a9aff" stroke-width="1" opacity="0.25"/>
+                    <g transform="translate(280, 68)">
+                        <path d="M-5,0 L-1.5,4 L5,-4" stroke="#0072e3" stroke-width="2.5" fill="none" stroke-linecap="round" stroke-linejoin="round" opacity="0.6"/>
+                    </g>
+
+                    <!-- 连接线 -->
+                    <line x1="160" y1="90" x2="125" y2="78" stroke="#fff" stroke-width="1" opacity="0.15" stroke-dasharray="3 3"/>
+                    <line x1="240" y1="140" x2="280" y2="150" stroke="#fff" stroke-width="1" opacity="0.15" stroke-dasharray="3 3"/>
+                    <line x1="240" y1="90" x2="270" y2="75" stroke="#fff" stroke-width="1" opacity="0.12" stroke-dasharray="3 3"/>
+
+                    <!-- 数据流 - 左侧 -->
+                    <g opacity="0.3">
+                        <line x1="30" y1="60" x2="85" y2="80" stroke="#4a9aff" stroke-width="1.5" stroke-dasharray="4 3"/>
+                        <circle cx="30" cy="60" r="3" fill="#4a9aff" opacity="0.5"/>
+                    </g>
+
+                    <!-- 数据流 - 右侧 -->
+                    <g opacity="0.3">
+                        <line x1="320" y1="55" x2="370" y2="42" stroke="#00b4d8" stroke-width="1.5" stroke-dasharray="4 3"/>
+                        <circle cx="370" cy="42" r="3" fill="#00b4d8" opacity="0.5"/>
+                    </g>
+
+                    <!-- 装饰六边形 -->
+                    <polygon points="52,40 66,32 80,40 80,56 66,64 52,56" fill="url(#loginOrb1)" opacity="0.25"/>
+
+                    <!-- 装饰圆环 -->
+                    <circle cx="42" cy="130" r="14" fill="none" stroke="#4a9aff" stroke-width="2" opacity="0.2"/>
+                    <circle cx="42" cy="130" r="6" fill="#4a9aff" opacity="0.12"/>
+                    <circle cx="365" cy="110" r="10" fill="none" stroke="#00b4d8" stroke-width="1.5" opacity="0.2"/>
+
+                    <!-- 浮动粒子 -->
+                    <circle cx="75" cy="65" r="2.5" fill="#4a9aff" opacity="0.3"/>
+                    <circle cx="90" cy="35" r="1.8" fill="#00b4d8" opacity="0.25"/>
+                    <circle cx="340" cy="55" r="2" fill="#00b4d8" opacity="0.25"/>
+
+                    <!-- ===== 下方：人物坐在电脑桌前 ===== -->
+
+                    <!-- 地面 -->
+                    <line x1="40" y1="295" x2="360" y2="295" stroke="#4a9aff" stroke-width="1" opacity="0.1"/>
+
+                    <!-- 办公桌 -->
+                    <rect x="130" y="230" width="220" height="7" rx="3" fill="url(#deskTop)"/>
+                    <!-- 桌面前沿阴影 -->
+                    <rect x="130" y="235" width="220" height="2" rx="1" fill="#b8d4f0" opacity="0.4"/>
+                    <!-- 桌腿 -->
+                    <rect x="145" y="237" width="5" height="58" rx="1.5" fill="#b8d4f0" opacity="0.5"/>
+                    <rect x="330" y="237" width="5" height="58" rx="1.5" fill="#b8d4f0" opacity="0.5"/>
+
+                    <!-- 显示器 -->
+                    <rect x="195" y="178" width="90" height="52" rx="5" fill="url(#deskTop)"/>
+                    <rect x="199" y="182" width="82" height="44" rx="3" fill="url(#screenGlow)"/>
+                    <!-- 屏幕内容 - 代码行 -->
+                    <rect x="206" y="190" width="32" height="2.5" rx="1" fill="#fff" opacity="0.4"/>
+                    <rect x="206" y="196" width="48" height="2.5" rx="1" fill="#fff" opacity="0.3"/>
+                    <rect x="206" y="202" width="26" height="2.5" rx="1" fill="#fff" opacity="0.35"/>
+                    <rect x="206" y="208" width="40" height="2.5" rx="1" fill="#fff" opacity="0.25"/>
+                    <rect x="206" y="214" width="18" height="2.5" rx="1" fill="#fff" opacity="0.3"/>
+                    <!-- 显示器底座 -->
+                    <rect x="232" y="230" width="16" height="5" rx="1" fill="#d0e4f7"/>
+                    <rect x="226" y="233" width="28" height="3" rx="1.5" fill="#d0e4f7"/>
+
+                    <!-- 键盘 -->
+                    <rect x="210" y="240" width="50" height="8" rx="2.5" fill="#e0ecfa" opacity="0.8"/>
+                    <!-- 鼠标 -->
+                    <ellipse cx="275" cy="243" rx="5" ry="7" fill="#e0ecfa" opacity="0.8"/>
+
+                    <!-- 咖啡杯 -->
+                    <rect x="155" y="222" width="10" height="8" rx="2" fill="#e0ecfa" opacity="0.6"/>
+                    <path d="M165,224 C168,224 168,228 165,228" stroke="#b8d4f0" stroke-width="1" fill="none" opacity="0.4"/>
+                    <path d="M158,220 Q159,216 158,212" stroke="#4a9aff" stroke-width="0.7" fill="none" opacity="0.2">
+                        <animate attributeName="opacity" values="0.2;0.05;0.2" dur="2s" repeatCount="indefinite"/>
+                    </path>
+
+                    <!-- 人物 - 几何剪影风格坐姿 -->
+                    <g transform="translate(160, 155)">
+                        <!-- 椅子 -->
+                        <rect x="-6" y="30" width="22" height="48" rx="7" fill="#b8d4f0" opacity="0.4"/>
+                        <rect x="2" y="78" width="4" height="22" rx="1" fill="#b8d4f0" opacity="0.35"/>
+                        <line x1="-8" y1="100" x2="18" y2="100" stroke="#b8d4f0" stroke-width="2" stroke-linecap="round" opacity="0.35"/>
+
+                        <!-- 身体/躯干 - 几何形 -->
+                        <path d="M-2,18 L-8,55 L14,55 L8,18 Z" fill="#0072e3" opacity="0.55"/>
+
+                        <!-- 头部 - 几何圆形 -->
+                        <circle cx="3" cy="5" r="14" fill="#d0e4f7" opacity="0.8"/>
+                        <!-- 头发 - 几何弧 -->
+                        <path d="M-11,0 Q-11,-12 3,-14 Q17,-12 17,0" fill="#4a9aff" opacity="0.3"/>
+
+                        <!-- 左臂 - 伸向键盘 -->
+                        <path d="M-8,25 L-22,42 L-14,50" stroke="#0072e3" stroke-width="5" fill="none" stroke-linecap="round" stroke-linejoin="round" opacity="0.45"/>
+                        <!-- 右臂 - 伸向鼠标 -->
+                        <path d="M14,25 L32,40 L42,46" stroke="#0072e3" stroke-width="5" fill="none" stroke-linecap="round" stroke-linejoin="round" opacity="0.45"/>
+
+                        <!-- 手 -->
+                        <circle cx="-14" cy="50" r="3.5" fill="#d0e4f7" opacity="0.6"/>
+                        <circle cx="42" cy="46" r="3.5" fill="#d0e4f7" opacity="0.6"/>
+
+                        <!-- 腿 - 几何 -->
+                        <path d="M-4,55 L-10,82 L-4,86" stroke="#4a9aff" stroke-width="6" fill="none" stroke-linecap="round" stroke-linejoin="round" opacity="0.35"/>
+                        <path d="M10,55 L18,82 L24,86" stroke="#4a9aff" stroke-width="6" fill="none" stroke-linecap="round" stroke-linejoin="round" opacity="0.35"/>
+                    </g>
+
+                    <!-- 屏幕光晕 -->
+                    <ellipse cx="240" cy="210" rx="55" ry="28" fill="#0072e3" opacity="0.03"/>
+                </svg>
+            </div>
+
+
+        </div>
+    </div>
+
+    <!-- 右侧：表单卡片 -->
+    <div class="auth-split-right">
+        <div class="auth-form-card auth-anim auth-anim-3">
+
+            <div class="auth-form-title auth-anim auth-anim-1">账户登录</div>
+            <div class="auth-form-subtitle auth-anim auth-anim-2">请输入您的账户信息以继续</div>
+
+            <form id="loginForm" autocomplete="off" style="margin-top:24px;">
+
+                <!-- 邮箱 -->
+                <div class="auth-input-group auth-anim auth-anim-2" id="emailGroup" style="margin-bottom:16px;">
+                    <label for="email">邮箱地址</label>
+                    <div class="auth-input-wrapper">
+                        <span class="auth-input-icon">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="M22 4L12 13 2 4"/></svg>
+                        </span>
+                        <input type="email" id="email" placeholder="请输入邮箱地址" autocomplete="off">
+                    </div>
+                    <div class="auth-input-error" id="emailError">请输入有效的邮箱地址</div>
+                </div>
+
+                <!-- 密码 -->
+                <div class="auth-input-group auth-anim auth-anim-3" id="pwdGroup" style="margin-bottom:16px;">
+                    <label for="password">密码</label>
+                    <div class="auth-input-wrapper">
+                        <span class="auth-input-icon">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0110 0v4"/></svg>
+                        </span>
+                        <input type="password" id="password" placeholder="请输入密码" autocomplete="off">
+                        <button type="button" class="auth-input-action" id="togglePwdBtn" aria-label="切换密码可见性">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+                        </button>
+                    </div>
+                    <div class="auth-input-error" id="pwdError">请输入密码</div>
+                </div>
+
+                <!-- 验证码 -->
+                <div class="auth-captcha-row auth-anim auth-anim-4" style="margin-bottom:16px;">
+                    <div class="auth-input-group" id="captchaGroup">
+                        <label for="captcha">验证码</label>
+                        <div class="auth-input-wrapper">
+                            <span class="auth-input-icon">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+                            </span>
+                            <input type="text" id="captcha" placeholder="请输入验证码" maxlength="4" autocomplete="off">
+                        </div>
+                        <div class="auth-input-error" id="captchaError">验证码不正确</div>
+                    </div>
+                    <canvas class="auth-captcha-canvas" id="captchaCvs" width="120" height="44" title="点击刷新验证码"></canvas>
+                </div>
+
+                <!-- 记住我 & 忘记密码 -->
+                <div class="auth-anim auth-anim-4" style="display:flex;align-items:center;justify-content:space-between;margin-bottom:22px;">
+                    <label class="auth-checkbox-wrap">
+                        <input type="checkbox" id="remember">
+                        <span class="auth-checkbox">
+                            <svg viewBox="0 0 12 12" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 6l3 3 5-5"/></svg>
+                        </span>
+                        记住我
+                    </label>
+                    <a href="forgot-password.html" class="auth-link">忘记密码？</a>
+                </div>
+
+                <!-- 登录按钮 -->
+                <button type="submit" class="auth-btn-primary auth-anim auth-anim-5" id="loginBtn">
+                    登录
+                </button>
+            </form>
+
+            <!-- 分割线 -->
+            <div class="auth-divider auth-anim auth-anim-5">或使用以下方式登录</div>
+
+            <!-- 社交登录 -->
+            <div class="auth-social-row auth-anim auth-anim-6">
+                <!-- WeChat -->
+                <button type="button" class="auth-social-btn" aria-label="微信登录">
+                    <svg viewBox="0 0 24 24"><path d="M8.691 2.188C3.891 2.188 0 5.476 0 9.53c0 2.212 1.17 4.203 3.002 5.55a.59.59 0 01.213.665l-.39 1.48c-.019.07-.048.141-.048.213 0 .163.13.295.29.295a.326.326 0 00.167-.054l1.903-1.114a.864.864 0 01.717-.098 10.16 10.16 0 002.837.403c.276 0 .543-.027.811-.05-.857-2.578.157-4.972 1.932-6.446 1.703-1.415 3.882-1.98 5.853-1.838-.576-3.583-4.196-6.348-8.596-6.348zM5.785 5.991c.642 0 1.162.529 1.162 1.18a1.17 1.17 0 01-1.162 1.178A1.17 1.17 0 014.623 7.17c0-.651.52-1.18 1.162-1.18zm5.813 0c.642 0 1.162.529 1.162 1.18a1.17 1.17 0 01-1.162 1.178 1.17 1.17 0 01-1.162-1.178c0-.651.52-1.18 1.162-1.18zm5.34 2.867c-1.797-.052-3.746.512-5.28 1.786-1.72 1.428-2.687 3.72-1.78 6.22.942 2.453 3.666 4.229 6.884 4.229.826 0 1.622-.12 2.361-.336a.722.722 0 01.598.082l1.584.926a.272.272 0 00.14.045c.134 0 .24-.11.24-.245 0-.06-.024-.12-.04-.178l-.325-1.233a.49.49 0 01.177-.554C23.028 18.553 24 16.803 24 14.861c0-3.252-2.83-5.94-7.062-6.003zm-2.735 2.96c.535 0 .969.44.969.982a.976.976 0 01-.969.983.976.976 0 01-.969-.983c0-.542.434-.982.97-.982zm4.842 0c.535 0 .969.44.969.982a.976.976 0 01-.969.983.976.976 0 01-.969-.983c0-.542.434-.982.97-.982z" fill="#07C160"/></svg>
+                </button>
+                <!-- QQ -->
+                <button type="button" class="auth-social-btn auth-social-qq" aria-label="QQ 登录">
+                    <svg viewBox="0 0 24 24"><path d="M21.395 15.035a39.548 39.548 0 0 0-.803-2.264l-1.079-2.695c.001-.032.014-.562.014-.836C19.526 4.632 17.351 0 12 0S4.474 4.632 4.474 9.241c0 .274.013.804.014.836l-1.08 2.695a38.97 38.97 0 0 0-.802 2.264c-1.021 3.283-.69 4.643-.438 4.673.54.065 2.103-2.472 2.103-2.472 0 1.469.756 3.387 2.394 4.771-.612.188-1.363.479-1.845.835-.434.32-.379.646-.301.778.343.578 5.883.703 7.479.703 1.596 0 7.135-.125 7.478-.703.078-.132.132-.458-.301-.778-.481-.356-1.233-.646-1.845-.835 1.638-1.384 2.394-3.302 2.394-4.771 0 0 1.563 2.537 2.103 2.472.251-.03.581-1.39-.438-4.673z" fill="#12B7F5"/></svg>
+                </button>
+                <!-- Google -->
+                <button type="button" class="auth-social-btn" aria-label="Google 登录">
+                    <svg viewBox="0 0 24 24"><path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92a5.06 5.06 0 01-2.2 3.32v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.1z" fill="#4285F4"/><path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/><path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z" fill="#FBBC05"/><path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/></svg>
+                </button>
+                <!-- GitHub -->
+                <button type="button" class="auth-social-btn" aria-label="GitHub 登录">
+                    <svg viewBox="0 0 24 24"><path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12" fill="#24292e"/></svg>
+                </button>
+            </div>
+
+            <!-- 注册链接 -->
+            <div class="auth-anim auth-anim-6" style="text-align:center;margin-top:20px;font-size:13px;color:var(--auth-fg2);">
+                还没有账户？<a href="register.html" class="auth-link">立即注册</a>
+            </div>
+
+        </div>
+    </div>
+
+</div>
+
+<script>
+(function () {
+    'use strict';
+
+    /* ===== Canvas 粒子动画 ===== */
+    var cvs = document.getElementById('bgCvs');
+    var ctx = cvs.getContext('2d');
+    var particles = [];
+    var PARTICLE_COUNT = 35;
+    var LINK_DIST = 130;
+
+    function resize() {
+        cvs.width = window.innerWidth;
+        cvs.height = window.innerHeight;
+    }
+    resize();
+    window.addEventListener('resize', resize);
+
+    function createParticle() {
+        return {
+            x: Math.random() * cvs.width,
+            y: Math.random() * cvs.height,
+            vx: (Math.random() - 0.5) * 0.6,
+            vy: (Math.random() - 0.5) * 0.6,
+            r: Math.random() * 2 + 1
+        };
+    }
+    for (var i = 0; i < PARTICLE_COUNT; i++) particles.push(createParticle());
+
+    function drawParticles() {
+        ctx.clearRect(0, 0, cvs.width, cvs.height);
+        var len = particles.length;
+        // 连线
+        for (var i = 0; i < len; i++) {
+            for (var j = i + 1; j < len; j++) {
+                var dx = particles[i].x - particles[j].x;
+                var dy = particles[i].y - particles[j].y;
+                var dist = Math.sqrt(dx * dx + dy * dy);
+                if (dist < LINK_DIST) {
+                    ctx.beginPath();
+                    ctx.moveTo(particles[i].x, particles[i].y);
+                    ctx.lineTo(particles[j].x, particles[j].y);
+                    ctx.strokeStyle = 'rgba(0,114,227,' + (0.13 * (1 - dist / LINK_DIST)) + ')';
+                    ctx.lineWidth = 0.8;
+                    ctx.stroke();
+                }
+            }
+        }
+        // 粒子
+        for (var i = 0; i < len; i++) {
+            var p = particles[i];
+            ctx.beginPath();
+            ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+            ctx.fillStyle = 'rgba(0,114,227,.18)';
+            ctx.fill();
+            p.x += p.vx;
+            p.y += p.vy;
+            if (p.x < 0 || p.x > cvs.width) p.vx *= -1;
+            if (p.y < 0 || p.y > cvs.height) p.vy *= -1;
+        }
+        requestAnimationFrame(drawParticles);
+    }
+    drawParticles();
+
+    /* ===== Toast ===== */
+    var TB = document.getElementById('TB');
+    var toastIcons = {
+        success: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 11-5.93-9.14"/><path d="M22 4L12 14.01l-3-3"/></svg>',
+        error: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/></svg>',
+        info: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>'
+    };
+
+    function toast(type, message) {
+        var el = document.createElement('div');
+        el.className = 'auth-toast-item ' + type;
+        el.innerHTML = toastIcons[type] + '<span>' + message + '</span>';
+        TB.appendChild(el);
+        setTimeout(function () {
+            el.classList.add('auth-toast-out');
+            el.addEventListener('animationend', function () { el.remove(); });
+        }, 3000);
+    };
+
+    /* ===== 密码显隐切换 ===== */
+    function togglePassword(id, btn) {
+        var input = document.getElementById(id);
+        if (input.type === 'password') {
+            input.type = 'text';
+            btn.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17.94 17.94A10.07 10.07 0 0112 20c-7 0-11-8-11-8a18.45 18.45 0 015.06-5.94M9.9 4.24A9.12 9.12 0 0112 4c7 0 11 8 11 8a18.5 18.5 0 01-2.16 3.19m-6.72-1.07a3 3 0 11-4.24-4.24"/><line x1="1" y1="1" x2="23" y2="23"/></svg>';
+        } else {
+            input.type = 'password';
+            btn.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>';
+        }
+    }
+
+    document.getElementById('togglePwdBtn').addEventListener('click', function () {
+        togglePassword('password', this);
+    });
+
+    /* ===== 输入焦点追踪 ===== */
+    document.querySelectorAll('.auth-input-wrapper input').forEach(function (input) {
+        var wrapper = input.closest('.auth-input-wrapper');
+        input.addEventListener('focus', function () { wrapper.classList.add('auth-focused'); });
+        input.addEventListener('blur', function () { wrapper.classList.remove('auth-focused'); });
+    });
+
+    /* ===== 按钮涟漪效果 ===== */
+    document.querySelectorAll('.auth-btn-primary').forEach(function (btn) {
+        btn.addEventListener('click', function (e) {
+            var rect = btn.getBoundingClientRect();
+            var ripple = document.createElement('span');
+            ripple.className = 'auth-ripple';
+            var size = Math.max(rect.width, rect.height);
+            ripple.style.width = ripple.style.height = size + 'px';
+            ripple.style.left = (e.clientX - rect.left - size / 2) + 'px';
+            ripple.style.top = (e.clientY - rect.top - size / 2) + 'px';
+            btn.appendChild(ripple);
+            ripple.addEventListener('animationend', function () { ripple.remove(); });
+        });
+    });
+
+    /* ===== 验证码生成 ===== */
+    var captchaCode = '';
+    function generateCaptcha() {
+        var canvas = document.getElementById('captchaCvs');
+        var c = canvas.getContext('2d');
+        var w = canvas.width, h = canvas.height;
+        var chars = 'ABCDEFGHJKLMNPQRSTUVWXYZabcdefghjkmnpqrstuvwxyz23456789';
+        captchaCode = '';
+        for (var i = 0; i < 4; i++) captchaCode += chars.charAt(Math.floor(Math.random() * chars.length));
+
+        c.fillStyle = '#f6f9fc';
+        c.fillRect(0, 0, w, h);
+
+        c.strokeStyle = 'rgba(0,0,0,.03)';
+        c.lineWidth = 0.5;
+        for (var x = 0; x < w; x += 8) { c.beginPath(); c.moveTo(x, 0); c.lineTo(x, h); c.stroke(); }
+        for (var y = 0; y < h; y += 8) { c.beginPath(); c.moveTo(0, y); c.lineTo(w, y); c.stroke(); }
+
+        for (var i = 0; i < 60; i++) {
+            c.fillStyle = 'rgba(' + Math.floor(Math.random() * 200) + ',' + Math.floor(Math.random() * 200) + ',' + Math.floor(Math.random() * 200) + ',.25)';
+            c.fillRect(Math.random() * w, Math.random() * h, 2, 2);
+        }
+
+        for (var i = 0; i < 3; i++) {
+            c.beginPath();
+            c.moveTo(Math.random() * w, Math.random() * h);
+            c.lineTo(Math.random() * w, Math.random() * h);
+            c.strokeStyle = 'rgba(0,114,227,.12)';
+            c.lineWidth = 1;
+            c.stroke();
+        }
+
+        var colors = ['#0072e3', '#005bbf', '#3d5a80', '#0c1a2e'];
+        for (var i = 0; i < 4; i++) {
+            c.save();
+            c.font = (18 + Math.random() * 6) + 'px "Plus Jakarta Sans", sans-serif';
+            c.fillStyle = colors[i % colors.length];
+            c.translate(18 + i * 25, h / 2 + 6);
+            c.rotate((Math.random() - 0.5) * 0.5);
+            c.fillText(captchaCode[i], 0, 0);
+            c.restore();
+        }
+    }
+    generateCaptcha();
+    document.getElementById('captchaCvs').addEventListener('click', generateCaptcha);
+
+    /* ===== 登录处理 ===== */
+    var loginForm = document.getElementById('loginForm');
+    var loginBtn = document.getElementById('loginBtn');
+
+    function clearError(groupId) {
+        document.getElementById(groupId).classList.remove('auth-error');
+    }
+
+    loginForm.addEventListener('submit', function (e) {
+        e.preventDefault();
+        var email = document.getElementById('email').value.trim();
+        var pwd = document.getElementById('password').value;
+        var cap = document.getElementById('captcha').value.trim();
+        var valid = true;
+
+        // 清除旧错误
+        clearError('emailGroup');
+        clearError('pwdGroup');
+        clearError('captchaGroup');
+
+        // 邮箱验证
+        if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+            document.getElementById('emailGroup').classList.add('auth-error');
+            valid = false;
+        }
+        // 密码验证
+        if (!pwd) {
+            document.getElementById('pwdGroup').classList.add('auth-error');
+            valid = false;
+        }
+        // 验证码验证
+        if (!cap || cap.toLowerCase() !== captchaCode.toLowerCase()) {
+            document.getElementById('captchaGroup').classList.add('auth-error');
+            generateCaptcha();
+            valid = false;
+        }
+
+        if (!valid) {
+            toast('error', '请检查输入信息');
+            return;
+        }
+
+        // 模拟登录
+        loginBtn.disabled = true;
+        loginBtn.innerHTML = '<span class="auth-spinner"></span> 登录中...';
+
+        setTimeout(function () {
+            loginBtn.disabled = false;
+            loginBtn.textContent = '登录';
+            toast('success', '登录成功，正在跳转...');
+        }, 1800);
+    });
+
+    // 输入时清除错误
+    document.getElementById('email').addEventListener('input', function () { clearError('emailGroup'); });
+    document.getElementById('password').addEventListener('input', function () { clearError('pwdGroup'); });
+    document.getElementById('captcha').addEventListener('input', function () { clearError('captchaGroup'); });
+
+})();
+</script>
+
+</body>
+</html>

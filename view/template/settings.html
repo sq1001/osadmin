@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>系统设置示例</title>
+    <link rel="stylesheet" href="../../lib/layui/css/layui.css">
+    <style>
+        body {
+            margin: 0;
+            padding: 20px;
+            background: #f5f5f5;
+        }
+        
+        .settings-container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        .settings-card {
+            background: white;
+            padding: 25px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+        
+        .settings-card h3 {
+            margin: 0 0 20px 0;
+            padding-bottom: 15px;
+            border-bottom: 2px solid #667eea;
+            color: #333;
+            font-size: 18px;
+        }
+        
+        .settings-card h3 i {
+            color: #667eea;
+            margin-right: 8px;
+        }
+        
+        .layui-form-label {
+            width: 120px;
+        }
+        
+        .layui-input-block {
+            margin-left: 150px;
+        }
+        
+        .form-help {
+            color: #999;
+            font-size: 12px;
+            margin-top: 5px;
+            line-height: 1.6;
+        }
+        
+        .settings-actions {
+            margin-top: 30px;
+            padding-top: 20px;
+            border-top: 1px solid #eee;
+            text-align: right;
+        }
+        
+        @media (max-width: 768px) {
+            .layui-form-label {
+                width: 100px;
+            }
+            
+            .layui-input-block {
+                margin-left: 130px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="settings-container">
+        <div class="settings-card">
+            <h3>
+                <i class="layui-icon layui-icon-set"></i>
+                基础设置
+            </h3>
+            
+            <form class="layui-form" lay-filter="settingsForm">
+                <div class="layui-form-item">
+                    <label class="layui-form-label">网站名称</label>
+                    <div class="layui-input-block">
+                        <input type="text" name="siteName" value="OSAdmin 后台管理系统" 
+                               placeholder="请输入网站名称" class="layui-input" 
+                               lay-verify="required">
+                        <div class="form-help">网站的显示名称，将在浏览器标题栏和页面顶部显示</div>
+                    </div>
+                </div>
+                
+                <div class="layui-form-item">
+                    <label class="layui-form-label">网站域名</label>
+                    <div class="layui-input-block">
+                        <input type="text" name="siteDomain" value="https://www.example.com" 
+                               placeholder="请输入网站域名" class="layui-input" 
+                               lay-verify="required|url">
+                        <div class="form-help">网站的访问域名，需要包含 http:// 或 https://</div>
+                    </div>
+                </div>
+                
+                <div class="layui-form-item">
+                    <label class="layui-form-label">网站描述</label>
+                    <div class="layui-input-block">
+                        <textarea name="siteDescription" placeholder="请输入网站描述" 
+                                  class="layui-textarea" rows="3">一个现代化的后台管理系统</textarea>
+                        <div class="form-help">网站的简短描述，用于 SEO 优化</div>
+                    </div>
+                </div>
+                
+                <div class="layui-form-item">
+                    <label class="layui-form-label">网站关键词</label>
+                    <div class="layui-input-block">
+                        <input type="text" name="siteKeywords" value="后台管理,OSAdmin,Layui" 
+                               placeholder="请输入关键词，多个用逗号分隔" class="layui-input">
+                        <div class="form-help">网站的关键词，多个关键词用英文逗号分隔</div>
+                    </div>
+                </div>
+                
+                <div class="layui-form-item">
+                    <label class="layui-form-label">网站状态</label>
+                    <div class="layui-input-block">
+                        <input type="radio" name="siteStatus" value="normal" title="正常运行" checked>
+                        <input type="radio" name="siteStatus" value="maintenance" title="维护中">
+                        <input type="radio" name="siteStatus" value="closed" title="已关闭">
+                        <div class="form-help">设置网站的运行状态，维护中或关闭时访客将看到提示页面</div>
+                    </div>
+                </div>
+            </form>
+        </div>
+        
+        <div class="settings-card">
+            <h3>
+                <i class="layui-icon layui-icon-user"></i>
+                用户设置
+            </h3>
+            
+            <form class="layui-form">
+                <div class="layui-form-item">
+                    <label class="layui-form-label">允许注册</label>
+                    <div class="layui-input-block">
+                        <input type="checkbox" name="allowRegister" lay-skin="switch" 
+                               lay-text="开启|关闭" checked>
+                        <div class="form-help">是否允许新用户注册账号</div>
+                    </div>
+                </div>
+                
+                <div class="layui-form-item">
+                    <label class="layui-form-label">邮箱验证</label>
+                    <div class="layui-input-block">
+                        <input type="checkbox" name="emailVerify" lay-skin="switch" 
+                               lay-text="开启|关闭" checked>
+                        <div class="form-help">新用户注册时是否需要邮箱验证</div>
+                    </div>
+                </div>
+                
+                <div class="layui-form-item">
+                    <label class="layui-form-label">默认角色</label>
+                    <div class="layui-input-block">
+                        <select name="defaultRole">
+                            <option value="user" selected>普通用户</option>
+                            <option value="vip">VIP 用户</option>
+                            <option value="member">会员</option>
+                        </select>
+                        <div class="form-help">新用户注册后的默认角色</div>
+                    </div>
+                </div>
+                
+                <div class="layui-form-item">
+                    <label class="layui-form-label">密码强度</label>
+                    <div class="layui-input-block">
+                        <select name="passwordStrength">
+                            <option value="low">低（6位以上）</option>
+                            <option value="medium" selected>中（8位，含字母数字）</option>
+                            <option value="high">高（10位，含大小写字母数字特殊字符）</option>
+                        </select>
+                        <div class="form-help">用户密码的最低强度要求</div>
+                    </div>
+                </div>
+            </form>
+        </div>
+        
+        <div class="settings-card">
+            <h3>
+                <i class="layui-icon layui-icon-file"></i>
+                上传设置
+            </h3>
+            
+            <form class="layui-form">
+                <div class="layui-form-item">
+                    <label class="layui-form-label">允许上传</label>
+                    <div class="layui-input-block">
+                        <input type="checkbox" name="image" title="图片" checked>
+                        <input type="checkbox" name="video" title="视频" checked>
+                        <input type="checkbox" name="audio" title="音频" checked>
+                        <input type="checkbox" name="document" title="文档" checked>
+                        <div class="form-help">允许用户上传的文件类型</div>
+                    </div>
+                </div>
+                
+                <div class="layui-form-item">
+                    <label class="layui-form-label">最大文件大小</label>
+                    <div class="layui-input-block">
+                        <input type="number" name="maxFileSize" value="10" 
+                               placeholder="请输入大小" class="layui-input" 
+                               lay-verify="required|number">
+                        <div class="form-help">单个文件的最大上传大小（MB）</div>
+                    </div>
+                </div>
+                
+                <div class="layui-form-item">
+                    <label class="layui-form-label">图片压缩</label>
+                    <div class="layui-input-block">
+                        <input type="checkbox" name="imageCompress" lay-skin="switch" 
+                               lay-text="开启|关闭" checked>
+                        <div class="form-help">上传图片时自动压缩以节省空间</div>
+                    </div>
+                </div>
+                
+                <div class="layui-form-item">
+                    <label class="layui-form-label">水印设置</label>
+                    <div class="layui-input-block">
+                        <input type="checkbox" name="watermark" lay-skin="switch" 
+                               lay-text="开启|关闭">
+                        <div class="form-help">上传图片时自动添加水印</div>
+                    </div>
+                </div>
+            </form>
+        </div>
+        
+        <div class="settings-actions">
+            <button class="layui-btn layui-btn-primary" id="resetBtn">
+                <i class="layui-icon layui-icon-refresh"></i>
+                重置
+            </button>
+            <button class="layui-btn layui-btn-normal" id="saveBtn">
+                <i class="layui-icon layui-icon-ok"></i>
+                保存设置
+            </button>
+        </div>
+    </div>
+
+    <script src="../../lib/layui/layui.js"></script>
+    <script>
+        layui.use(['form', 'layer'], function() {
+            var form = layui.form;
+            var layer = layui.layer;
+            var $ = layui.$;
+            
+            $('#saveBtn').on('click', function() {
+                var btn = $(this);
+                btn.prop('disabled', true);
+                
+                layer.msg('正在保存设置...', {
+                    icon: 16,
+                    shade: 0.3,
+                    time: false
+                });
+                
+                setTimeout(function() {
+                    layer.closeAll('dialog');
+                    layer.msg('设置保存成功！', { icon: 1 });
+                    btn.prop('disabled', false);
+                }, 1500);
+            });
+            
+            $('#resetBtn').on('click', function() {
+                layer.confirm('确定要重置所有设置吗？', {
+                    icon: 3,
+                    btn: ['确定', '取消']
+                }, function(index) {
+                    $('form')[0].reset();
+                    form.render();
+                    layer.msg('已重置为默认设置', { icon: 1 });
+                    layer.close(index);
+                });
+            });
+        });
+    </script>
+</body>
+</html>
