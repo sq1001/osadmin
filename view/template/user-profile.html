@@ -486,14 +486,9 @@
       function loadUserData() {
         var userinfoConfig = (window.OSLAY && window.OSLAY.appConfig && window.OSLAY.appConfig.userinfo) || {};
         var userinfoUrl = userinfoConfig.url || 'view/data/userinfo.json';
-        var baseUrl = window.OSLAY ? window.OSLAY.baseUrl : '/';
-        
-        if (baseUrl.charAt(baseUrl.length - 1) !== '/') {
-          baseUrl += '/';
-        }
         
         $.ajax({
-          url: baseUrl + userinfoUrl,
+          url: userinfoUrl,
           dataType: 'json',
           cache: false
         }).done(function(response) {
@@ -513,11 +508,7 @@
         $('#profileRole').text(data.rolename || '普通用户');
         
         if (data.avatar) {
-          var baseUrl = window.OSLAY ? window.OSLAY.baseUrl : '/';
-          if (baseUrl.charAt(baseUrl.length - 1) !== '/') {
-            baseUrl += '/';
-          }
-          $('#avatarPreview').attr('src', baseUrl + data.avatar);
+          $('#avatarPreview').attr('src', data.avatar);
         } else {
           var firstChar = (data.nickname || 'U').charAt(0);
           $('#avatarPreview').attr('src', 'data:image/svg+xml,' + encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><rect fill="' + getComputedStyle(document.documentElement).getPropertyValue('--accent').trim() + '" width="100" height="100"/><text x="50" y="50" dominant-baseline="central" text-anchor="middle" fill="#fff" font-size="40" font-weight="600">' + firstChar + '</text></svg>'));

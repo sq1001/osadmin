@@ -31,6 +31,12 @@
           <button class="layui-btn layui-btn-normal" id="infoBtn">
             <i class="layui-icon layui-icon-about"></i> 信息提示
           </button>
+          <button class="layui-btn layui-btn-primary" id="noTitleBtn">
+            <i class="layui-icon layui-icon-about"></i> 仅内容无标题
+          </button>
+          <button class="layui-btn layui-btn-primary" id="iconNoTitleBtn">
+            <i class="layui-icon layui-icon-ok-circle"></i> 有图标无标题
+          </button>
         </div>
       </div>
     </div>
@@ -130,6 +136,9 @@
           <button class="layui-btn" id="loadingBtn">
             <i class="layui-icon layui-icon-loading layui-anim layui-anim-rotate layui-anim-loop"></i> 加载中
           </button>
+          <button class="layui-btn layui-btn-normal" id="closeLoadingBtn">
+            <i class="layui-icon layui-icon-close"></i> 关闭所有加载
+          </button>
         </div>
       </div>
     </div>
@@ -142,8 +151,37 @@
         <div class="btn-group">
           <button class="layui-btn" id="customTitle">自定义标题</button>
           <button class="layui-btn layui-btn-normal" id="customIcon">自定义图标</button>
-          <button class="layui-btn layui-btn-warm" id="customClass">自定义样式</button>
-          <button class="layui-btn layui-btn-danger" id="noCloseBtn">无关闭按钮</button>
+          <button class="layui-btn layui-btn-warm" id="noCloseBtn">有关闭按钮</button>
+          <button class="layui-btn layui-btn-danger" id="noIconBtn">无图标</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="layui-card">
+      <div class="layui-card-header">
+        <span class="layui-card-title">自定义皮肤 <span class="layui-badge">新</span></span>
+      </div>
+      <div class="layui-card-body">
+        <div class="btn-group">
+          <button class="layui-btn" id="skinSuccess">
+            <i class="layui-icon layui-icon-ok-circle"></i> 成功皮肤
+          </button>
+          <button class="layui-btn layui-btn-danger" id="skinError">
+            <i class="layui-icon layui-icon-close-fill"></i> 错误皮肤
+          </button>
+          <button class="layui-btn layui-btn-warm" id="skinWarning">
+            <i class="layui-icon layui-icon-tips"></i> 警告皮肤
+          </button>
+          <button class="layui-btn layui-btn-normal" id="skinInfo">
+            <i class="layui-icon layui-icon-about"></i> 信息皮肤
+          </button>
+          <button class="layui-btn layui-btn-primary" id="skinLoading">
+            <i class="layui-icon layui-icon-loading-1"></i> 加载皮肤
+          </button>
+        </div>
+        <div class="demo-tip">
+          <i class="layui-icon layui-icon-tips"></i>
+          通过 <code>skin</code> 配置项启用左侧色条皮肤，色条颜色与图标颜色一致
         </div>
       </div>
     </div>
@@ -183,11 +221,17 @@
   <div class="demo-code">
     <h4 class="demo-code-title">使用示例</h4>
     <pre class="layui-code" lay-options="{title: 'JavaScript'}">
-// 基本用法
+// 基本用法（默认无标题，仅显示内容）
 toast.success('操作成功！');
 toast.error('操作失败！');
 toast.warning('警告信息');
 toast.info('提示信息');
+
+// 仅内容，无标题无图标
+toast.show('这是一条纯文本提示');
+
+// 带标题
+toast.show('操作成功', { title: '成功', icon: 'success' });
 
 // 显示位置
 toast.show('内容', { offset: 'rt' });  // 右上角
@@ -199,39 +243,31 @@ toast.show('内容', { offset: 'bc' });  // 底部居中
 toast.show('内容', { offset: 'lc' });  // 左侧居中
 toast.show('内容', { offset: 'rc' });  // 右侧居中
 
-// 显示模式（新功能）
+// 显示模式
 toast.show('消息', { mode: 'stack' });    // 堆叠模式（默认）
 toast.show('消息', { mode: 'replace' });  // 替换模式
 
-// 数量限制（新功能）
+// 数量限制
 toast.show('消息', { maxCount: 3 });      // 最多显示 3 条
 toast.show('消息', { maxCount: 0 });      // 无限制
 
-// 消散动画（新功能）
-toast.show('消息', { 
+// 消散动画
+toast.show('消息', {
   dismissEffect: true,      // 启用消散动画（默认）
   dismissDuration: 400      // 消散动画时长
 });
-// 自定义样式类（可选左边框样式）
-toast.success('消息', { className: 'toast-success' });  // 绿色左边框
-toast.error('消息', { className: 'toast-error' });      // 红色左边框
-toast.warning('消息', { className: 'toast-warning' });  // 橙色左边框
-toast.info('消息', { className: 'toast-info' });        // 蓝色左边框
-
-// 禁用消散动画
-toast.show('消息', { dismissEffect: false });
+toast.show('消息', { dismissEffect: false });  // 禁用消散动画
 
 // 自定义配置
 toast.show('自定义内容', {
-  title: '自定义标题',
-  icon: 'success',
-  time: 3000,
-  offset: 'rt',
-  mode: 'stack',
-  maxCount: 5,
-  dismissEffect: true,
-  dismissDuration: 400,
-  closable: true,
+  title: '自定义标题',     // 标题，为空则不显示
+  icon: 'success',         // 图标类型
+  skin: 'success',         // 皮肤类型，启用左侧色条：success/error/warning/info/loading
+  time: 3000,              // 自动关闭时间，0 不自动关闭
+  offset: 'rt',            // 显示位置
+  mode: 'stack',           // 显示模式
+  maxCount: 5,             // 最大显示数量
+  closable: false,         // 是否显示关闭按钮
   success: function(id, elem) {
     console.log('Toast已显示:', id);
   },
@@ -241,15 +277,25 @@ toast.show('自定义内容', {
   }
 });
 
+// 自定义皮肤（左侧色条）
+toast.success('操作成功', { skin: 'success' });  // 绿色色条
+toast.error('操作失败', { skin: 'error' });      // 红色色条
+toast.warning('警告信息', { skin: 'warning' });  // 橙色色条
+toast.info('提示信息', { skin: 'info' });        // 蓝色色条
+
 // 加载状态
 var loadId = toast.loading('加载中...');
 setTimeout(function() {
-  toast.dismiss(loadId);  // 使用 dismiss 触发消散动画
+  toast.dismiss(loadId);        // 关闭指定加载
 }, 2000);
+toast.closeLoading();           // 关闭所有加载状态
+toast.closeLoading(loadId);     // 关闭指定加载状态
 
-// 关闭所有
-toast.clear();        // 立即关闭所有
-toast.dismissAll();   // 消散所有（带动画）</pre>
+// 关闭操作
+toast.dismiss(id);              // 消散关闭（带动画，触发 cancel 回调）
+toast.close(id);                // 关闭（带动画，跳过 cancel 回调）
+toast.clear();                  // 立即关闭所有（跳过回调）
+toast.dismissAll();             // 消散所有（带动画，触发回调）</pre>
   </div>
 
   <div class="demo-config">
@@ -267,14 +313,20 @@ toast.dismissAll();   // 消散所有（带动画）</pre>
         <tr>
           <td><code>title</code></td>
           <td>String</td>
-          <td>'提示'</td>
-          <td>Toast 标题</td>
+          <td>''</td>
+          <td>Toast 标题，为空则不显示标题行</td>
         </tr>
         <tr>
           <td><code>icon</code></td>
           <td>String</td>
           <td>''</td>
           <td>图标类型：success/error/warning/info/loading 或自定义 HTML</td>
+        </tr>
+        <tr>
+          <td><code>skin</code></td>
+          <td>String</td>
+          <td>''</td>
+          <td>皮肤类型：success/error/warning/info/loading，启用左侧色条</td>
         </tr>
         <tr>
           <td><code>time</code></td>
@@ -315,7 +367,7 @@ toast.dismissAll();   // 消散所有（带动画）</pre>
         <tr>
           <td><code>closable</code></td>
           <td>Boolean</td>
-          <td>true</td>
+          <td>false</td>
           <td>是否显示关闭按钮</td>
         </tr>
         <tr>
@@ -435,6 +487,14 @@ layui.use(['toastMod', 'layer'], function() {
 
   $('#infoBtn').on('click', function() {
     toast.info('这是一条提示信息！');
+  });
+
+  $('#noTitleBtn').on('click', function() {
+    toast.show('仅内容，无标题无图标');
+  });
+
+  $('#iconNoTitleBtn').on('click', function() {
+    toast.show('操作成功，仅有图标和内容', { icon: 'success' });
   });
 
   $('#posRT').on('click', function() {
@@ -566,30 +626,30 @@ layui.use(['toastMod', 'layer'], function() {
   });
 
   $('#loadingBtn').on('click', function() {
-    var loadId = toast.loading('加载中...');
-    setTimeout(function() {
-      toast.dismiss(loadId);
-      toast.success('加载完成！');
-    }, 2000);
+    toast.loading('加载中...');
+  });
+
+  $('#closeLoadingBtn').on('click', function() {
+    toast.closeLoading();
   });
 
   $('#customTitle').on('click', function() {
-    toast.show('这是自定义内容', { title: '自定义标题' });
+    toast.show('这是自定义内容', { title: '自定义标题', icon: 'info' });
   });
 
   $('#customIcon').on('click', function() {
     toast.show('自定义图标', {
-      title: '自定义',
+      title: '收藏',
       icon: '<i class="layui-icon layui-icon-star" style="font-size: 22px;"></i>'
     });
   });
 
-  $('#customClass').on('click', function() {
-    toast.success('自定义样式类（左边框）', { className: 'toast-success' });
+  $('#noCloseBtn').on('click', function() {
+    toast.info('有关闭按钮', { closable: true, time: 3000 });
   });
 
-  $('#noCloseBtn').on('click', function() {
-    toast.info('没有关闭按钮', { closable: false, time: 3000 });
+  $('#noIconBtn').on('click', function() {
+    toast.show('无图标纯文本提示', { title: '通知' });
   });
 
   $('#multiBtn').on('click', function() {
@@ -613,6 +673,26 @@ layui.use(['toastMod', 'layer'], function() {
         layer.msg('Toast已显示');
       }
     });
+  });
+
+  $('#skinSuccess').on('click', function() {
+    toast.success('操作成功', { skin: 'success' });
+  });
+
+  $('#skinError').on('click', function() {
+    toast.error('操作失败', { skin: 'error' });
+  });
+
+  $('#skinWarning').on('click', function() {
+    toast.warning('警告信息', { skin: 'warning' });
+  });
+
+  $('#skinInfo').on('click', function() {
+    toast.info('提示信息', { skin: 'info' });
+  });
+
+  $('#skinLoading').on('click', function() {
+    toast.loading('加载中...', { skin: 'loading' });
   });
 
   $('#cancelCallbackBtn').on('click', function() {

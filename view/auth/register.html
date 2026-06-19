@@ -7,6 +7,7 @@
     <link rel="stylesheet" href="../../admin/css/view/auth.css">
 </head>
 <body class="auth-page register-page">
+    <div class="auth-toast-box" id="TB"></div>
     <div class="auth-container">
         <div class="auth-left">
             <div class="illustration">
@@ -99,25 +100,26 @@
                 </div>
 
                 <form class="auth-form" id="registerForm">
-                    <div class="form-group">
+                    <div class="form-group" data-field="username">
                         <label for="username" class="sr-only">用户名</label>
                         <div class="input-wrapper">
                             <svg class="input-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                                 <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
                                 <circle cx="12" cy="7" r="4"></circle>
                             </svg>
-                            <input type="text" id="username" name="username" placeholder="请输入用户名" required>
+                            <input type="text" id="username" name="username" placeholder="请输入用户名">
                         </div>
+                        <div class="error-tip">请输入用户名</div>
                     </div>
 
-                    <div class="form-group">
+                    <div class="form-group" data-field="password">
                         <label for="password" class="sr-only">密码</label>
                         <div class="input-wrapper">
                             <svg class="input-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                                 <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
                                 <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
                             </svg>
-                            <input type="password" id="password" name="password" placeholder="请输入密码" required>
+                            <input type="password" id="password" name="password" placeholder="请输入密码">
                             <button type="button" class="password-toggle" aria-label="切换密码可见性">
                                 <svg class="eye-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                                     <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
@@ -125,35 +127,38 @@
                                 </svg>
                             </button>
                         </div>
+                        <div class="error-tip">请输入密码</div>
                     </div>
 
-                    <div class="form-group">
+                    <div class="form-group" data-field="email">
                         <label for="email" class="sr-only">邮箱</label>
                         <div class="input-wrapper">
                             <svg class="input-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                                 <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path>
                                 <polyline points="22,6 12,13 2,6"></polyline>
                             </svg>
-                            <input type="email" id="email" name="email" placeholder="请输入邮箱地址" required>
+                            <input type="email" id="email" name="email" placeholder="请输入邮箱地址">
                         </div>
+                        <div class="error-tip">请输入有效的邮箱地址</div>
                     </div>
 
-                    <div class="form-group">
+                    <div class="form-group" data-field="captcha">
                         <label for="captcha" class="sr-only">验证码</label>
                         <div class="captcha-wrapper">
                             <div class="input-wrapper captcha-input">
                                 <svg class="input-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                                     <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
                                 </svg>
-                                <input type="text" id="captcha" name="captcha" placeholder="验证码" maxlength="4" required>
+                                <input type="text" id="captcha" name="captcha" placeholder="验证码" maxlength="4">
                             </div>
                             <canvas class="captcha-canvas" id="captchaCvs" width="120" height="48" title="点击刷新验证码"></canvas>
                         </div>
+                        <div class="error-tip">验证码不正确</div>
                     </div>
 
                     <div class="form-row">
                         <label class="checkbox-label">
-                            <input type="checkbox" name="agree" required>
+                            <input type="checkbox" name="agree">
                             <span>我已阅读并同意<a href="#" class="link-text">服务条款</a></span>
                         </label>
                     </div>
@@ -220,6 +225,51 @@
     (function () {
         'use strict';
 
+        // Toast
+        var TB = document.getElementById('TB');
+        var toastIcons = {
+            success: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 11-5.93-9.14"/><path d="M22 4L12 14.01l-3-3"/></svg>',
+            error: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/></svg>',
+            info: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>'
+        };
+        function toast(type, message) {
+            var el = document.createElement('div');
+            el.className = 'auth-toast-item ' + type;
+            el.innerHTML = '<div class="auth-toast-icon">' + toastIcons[type] + '</div>' +
+                '<div class="auth-toast-content">' + message + '</div>';
+            TB.appendChild(el);
+            setTimeout(function() {
+                if (el.parentNode) {
+                    el.classList.add('auth-toast-out');
+                    el.addEventListener('animationend', function() { el.remove(); });
+                }
+            }, 3000);
+        }
+
+        // 表单验证
+        function clearError(field) {
+            var group = document.querySelector('[data-field="' + field + '"]');
+            if (group) {
+                group.classList.remove('has-error');
+                var wrapper = group.querySelector('.input-wrapper');
+                if (wrapper) wrapper.classList.remove('has-error');
+            }
+        }
+        function showError(field, msg) {
+            var group = document.querySelector('[data-field="' + field + '"]');
+            if (group) {
+                group.classList.add('has-error');
+                var wrapper = group.querySelector('.input-wrapper');
+                if (wrapper) wrapper.classList.add('has-error');
+            }
+        }
+
+        // 输入时清除错误
+        document.getElementById('username').addEventListener('input', function() { clearError('username'); });
+        document.getElementById('password').addEventListener('input', function() { clearError('password'); });
+        document.getElementById('email').addEventListener('input', function() { clearError('email'); });
+        document.getElementById('captcha').addEventListener('input', function() { clearError('captcha'); });
+
         document.querySelectorAll('.password-toggle').forEach(btn => {
             btn.addEventListener('click', function() {
                 const input = this.previousElementSibling;
@@ -283,11 +333,32 @@
 
         document.getElementById('registerForm').addEventListener('submit', function(e) {
             e.preventDefault();
+            var username = document.getElementById('username').value.trim();
+            var password = document.getElementById('password').value.trim();
+            var email = document.getElementById('email').value.trim();
             var cap = document.getElementById('captcha').value.trim();
+            var emailReg = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+            if (!username) {
+                showError('username', '请输入用户名');
+                toast('error', '请输入用户名');
+                return;
+            }
+            if (!password) {
+                showError('password', '请输入密码');
+                toast('error', '请输入密码');
+                return;
+            }
+            if (!email || !emailReg.test(email)) {
+                showError('email', '请输入有效的邮箱地址');
+                toast('error', '请输入有效的邮箱地址');
+                return;
+            }
             if (!cap || cap.toLowerCase() !== captchaCode.toLowerCase()) {
-                alert('验证码不正确');
+                showError('captcha', '验证码不正确');
                 generateCaptcha();
                 document.getElementById('captcha').value = '';
+                toast('error', '验证码不正确');
                 return;
             }
             console.log('注册表单提交');

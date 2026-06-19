@@ -7,7 +7,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@500;600;700;800&family=Noto+Sans+SC:wght@400;500;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="../../admin/css/view/auth2.css">
+    <link rel="stylesheet" href="../../admin/css/view/auth3.css">
 </head>
 <body>
 
@@ -20,189 +20,193 @@
 <!-- 主分栏布局 -->
 <div class="auth-split">
 
-    <!-- 左侧：蓝色渐变 + 浮动气泡 + 插画 -->
-    <div class="auth-split-left auth-bg-blue">
+    <!-- 左侧：天蓝渐变 + 浮动气泡 + 插画 -->
+    <div class="auth-split-left auth-bg-sky">
         <div class="auth-float-bubble auth-float-1"></div>
         <div class="auth-float-bubble auth-float-2"></div>
         <div class="auth-float-bubble auth-float-3"></div>
         <div class="auth-float-bubble auth-float-4"></div>
 
         <div class="auth-left-content">
-            <!-- 登录场景 SVG 插画 -->
+            <!-- 登录场景 SVG 插画：科技数据中心 -->
             <div class="auth-illustration auth-anim auth-anim-1">
                 <svg viewBox="0 0 400 320" xmlns="http://www.w3.org/2000/svg">
                     <defs>
-                        <linearGradient id="loginOrb1" x1="0" y1="0" x2="1" y2="1">
+                        <linearGradient id="skyChip" x1="0" y1="0" x2="1" y2="1">
+                            <stop offset="0%" stop-color="#0ea5e9"/>
+                            <stop offset="100%" stop-color="#0284c7"/>
+                        </linearGradient>
+                        <linearGradient id="skyLight" x1="0" y1="0" x2="0" y2="1">
+                            <stop offset="0%" stop-color="#e0f2fe"/>
+                            <stop offset="100%" stop-color="#bae6fd"/>
+                        </linearGradient>
+                        <linearGradient id="skyGlow" x1="0" y1="0" x2="0" y2="1">
+                            <stop offset="0%" stop-color="#7dd3fc"/>
+                            <stop offset="100%" stop-color="#38bdf8"/>
+                        </linearGradient>
+                        <linearGradient id="serverGrad" x1="0" y1="0" x2="0" y2="1">
                             <stop offset="0%" stop-color="#fff"/>
-                            <stop offset="100%" stop-color="#d0e4f7"/>
-                        </linearGradient>
-                        <linearGradient id="loginOrb2" x1="0" y1="0" x2="1" y2="1">
-                            <stop offset="0%" stop-color="#00b4d8"/>
-                            <stop offset="100%" stop-color="#0072e3"/>
-                        </linearGradient>
-                        <linearGradient id="loginOrb3" x1="0" y1="0" x2="1" y2="1">
-                            <stop offset="0%" stop-color="#e0ecfa"/>
-                            <stop offset="100%" stop-color="#b8d4f0"/>
-                        </linearGradient>
-                        <linearGradient id="deskTop" x1="0" y1="0" x2="0" y2="1">
-                            <stop offset="0%" stop-color="#fff"/>
-                            <stop offset="100%" stop-color="#d0e4f7"/>
-                        </linearGradient>
-                        <linearGradient id="screenGlow" x1="0" y1="0" x2="0" y2="1">
-                            <stop offset="0%" stop-color="#0072e3"/>
-                            <stop offset="100%" stop-color="#004da6"/>
+                            <stop offset="100%" stop-color="#e0f2fe"/>
                         </linearGradient>
                     </defs>
 
                     <!-- 外圈轨道 -->
-                    <ellipse cx="200" cy="120" rx="140" ry="85" fill="none" stroke="#fff" stroke-width="1" opacity="0.08"/>
-                    <ellipse cx="200" cy="120" rx="115" ry="68" fill="none" stroke="#fff" stroke-width="0.8" opacity="0.06"/>
+                    <ellipse cx="200" cy="130" rx="150" ry="90" fill="none" stroke="#fff" stroke-width="1" opacity="0.08"/>
+                    <ellipse cx="200" cy="130" rx="120" ry="72" fill="none" stroke="#fff" stroke-width="0.8" opacity="0.06"/>
 
-                    <!-- 轨道上的小光点 -->
-                    <circle r="3" fill="#00b4d8" opacity="0.6">
-                        <animateMotion dur="8s" repeatCount="indefinite" path="M200,35 A85,85 0 1,1 199,35"/>
+                    <!-- 轨道上的光点 -->
+                    <circle r="3" fill="#38bdf8" opacity="0.6">
+                        <animateMotion dur="8s" repeatCount="indefinite" path="M200,40 A90,90 0 1,1 199,40"/>
                     </circle>
-                    <circle r="2" fill="#4a9aff" opacity="0.5">
-                        <animateMotion dur="12s" repeatCount="indefinite" path="M200,52 A68,68 0 1,0 201,52"/>
+                    <circle r="2" fill="#7dd3fc" opacity="0.5">
+                        <animateMotion dur="12s" repeatCount="indefinite" path="M200,58 A72,72 0 1,0 201,58"/>
                     </circle>
 
-                    <!-- 中心大球 -->
-                    <circle cx="200" cy="110" r="45" fill="url(#loginOrb2)" opacity="0.9"/>
-                    <ellipse cx="190" cy="95" rx="18" ry="13" fill="#fff" opacity="0.25"/>
-                    <!-- 球内盾牌图标 -->
-                    <g transform="translate(200, 108)">
-                        <path d="M0,-16 L14,-10 L14,4 C14,12 8,18 0,22 C-8,18 -14,12 -14,4 L-14,-10 Z" fill="#fff" opacity="0.85"/>
-                        <circle cx="0" cy="2" r="4" fill="#0072e3" opacity="0.7"/>
-                        <rect x="-2" y="5" width="4" height="7" rx="1" fill="#0072e3" opacity="0.7"/>
+                    <!-- 中心芯片 -->
+                    <rect x="160" y="85" width="80" height="80" rx="12" fill="url(#skyChip)" opacity="0.9"/>
+                    <!-- 芯片内电路纹路 -->
+                    <line x1="180" y1="105" x2="220" y2="105" stroke="#fff" stroke-width="1.5" opacity="0.4"/>
+                    <line x1="180" y1="115" x2="220" y2="115" stroke="#fff" stroke-width="1.5" opacity="0.3"/>
+                    <line x1="180" y1="125" x2="220" y2="125" stroke="#fff" stroke-width="1.5" opacity="0.35"/>
+                    <line x1="180" y1="135" x2="220" y2="135" stroke="#fff" stroke-width="1.5" opacity="0.25"/>
+                    <!-- 芯片中心核心 -->
+                    <circle cx="200" cy="120" r="14" fill="#fff" opacity="0.2"/>
+                    <circle cx="200" cy="120" r="8" fill="#fff" opacity="0.3"/>
+                    <!-- 芯片引脚 - 上 -->
+                    <rect x="178" y="75" width="4" height="12" rx="1" fill="#38bdf8" opacity="0.6"/>
+                    <rect x="190" y="75" width="4" height="12" rx="1" fill="#38bdf8" opacity="0.6"/>
+                    <rect x="202" y="75" width="4" height="12" rx="1" fill="#38bdf8" opacity="0.6"/>
+                    <rect x="214" y="75" width="4" height="12" rx="1" fill="#38bdf8" opacity="0.6"/>
+                    <!-- 芯片引脚 - 下 -->
+                    <rect x="178" y="163" width="4" height="12" rx="1" fill="#38bdf8" opacity="0.6"/>
+                    <rect x="190" y="163" width="4" height="12" rx="1" fill="#38bdf8" opacity="0.6"/>
+                    <rect x="202" y="163" width="4" height="12" rx="1" fill="#38bdf8" opacity="0.6"/>
+                    <rect x="214" y="163" width="4" height="12" rx="1" fill="#38bdf8" opacity="0.6"/>
+                    <!-- 芯片引脚 - 左 -->
+                    <rect x="148" y="98" width="14" height="4" rx="1" fill="#38bdf8" opacity="0.6"/>
+                    <rect x="148" y="110" width="14" height="4" rx="1" fill="#38bdf8" opacity="0.6"/>
+                    <rect x="148" y="122" width="14" height="4" rx="1" fill="#38bdf8" opacity="0.6"/>
+                    <rect x="148" y="134" width="14" height="4" rx="1" fill="#38bdf8" opacity="0.6"/>
+                    <!-- 芯片引脚 - 右 -->
+                    <rect x="238" y="98" width="14" height="4" rx="1" fill="#38bdf8" opacity="0.6"/>
+                    <rect x="238" y="110" width="14" height="4" rx="1" fill="#38bdf8" opacity="0.6"/>
+                    <rect x="238" y="122" width="14" height="4" rx="1" fill="#38bdf8" opacity="0.6"/>
+                    <rect x="238" y="134" width="14" height="4" rx="1" fill="#38bdf8" opacity="0.6"/>
+
+                    <!-- 卫星球 - 左上：数据节点 -->
+                    <circle cx="100" cy="75" r="20" fill="url(#skyLight)" opacity="0.7"/>
+                    <circle cx="100" cy="75" r="20" fill="none" stroke="#38bdf8" stroke-width="1.5" opacity="0.3"/>
+                    <g transform="translate(100, 73)">
+                        <circle cx="0" cy="0" r="3" fill="#0ea5e9" opacity="0.7"/>
+                        <circle cx="-6" cy="-5" r="2" fill="#0ea5e9" opacity="0.5"/>
+                        <circle cx="6" cy="-5" r="2" fill="#0ea5e9" opacity="0.5"/>
+                        <line x1="0" y1="0" x2="-6" y2="-5" stroke="#0ea5e9" stroke-width="1" opacity="0.4"/>
+                        <line x1="0" y1="0" x2="6" y2="-5" stroke="#0ea5e9" stroke-width="1" opacity="0.4"/>
                     </g>
 
-                    <!-- 卫星球 - 左上：钥匙 -->
-                    <circle cx="110" cy="70" r="18" fill="url(#loginOrb1)" opacity="0.7"/>
-                    <circle cx="110" cy="70" r="18" fill="none" stroke="#4a9aff" stroke-width="1.5" opacity="0.3"/>
-                    <g transform="translate(110, 68)">
-                        <circle cx="0" cy="-3" r="4.5" fill="#0072e3" opacity="0.6"/>
-                        <circle cx="0" cy="-3" r="2" fill="#fff" opacity="0.5"/>
-                        <rect x="-1.2" y="1" width="2.4" height="8" rx="0.8" fill="#0072e3" opacity="0.6"/>
-                        <rect x="1.2" y="6" width="2.5" height="1.5" rx="0.5" fill="#0072e3" opacity="0.6"/>
+                    <!-- 卫星球 - 右下：服务器 -->
+                    <circle cx="305" cy="165" r="18" fill="url(#skyLight)" opacity="0.7"/>
+                    <circle cx="305" cy="165" r="18" fill="none" stroke="#7dd3fc" stroke-width="1.5" opacity="0.3"/>
+                    <g transform="translate(305, 163)">
+                        <rect x="-7" y="-8" width="14" height="5" rx="1.5" fill="#0ea5e9" opacity="0.5"/>
+                        <rect x="-7" y="-1" width="14" height="5" rx="1.5" fill="#0ea5e9" opacity="0.5"/>
+                        <rect x="-7" y="6" width="14" height="5" rx="1.5" fill="#0ea5e9" opacity="0.5"/>
+                        <circle cx="4" cy="-5.5" r="1.2" fill="#7dd3fc" opacity="0.7"/>
+                        <circle cx="4" cy="1.5" r="1.2" fill="#7dd3fc" opacity="0.7"/>
+                        <circle cx="4" cy="8.5" r="1.2" fill="#7dd3fc" opacity="0.7"/>
                     </g>
 
-                    <!-- 卫星球 - 右下：锁 -->
-                    <circle cx="295" cy="155" r="16" fill="url(#loginOrb3)" opacity="0.7"/>
-                    <circle cx="295" cy="155" r="16" fill="none" stroke="#00b4d8" stroke-width="1.5" opacity="0.3"/>
-                    <g transform="translate(295, 153)">
-                        <path d="M-4,-5 C-4,-10 4,-10 4,-5" stroke="#0072e3" stroke-width="2" fill="none" opacity="0.6"/>
-                        <rect x="-5" y="-5" width="10" height="8" rx="2" fill="#0072e3" opacity="0.6"/>
-                    </g>
-
-                    <!-- 卫星球 - 右上：勾 -->
-                    <circle cx="280" cy="68" r="12" fill="url(#loginOrb1)" opacity="0.6"/>
-                    <circle cx="280" cy="68" r="12" fill="none" stroke="#4a9aff" stroke-width="1" opacity="0.25"/>
-                    <g transform="translate(280, 68)">
-                        <path d="M-5,0 L-1.5,4 L5,-4" stroke="#0072e3" stroke-width="2.5" fill="none" stroke-linecap="round" stroke-linejoin="round" opacity="0.6"/>
+                    <!-- 卫星球 - 右上：信号 -->
+                    <circle cx="290" cy="70" r="14" fill="url(#skyLight)" opacity="0.6"/>
+                    <circle cx="290" cy="70" r="14" fill="none" stroke="#38bdf8" stroke-width="1" opacity="0.25"/>
+                    <g transform="translate(290, 70)">
+                        <circle cx="0" cy="0" r="2.5" fill="#0ea5e9" opacity="0.7"/>
+                        <path d="M-5,-5 A7,7 0 0,1 5,-5" stroke="#0ea5e9" stroke-width="1.5" fill="none" opacity="0.5"/>
+                        <path d="M-8,-8 A11,11 0 0,1 8,-8" stroke="#0ea5e9" stroke-width="1.5" fill="none" opacity="0.3"/>
                     </g>
 
                     <!-- 连接线 -->
-                    <line x1="160" y1="90" x2="125" y2="78" stroke="#fff" stroke-width="1" opacity="0.15" stroke-dasharray="3 3"/>
-                    <line x1="240" y1="140" x2="280" y2="150" stroke="#fff" stroke-width="1" opacity="0.15" stroke-dasharray="3 3"/>
-                    <line x1="240" y1="90" x2="270" y2="75" stroke="#fff" stroke-width="1" opacity="0.12" stroke-dasharray="3 3"/>
+                    <line x1="155" y1="100" x2="118" y2="85" stroke="#fff" stroke-width="1" opacity="0.15" stroke-dasharray="3 3"/>
+                    <line x1="245" y1="150" x2="290" y2="158" stroke="#fff" stroke-width="1" opacity="0.15" stroke-dasharray="3 3"/>
+                    <line x1="245" y1="100" x2="278" y2="78" stroke="#fff" stroke-width="1" opacity="0.12" stroke-dasharray="3 3"/>
 
                     <!-- 数据流 - 左侧 -->
                     <g opacity="0.3">
-                        <line x1="30" y1="60" x2="85" y2="80" stroke="#4a9aff" stroke-width="1.5" stroke-dasharray="4 3"/>
-                        <circle cx="30" cy="60" r="3" fill="#4a9aff" opacity="0.5"/>
+                        <line x1="30" y1="60" x2="80" y2="75" stroke="#38bdf8" stroke-width="1.5" stroke-dasharray="4 3"/>
+                        <circle cx="30" cy="60" r="3" fill="#38bdf8" opacity="0.5"/>
                     </g>
 
                     <!-- 数据流 - 右侧 -->
                     <g opacity="0.3">
-                        <line x1="320" y1="55" x2="370" y2="42" stroke="#00b4d8" stroke-width="1.5" stroke-dasharray="4 3"/>
-                        <circle cx="370" cy="42" r="3" fill="#00b4d8" opacity="0.5"/>
+                        <line x1="330" y1="55" x2="375" y2="42" stroke="#7dd3fc" stroke-width="1.5" stroke-dasharray="4 3"/>
+                        <circle cx="375" cy="42" r="3" fill="#7dd3fc" opacity="0.5"/>
                     </g>
 
                     <!-- 装饰六边形 -->
-                    <polygon points="52,40 66,32 80,40 80,56 66,64 52,56" fill="url(#loginOrb1)" opacity="0.25"/>
+                    <polygon points="52,40 66,32 80,40 80,56 66,64 52,56" fill="url(#skyLight)" opacity="0.25"/>
 
                     <!-- 装饰圆环 -->
-                    <circle cx="42" cy="130" r="14" fill="none" stroke="#4a9aff" stroke-width="2" opacity="0.2"/>
-                    <circle cx="42" cy="130" r="6" fill="#4a9aff" opacity="0.12"/>
-                    <circle cx="365" cy="110" r="10" fill="none" stroke="#00b4d8" stroke-width="1.5" opacity="0.2"/>
+                    <circle cx="42" cy="130" r="14" fill="none" stroke="#38bdf8" stroke-width="2" opacity="0.2"/>
+                    <circle cx="42" cy="130" r="6" fill="#38bdf8" opacity="0.12"/>
+                    <circle cx="365" cy="110" r="10" fill="none" stroke="#7dd3fc" stroke-width="1.5" opacity="0.2"/>
 
                     <!-- 浮动粒子 -->
-                    <circle cx="75" cy="65" r="2.5" fill="#4a9aff" opacity="0.3"/>
-                    <circle cx="90" cy="35" r="1.8" fill="#00b4d8" opacity="0.25"/>
-                    <circle cx="340" cy="55" r="2" fill="#00b4d8" opacity="0.25"/>
+                    <circle cx="75" cy="65" r="2.5" fill="#38bdf8" opacity="0.3"/>
+                    <circle cx="90" cy="35" r="1.8" fill="#7dd3fc" opacity="0.25"/>
+                    <circle cx="340" cy="55" r="2" fill="#7dd3fc" opacity="0.25"/>
 
-                    <!-- ===== 下方：人物坐在电脑桌前 ===== -->
+                    <!-- ===== 下方：服务器机架 ===== -->
 
                     <!-- 地面 -->
-                    <line x1="40" y1="295" x2="360" y2="295" stroke="#4a9aff" stroke-width="1" opacity="0.1"/>
+                    <line x1="40" y1="295" x2="360" y2="295" stroke="#38bdf8" stroke-width="1" opacity="0.1"/>
 
-                    <!-- 办公桌 -->
-                    <rect x="130" y="230" width="220" height="7" rx="3" fill="url(#deskTop)"/>
-                    <!-- 桌面前沿阴影 -->
-                    <rect x="130" y="235" width="220" height="2" rx="1" fill="#b8d4f0" opacity="0.4"/>
-                    <!-- 桌腿 -->
-                    <rect x="145" y="237" width="5" height="58" rx="1.5" fill="#b8d4f0" opacity="0.5"/>
-                    <rect x="330" y="237" width="5" height="58" rx="1.5" fill="#b8d4f0" opacity="0.5"/>
+                    <!-- 服务器机架 -->
+                    <rect x="145" y="195" width="110" height="100" rx="6" fill="url(#serverGrad)"/>
+                    <!-- 机架单元1 -->
+                    <rect x="152" y="202" width="96" height="16" rx="3" fill="#e0f2fe" opacity="0.8"/>
+                    <circle cx="238" cy="210" r="2.5" fill="#0ea5e9" opacity="0.7">
+                        <animate attributeName="opacity" values="0.7;0.3;0.7" dur="2s" repeatCount="indefinite"/>
+                    </circle>
+                    <circle cx="232" cy="210" r="2.5" fill="#38bdf8" opacity="0.5"/>
+                    <rect x="158" y="207" width="30" height="2.5" rx="1" fill="#bae6fd" opacity="0.6"/>
+                    <rect x="158" y="212" width="20" height="2" rx="1" fill="#bae6fd" opacity="0.4"/>
+                    <!-- 机架单元2 -->
+                    <rect x="152" y="222" width="96" height="16" rx="3" fill="#e0f2fe" opacity="0.8"/>
+                    <circle cx="238" cy="230" r="2.5" fill="#0ea5e9" opacity="0.5"/>
+                    <circle cx="232" cy="230" r="2.5" fill="#7dd3fc" opacity="0.7">
+                        <animate attributeName="opacity" values="0.7;0.3;0.7" dur="1.8s" repeatCount="indefinite"/>
+                    </circle>
+                    <rect x="158" y="227" width="35" height="2.5" rx="1" fill="#bae6fd" opacity="0.6"/>
+                    <rect x="158" y="232" width="22" height="2" rx="1" fill="#bae6fd" opacity="0.4"/>
+                    <!-- 机架单元3 -->
+                    <rect x="152" y="242" width="96" height="16" rx="3" fill="#e0f2fe" opacity="0.8"/>
+                    <circle cx="238" cy="250" r="2.5" fill="#38bdf8" opacity="0.6">
+                        <animate attributeName="opacity" values="0.6;0.2;0.6" dur="2.2s" repeatCount="indefinite"/>
+                    </circle>
+                    <circle cx="232" cy="250" r="2.5" fill="#0ea5e9" opacity="0.5"/>
+                    <rect x="158" y="247" width="28" height="2.5" rx="1" fill="#bae6fd" opacity="0.6"/>
+                    <rect x="158" y="252" width="18" height="2" rx="1" fill="#bae6fd" opacity="0.4"/>
+                    <!-- 机架单元4 -->
+                    <rect x="152" y="262" width="96" height="16" rx="3" fill="#e0f2fe" opacity="0.8"/>
+                    <circle cx="238" cy="270" r="2.5" fill="#0ea5e9" opacity="0.6"/>
+                    <circle cx="232" cy="270" r="2.5" fill="#7dd3fc" opacity="0.5">
+                        <animate attributeName="opacity" values="0.5;0.2;0.5" dur="1.5s" repeatCount="indefinite"/>
+                    </circle>
+                    <rect x="158" y="267" width="32" height="2.5" rx="1" fill="#bae6fd" opacity="0.6"/>
+                    <rect x="158" y="272" width="24" height="2" rx="1" fill="#bae6fd" opacity="0.4"/>
 
-                    <!-- 显示器 -->
-                    <rect x="195" y="178" width="90" height="52" rx="5" fill="url(#deskTop)"/>
-                    <rect x="199" y="182" width="82" height="44" rx="3" fill="url(#screenGlow)"/>
-                    <!-- 屏幕内容 - 代码行 -->
-                    <rect x="206" y="190" width="32" height="2.5" rx="1" fill="#fff" opacity="0.4"/>
-                    <rect x="206" y="196" width="48" height="2.5" rx="1" fill="#fff" opacity="0.3"/>
-                    <rect x="206" y="202" width="26" height="2.5" rx="1" fill="#fff" opacity="0.35"/>
-                    <rect x="206" y="208" width="40" height="2.5" rx="1" fill="#fff" opacity="0.25"/>
-                    <rect x="206" y="214" width="18" height="2.5" rx="1" fill="#fff" opacity="0.3"/>
-                    <!-- 显示器底座 -->
-                    <rect x="232" y="230" width="16" height="5" rx="1" fill="#d0e4f7"/>
-                    <rect x="226" y="233" width="28" height="3" rx="1.5" fill="#d0e4f7"/>
+                    <!-- 机架底部支撑 -->
+                    <rect x="155" y="282" width="90" height="4" rx="2" fill="#bae6fd" opacity="0.5"/>
 
-                    <!-- 键盘 -->
-                    <rect x="210" y="240" width="50" height="8" rx="2.5" fill="#e0ecfa" opacity="0.8"/>
-                    <!-- 鼠标 -->
-                    <ellipse cx="275" cy="243" rx="5" ry="7" fill="#e0ecfa" opacity="0.8"/>
-
-                    <!-- 咖啡杯 -->
-                    <rect x="155" y="222" width="10" height="8" rx="2" fill="#e0ecfa" opacity="0.6"/>
-                    <path d="M165,224 C168,224 168,228 165,228" stroke="#b8d4f0" stroke-width="1" fill="none" opacity="0.4"/>
-                    <path d="M158,220 Q159,216 158,212" stroke="#4a9aff" stroke-width="0.7" fill="none" opacity="0.2">
-                        <animate attributeName="opacity" values="0.2;0.05;0.2" dur="2s" repeatCount="indefinite"/>
-                    </path>
-
-                    <!-- 人物 - 几何剪影风格坐姿 -->
-                    <g transform="translate(160, 155)">
-                        <!-- 椅子 -->
-                        <rect x="-6" y="30" width="22" height="48" rx="7" fill="#b8d4f0" opacity="0.4"/>
-                        <rect x="2" y="78" width="4" height="22" rx="1" fill="#b8d4f0" opacity="0.35"/>
-                        <line x1="-8" y1="100" x2="18" y2="100" stroke="#b8d4f0" stroke-width="2" stroke-linecap="round" opacity="0.35"/>
-
-                        <!-- 身体/躯干 - 几何形 -->
-                        <path d="M-2,18 L-8,55 L14,55 L8,18 Z" fill="#0072e3" opacity="0.55"/>
-
-                        <!-- 头部 - 几何圆形 -->
-                        <circle cx="3" cy="5" r="14" fill="#d0e4f7" opacity="0.8"/>
-                        <!-- 头发 - 几何弧 -->
-                        <path d="M-11,0 Q-11,-12 3,-14 Q17,-12 17,0" fill="#4a9aff" opacity="0.3"/>
-
-                        <!-- 左臂 - 伸向键盘 -->
-                        <path d="M-8,25 L-22,42 L-14,50" stroke="#0072e3" stroke-width="5" fill="none" stroke-linecap="round" stroke-linejoin="round" opacity="0.45"/>
-                        <!-- 右臂 - 伸向鼠标 -->
-                        <path d="M14,25 L32,40 L42,46" stroke="#0072e3" stroke-width="5" fill="none" stroke-linecap="round" stroke-linejoin="round" opacity="0.45"/>
-
-                        <!-- 手 -->
-                        <circle cx="-14" cy="50" r="3.5" fill="#d0e4f7" opacity="0.6"/>
-                        <circle cx="42" cy="46" r="3.5" fill="#d0e4f7" opacity="0.6"/>
-
-                        <!-- 腿 - 几何 -->
-                        <path d="M-4,55 L-10,82 L-4,86" stroke="#4a9aff" stroke-width="6" fill="none" stroke-linecap="round" stroke-linejoin="round" opacity="0.35"/>
-                        <path d="M10,55 L18,82 L24,86" stroke="#4a9aff" stroke-width="6" fill="none" stroke-linecap="round" stroke-linejoin="round" opacity="0.35"/>
-                    </g>
+                    <!-- 数据流线 - 从芯片到服务器 -->
+                    <line x1="200" y1="175" x2="200" y2="195" stroke="#38bdf8" stroke-width="1.5" stroke-dasharray="3 3" opacity="0.3">
+                        <animate attributeName="stroke-dashoffset" values="0;-6" dur="1s" repeatCount="indefinite"/>
+                    </line>
 
                     <!-- 屏幕光晕 -->
-                    <ellipse cx="240" cy="210" rx="55" ry="28" fill="#0072e3" opacity="0.03"/>
+                    <ellipse cx="200" cy="240" rx="65" ry="30" fill="#0ea5e9" opacity="0.03"/>
                 </svg>
             </div>
-
 
         </div>
     </div>
@@ -211,8 +215,19 @@
     <div class="auth-split-right">
         <div class="auth-form-card auth-anim auth-anim-3">
 
-            <div class="auth-form-title auth-anim auth-anim-1">账户登录</div>
-            <div class="auth-form-subtitle auth-anim auth-anim-2">请输入您的账户信息以继续</div>
+            <div class="auth-form-header auth-anim auth-anim-1">
+                <div class="auth-form-logo">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M12 2L2 7l10 5 10-5-10-5z"/>
+                        <path d="M2 17l10 5 10-5"/>
+                        <path d="M2 12l10 5 10-5"/>
+                    </svg>
+                </div>
+                <div class="auth-form-brand">
+                    <div class="auth-form-title">OSAdmin</div>
+                    <div class="auth-form-subtitle">后台管理系统</div>
+                </div>
+            </div>
 
             <form id="loginForm" autocomplete="off" style="margin-top:24px;">
 
@@ -313,12 +328,11 @@
 (function () {
     'use strict';
 
-    /* ===== Canvas 粒子动画 ===== */
+    /* ===== Canvas 粒子动画（浮动光点，无连线） ===== */
     var cvs = document.getElementById('bgCvs');
     var ctx = cvs.getContext('2d');
     var particles = [];
-    var PARTICLE_COUNT = 35;
-    var LINK_DIST = 130;
+    var PARTICLE_COUNT = 25;
 
     function resize() {
         cvs.width = window.innerWidth;
@@ -331,9 +345,9 @@
         return {
             x: Math.random() * cvs.width,
             y: Math.random() * cvs.height,
-            vx: (Math.random() - 0.5) * 0.6,
-            vy: (Math.random() - 0.5) * 0.6,
-            r: Math.random() * 2 + 1
+            vx: (Math.random() - 0.5) * 0.4,
+            vy: (Math.random() - 0.5) * 0.4,
+            r: Math.random() * 3 + 1.5
         };
     }
     for (var i = 0; i < PARTICLE_COUNT; i++) particles.push(createParticle());
@@ -341,28 +355,11 @@
     function drawParticles() {
         ctx.clearRect(0, 0, cvs.width, cvs.height);
         var len = particles.length;
-        // 连线
-        for (var i = 0; i < len; i++) {
-            for (var j = i + 1; j < len; j++) {
-                var dx = particles[i].x - particles[j].x;
-                var dy = particles[i].y - particles[j].y;
-                var dist = Math.sqrt(dx * dx + dy * dy);
-                if (dist < LINK_DIST) {
-                    ctx.beginPath();
-                    ctx.moveTo(particles[i].x, particles[i].y);
-                    ctx.lineTo(particles[j].x, particles[j].y);
-                    ctx.strokeStyle = 'rgba(0,114,227,' + (0.13 * (1 - dist / LINK_DIST)) + ')';
-                    ctx.lineWidth = 0.8;
-                    ctx.stroke();
-                }
-            }
-        }
-        // 粒子
         for (var i = 0; i < len; i++) {
             var p = particles[i];
             ctx.beginPath();
             ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
-            ctx.fillStyle = 'rgba(0,114,227,.18)';
+            ctx.fillStyle = 'rgba(14, 165, 233, ' + (0.08 + p.r * 0.04) + ')';
             ctx.fill();
             p.x += p.vx;
             p.y += p.vy;
@@ -393,7 +390,7 @@
                 el.addEventListener('animationend', function () { el.remove(); });
             }
         }, 3000);
-    };
+    }
 
     /* ===== 密码显隐切换 ===== */
     function togglePassword(id, btn) {
@@ -443,10 +440,10 @@
         captchaCode = '';
         for (var i = 0; i < 4; i++) captchaCode += chars.charAt(Math.floor(Math.random() * chars.length));
 
-        c.fillStyle = '#f6f9fc';
+        c.fillStyle = '#f0f9ff';
         c.fillRect(0, 0, w, h);
 
-        c.strokeStyle = 'rgba(0,0,0,.03)';
+        c.strokeStyle = 'rgba(14,165,233,.03)';
         c.lineWidth = 0.5;
         for (var x = 0; x < w; x += 8) { c.beginPath(); c.moveTo(x, 0); c.lineTo(x, h); c.stroke(); }
         for (var y = 0; y < h; y += 8) { c.beginPath(); c.moveTo(0, y); c.lineTo(w, y); c.stroke(); }
@@ -460,12 +457,12 @@
             c.beginPath();
             c.moveTo(Math.random() * w, Math.random() * h);
             c.lineTo(Math.random() * w, Math.random() * h);
-            c.strokeStyle = 'rgba(0,114,227,.12)';
+            c.strokeStyle = 'rgba(14,165,233,.12)';
             c.lineWidth = 1;
             c.stroke();
         }
 
-        var colors = ['#0072e3', '#005bbf', '#3d5a80', '#0c1a2e'];
+        var colors = ['#0ea5e9', '#0284c7', '#38bdf8', '#0369a1'];
         for (var i = 0; i < 4; i++) {
             c.save();
             c.font = (18 + Math.random() * 6) + 'px "Plus Jakarta Sans", sans-serif';

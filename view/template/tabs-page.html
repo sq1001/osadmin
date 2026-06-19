@@ -1,0 +1,525 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>多标签页模板</title>
+</head>
+<body>
+  <style>
+    .tabs-page-container {
+      min-height: calc(100vh - 180px);
+    }
+
+    .tabs-page-header {
+      background: var(--card-bg);
+      border-radius: 12px 12px 0 0;
+      border: 1px solid var(--border);
+      border-bottom: none;
+    }
+
+    .tabs-page-nav {
+      display: flex;
+      gap: 0;
+      overflow-x: auto;
+    }
+
+    .tabs-page-tab {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      padding: 14px 24px;
+      cursor: pointer;
+      color: var(--text-secondary);
+      border-bottom: 2px solid transparent;
+      transition: all 0.15s;
+      white-space: nowrap;
+      user-select: none;
+    }
+
+    .tabs-page-tab:hover {
+      color: var(--text-primary);
+      background: var(--bg-content);
+    }
+
+    .tabs-page-tab.active {
+      color: var(--accent);
+      border-bottom-color: var(--accent);
+    }
+
+    .tabs-page-tab i {
+      font-size: 16px;
+    }
+
+    .tabs-page-body {
+      background: var(--card-bg);
+      border-radius: 0 0 12px 12px;
+      border: 1px solid var(--border);
+      border-top: none;
+      min-height: 400px;
+    }
+
+    .tabs-page-panel {
+      display: none;
+      padding: 24px;
+    }
+
+    .tabs-page-panel.active {
+      display: block;
+    }
+
+    /* 概览统计卡片 */
+    .stat-cards {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 16px;
+      margin-bottom: 24px;
+    }
+
+    .stat-card {
+      background: var(--bg-content);
+      border-radius: 10px;
+      padding: 20px;
+      border: 1px solid var(--border);
+    }
+
+    .stat-card-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 12px;
+    }
+
+    .stat-card-label {
+      font-size: 13px;
+      color: var(--text-muted);
+    }
+
+    .stat-card-icon {
+      width: 36px;
+      height: 36px;
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 18px;
+      color: #fff;
+    }
+
+    .stat-card-icon.blue { background: #4e7cff; }
+    .stat-card-icon.green { background: #52c41a; }
+    .stat-card-icon.orange { background: #fa8c16; }
+    .stat-card-icon.purple { background: #722ed1; }
+
+    .stat-card-value {
+      font-size: 28px;
+      font-weight: 700;
+      color: var(--text-primary);
+      line-height: 1.2;
+    }
+
+    .stat-card-trend {
+      font-size: 12px;
+      margin-top: 6px;
+    }
+
+    .stat-card-trend.up { color: #52c41a; }
+    .stat-card-trend.down { color: #ff4d4f; }
+
+    /* 快捷操作 */
+    .quick-actions {
+      margin-top: 8px;
+    }
+
+    .quick-actions-title {
+      font-size: 15px;
+      font-weight: 600;
+      color: var(--text-primary);
+      margin-bottom: 16px;
+    }
+
+    .quick-actions-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 12px;
+    }
+
+    .quick-action-item {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 14px 16px;
+      background: var(--bg-content);
+      border-radius: 8px;
+      border: 1px solid var(--border);
+      cursor: pointer;
+      transition: all 0.15s;
+    }
+
+    .quick-action-item:hover {
+      border-color: var(--accent);
+      background: var(--accent-light);
+    }
+
+    .quick-action-item i {
+      font-size: 20px;
+      color: var(--accent);
+    }
+
+    .quick-action-item span {
+      font-size: 13px;
+      color: var(--text-primary);
+    }
+
+    /* 图表占位 */
+    .chart-cards {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 16px;
+    }
+
+    .chart-card {
+      background: var(--bg-content);
+      border-radius: 10px;
+      padding: 20px;
+      border: 1px solid var(--border);
+    }
+
+    .chart-card-title {
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--text-primary);
+      margin-bottom: 16px;
+    }
+
+    .chart-placeholder {
+      height: 160px;
+      display: flex;
+      align-items: flex-end;
+      gap: 8px;
+      padding: 0 10px;
+    }
+
+    .chart-bar {
+      flex: 1;
+      border-radius: 4px 4px 0 0;
+      transition: height 0.3s;
+    }
+
+    /* 时间线 */
+    .timeline {
+      position: relative;
+      padding-left: 24px;
+    }
+
+    .timeline::before {
+      content: '';
+      position: absolute;
+      left: 8px;
+      top: 4px;
+      bottom: 4px;
+      width: 2px;
+      background: var(--border);
+    }
+
+    .timeline-item {
+      position: relative;
+      padding-bottom: 24px;
+    }
+
+    .timeline-item:last-child {
+      padding-bottom: 0;
+    }
+
+    .timeline-dot {
+      position: absolute;
+      left: -20px;
+      top: 4px;
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+      background: var(--accent);
+      border: 2px solid var(--card-bg);
+    }
+
+    .timeline-time {
+      font-size: 12px;
+      color: var(--text-muted);
+      margin-bottom: 4px;
+    }
+
+    .timeline-content {
+      font-size: 14px;
+      color: var(--text-secondary);
+      line-height: 1.6;
+    }
+
+    .timeline-user {
+      font-weight: 500;
+      color: var(--text-primary);
+    }
+
+    @media (max-width: 768px) {
+      .stat-cards {
+        grid-template-columns: repeat(2, 1fr);
+      }
+
+      .quick-actions-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+
+      .chart-cards {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+
+  <div class="page-content">
+    <div class="tabs-page-container">
+      <div class="tabs-page-header">
+        <div class="tabs-page-nav">
+          <div class="tabs-page-tab active" data-tab="overview">
+            <i class="layui-icon layui-icon-home"></i>
+            <span>概览</span>
+          </div>
+          <div class="tabs-page-tab" data-tab="details">
+            <i class="layui-icon layui-icon-list"></i>
+            <span>详细数据</span>
+          </div>
+          <div class="tabs-page-tab" data-tab="analysis">
+            <i class="layui-icon layui-icon-chart"></i>
+            <span>分析报告</span>
+          </div>
+          <div class="tabs-page-tab" data-tab="logs">
+            <i class="layui-icon layui-icon-log"></i>
+            <span>操作日志</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="tabs-page-body">
+        <!-- 概览 -->
+        <div class="tabs-page-panel active" id="panelOverview">
+          <div class="stat-cards">
+            <div class="stat-card">
+              <div class="stat-card-header">
+                <span class="stat-card-label">用户总数</span>
+                <div class="stat-card-icon blue"><i class="layui-icon layui-icon-group"></i></div>
+              </div>
+              <div class="stat-card-value">12,846</div>
+              <div class="stat-card-trend up">↑ 12.5% 较上月</div>
+            </div>
+            <div class="stat-card">
+              <div class="stat-card-header">
+                <span class="stat-card-label">订单总数</span>
+                <div class="stat-card-icon green"><i class="layui-icon layui-icon-cart-simple"></i></div>
+              </div>
+              <div class="stat-card-value">3,256</div>
+              <div class="stat-card-trend up">↑ 8.3% 较上月</div>
+            </div>
+            <div class="stat-card">
+              <div class="stat-card-header">
+                <span class="stat-card-label">总收入</span>
+                <div class="stat-card-icon orange"><i class="layui-icon layui-icon-rmb"></i></div>
+              </div>
+              <div class="stat-card-value">¥89.2K</div>
+              <div class="stat-card-trend down">↓ 3.1% 较上月</div>
+            </div>
+            <div class="stat-card">
+              <div class="stat-card-header">
+                <span class="stat-card-label">访问量</span>
+                <div class="stat-card-icon purple"><i class="layui-icon layui-icon-read"></i></div>
+              </div>
+              <div class="stat-card-value">56.8K</div>
+              <div class="stat-card-trend up">↑ 22.1% 较上月</div>
+            </div>
+          </div>
+
+          <div class="quick-actions">
+            <div class="quick-actions-title">快捷操作</div>
+            <div class="quick-actions-grid">
+              <div class="quick-action-item" data-action="addUser">
+                <i class="layui-icon layui-icon-add-1"></i>
+                <span>新增用户</span>
+              </div>
+              <div class="quick-action-item" data-action="export">
+                <i class="layui-icon layui-icon-export"></i>
+                <span>导出数据</span>
+              </div>
+              <div class="quick-action-item" data-action="settings">
+                <i class="layui-icon layui-icon-set"></i>
+                <span>系统设置</span>
+              </div>
+              <div class="quick-action-item" data-action="refresh">
+                <i class="layui-icon layui-icon-refresh"></i>
+                <span>刷新缓存</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 详细数据 -->
+        <div class="tabs-page-panel" id="panelDetails">
+          <table id="detailTable" lay-filter="detailTable"></table>
+        </div>
+
+        <!-- 分析报告 -->
+        <div class="tabs-page-panel" id="panelAnalysis">
+          <div class="chart-cards">
+            <div class="chart-card">
+              <div class="chart-card-title">用户增长趋势</div>
+              <div class="chart-placeholder" id="chartUsers">
+                <div class="chart-bar" style="height:40%;background:var(--accent);opacity:0.6"></div>
+                <div class="chart-bar" style="height:55%;background:var(--accent);opacity:0.65"></div>
+                <div class="chart-bar" style="height:45%;background:var(--accent);opacity:0.7"></div>
+                <div class="chart-bar" style="height:70%;background:var(--accent);opacity:0.75"></div>
+                <div class="chart-bar" style="height:60%;background:var(--accent);opacity:0.8"></div>
+                <div class="chart-bar" style="height:80%;background:var(--accent);opacity:0.85"></div>
+                <div class="chart-bar" style="height:75%;background:var(--accent);opacity:0.9"></div>
+                <div class="chart-bar" style="height:90%;background:var(--accent);opacity:0.95"></div>
+                <div class="chart-bar" style="height:85%;background:var(--accent)"></div>
+              </div>
+            </div>
+            <div class="chart-card">
+              <div class="chart-card-title">订单量统计</div>
+              <div class="chart-placeholder" id="chartOrders">
+                <div class="chart-bar" style="height:60%;background:#52c41a;opacity:0.6"></div>
+                <div class="chart-bar" style="height:50%;background:#52c41a;opacity:0.65"></div>
+                <div class="chart-bar" style="height:70%;background:#52c41a;opacity:0.7"></div>
+                <div class="chart-bar" style="height:55%;background:#52c41a;opacity:0.75"></div>
+                <div class="chart-bar" style="height:80%;background:#52c41a;opacity:0.8"></div>
+                <div class="chart-bar" style="height:65%;background:#52c41a;opacity:0.85"></div>
+                <div class="chart-bar" style="height:90%;background:#52c41a;opacity:0.9"></div>
+                <div class="chart-bar" style="height:75%;background:#52c41a;opacity:0.95"></div>
+                <div class="chart-bar" style="height:95%;background:#52c41a"></div>
+              </div>
+            </div>
+            <div class="chart-card">
+              <div class="chart-card-title">收入趋势</div>
+              <div class="chart-placeholder" id="chartRevenue">
+                <div class="chart-bar" style="height:35%;background:#fa8c16;opacity:0.6"></div>
+                <div class="chart-bar" style="height:50%;background:#fa8c16;opacity:0.65"></div>
+                <div class="chart-bar" style="height:65%;background:#fa8c16;opacity:0.7"></div>
+                <div class="chart-bar" style="height:45%;background:#fa8c16;opacity:0.75"></div>
+                <div class="chart-bar" style="height:70%;background:#fa8c16;opacity:0.8"></div>
+                <div class="chart-bar" style="height:55%;background:#fa8c16;opacity:0.85"></div>
+                <div class="chart-bar" style="height:85%;background:#fa8c16;opacity:0.9"></div>
+                <div class="chart-bar" style="height:75%;background:#fa8c16;opacity:0.95"></div>
+                <div class="chart-bar" style="height:80%;background:#fa8c16"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 操作日志 -->
+        <div class="tabs-page-panel" id="panelLogs">
+          <div class="timeline">
+            <div class="timeline-item">
+              <div class="timeline-dot"></div>
+              <div class="timeline-time">2025-06-15 14:32:18</div>
+              <div class="timeline-content"><span class="timeline-user">管理员</span> 修改了系统基础设置</div>
+            </div>
+            <div class="timeline-item">
+              <div class="timeline-dot"></div>
+              <div class="timeline-time">2025-06-15 11:20:45</div>
+              <div class="timeline-content"><span class="timeline-user">张三</span> 新增了用户「李四」</div>
+            </div>
+            <div class="timeline-item">
+              <div class="timeline-dot"></div>
+              <div class="timeline-time">2025-06-14 16:08:33</div>
+              <div class="timeline-content"><span class="timeline-user">管理员</span> 导出了月度数据报表</div>
+            </div>
+            <div class="timeline-item">
+              <div class="timeline-dot"></div>
+              <div class="timeline-time">2025-06-14 09:55:12</div>
+              <div class="timeline-content"><span class="timeline-user">王五</span> 删除了角色「临时访客」</div>
+            </div>
+            <div class="timeline-item">
+              <div class="timeline-dot"></div>
+              <div class="timeline-time">2025-06-13 17:42:07</div>
+              <div class="timeline-content"><span class="timeline-user">管理员</span> 更新了上传配置参数</div>
+            </div>
+            <div class="timeline-item">
+              <div class="timeline-dot"></div>
+              <div class="timeline-time">2025-06-13 10:15:29</div>
+              <div class="timeline-content"><span class="timeline-user">赵六</span> 修改了个人密码</div>
+            </div>
+            <div class="timeline-item">
+              <div class="timeline-dot"></div>
+              <div class="timeline-time">2025-06-12 15:30:51</div>
+              <div class="timeline-content"><span class="timeline-user">管理员</span> 清理了系统缓存</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    layui.use(['table', 'layer'], function() {
+      var table = layui.table;
+      var layer = layui.layer;
+      var $ = layui.$;
+
+      // Tab切换
+      $('.tabs-page-tab').on('click', function() {
+        var tab = $(this).data('tab');
+        $('.tabs-page-tab').removeClass('active');
+        $(this).addClass('active');
+
+        $('.tabs-page-panel').removeClass('active');
+        $('#panel' + tab.charAt(0).toUpperCase() + tab.slice(1)).addClass('active');
+
+        // 首次切换到详细数据时渲染表格
+        if (tab === 'details' && !window._detailTableRendered) {
+          renderDetailTable();
+          window._detailTableRendered = true;
+        }
+      });
+
+      // 渲染详细数据表格
+      function renderDetailTable() {
+        table.render({
+          elem: '#detailTable',
+          data: [
+            { id: 1, name: '张三', role: '管理员', status: '在线', lastLogin: '2025-06-15 14:30', orders: 128 },
+            { id: 2, name: '李四', role: '编辑', status: '在线', lastLogin: '2025-06-15 12:15', orders: 56 },
+            { id: 3, name: '王五', role: '运营', status: '离线', lastLogin: '2025-06-14 18:22', orders: 89 },
+            { id: 4, name: '赵六', role: '普通用户', status: '在线', lastLogin: '2025-06-15 09:45', orders: 34 },
+            { id: 5, name: '孙七', role: '编辑', status: '离线', lastLogin: '2025-06-13 16:50', orders: 67 },
+            { id: 6, name: '周八', role: '运营', status: '在线', lastLogin: '2025-06-15 11:08', orders: 92 },
+            { id: 7, name: '吴九', role: '普通用户', status: '离线', lastLogin: '2025-06-12 20:33', orders: 15 },
+            { id: 8, name: '郑十', role: '管理员', status: '在线', lastLogin: '2025-06-15 13:20', orders: 201 }
+          ],
+          cols: [[
+            { field: 'id', title: 'ID', width: 80, sort: true },
+            { field: 'name', title: '姓名', width: 120 },
+            { field: 'role', title: '角色', width: 120 },
+            { field: 'status', title: '状态', width: 100, templet: function(d) {
+              var color = d.status === '在线' ? '#52c41a' : '#999';
+              return '<span style="color:' + color + '">' + d.status + '</span>';
+            }},
+            { field: 'lastLogin', title: '最后登录', width: 180 },
+            { field: 'orders', title: '订单数', width: 100, sort: true }
+          ]],
+          page: true,
+          limit: 5,
+          limits: [5, 10]
+        });
+      }
+
+      // 快捷操作
+      $('.quick-action-item').on('click', function() {
+        var action = $(this).data('action');
+        var messages = {
+          addUser: '正在打开新增用户页面...',
+          export: '正在准备导出数据...',
+          settings: '正在跳转系统设置...',
+          refresh: '正在刷新系统缓存...'
+        };
+        layer.msg(messages[action] || '操作进行中...', { icon: 1, time: 1500 });
+      });
+    });
+  </script>
+</body>
+</html>

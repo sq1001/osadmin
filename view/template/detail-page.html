@@ -1,0 +1,782 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>详情页模板</title>
+</head>
+<body>
+  <style>
+    .detail-page-container {
+      display: flex;
+      gap: 20px;
+      min-height: calc(100vh - 180px);
+    }
+
+    .detail-page-sidebar {
+      width: 220px;
+      flex-shrink: 0;
+      position: sticky;
+      top: 0;
+      align-self: flex-start;
+      max-height: calc(100vh - 180px);
+      overflow-y: auto;
+    }
+
+    .detail-page-nav {
+      background: var(--card-bg);
+      border-radius: 12px;
+      border: 1px solid var(--border);
+      padding: 16px 0;
+    }
+
+    .detail-page-nav-title {
+      padding: 0 20px 12px;
+      font-weight: 600;
+      color: var(--text-primary);
+      border-bottom: 1px solid var(--border);
+      font-size: 14px;
+    }
+
+    .detail-page-nav-group {
+      padding-top: 8px;
+    }
+
+    .detail-page-nav-item {
+      padding: 10px 20px;
+      cursor: pointer;
+      color: var(--text-secondary);
+      border-left: 3px solid transparent;
+      transition: all 0.15s;
+      font-size: 14px;
+    }
+
+    .detail-page-nav-item:hover {
+      color: var(--text-primary);
+      background: var(--bg-content);
+    }
+
+    .detail-page-nav-item.active {
+      color: var(--accent);
+      background: var(--accent-light);
+      border-left-color: var(--accent);
+    }
+
+    .detail-page-main {
+      flex: 1;
+      min-width: 0;
+    }
+
+    .detail-page-section {
+      background: var(--card-bg);
+      border-radius: 12px;
+      border: 1px solid var(--border);
+      margin-bottom: 16px;
+    }
+
+    .detail-page-section:last-child {
+      margin-bottom: 0;
+    }
+
+    .detail-page-section-header {
+      padding: 20px 24px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .detail-page-section-header h2 {
+      font-size: 16px;
+      font-weight: 600;
+      color: var(--text-primary);
+      margin: 0;
+    }
+
+    .detail-page-section-body {
+      padding: 24px;
+      color: var(--text-secondary);
+      line-height: 1.8;
+      font-size: 14px;
+    }
+
+    /* 功能特性卡片网格 */
+    .feature-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 16px;
+    }
+
+    .feature-item {
+      padding: 20px;
+      background: var(--bg-content);
+      border-radius: 10px;
+      border: 1px solid var(--border);
+    }
+
+    .feature-icon {
+      width: 40px;
+      height: 40px;
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 20px;
+      color: #fff;
+      background: var(--accent);
+      margin-bottom: 12px;
+    }
+
+    .feature-title {
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--text-primary);
+      margin-bottom: 6px;
+    }
+
+    .feature-desc {
+      font-size: 13px;
+      color: var(--text-muted);
+      line-height: 1.6;
+    }
+
+    /* 配置表格 */
+    .config-table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+
+    .config-table th,
+    .config-table td {
+      padding: 10px 16px;
+      text-align: left;
+      border-bottom: 1px solid var(--border);
+      font-size: 13px;
+    }
+
+    .config-table th {
+      color: var(--text-primary);
+      font-weight: 600;
+      background: var(--bg-content);
+    }
+
+    .config-table td {
+      color: var(--text-secondary);
+    }
+
+    .config-table td code {
+      background: var(--bg-content);
+      padding: 2px 6px;
+      border-radius: 4px;
+      font-size: 12px;
+      color: var(--accent);
+    }
+
+    /* 步骤说明 */
+    .steps {
+      counter-reset: step;
+    }
+
+    .step-item {
+      position: relative;
+      padding-left: 48px;
+      padding-bottom: 24px;
+    }
+
+    .step-item:last-child {
+      padding-bottom: 0;
+    }
+
+    .step-item::before {
+      counter-increment: step;
+      content: counter(step);
+      position: absolute;
+      left: 0;
+      top: 0;
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      background: var(--accent);
+      color: #fff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 14px;
+      font-weight: 600;
+    }
+
+    .step-item:not(:last-child)::after {
+      content: '';
+      position: absolute;
+      left: 15px;
+      top: 36px;
+      bottom: 0;
+      width: 2px;
+      background: var(--border);
+    }
+
+    .step-title {
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--text-primary);
+      margin-bottom: 4px;
+      padding-top: 5px;
+    }
+
+    .step-desc {
+      font-size: 13px;
+      color: var(--text-muted);
+      line-height: 1.6;
+    }
+
+    .step-desc code {
+      background: var(--bg-content);
+      padding: 2px 6px;
+      border-radius: 4px;
+      font-size: 12px;
+      color: var(--accent);
+    }
+
+    /* API示例 */
+    .api-item {
+      margin-bottom: 20px;
+    }
+
+    .api-item:last-child {
+      margin-bottom: 0;
+    }
+
+    .api-header {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 8px;
+    }
+
+    .api-method {
+      padding: 2px 8px;
+      border-radius: 4px;
+      font-size: 12px;
+      font-weight: 600;
+      color: #fff;
+    }
+
+    .api-method.get { background: #52c41a; }
+    .api-method.post { background: #4e7cff; }
+    .api-method.put { background: #fa8c16; }
+    .api-method.delete { background: #ff4d4f; }
+
+    .api-path {
+      font-size: 13px;
+      font-weight: 500;
+      color: var(--text-primary);
+    }
+
+    .api-desc {
+      font-size: 13px;
+      color: var(--text-muted);
+      margin-bottom: 8px;
+    }
+
+    .api-code {
+      background: var(--bg-content);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      padding: 12px 16px;
+      font-size: 12px;
+      line-height: 1.6;
+      color: var(--text-secondary);
+      overflow-x: auto;
+    }
+
+    /* FAQ折叠 */
+    .faq-item {
+      border-bottom: 1px solid var(--border);
+    }
+
+    .faq-item:last-child {
+      border-bottom: none;
+    }
+
+    .faq-question {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 14px 0;
+      cursor: pointer;
+      color: var(--text-primary);
+      font-weight: 500;
+      font-size: 14px;
+      user-select: none;
+    }
+
+    .faq-question i {
+      font-size: 14px;
+      color: var(--text-muted);
+      transition: transform 0.2s;
+    }
+
+    .faq-item.open .faq-question i {
+      transform: rotate(90deg);
+    }
+
+    .faq-answer {
+      display: none;
+      padding: 0 0 14px;
+      color: var(--text-muted);
+      font-size: 13px;
+      line-height: 1.8;
+    }
+
+    .faq-item.open .faq-answer {
+      display: block;
+    }
+
+    /* 更新日志 */
+    .changelog-item {
+      padding-bottom: 20px;
+      margin-bottom: 20px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .changelog-item:last-child {
+      padding-bottom: 0;
+      margin-bottom: 0;
+      border-bottom: none;
+    }
+
+    .changelog-version {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 8px;
+    }
+
+    .changelog-tag {
+      padding: 2px 8px;
+      border-radius: 4px;
+      font-size: 12px;
+      font-weight: 600;
+      color: #fff;
+      background: var(--accent);
+    }
+
+    .changelog-date {
+      font-size: 12px;
+      color: var(--text-muted);
+    }
+
+    .changelog-list {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
+
+    .changelog-list li {
+      font-size: 13px;
+      color: var(--text-secondary);
+      line-height: 1.8;
+      padding-left: 16px;
+      position: relative;
+    }
+
+    .changelog-list li::before {
+      content: '';
+      position: absolute;
+      left: 0;
+      top: 10px;
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: var(--accent);
+    }
+
+    @media (max-width: 768px) {
+      .detail-page-container {
+        flex-direction: column;
+      }
+
+      .detail-page-sidebar {
+        width: 100%;
+        position: static;
+        max-height: none;
+      }
+
+      .feature-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+
+  <div class="page-content">
+    <div class="detail-page-container">
+      <div class="detail-page-sidebar">
+        <div class="detail-page-nav">
+          <div class="detail-page-nav-title">页面导航</div>
+          <div class="detail-page-nav-group">
+            <div class="detail-page-nav-item active" data-section="intro">
+              <span>简介</span>
+            </div>
+            <div class="detail-page-nav-item" data-section="features">
+              <span>功能特性</span>
+            </div>
+            <div class="detail-page-nav-item" data-section="architecture">
+              <span>系统架构</span>
+            </div>
+            <div class="detail-page-nav-item" data-section="config">
+              <span>配置说明</span>
+            </div>
+            <div class="detail-page-nav-item" data-section="deploy">
+              <span>部署指南</span>
+            </div>
+            <div class="detail-page-nav-item" data-section="api">
+              <span>接口文档</span>
+            </div>
+            <div class="detail-page-nav-item" data-section="faq">
+              <span>常见问题</span>
+            </div>
+            <div class="detail-page-nav-item" data-section="changelog">
+              <span>更新日志</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="detail-page-main">
+        <!-- 简介 -->
+        <div class="detail-page-section" id="sectionIntro">
+          <div class="detail-page-section-header">
+            <h2>简介</h2>
+          </div>
+          <div class="detail-page-section-body">
+            <p>OSAdmin 是一个基于 Layui 的现代化后台管理系统框架，提供完整的权限管理、数据展示和系统配置功能。它采用 SPA 单页应用架构，支持多标签页切换、动态路由和组件化开发。</p>
+            <p>框架内置了用户管理、角色权限、系统设置等常用模块，开发者可以基于此快速搭建企业级后台系统。同时，OSAdmin 提供了丰富的页面模板和组件，覆盖了后台系统常见的布局场景。</p>
+            <p>本页面展示了详情页/文档页的布局模式，适合帮助文档、系统说明、配置向导等场景使用。左侧为固定导航，右侧为信息流内容，支持滚动联动高亮。</p>
+          </div>
+        </div>
+
+        <!-- 功能特性 -->
+        <div class="detail-page-section" id="sectionFeatures">
+          <div class="detail-page-section-header">
+            <h2>功能特性</h2>
+          </div>
+          <div class="detail-page-section-body">
+            <div class="feature-grid">
+              <div class="feature-item">
+                <div class="feature-icon"><i class="layui-icon layui-icon-auz"></i></div>
+                <div class="feature-title">权限管理</div>
+                <div class="feature-desc">基于角色的细粒度权限控制，支持菜单、按钮级别的权限分配</div>
+              </div>
+              <div class="feature-item">
+                <div class="feature-icon"><i class="layui-icon layui-icon-template-1"></i></div>
+                <div class="feature-title">SPA 路由</div>
+                <div class="feature-desc">单页应用架构，支持动态路由和页面缓存，流畅切换无刷新</div>
+              </div>
+              <div class="feature-item">
+                <div class="feature-icon"><i class="layui-icon layui-icon-theme"></i></div>
+                <div class="feature-title">主题切换</div>
+                <div class="feature-desc">支持亮色/暗色主题，CSS 变量驱动，一键切换全局风格</div>
+              </div>
+              <div class="feature-item">
+                <div class="feature-icon"><i class="layui-icon layui-icon-chart"></i></div>
+                <div class="feature-title">数据可视化</div>
+                <div class="feature-desc">集成图表组件，支持柱状图、折线图、饼图等常见数据展示</div>
+              </div>
+              <div class="feature-item">
+                <div class="feature-icon"><i class="layui-icon layui-icon-set"></i></div>
+                <div class="feature-title">系统配置</div>
+                <div class="feature-desc">灵活的系统参数配置，支持运行时动态调整，无需重启服务</div>
+              </div>
+              <div class="feature-item">
+                <div class="feature-icon"><i class="layui-icon layui-icon-upload"></i></div>
+                <div class="feature-title">文件管理</div>
+                <div class="feature-desc">支持多种文件上传方式，自动压缩、水印，统一文件管理</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 系统架构 -->
+        <div class="detail-page-section" id="sectionArchitecture">
+          <div class="detail-page-section-header">
+            <h2>系统架构</h2>
+          </div>
+          <div class="detail-page-section-body">
+            <p>OSAdmin 采用前后端分离架构，前端基于 Layui 组件库和自定义 SPA 框架，后端可对接任意 RESTful API 服务。</p>
+            <p><strong>前端架构层次：</strong></p>
+            <p>1. <strong>核心层（Core）</strong>：SPA 路由引擎、权限控制、全局状态管理、主题系统</p>
+            <p>2. <strong>组件层（Components）</strong>：基于 Layui 封装的业务组件，包括表格、表单、弹窗等</p>
+            <p>3. <strong>页面层（Pages）</strong>：各功能模块的页面模板，支持动态加载和缓存</p>
+            <p>4. <strong>数据层（Data）</strong>：统一的 AJAX 请求封装、数据格式化和错误处理</p>
+            <p>所有页面均使用 CSS 变量控制主题样式，框架自动注入 layui 资源，页面无需独立引入。页面结构统一使用 <code>.page-content</code> 作为外层容器，确保与框架布局的一致性。</p>
+          </div>
+        </div>
+
+        <!-- 配置说明 -->
+        <div class="detail-page-section" id="sectionConfig">
+          <div class="detail-page-section-header">
+            <h2>配置说明</h2>
+          </div>
+          <div class="detail-page-section-body">
+            <table class="config-table">
+              <thead>
+                <tr>
+                  <th>配置项</th>
+                  <th>键名</th>
+                  <th>默认值</th>
+                  <th>说明</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>应用名称</td>
+                  <td><code>appName</code></td>
+                  <td><code>OSAdmin</code></td>
+                  <td>系统显示名称</td>
+                </tr>
+                <tr>
+                  <td>API 基础路径</td>
+                  <td><code>apiBase</code></td>
+                  <td><code>/api</code></td>
+                  <td>后端接口统一前缀</td>
+                </tr>
+                <tr>
+                  <td>分页大小</td>
+                  <td><code>pageSize</code></td>
+                  <td><code>10</code></td>
+                  <td>数据表格默认每页条数</td>
+                </tr>
+                <tr>
+                  <td>Token 键名</td>
+                  <td><code>tokenKey</code></td>
+                  <td><code>access_token</code></td>
+                  <td>存储认证令牌的键名</td>
+                </tr>
+                <tr>
+                  <td>主题模式</td>
+                  <td><code>theme</code></td>
+                  <td><code>light</code></td>
+                  <td>默认主题，可选 light/dark</td>
+                </tr>
+                <tr>
+                  <td>标签页缓存</td>
+                  <td><code>tabCache</code></td>
+                  <td><code>true</code></td>
+                  <td>是否缓存已打开的标签页</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- 部署指南 -->
+        <div class="detail-page-section" id="sectionDeploy">
+          <div class="detail-page-section-header">
+            <h2>部署指南</h2>
+          </div>
+          <div class="detail-page-section-body">
+            <div class="steps">
+              <div class="step-item">
+                <div class="step-title">获取源码</div>
+                <div class="step-desc">从代码仓库克隆项目到本地：<code>git clone https://github.com/example/osadmin.git</code></div>
+              </div>
+              <div class="step-item">
+                <div class="step-title">安装依赖</div>
+                <div class="step-desc">进入项目目录，安装前端构建工具依赖：<code>npm install</code></div>
+              </div>
+              <div class="step-item">
+                <div class="step-title">修改配置</div>
+                <div class="step-desc">编辑 <code>app.config.js</code>，配置 API 地址、应用名称等参数</div>
+              </div>
+              <div class="step-item">
+                <div class="step-title">构建项目</div>
+                <div class="step-desc">执行构建命令生成生产环境文件：<code>npm run build</code></div>
+              </div>
+              <div class="step-item">
+                <div class="step-title">部署上线</div>
+                <div class="step-desc">将构建产物部署到 Web 服务器（Nginx/Apache），配置反向代理指向后端 API 服务</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 接口文档 -->
+        <div class="detail-page-section" id="sectionApi">
+          <div class="detail-page-section-header">
+            <h2>接口文档</h2>
+          </div>
+          <div class="detail-page-section-body">
+            <div class="api-item">
+              <div class="api-header">
+                <span class="api-method get">GET</span>
+                <span class="api-path">/api/users</span>
+              </div>
+              <div class="api-desc">获取用户列表，支持分页和筛选</div>
+              <div class="api-code">请求参数：page(页码), limit(每页条数), keyword(搜索关键词)
+响应格式：{ "code": 0, "data": { "list": [], "count": 100 } }</div>
+            </div>
+            <div class="api-item">
+              <div class="api-header">
+                <span class="api-method post">POST</span>
+                <span class="api-path">/api/users</span>
+              </div>
+              <div class="api-desc">创建新用户</div>
+              <div class="api-code">请求体：{ "username": "string", "password": "string", "role": "string" }
+响应格式：{ "code": 0, "msg": "创建成功" }</div>
+            </div>
+            <div class="api-item">
+              <div class="api-header">
+                <span class="api-method put">PUT</span>
+                <span class="api-path">/api/users/:id</span>
+              </div>
+              <div class="api-desc">更新用户信息</div>
+              <div class="api-code">请求体：{ "nickname": "string", "email": "string", "status": "number" }
+响应格式：{ "code": 0, "msg": "更新成功" }</div>
+            </div>
+            <div class="api-item">
+              <div class="api-header">
+                <span class="api-method delete">DELETE</span>
+                <span class="api-path">/api/users/:id</span>
+              </div>
+              <div class="api-desc">删除指定用户</div>
+              <div class="api-code">路径参数：id(用户ID)
+响应格式：{ "code": 0, "msg": "删除成功" }</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 常见问题 -->
+        <div class="detail-page-section" id="sectionFaq">
+          <div class="detail-page-section-header">
+            <h2>常见问题</h2>
+          </div>
+          <div class="detail-page-section-body">
+            <div class="faq-item open">
+              <div class="faq-question">
+                <span>如何修改系统默认主题？</span>
+                <i class="layui-icon layui-icon-right"></i>
+              </div>
+              <div class="faq-answer">在 <code>app.config.js</code> 中修改 <code>theme</code> 配置项，可选值为 <code>light</code> 或 <code>dark</code>。修改后刷新页面即可生效。也可以在页面顶部工具栏中手动切换主题。</div>
+            </div>
+            <div class="faq-item">
+              <div class="faq-question">
+                <span>如何添加新的页面路由？</span>
+                <i class="layui-icon layui-icon-right"></i>
+              </div>
+              <div class="faq-answer">在路由配置文件中添加新的路由项，指定路径、组件和权限标识。框架会自动在侧边栏菜单中生成对应的导航入口。新页面文件放置在 <code>view/template/</code> 目录下即可。</div>
+            </div>
+            <div class="faq-item">
+              <div class="faq-question">
+                <span>如何对接后端 API？</span>
+                <i class="layui-icon layui-icon-right"></i>
+              </div>
+              <div class="faq-answer">修改 <code>app.config.js</code> 中的 <code>apiBase</code> 配置项为后端服务的实际地址。框架内置了统一的 AJAX 请求封装，自动处理 Token 注入和错误拦截。</div>
+            </div>
+            <div class="faq-item">
+              <div class="faq-question">
+                <span>页面加载缓慢如何优化？</span>
+                <i class="layui-icon layui-icon-right"></i>
+              </div>
+              <div class="faq-answer">1. 开启标签页缓存，避免重复加载；2. 使用构建工具压缩静态资源；3. 配置 CDN 加速；4. 后端接口增加分页查询，减少单次数据量。</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 更新日志 -->
+        <div class="detail-page-section" id="sectionChangelog">
+          <div class="detail-page-section-header">
+            <h2>更新日志</h2>
+          </div>
+          <div class="detail-page-section-body">
+            <div class="changelog-item">
+              <div class="changelog-version">
+                <span class="changelog-tag">v2.1.0</span>
+                <span class="changelog-date">2025-06-10</span>
+              </div>
+              <ul class="changelog-list">
+                <li>新增详情页模板，支持左侧导航滚动联动</li>
+                <li>新增多标签页模板，支持顶部 Tab 切换</li>
+                <li>优化设置页面布局，改为左右分栏结构</li>
+                <li>修复暗色主题下部分组件样式异常</li>
+              </ul>
+            </div>
+            <div class="changelog-item">
+              <div class="changelog-version">
+                <span class="changelog-tag">v2.0.0</span>
+                <span class="changelog-date">2025-05-20</span>
+              </div>
+              <ul class="changelog-list">
+                <li>全面重构 SPA 框架，支持动态路由和页面缓存</li>
+                <li>引入 CSS 变量主题系统，支持亮色/暗色切换</li>
+                <li>新增用户资料页面，支持头像上传和信息编辑</li>
+                <li>优化表格组件，支持自定义模板和复杂表头</li>
+              </ul>
+            </div>
+            <div class="changelog-item">
+              <div class="changelog-version">
+                <span class="changelog-tag">v1.5.0</span>
+                <span class="changelog-date">2025-04-15</span>
+              </div>
+              <ul class="changelog-list">
+                <li>新增权限管理模块，支持角色和菜单权限配置</li>
+                <li>新增文件上传组件，支持拖拽上传和批量操作</li>
+                <li>优化移动端适配，提升小屏设备体验</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    layui.use(['element', 'layer'], function() {
+      var element = layui.element;
+      var layer = layui.layer;
+      var $ = layui.$;
+
+      // 左侧导航点击滚动
+      $('.detail-page-nav-item').on('click', function() {
+        var section = $(this).data('section');
+        var $target = $('#section' + section.charAt(0).toUpperCase() + section.slice(1));
+
+        if ($target.length) {
+          $target[0].scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+      });
+
+      // 滚动时高亮对应导航项
+      var sections = [];
+      $('.detail-page-section').each(function() {
+        sections.push({
+          id: this.id,
+          offset: $(this).offset().top
+        });
+      });
+
+      var observer = new IntersectionObserver(function(entries) {
+        entries.forEach(function(entry) {
+          if (entry.isIntersecting) {
+            var sectionId = entry.target.id;
+            var sectionName = sectionId.replace('section', '').toLowerCase();
+            // 首字母小写处理
+            sectionName = sectionName.charAt(0).toLowerCase() + sectionName.slice(1);
+
+            $('.detail-page-nav-item').removeClass('active');
+            $('.detail-page-nav-item[data-section="' + sectionName + '"]').addClass('active');
+          }
+        });
+      }, {
+        threshold: 0.3,
+        rootMargin: '-80px 0px -50% 0px'
+      });
+
+      $('.detail-page-section').each(function() {
+        observer.observe(this);
+      });
+
+      // FAQ折叠
+      $('.faq-question').on('click', function() {
+        $(this).closest('.faq-item').toggleClass('open');
+      });
+    });
+  </script>
+</body>
+</html>

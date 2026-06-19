@@ -25,12 +25,13 @@ layui.define(['jquery'], function(exports) {
     positions: ['rt', 'rb', 'lt', 'lb', 'tc', 'bc', 'lc', 'rc'],
 
     defaults: {
-      title: '提示',
+      title: '',
       icon: '',
+      skin: '',
       time: 3000,
       offset: 'rt',
       className: '',
-      closable: true,
+      closable: false,
       maxCount: 5,
       mode: 'stack',
       dismissEffect: true,
@@ -126,8 +127,14 @@ layui.define(['jquery'], function(exports) {
       var id = 'toast-' + (++this.index);
       var opts = $.extend({}, this.defaults, options);
 
+      var type = '';
       if (typeof opts.icon === 'string' && this.icons[opts.icon]) {
+        type = opts.icon;
         opts.icon = this.icons[opts.icon];
+      }
+
+      if (opts.skin) {
+        opts.className = (opts.className ? opts.className + ' ' : '') + 'toast-skin-' + opts.skin;
       }
 
       if (opts.mode === 'replace') {
@@ -143,6 +150,7 @@ layui.define(['jquery'], function(exports) {
         id: id,
         element: $box,
         options: opts,
+        type: type,
         timer: null
       };
 
@@ -165,10 +173,19 @@ layui.define(['jquery'], function(exports) {
         ? '<div class="toast-close"><i class="layui-icon layui-icon-close"></i></div>' 
         : '';
 
+      var iconHtml = opts.icon 
+        ? '<div class="toast-icon">' + opts.icon + '</div>' 
+        : '';
+
+      var groupClass = 'toast-group' + (opts.title ? '' : ' toast-group-plain');
+      var titleHtml = opts.title 
+        ? '<div class="toast-title">' + opts.title + '</div>' 
+        : '';
+
       var $box = $('<div class="toast-box toast-entering ' + opts.className + '" id="' + id + '">' +
-        '<div class="toast-icon">' + opts.icon + '</div>' +
-        '<div class="toast-group">' +
-          '<div class="toast-title">' + opts.title + '</div>' +
+        iconHtml +
+        '<div class="' + groupClass + '">' +
+          titleHtml +
           '<div class="toast-content">' + content + '</div>' +
         '</div>' +
         closeBtn +
@@ -229,25 +246,7 @@ layui.define(['jquery'], function(exports) {
       return false;
     },
 
-    close: function(id) {
-      var self = this;
-
-      if (id === 'all') {
-        this.toasts.forEach(function(toast) {
-          self.animateClose(toast);
-        });
-        this.toasts = [];
-        return;
-      }
-
-      var result = this.findToast(id);
-      if (!result) return;
-
-      this.animateClose(result.toast);
-      this.toasts.splice(result.index, 1);
-    },
-
-    dismiss: function(id) {
+    dismiss: function(id, skipCancel) {
       var result = this.findToast(id);
       if (!result) return;
 
@@ -260,20 +259,22 @@ layui.define(['jquery'], function(exports) {
         toast.timer = null;
       }
 
-      var cancel = opts.cancel(id, $box);
-      if (cancel === false) return;
+      if (!skipCancel) {
+        var cancel = opts.cancel(id, $box);
+        if (cancel === false) return;
+      }
 
       this.removeToast(id);
+      this.animateDismiss($box, opts);
+    },
 
+    animateDismiss: function($box, opts) {
       if (opts.dismissEffect) {
-        $box.addClass('toast-dismissing');
-        
         $box.css({
           'opacity': '0',
           'transform': 'scale(0.9) translateY(-10px)'
         });
 
-        var self = this;
         setTimeout(function() {
           $box.css({
             'height': '0',
@@ -294,17 +295,16 @@ layui.define(['jquery'], function(exports) {
       }
     },
 
-    animateClose: function(toast) {
-      var $box = toast.element;
-
-      if (toast.timer) {
-        clearTimeout(toast.timer);
+    close: function(id) {
+      if (id === 'all') {
+        var self = this;
+        var allToasts = this.toasts.slice();
+        allToasts.forEach(function(toast) {
+          self.dismiss(toast.id, true);
+        });
+        return;
       }
-
-      $box.css('opacity', '0').css('transform', 'scale(0.8)');
-      setTimeout(function() {
-        $box.remove();
-      }, 300);
+      this.dismiss(id, true);
     },
 
     success: function(content, options) {
@@ -336,9 +336,24 @@ layui.define(['jquery'], function(exports) {
       this.close('all');
     },
 
+    closeLoading: function(id) {
+      if (id) {
+        this.dismiss(id, true);
+        return;
+      }
+      var self = this;
+      var loadingToasts = this.toasts.filter(function(t) {
+        return t.type === 'loading';
+      });
+      loadingToasts.forEach(function(t) {
+        self.dismiss(t.id, true);
+      });
+    },
+
     dismissAll: function() {
       var self = this;
-      this.toasts.forEach(function(toast) {
+      var allToasts = this.toasts.slice();
+      allToasts.forEach(function(toast) {
         self.dismiss(toast.id);
       });
     }

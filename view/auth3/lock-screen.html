@@ -7,7 +7,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@500;600;700;800&family=Noto+Sans+SC:wght@400;500;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="../../admin/css/view/auth2.css">
+    <link rel="stylesheet" href="../../admin/css/view/auth3.css">
 </head>
 <body>
 
@@ -20,29 +20,29 @@
 <!-- 主分栏布局 -->
 <div class="auth-split">
 
-    <!-- 左侧：靛蓝渐变 + 浮动气泡 + 插画 -->
-    <div class="auth-split-left auth-bg-indigo">
+    <!-- 左侧：天蓝渐变 + 浮动气泡 + 插画 -->
+    <div class="auth-split-left auth-bg-violet">
         <div class="auth-float-bubble auth-float-1"></div>
         <div class="auth-float-bubble auth-float-2"></div>
         <div class="auth-float-bubble auth-float-3"></div>
         <div class="auth-float-bubble auth-float-4"></div>
 
         <div class="auth-left-content">
-            <!-- 锁屏场景 SVG 插画 -->
+            <!-- 锁屏场景 SVG 插画：盾牌+锁+星空 -->
             <div class="auth-illustration auth-anim auth-anim-1">
                 <svg viewBox="0 0 400 300" xmlns="http://www.w3.org/2000/svg">
                     <defs>
                         <linearGradient id="lockOrb1" x1="0" y1="0" x2="1" y2="1">
                             <stop offset="0%" stop-color="#fff"/>
-                            <stop offset="100%" stop-color="#ddd6fe"/>
+                            <stop offset="100%" stop-color="#bae6fd"/>
                         </linearGradient>
                         <linearGradient id="lockOrb2" x1="0" y1="0" x2="1" y2="1">
-                            <stop offset="0%" stop-color="#818cf8"/>
-                            <stop offset="100%" stop-color="#6366f1"/>
+                            <stop offset="0%" stop-color="#38bdf8"/>
+                            <stop offset="100%" stop-color="#0ea5e9"/>
                         </linearGradient>
                         <linearGradient id="lockOrb3" x1="0" y1="0" x2="1" y2="1">
-                            <stop offset="0%" stop-color="#e0e7ff"/>
-                            <stop offset="100%" stop-color="#c7d2fe"/>
+                            <stop offset="0%" stop-color="#e0f2fe"/>
+                            <stop offset="100%" stop-color="#7dd3fc"/>
                         </linearGradient>
                     </defs>
 
@@ -51,50 +51,53 @@
                     <ellipse cx="200" cy="150" rx="130" ry="82" fill="none" stroke="#fff" stroke-width="0.8" opacity="0.06"/>
 
                     <!-- 轨道上的小光点 -->
-                    <circle r="3" fill="#818cf8" opacity="0.6">
+                    <circle r="3" fill="#38bdf8" opacity="0.6">
                         <animateMotion dur="8s" repeatCount="indefinite" path="M200,50 A100,100 0 1,1 199,50"/>
                     </circle>
-                    <circle r="2" fill="#a5b4fc" opacity="0.5">
+                    <circle r="2" fill="#7dd3fc" opacity="0.5">
                         <animateMotion dur="12s" repeatCount="indefinite" path="M200,68 A82,82 0 1,0 201,68"/>
                     </circle>
 
-                    <!-- 中心大球 - 锁球 -->
+                    <!-- 中心大球 - 盾牌球 -->
                     <circle cx="200" cy="140" r="52" fill="url(#lockOrb2)" opacity="0.9"/>
                     <!-- 球面高光 -->
                     <ellipse cx="188" cy="122" rx="22" ry="16" fill="#fff" opacity="0.25"/>
-                    <!-- 球内锁图标 -->
+                    <!-- 球内盾牌图标 -->
                     <g transform="translate(200, 132)">
-                        <path d="M-14,-18 C-14,-30 14,-30 14,-18" stroke="#fff" stroke-width="4.5" stroke-linecap="round" fill="none" opacity="0.85"/>
-                        <rect x="-18" y="-18" width="36" height="28" rx="5" fill="#fff" opacity="0.85"/>
-                        <circle cx="0" cy="-6" r="5" fill="#6366f1" opacity="0.7"/>
-                        <rect x="-2.5" y="-3" width="5" height="9" rx="1.5" fill="#6366f1" opacity="0.7"/>
+                        <path d="M0,-20 L16,-13 L16,5 C16,14 8,22 0,26 C-8,22 -16,14 -16,5 L-16,-13 Z" fill="#fff" opacity="0.85"/>
+                        <path d="M0,-12 L8,-8 L8,2 C8,7 4,11 0,13 C-4,11 -8,7 -8,2 L-8,-8 Z" fill="#0ea5e9" opacity="0.5"/>
+                        <!-- 盾牌内锁 -->
+                        <path d="M-5,-5 C-5,-10 5,-10 5,-5" stroke="#0ea5e9" stroke-width="2.5" stroke-linecap="round" fill="none" opacity="0.7"/>
+                        <rect x="-6" y="-5" width="12" height="9" rx="2" fill="#0ea5e9" opacity="0.7"/>
+                        <circle cx="0" cy="-1.5" r="2" fill="#fff" opacity="0.6"/>
                     </g>
 
                     <!-- 卫星球 - 左上：指纹 -->
                     <circle cx="115" cy="90" r="20" fill="url(#lockOrb1)" opacity="0.7"/>
-                    <circle cx="115" cy="90" r="20" fill="none" stroke="#818cf8" stroke-width="1.5" opacity="0.3"/>
+                    <circle cx="115" cy="90" r="20" fill="none" stroke="#38bdf8" stroke-width="1.5" opacity="0.3"/>
                     <g transform="translate(115, 90)" opacity="0.6">
-                        <path d="M-6,-7 C-6,-3 -6,3 0,7" stroke="#6366f1" stroke-width="1.5" fill="none" stroke-linecap="round"/>
-                        <path d="M0,-9 C0,-5 0,1 0,5" stroke="#6366f1" stroke-width="1.5" fill="none" stroke-linecap="round"/>
-                        <path d="M6,-7 C6,-3 6,3 0,7" stroke="#6366f1" stroke-width="1.5" fill="none" stroke-linecap="round"/>
+                        <path d="M-6,-7 C-6,-3 -6,3 0,7" stroke="#0ea5e9" stroke-width="1.5" fill="none" stroke-linecap="round"/>
+                        <path d="M0,-9 C0,-5 0,1 0,5" stroke="#0ea5e9" stroke-width="1.5" fill="none" stroke-linecap="round"/>
+                        <path d="M6,-7 C6,-3 6,3 0,7" stroke="#0ea5e9" stroke-width="1.5" fill="none" stroke-linecap="round"/>
                     </g>
 
-                    <!-- 卫星球 - 右下：盾牌 -->
+                    <!-- 卫星球 - 右下：锁 -->
                     <circle cx="290" cy="185" r="18" fill="url(#lockOrb3)" opacity="0.7"/>
-                    <circle cx="290" cy="185" r="18" fill="none" stroke="#a5b4fc" stroke-width="1.5" opacity="0.3"/>
+                    <circle cx="290" cy="185" r="18" fill="none" stroke="#7dd3fc" stroke-width="1.5" opacity="0.3"/>
                     <g transform="translate(290, 183)">
-                        <path d="M0,-9 L8,-5 L8,3 C8,8 4,12 0,14 C-4,12 -8,8 -8,3 L-8,-5 Z" fill="#6366f1" opacity="0.6"/>
-                        <path d="M0,-5 L4,-3 L4,1 C4,4 2,6 0,7 C-2,6 -4,4 -4,1 L-4,-3 Z" fill="#fff" opacity="0.4"/>
+                        <path d="M-5,-8 C-5,-14 5,-14 5,-8" stroke="#0ea5e9" stroke-width="2.5" fill="none" stroke-linecap="round" opacity="0.6"/>
+                        <rect x="-7" y="-8" width="14" height="10" rx="2.5" fill="#0ea5e9" opacity="0.6"/>
+                        <circle cx="0" cy="-4" r="2" fill="#fff" opacity="0.5"/>
                     </g>
 
                     <!-- 卫星球 - 右上：钥匙 -->
                     <circle cx="285" cy="95" r="14" fill="url(#lockOrb1)" opacity="0.6"/>
-                    <circle cx="285" cy="95" r="14" fill="none" stroke="#818cf8" stroke-width="1" opacity="0.25"/>
+                    <circle cx="285" cy="95" r="14" fill="none" stroke="#38bdf8" stroke-width="1" opacity="0.25"/>
                     <g transform="translate(285, 93)">
-                        <circle cx="0" cy="-3" r="4" fill="#6366f1" opacity="0.6"/>
+                        <circle cx="0" cy="-3" r="4" fill="#0ea5e9" opacity="0.6"/>
                         <circle cx="0" cy="-3" r="2" fill="#fff" opacity="0.5"/>
-                        <rect x="-1.2" y="1" width="2.4" height="7" rx="0.8" fill="#6366f1" opacity="0.6"/>
-                        <rect x="1.2" y="5" width="2.5" height="1.5" rx="0.5" fill="#6366f1" opacity="0.6"/>
+                        <rect x="-1.2" y="1" width="2.4" height="7" rx="0.8" fill="#0ea5e9" opacity="0.6"/>
+                        <rect x="1.2" y="5" width="2.5" height="1.5" rx="0.5" fill="#0ea5e9" opacity="0.6"/>
                     </g>
 
                     <!-- 连接线 -->
@@ -104,23 +107,39 @@
 
                     <!-- 数据流 - 左侧 -->
                     <g opacity="0.3">
-                        <line x1="30" y1="80" x2="90" y2="100" stroke="#818cf8" stroke-width="1.5" stroke-dasharray="4 3"/>
-                        <circle cx="30" cy="80" r="3" fill="#818cf8" opacity="0.5"/>
-                        <circle cx="90" cy="100" r="2" fill="#818cf8" opacity="0.4"/>
+                        <line x1="30" y1="80" x2="90" y2="100" stroke="#38bdf8" stroke-width="1.5" stroke-dasharray="4 3"/>
+                        <circle cx="30" cy="80" r="3" fill="#38bdf8" opacity="0.5"/>
+                        <circle cx="90" cy="100" r="2" fill="#38bdf8" opacity="0.4"/>
                     </g>
                     <g opacity="0.2">
-                        <line x1="40" y1="220" x2="100" y2="195" stroke="#a5b4fc" stroke-width="1" stroke-dasharray="3 4"/>
-                        <circle cx="40" cy="220" r="2" fill="#a5b4fc" opacity="0.4"/>
+                        <line x1="40" y1="220" x2="100" y2="195" stroke="#7dd3fc" stroke-width="1" stroke-dasharray="3 4"/>
+                        <circle cx="40" cy="220" r="2" fill="#7dd3fc" opacity="0.4"/>
                     </g>
 
                     <!-- 数据流 - 右侧 -->
                     <g opacity="0.3">
-                        <line x1="320" y1="75" x2="370" y2="60" stroke="#a5b4fc" stroke-width="1.5" stroke-dasharray="4 3"/>
-                        <circle cx="370" cy="60" r="3" fill="#a5b4fc" opacity="0.5"/>
+                        <line x1="320" y1="75" x2="370" y2="60" stroke="#7dd3fc" stroke-width="1.5" stroke-dasharray="4 3"/>
+                        <circle cx="370" cy="60" r="3" fill="#7dd3fc" opacity="0.5"/>
                     </g>
                     <g opacity="0.2">
-                        <line x1="330" y1="230" x2="375" y2="245" stroke="#818cf8" stroke-width="1" stroke-dasharray="3 4"/>
-                        <circle cx="375" cy="245" r="2.5" fill="#818cf8" opacity="0.4"/>
+                        <line x1="330" y1="230" x2="375" y2="245" stroke="#38bdf8" stroke-width="1" stroke-dasharray="3 4"/>
+                        <circle cx="375" cy="245" r="2.5" fill="#38bdf8" opacity="0.4"/>
+                    </g>
+
+                    <!-- 星空装饰 - 小星星 -->
+                    <g fill="#fff">
+                        <polygon points="50,40 52,46 58,46 53,50 55,56 50,52 45,56 47,50 42,46 48,46" opacity="0.5">
+                            <animate attributeName="opacity" values="0.5;1;0.5" dur="2.5s" repeatCount="indefinite"/>
+                        </polygon>
+                        <polygon points="360,50 361.5,54 366,54 362.5,57 363.5,61 360,58.5 356.5,61 357.5,57 354,54 358.5,54" opacity="0.4">
+                            <animate attributeName="opacity" values="0.4;0.9;0.4" dur="3s" repeatCount="indefinite"/>
+                        </polygon>
+                        <polygon points="70,250 71.5,254 76,254 72.5,257 73.5,261 70,258.5 66.5,261 67.5,257 64,254 68.5,254" opacity="0.3">
+                            <animate attributeName="opacity" values="0.3;0.8;0.3" dur="2.8s" repeatCount="indefinite"/>
+                        </polygon>
+                        <polygon points="340,240 341.5,244 346,244 342.5,247 343.5,251 340,248.5 336.5,251 337.5,247 334,244 338.5,244" opacity="0.35">
+                            <animate attributeName="opacity" values="0.35;0.85;0.35" dur="3.2s" repeatCount="indefinite"/>
+                        </polygon>
                     </g>
 
                     <!-- 装饰六边形 -->
@@ -128,25 +147,25 @@
                     <polygon points="340,230 352,223 364,230 364,244 352,251 340,244" fill="url(#lockOrb1)" opacity="0.18"/>
 
                     <!-- 装饰圆环 -->
-                    <circle cx="42" cy="160" r="14" fill="none" stroke="#818cf8" stroke-width="2" opacity="0.2"/>
-                    <circle cx="42" cy="160" r="6" fill="#818cf8" opacity="0.12"/>
-                    <circle cx="365" cy="140" r="10" fill="none" stroke="#a5b4fc" stroke-width="1.5" opacity="0.2"/>
-                    <circle cx="365" cy="140" r="4" fill="#a5b4fc" opacity="0.12"/>
+                    <circle cx="42" cy="160" r="14" fill="none" stroke="#38bdf8" stroke-width="2" opacity="0.2"/>
+                    <circle cx="42" cy="160" r="6" fill="#38bdf8" opacity="0.12"/>
+                    <circle cx="365" cy="140" r="10" fill="none" stroke="#7dd3fc" stroke-width="1.5" opacity="0.2"/>
+                    <circle cx="365" cy="140" r="4" fill="#7dd3fc" opacity="0.12"/>
 
                     <!-- 浮动粒子 -->
-                    <circle cx="75" cy="85" r="2.5" fill="#818cf8" opacity="0.3"/>
-                    <circle cx="90" cy="50" r="1.8" fill="#a5b4fc" opacity="0.25"/>
-                    <circle cx="60" cy="40" r="1.2" fill="#818cf8" opacity="0.2"/>
-                    <circle cx="340" cy="70" r="2" fill="#a5b4fc" opacity="0.25"/>
-                    <circle cx="355" cy="55" r="1.5" fill="#818cf8" opacity="0.2"/>
-                    <circle cx="65" cy="250" r="2" fill="#818cf8" opacity="0.2"/>
-                    <circle cx="350" cy="250" r="2.5" fill="#818cf8" opacity="0.2"/>
-                    <circle cx="370" cy="265" r="1.5" fill="#a5b4fc" opacity="0.15"/>
+                    <circle cx="75" cy="85" r="2.5" fill="#38bdf8" opacity="0.3"/>
+                    <circle cx="90" cy="50" r="1.8" fill="#7dd3fc" opacity="0.25"/>
+                    <circle cx="60" cy="40" r="1.2" fill="#38bdf8" opacity="0.2"/>
+                    <circle cx="340" cy="70" r="2" fill="#7dd3fc" opacity="0.25"/>
+                    <circle cx="355" cy="55" r="1.5" fill="#38bdf8" opacity="0.2"/>
+                    <circle cx="65" cy="250" r="2" fill="#38bdf8" opacity="0.2"/>
+                    <circle cx="350" cy="250" r="2.5" fill="#38bdf8" opacity="0.2"/>
+                    <circle cx="370" cy="265" r="1.5" fill="#7dd3fc" opacity="0.15"/>
 
                     <!-- 底部地面线 -->
-                    <line x1="50" y1="260" x2="350" y2="260" stroke="#818cf8" stroke-width="1" opacity="0.1"/>
-                    <circle cx="50" cy="260" r="2" fill="#818cf8" opacity="0.15"/>
-                    <circle cx="350" cy="260" r="2" fill="#818cf8" opacity="0.15"/>
+                    <line x1="50" y1="260" x2="350" y2="260" stroke="#38bdf8" stroke-width="1" opacity="0.1"/>
+                    <circle cx="50" cy="260" r="2" fill="#38bdf8" opacity="0.15"/>
+                    <circle cx="350" cy="260" r="2" fill="#38bdf8" opacity="0.15"/>
                 </svg>
             </div>
         </div>
@@ -156,13 +175,24 @@
     <div class="auth-split-right">
         <div class="auth-form-card auth-anim auth-anim-3">
 
+            <div class="auth-form-header auth-anim auth-anim-1">
+                <div class="auth-form-logo">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M12 2L2 7l10 5 10-5-10-5z"/>
+                        <path d="M2 17l10 5 10-5"/>
+                        <path d="M2 12l10 5 10-5"/>
+                    </svg>
+                </div>
+                <div class="auth-form-brand">
+                    <div class="auth-form-title">Admin</div>
+                    <div class="auth-form-subtitle">请输入密码解锁</div>
+                </div>
+            </div>
+
             <!-- 头像 -->
             <div class="auth-lock-avatar-card">
                 <svg viewBox="0 0 24 24"><path d="M12 12c2.7 0 4.8-2.1 4.8-4.8S14.7 2.4 12 2.4 7.2 4.5 7.2 7.2 9.3 12 12 12zm0 2.4c-3.2 0-9.6 1.6-9.6 4.8v2.4h19.2v-2.4c0-3.2-6.4-4.8-9.6-4.8z" fill="var(--auth-accent)"/></svg>
             </div>
-
-            <div class="auth-form-title auth-anim auth-anim-1" style="text-align:center;">屏幕已锁定</div>
-            <div class="auth-form-subtitle auth-anim auth-anim-2" style="text-align:center;">输入密码以解锁账户</div>
 
             <form id="lockForm" autocomplete="off" style="margin-top:24px;">
 
@@ -199,12 +229,11 @@
 (function () {
     'use strict';
 
-    /* ===== Canvas 粒子动画 ===== */
+    /* ===== Canvas 粒子动画（浮动光点，无连线） ===== */
     var cvs = document.getElementById('bgCvs');
     var ctx = cvs.getContext('2d');
     var particles = [];
-    var PARTICLE_COUNT = 35;
-    var LINK_DIST = 130;
+    var PARTICLE_COUNT = 25;
 
     function resize() {
         cvs.width = window.innerWidth;
@@ -217,9 +246,9 @@
         particles.push({
             x: Math.random() * cvs.width,
             y: Math.random() * cvs.height,
-            vx: (Math.random() - 0.5) * 0.6,
-            vy: (Math.random() - 0.5) * 0.6,
-            r: Math.random() * 2 + 1
+            vx: (Math.random() - 0.5) * 0.4,
+            vy: (Math.random() - 0.5) * 0.4,
+            r: Math.random() * 3 + 1.5
         });
     }
 
@@ -227,25 +256,10 @@
         ctx.clearRect(0, 0, cvs.width, cvs.height);
         var len = particles.length;
         for (var i = 0; i < len; i++) {
-            for (var j = i + 1; j < len; j++) {
-                var dx = particles[i].x - particles[j].x;
-                var dy = particles[i].y - particles[j].y;
-                var dist = Math.sqrt(dx * dx + dy * dy);
-                if (dist < LINK_DIST) {
-                    ctx.beginPath();
-                    ctx.moveTo(particles[i].x, particles[i].y);
-                    ctx.lineTo(particles[j].x, particles[j].y);
-                    ctx.strokeStyle = 'rgba(99,102,241,' + (0.13 * (1 - dist / LINK_DIST)) + ')';
-                    ctx.lineWidth = 0.8;
-                    ctx.stroke();
-                }
-            }
-        }
-        for (var i = 0; i < len; i++) {
             var p = particles[i];
             ctx.beginPath();
             ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
-            ctx.fillStyle = 'rgba(99,102,241,.18)';
+            ctx.fillStyle = 'rgba(14, 165, 233, ' + (0.08 + p.r * 0.04) + ')';
             ctx.fill();
             p.x += p.vx;
             p.y += p.vy;
@@ -260,7 +274,8 @@
     var TB = document.getElementById('TB');
     var toastIcons = {
         success: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 11-5.93-9.14"/><path d="M22 4L12 14.01l-3-3"/></svg>',
-        error: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/></svg>'
+        error: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/></svg>',
+        info: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>'
     };
 
     function toast(type, message) {

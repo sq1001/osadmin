@@ -108,7 +108,7 @@ layui.define(['jquery'], function(exports) {
 
       options = options || {};
 
-      var fullUrl = this.resolveUrl(url);
+      var fullUrl = url;
 
       if ($('head link[href="' + fullUrl + '"]').length > 0) {
         loadedResources.css[url] = true;
@@ -150,7 +150,7 @@ layui.define(['jquery'], function(exports) {
 
       options = options || {};
 
-      var fullUrl = this.resolveUrl(url);
+      var fullUrl = url;
 
       if ($('script[src="' + fullUrl + '"]').length > 0) {
         loadedResources.js[url] = true;
@@ -220,25 +220,6 @@ layui.define(['jquery'], function(exports) {
       return deferred.promise();
     },
 
-    resolveUrl: function(url) {
-      if (!url) return url;
-
-      if (url.indexOf('http://') === 0 || url.indexOf('https://') === 0 || url.indexOf('//') === 0) {
-        return url;
-      }
-
-      if (url.charAt(0) === '/') {
-        return url;
-      }
-
-      var base = window.OSLAY ? window.OSLAY.baseUrl : '/';
-      if (base.charAt(base.length - 1) !== '/') {
-        base += '/';
-      }
-
-      return base + url;
-    },
-
     isLoaded: function(type, url) {
       return loadedResources[type] && loadedResources[type][url];
     },
@@ -257,20 +238,18 @@ layui.define(['jquery'], function(exports) {
       var depConfig = resourceConfig.externals[name];
 
       if (depConfig.js) {
-        var fullJsUrl = this.resolveUrl(depConfig.js);
         var link = document.createElement('link');
         link.rel = 'prefetch';
-        link.href = fullJsUrl;
+        link.href = depConfig.js;
         document.head.appendChild(link);
       }
 
       if (depConfig.css) {
         var cssArray = Array.isArray(depConfig.css) ? depConfig.css : [depConfig.css];
         cssArray.forEach(function(css) {
-          var fullCssUrl = self.resolveUrl(css);
           var link = document.createElement('link');
           link.rel = 'prefetch';
-          link.href = fullCssUrl;
+          link.href = css;
           document.head.appendChild(link);
         });
       }

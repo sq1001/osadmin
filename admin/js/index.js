@@ -146,16 +146,8 @@
           var menuUrl = menuCfg.url || 'config/menu.json';
           var menuCache = menuCfg.cache !== undefined ? menuCfg.cache : true;
           
-          // 智能路径处理：支持相对路径、绝对路径、外部URL
-          var resolvedMenuUrl = menuUrl;
-          if (menuUrl.indexOf('http://') !== 0 && menuUrl.indexOf('https://') !== 0 && menuUrl.indexOf('//') !== 0) {
-            if (menuUrl.charAt(0) !== '/') {
-              resolvedMenuUrl = baseUrl + menuUrl;
-            }
-          }
-          
           menuReq = $.ajax({
-            url: resolvedMenuUrl,
+            url: menuUrl,
             dataType: 'json',
             cache: menuCache
           });
@@ -182,16 +174,8 @@
       if (profileUrl) {
         var profileCache = profilesCfg.cache !== undefined ? profilesCfg.cache : true;
         
-        // 智能路径处理：支持相对路径、绝对路径、外部URL
-        var resolvedProfileUrl = profileUrl;
-        if (profileUrl.indexOf('http://') !== 0 && profileUrl.indexOf('https://') !== 0 && profileUrl.indexOf('//') !== 0) {
-          if (profileUrl.charAt(0) !== '/') {
-            resolvedProfileUrl = baseUrl + profileUrl;
-          }
-        }
-        
         profileReq = $.ajax({
-          url: resolvedProfileUrl,
+          url: profileUrl,
           dataType: 'json',
           cache: profileCache
         });

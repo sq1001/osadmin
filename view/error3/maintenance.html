@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>维护中 - 系统正在维护</title>
+    <link rel="stylesheet" href="../../admin/css/view/error3.css">
+    <style>
+        @keyframes auth-gear-spin {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+        .auth-maintenance-gear {
+            transform-origin: 150px 120px;
+            animation: auth-gear-spin 8s linear infinite;
+        }
+    </style>
+</head>
+<body>
+<canvas class="auth-canvas-bg" id="bgCvs"></canvas>
+<div class="auth-error-container">
+    <div class="auth-error-illustration auth-anim auth-anim-1">
+        <svg viewBox="0 0 300 240" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <!-- 齿轮 (旋转动画) -->
+            <g class="auth-maintenance-gear">
+                <!-- 齿轮外圈齿 -->
+                <rect x="147" y="72" width="6" height="14" rx="2" fill="#0ea5e9" opacity=".7"/>
+                <rect x="147" y="154" width="6" height="14" rx="2" fill="#0ea5e9" opacity=".7"/>
+                <rect x="108" y="111" width="14" height="6" rx="2" fill="#0ea5e9" opacity=".7"/>
+                <rect x="178" y="111" width="14" height="6" rx="2" fill="#0ea5e9" opacity=".7"/>
+                <!-- 对角齿 -->
+                <rect x="118" y="82" width="12" height="6" rx="2" fill="#0ea5e9" opacity=".6" transform="rotate(-45 124 85)"/>
+                <rect x="170" y="82" width="12" height="6" rx="2" fill="#0ea5e9" opacity=".6" transform="rotate(45 176 85)"/>
+                <rect x="118" y="142" width="12" height="6" rx="2" fill="#0ea5e9" opacity=".6" transform="rotate(45 124 145)"/>
+                <rect x="170" y="142" width="12" height="6" rx="2" fill="#0ea5e9" opacity=".6" transform="rotate(-45 176 145)"/>
+                <!-- 齿轮主体 -->
+                <circle cx="150" cy="120" r="32" fill="url(#gear-grad)" stroke="#0ea5e9" stroke-width="2"/>
+                <!-- 齿轮内圈 -->
+                <circle cx="150" cy="120" r="18" fill="#fff" opacity=".15"/>
+                <circle cx="150" cy="120" r="10" fill="#0ea5e9" opacity=".3"/>
+                <circle cx="150" cy="120" r="5" fill="#38bdf8" opacity=".5"/>
+            </g>
+            <!-- 扳手 -->
+            <g transform="translate(65,60) rotate(-30)">
+                <!-- 扳手柄 -->
+                <rect x="8" y="30" width="8" height="65" rx="3" fill="url(#wrench-grad)"/>
+                <!-- 扳手头 -->
+                <path d="M12 30 L12 10 C12 4 6 0 0 4 L-2 6 L4 12 L8 8 L8 30Z" fill="#0ea5e9" opacity=".8"/>
+                <path d="M12 30 L12 10 C12 4 18 0 24 4 L26 6 L20 12 L16 8 L16 30Z" fill="#0ea5e9" opacity=".8"/>
+                <!-- 扳手高光 -->
+                <rect x="10" y="35" width="4" height="50" rx="2" fill="#fff" opacity=".15"/>
+            </g>
+            <!-- 小齿轮装饰 -->
+            <g transform="translate(235,70)">
+                <circle cx="0" cy="0" r="14" fill="#38bdf8" opacity=".2" stroke="#0ea5e9" stroke-width="1.5" opacity=".4"/>
+                <circle cx="0" cy="0" r="6" fill="#0ea5e9" opacity=".2"/>
+                <rect x="-2" y="-18" width="4" height="7" rx="1" fill="#0ea5e9" opacity=".3"/>
+                <rect x="-2" y="11" width="4" height="7" rx="1" fill="#0ea5e9" opacity=".3"/>
+                <rect x="-18" y="-2" width="7" height="4" rx="1" fill="#0ea5e9" opacity=".3"/>
+                <rect x="11" y="-2" width="7" height="4" rx="1" fill="#0ea5e9" opacity=".3"/>
+            </g>
+            <!-- 螺丝装饰 -->
+            <circle cx="55" cy="180" r="6" fill="#38bdf8" opacity=".2" stroke="#0ea5e9" stroke-width="1" opacity=".3"/>
+            <line x1="51" y1="180" x2="59" y2="180" stroke="#0ea5e9" stroke-width="1" opacity=".3"/>
+            <line x1="55" y1="176" x2="55" y2="184" stroke="#0ea5e9" stroke-width="1" opacity=".3"/>
+            <!-- 底部阴影 -->
+            <ellipse cx="150" cy="215" rx="60" ry="8" fill="#0ea5e9" opacity=".06"/>
+            <defs>
+                <linearGradient id="gear-grad" x1="118" y1="88" x2="182" y2="152" gradientUnits="userSpaceOnUse">
+                    <stop offset="0%" stop-color="#0ea5e9"/>
+                    <stop offset="100%" stop-color="#38bdf8"/>
+                </linearGradient>
+                <linearGradient id="wrench-grad" x1="8" y1="30" x2="16" y2="95" gradientUnits="userSpaceOnUse">
+                    <stop offset="0%" stop-color="#0ea5e9"/>
+                    <stop offset="100%" stop-color="#38bdf8"/>
+                </linearGradient>
+            </defs>
+        </svg>
+    </div>
+    <div class="auth-error-code auth-anim auth-anim-2">维护中</div>
+    <div class="auth-error-message auth-anim auth-anim-2">系统正在维护升级中，请稍后再试</div>
+</div>
+<script>
+(function(){
+    var cvs=document.getElementById('bgCvs'),ctx=cvs.getContext('2d'),particles=[];
+    var PARTICLE_COUNT=25;
+    function resize(){cvs.width=innerWidth;cvs.height=innerHeight;}
+    resize();window.addEventListener('resize',resize);
+    function createParticle(){
+        return{x:Math.random()*cvs.width,y:Math.random()*cvs.height,vx:(Math.random()-.5)*.4,vy:(Math.random()-.5)*.4,r:Math.random()*3+1.5};
+    }
+    for(var i=0;i<PARTICLE_COUNT;i++) particles.push(createParticle());
+    function draw(){
+        ctx.clearRect(0,0,cvs.width,cvs.height);
+        for(var i=0;i<particles.length;i++){
+            var p=particles[i];
+            ctx.beginPath();ctx.arc(p.x,p.y,p.r,0,Math.PI*2);
+            ctx.fillStyle='rgba(14,165,233,'+(0.08+p.r*0.04)+')';ctx.fill();
+            p.x+=p.vx;p.y+=p.vy;
+            if(p.x<0||p.x>cvs.width)p.vx*=-1;
+            if(p.y<0||p.y>cvs.height)p.vy*=-1;
+        }
+        requestAnimationFrame(draw);
+    }
+    draw();
+})();
+</script>
+</body>
+</html>

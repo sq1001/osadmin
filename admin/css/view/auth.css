@@ -169,7 +169,7 @@ body.lock-screen-page {
 
 .input-wrapper:focus-within {
     border-color: #60a5fa;
-    box-shadow: 0 0 0 4px rgba(96, 165, 250, 0.14);
+    box-shadow: 0 0 0 2px rgba(96, 165, 250, 0.14);
     transform: translateY(-1px);
 }
 
@@ -737,6 +737,132 @@ body.lock-screen-page {
         width: 44px;
         height: 44px;
     }
+}
+
+/* ===== Toast 样式 ===== */
+.auth-toast-box {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    z-index: 9999;
+    pointer-events: none;
+}
+
+.auth-toast-item {
+    display: flex;
+    align-items: flex-start;
+    padding: 14px 12px;
+    background: #ffffff;
+    border-radius: 8px;
+    border: 1px solid #eee;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    min-width: 150px;
+    max-width: 330px;
+    pointer-events: auto;
+    animation: authToastIn 0.4s ease forwards;
+}
+
+.auth-toast-icon {
+    flex-shrink: 0;
+    width: 16px;
+    height: 16px;
+    margin-right: 10px;
+    margin-top: 1px;
+}
+
+.auth-toast-icon svg {
+    width: 16px;
+    height: 16px;
+    display: block;
+}
+
+.auth-toast-item.success .auth-toast-icon {
+    color: #16b777;
+}
+
+.auth-toast-item.error .auth-toast-icon {
+    color: #ff5722;
+}
+
+.auth-toast-item.info .auth-toast-icon {
+    color: #1e9fff;
+}
+
+.auth-toast-content {
+    flex: 1;
+    font-size: 13px;
+    color: #666;
+    line-height: 1.5;
+}
+
+.auth-toast-close {
+    flex-shrink: 0;
+    margin-left: 10px;
+    cursor: pointer;
+    color: #999;
+    opacity: 0.5;
+    transition: opacity 0.2s;
+}
+
+.auth-toast-close:hover {
+    opacity: 1;
+}
+
+.auth-toast-close svg {
+    width: 14px;
+    height: 14px;
+    display: block;
+}
+
+.auth-toast-item.auth-toast-out {
+    animation: authToastOut 0.25s ease forwards;
+}
+
+@keyframes authToastIn {
+    from {
+        opacity: 0;
+        transform: translateX(100%) scale(0.9);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0) scale(1);
+    }
+}
+
+@keyframes authToastOut {
+    from {
+        opacity: 1;
+        transform: translateX(0) scale(1);
+    }
+    to {
+        opacity: 0;
+        transform: translateX(100%) scale(0.9);
+    }
+}
+
+/* ===== 表单验证样式 ===== */
+.input-wrapper.has-error {
+    border-color: #ff5722;
+    box-shadow: 0 0 0 2px rgba(255, 87, 34, 0.08);
+}
+
+.input-wrapper.has-error .input-icon {
+    color: #ff5722;
+}
+
+.form-group .error-tip {
+    display: none;
+    font-size: 11px;
+    color: #ff5722;
+    margin-top: 4px;
+    line-height: 1.4;
+}
+
+.form-group.has-error .error-tip {
+    display: block;
 }
 
 

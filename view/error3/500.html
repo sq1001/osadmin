@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>500 - 服务器错误</title>
+    <link rel="stylesheet" href="../../admin/css/view/error3.css">
+</head>
+<body>
+<canvas class="auth-canvas-bg" id="bgCvs"></canvas>
+<div class="auth-error-container">
+    <div class="auth-error-illustration auth-anim auth-anim-1">
+        <svg viewBox="0 0 300 240" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <!-- 服务器阴影 -->
+            <ellipse cx="150" cy="215" rx="55" ry="8" fill="#0ea5e9" opacity=".06"/>
+            <!-- 服务器主体 -->
+            <rect x="85" y="50" width="130" height="140" rx="10" fill="url(#server-grad)" stroke="#0ea5e9" stroke-width="2"/>
+            <!-- 服务器顶部面板 -->
+            <rect x="95" y="60" width="110" height="30" rx="5" fill="#fff" opacity=".1"/>
+            <!-- 指示灯行 -->
+            <circle cx="110" cy="75" r="3" fill="#7dd3fc" opacity=".7"/>
+            <circle cx="122" cy="75" r="3" fill="#38bdf8" opacity=".5"/>
+            <circle cx="134" cy="75" r="3" fill="#ef4444" opacity=".8"/>
+            <!-- 服务器中部面板 -->
+            <rect x="95" y="100" width="110" height="30" rx="5" fill="#fff" opacity=".08"/>
+            <!-- 中部指示灯 -->
+            <circle cx="110" cy="115" r="3" fill="#7dd3fc" opacity=".5"/>
+            <circle cx="122" cy="115" r="3" fill="#38bdf8" opacity=".3"/>
+            <!-- 服务器底部面板 -->
+            <rect x="95" y="140" width="110" height="30" rx="5" fill="#fff" opacity=".06"/>
+            <!-- 底部指示灯 -->
+            <circle cx="110" cy="155" r="3" fill="#ef4444" opacity=".6"/>
+            <circle cx="122" cy="155" r="3" fill="#7dd3fc" opacity=".3"/>
+            <!-- 芯片 - 右上 -->
+            <g transform="translate(230,55)">
+                <!-- 芯片主体 -->
+                <rect x="-18" y="-18" width="36" height="36" rx="4" fill="url(#chip-grad)" stroke="#0ea5e9" stroke-width="1.5"/>
+                <!-- 芯片内核 -->
+                <rect x="-8" y="-8" width="16" height="16" rx="2" fill="#fff" opacity=".15"/>
+                <!-- 芯片引脚 -->
+                <rect x="-4" y="-24" width="2" height="6" rx=".5" fill="#38bdf8" opacity=".6"/>
+                <rect x="2" y="-24" width="2" height="6" rx=".5" fill="#38bdf8" opacity=".6"/>
+                <rect x="-4" y="18" width="2" height="6" rx=".5" fill="#38bdf8" opacity=".6"/>
+                <rect x="2" y="18" width="2" height="6" rx=".5" fill="#38bdf8" opacity=".6"/>
+                <rect x="-24" y="-4" width="6" height="2" rx=".5" fill="#38bdf8" opacity=".6"/>
+                <rect x="-24" y="2" width="6" height="2" rx=".5" fill="#38bdf8" opacity=".6"/>
+                <rect x="18" y="-4" width="6" height="2" rx=".5" fill="#38bdf8" opacity=".6"/>
+                <rect x="18" y="2" width="6" height="2" rx=".5" fill="#38bdf8" opacity=".6"/>
+                <!-- 裂纹 -->
+                <line x1="-5" y1="-5" x2="8" y2="10" stroke="#ef4444" stroke-width="1.5" opacity=".5"/>
+                <line x1="8" y1="10" x2="3" y2="18" stroke="#ef4444" stroke-width="1" opacity=".4"/>
+            </g>
+            <!-- 警告三角 -->
+            <g transform="translate(60,40)">
+                <path d="M0 0 L12 20 L-12 20 Z" fill="none" stroke="#f59e0b" stroke-width="2" stroke-linejoin="round" opacity=".7"/>
+                <text x="0" y="16" text-anchor="middle" font-weight="700" font-size="12" fill="#f59e0b" opacity=".7">!</text>
+            </g>
+            <!-- 烟雾/蒸汽 -->
+            <circle cx="170" cy="42" r="4" fill="#7dd3fc" opacity=".15"/>
+            <circle cx="180" cy="35" r="3" fill="#7dd3fc" opacity=".1"/>
+            <circle cx="165" cy="30" r="2.5" fill="#bae6fd" opacity=".08"/>
+            <!-- 小碎片 -->
+            <rect x="225" y="90" width="4" height="4" rx="1" fill="#7dd3fc" opacity=".3" transform="rotate(30 227 92)"/>
+            <rect x="240" y="100" width="3" height="3" rx=".5" fill="#38bdf8" opacity=".25" transform="rotate(-15 241 101)"/>
+            <defs>
+                <linearGradient id="server-grad" x1="85" y1="50" x2="215" y2="190" gradientUnits="userSpaceOnUse">
+                    <stop offset="0%" stop-color="#0ea5e9"/>
+                    <stop offset="100%" stop-color="#38bdf8"/>
+                </linearGradient>
+                <linearGradient id="chip-grad" x1="-18" y1="-18" x2="18" y2="18" gradientUnits="userSpaceOnUse">
+                    <stop offset="0%" stop-color="#0ea5e9"/>
+                    <stop offset="100%" stop-color="#7dd3fc"/>
+                </linearGradient>
+            </defs>
+        </svg>
+    </div>
+    <div class="auth-error-code auth-anim auth-anim-2">500<span class="auth-glitch">500</span></div>
+    <div class="auth-error-message auth-anim auth-anim-2">抱歉，服务器开小差了，请稍后再试</div>
+</div>
+<script>
+(function(){
+    var cvs=document.getElementById('bgCvs'),ctx=cvs.getContext('2d'),particles=[];
+    var PARTICLE_COUNT=25;
+    function resize(){cvs.width=innerWidth;cvs.height=innerHeight;}
+    resize();window.addEventListener('resize',resize);
+    function createParticle(){
+        return{x:Math.random()*cvs.width,y:Math.random()*cvs.height,vx:(Math.random()-.5)*.4,vy:(Math.random()-.5)*.4,r:Math.random()*3+1.5};
+    }
+    for(var i=0;i<PARTICLE_COUNT;i++) particles.push(createParticle());
+    function draw(){
+        ctx.clearRect(0,0,cvs.width,cvs.height);
+        for(var i=0;i<particles.length;i++){
+            var p=particles[i];
+            ctx.beginPath();ctx.arc(p.x,p.y,p.r,0,Math.PI*2);
+            ctx.fillStyle='rgba(14,165,233,'+(0.08+p.r*0.04)+')';ctx.fill();
+            p.x+=p.vx;p.y+=p.vy;
+            if(p.x<0||p.x>cvs.width)p.vx*=-1;
+            if(p.y<0||p.y>cvs.height)p.vy*=-1;
+        }
+        requestAnimationFrame(draw);
+    }
+    draw();
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>404 - 页面未找到</title>
+    <link rel="stylesheet" href="../../admin/css/view/error3.css">
+</head>
+<body>
+<canvas class="auth-canvas-bg" id="bgCvs"></canvas>
+<div class="auth-error-container">
+    <div class="auth-error-illustration auth-anim auth-anim-1">
+        <svg viewBox="0 0 300 240" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <!-- 星空背景点 -->
+            <circle cx="40" cy="30" r="1.5" fill="#7dd3fc" opacity=".5"/>
+            <circle cx="80" cy="50" r="1" fill="#bae6fd" opacity=".4"/>
+            <circle cx="260" cy="25" r="1.5" fill="#7dd3fc" opacity=".5"/>
+            <circle cx="220" cy="55" r="1" fill="#bae6fd" opacity=".4"/>
+            <circle cx="130" cy="20" r="1" fill="#38bdf8" opacity=".3"/>
+            <circle cx="270" cy="70" r="1.2" fill="#7dd3fc" opacity=".35"/>
+            <circle cx="30" cy="80" r="1" fill="#bae6fd" opacity=".3"/>
+            <!-- 卫星轨道 -->
+            <ellipse cx="150" cy="120" rx="110" ry="40" fill="none" stroke="#bae6fd" stroke-width="1" opacity=".3" stroke-dasharray="4 6"/>
+            <ellipse cx="150" cy="120" rx="85" ry="32" fill="none" stroke="#7dd3fc" stroke-width="1" opacity=".2" stroke-dasharray="3 5"/>
+            <!-- 行星（地球） -->
+            <circle cx="150" cy="120" r="28" fill="url(#planet-grad)"/>
+            <!-- 行星表面纹理 -->
+            <path d="M128 110 C135 108 142 115 150 112 C158 109 165 116 172 113" stroke="#7dd3fc" stroke-width="1.5" opacity=".3" fill="none"/>
+            <path d="M125 125 C133 122 140 128 148 125 C156 122 163 128 175 124" stroke="#7dd3fc" stroke-width="1" opacity=".25" fill="none"/>
+            <!-- 行星高光 -->
+            <ellipse cx="138" cy="110" rx="10" ry="18" fill="#fff" opacity=".1" transform="rotate(-15 138 110)"/>
+            <!-- 偏轨卫星 -->
+            <g transform="translate(230, 75) rotate(20)">
+                <!-- 卫星主体 -->
+                <rect x="-8" y="-5" width="16" height="10" rx="2" fill="url(#sat-grad)"/>
+                <!-- 太阳能板左 -->
+                <rect x="-28" y="-4" width="18" height="8" rx="1" fill="#38bdf8" opacity=".7" stroke="#0ea5e9" stroke-width=".5"/>
+                <line x1="-24" y1="-4" x2="-24" y2="4" stroke="#0ea5e9" stroke-width=".3" opacity=".5"/>
+                <line x1="-19" y1="-4" x2="-19" y2="4" stroke="#0ea5e9" stroke-width=".3" opacity=".5"/>
+                <line x1="-14" y1="-4" x2="-14" y2="4" stroke="#0ea5e9" stroke-width=".3" opacity=".5"/>
+                <!-- 太阳能板右 -->
+                <rect x="10" y="-4" width="18" height="8" rx="1" fill="#38bdf8" opacity=".7" stroke="#0ea5e9" stroke-width=".5"/>
+                <line x1="14" y1="-4" x2="14" y2="4" stroke="#0ea5e9" stroke-width=".3" opacity=".5"/>
+                <line x1="19" y1="-4" x2="19" y2="4" stroke="#0ea5e9" stroke-width=".3" opacity=".5"/>
+                <line x1="24" y1="-4" x2="24" y2="4" stroke="#0ea5e9" stroke-width=".3" opacity=".5"/>
+                <!-- 天线 -->
+                <line x1="0" y1="-5" x2="0" y2="-12" stroke="#0ea5e9" stroke-width="1" opacity=".6"/>
+                <circle cx="0" cy="-13" r="1.5" fill="#38bdf8" opacity=".7"/>
+            </g>
+            <!-- 信号波 -->
+            <path d="M220 82 Q225 75 230 82" stroke="#7dd3fc" stroke-width="1" fill="none" opacity=".4"/>
+            <path d="M218 86 Q225 72 232 86" stroke="#7dd3fc" stroke-width=".8" fill="none" opacity=".25"/>
+            <!-- 迷航问号 -->
+            <text x="65" y="100" font-weight="700" font-size="20" fill="#38bdf8" opacity=".45">?</text>
+            <text x="200" y="145" font-weight="600" font-size="16" fill="#7dd3fc" opacity=".35">?</text>
+            <text x="110" y="60" font-weight="600" font-size="13" fill="#bae6fd" opacity=".3">?</text>
+            <!-- 底部光晕 -->
+            <ellipse cx="150" cy="210" rx="55" ry="8" fill="#0ea5e9" opacity=".06"/>
+            <defs>
+                <linearGradient id="planet-grad" x1="122" y1="92" x2="178" y2="148" gradientUnits="userSpaceOnUse">
+                    <stop offset="0%" stop-color="#0ea5e9"/>
+                    <stop offset="100%" stop-color="#38bdf8"/>
+                </linearGradient>
+                <linearGradient id="sat-grad" x1="-8" y1="-5" x2="8" y2="5" gradientUnits="userSpaceOnUse">
+                    <stop offset="0%" stop-color="#0ea5e9"/>
+                    <stop offset="100%" stop-color="#7dd3fc"/>
+                </linearGradient>
+            </defs>
+        </svg>
+    </div>
+    <div class="auth-error-code auth-anim auth-anim-2">404<span class="auth-glitch">404</span></div>
+    <div class="auth-error-message auth-anim auth-anim-2">抱歉，您访问的页面不存在</div>
+</div>
+<script>
+(function(){
+    var cvs=document.getElementById('bgCvs'),ctx=cvs.getContext('2d'),particles=[];
+    var PARTICLE_COUNT=25;
+    function resize(){cvs.width=innerWidth;cvs.height=innerHeight;}
+    resize();window.addEventListener('resize',resize);
+    function createParticle(){
+        return{x:Math.random()*cvs.width,y:Math.random()*cvs.height,vx:(Math.random()-.5)*.4,vy:(Math.random()-.5)*.4,r:Math.random()*3+1.5};
+    }
+    for(var i=0;i<PARTICLE_COUNT;i++) particles.push(createParticle());
+    function draw(){
+        ctx.clearRect(0,0,cvs.width,cvs.height);
+        for(var i=0;i<particles.length;i++){
+            var p=particles[i];
+            ctx.beginPath();ctx.arc(p.x,p.y,p.r,0,Math.PI*2);
+            ctx.fillStyle='rgba(14,165,233,'+(0.08+p.r*0.04)+')';ctx.fill();
+            p.x+=p.vx;p.y+=p.vy;
+            if(p.x<0||p.x>cvs.width)p.vx*=-1;
+            if(p.y<0||p.y>cvs.height)p.vy*=-1;
+        }
+        requestAnimationFrame(draw);
+    }
+    draw();
+})();
+</script>
+</body>
+</html>

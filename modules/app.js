@@ -31,7 +31,6 @@ layui.define(['jquery', 'util', 'routerModule', 'themeModule', 'sidebarComp', 't
     resourceConfig: null,
     notificationData: [],
     currentAnimation: 'fadeIn',
-    baseUrl: '',
     lazyLoadObserver: null,
 
     configCache: {
@@ -182,7 +181,6 @@ layui.define(['jquery', 'util', 'routerModule', 'themeModule', 'sidebarComp', 't
       var self = this;
       var selectId = (this.appConfig.menu && this.appConfig.menu.selectId) || 0;
 
-      this.baseUrl = this.appConfig.router && this.appConfig.router.base ? this.appConfig.router.base : '/';
       this.version = this.appConfig.version || '1.0.0';
       
       $.when(this.loadResourceConfig()).done(function() {
@@ -257,21 +255,9 @@ layui.define(['jquery', 'util', 'routerModule', 'themeModule', 'sidebarComp', 't
         return deferred.promise();
       }
 
-      // 智能路径处理：支持相对路径、绝对路径、外部URL
-      var resolvedUrl = url;
-      if (url.indexOf('http://') !== 0 && url.indexOf('https://') !== 0 && url.indexOf('//') !== 0) {
-        if (url.charAt(0) !== '/') {
-          var base = this.baseUrl;
-          if (base.charAt(base.length - 1) !== '/') {
-            base += '/';
-          }
-          resolvedUrl = base + url;
-        }
-      }
-
-      var versionedUrl = resolvedUrl;
+      var versionedUrl = url;
       if (this.appConfig && this.appConfig.version) {
-        versionedUrl = resolvedUrl + '?v=' + this.appConfig.version;
+        versionedUrl = url + '?v=' + this.appConfig.version;
       }
 
       $.ajax({
@@ -331,8 +317,7 @@ layui.define(['jquery', 'util', 'routerModule', 'themeModule', 'sidebarComp', 't
       }
       
       if (site.logo) {
-        var logoUrl = this.resolveUrl(site.logo);
-        $('#logoIcon').replaceWith('<img src="' + logoUrl + '" alt="' + (site.name || 'Logo') + '" class="layui-logo-img">');
+        $('#logoIcon').replaceWith('<img src="' + site.logo + '" alt="' + (site.name || 'Logo') + '" class="layui-logo-img">');
       }
       
       this.loadUserinfo();
@@ -352,7 +337,7 @@ layui.define(['jquery', 'util', 'routerModule', 'themeModule', 'sidebarComp', 't
       }
       
       $.ajax({
-        url: this.resolveUrl(userinfoUrl),
+        url: userinfoUrl,
         dataType: 'json',
         type: method,
         cache: cache
@@ -384,8 +369,7 @@ layui.define(['jquery', 'util', 'routerModule', 'themeModule', 'sidebarComp', 't
       }
       
       if (data.avatar) {
-        var avatarUrl = this.resolveUrl(data.avatar);
-        $avatar.html('<img src="' + avatarUrl + '" alt="' + (data.nickname || 'Avatar') + '">');
+        $avatar.html('<img src="' + data.avatar + '" alt="' + (data.nickname || 'Avatar') + '">');
       } else if (data.nickname) {
         var firstChar = data.nickname.charAt(0);
         $avatar.text(firstChar);
@@ -407,7 +391,7 @@ layui.define(['jquery', 'util', 'routerModule', 'themeModule', 'sidebarComp', 't
       }
       
       $.ajax({
-        url: this.resolveUrl(notificationUrl),
+        url: notificationUrl,
         dataType: 'json',
         type: method,
         cache: cache
@@ -497,7 +481,7 @@ layui.define(['jquery', 'util', 'routerModule', 'themeModule', 'sidebarComp', 't
       var loadingIndex = layer.load(2, { shade: [0.1, '#fff'] });
       
       $.ajax({
-        url: this.resolveUrl(logoutUrl),
+        url: logoutUrl,
         type: method,
         dataType: 'json',
         cache: cache
@@ -598,7 +582,7 @@ layui.define(['jquery', 'util', 'routerModule', 'themeModule', 'sidebarComp', 't
         return;
       }
 
-      var relativeUrl = this.getRelativeUrl(url);
+      var relativeUrl = url.charAt(0) === '/' ? url.substring(1) : url;
 
       var cachedHtml = this.pageCache.get(relativeUrl);
 
@@ -645,25 +629,6 @@ layui.define(['jquery', 'util', 'routerModule', 'themeModule', 'sidebarComp', 't
           self.showContent('<div class="page-placeholder"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><rect x="3" y="3" width="18" height="18" rx="2"/><line x1="9" y1="9" x2="15" y2="9"/><line x1="9" y1="13" x2="15" y2="13"/><line x1="9" y1="17" x2="12" y2="17"/></svg><div class="page-placeholder-title">' + menuTitle + '</div><div class="page-placeholder-desc">该页面正在开发中...</div></div>');
         });
       });
-    },
-
-    getRelativeUrl: function(url) {
-      if (!url) return url;
-      
-      var base = this.baseUrl;
-      if (base.charAt(0) === '/') {
-        base = base.substring(1);
-      }
-      
-      if (base && url.indexOf(base) === 0) {
-        url = url.substring(base.length);
-      }
-      
-      if (url.charAt(0) === '/') {
-        url = url.substring(1);
-      }
-      
-      return url;
     },
 
     showLoading: function() {
@@ -839,29 +804,10 @@ layui.define(['jquery', 'util', 'routerModule', 'themeModule', 'sidebarComp', 't
       for (var i = 0; i < menuData.length; i++) {
         var url = this.findPageUrlInItem(menuData[i], pageId);
         if (url) {
-          return this.resolveUrl(url);
+          return url;
         }
       }
       return null;
-    },
-
-    resolveUrl: function(url) {
-      if (!url) return url;
-      
-      if (url.indexOf('http://') === 0 || url.indexOf('https://') === 0 || url.indexOf('//') === 0) {
-        return url;
-      }
-      
-      if (url.charAt(0) === '/') {
-        return url;
-      }
-      
-      var base = this.baseUrl;
-      if (base.charAt(base.length - 1) !== '/') {
-        base += '/';
-      }
-      
-      return base + url;
     },
 
     findPageUrlInItem: function(item, pageId) {

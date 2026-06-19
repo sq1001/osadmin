@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>403 - 访问被拒绝</title>
+    <link rel="stylesheet" href="../../admin/css/view/error3.css">
+</head>
+<body>
+<canvas class="auth-canvas-bg" id="bgCvs"></canvas>
+<div class="auth-error-container">
+    <div class="auth-error-illustration auth-anim auth-anim-1">
+        <svg viewBox="0 0 300 240" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <!-- 盾牌阴影 -->
+            <ellipse cx="150" cy="210" rx="50" ry="8" fill="#0ea5e9" opacity=".06"/>
+            <!-- 盾牌主体 -->
+            <path d="M150 30 L220 60 L220 130 C220 175 185 205 150 220 C115 205 80 175 80 130 L80 60 Z" fill="url(#shield-grad)" stroke="#0ea5e9" stroke-width="2.5"/>
+            <!-- 盾牌高光 -->
+            <path d="M150 38 L212 64 L212 130 C212 170 182 197 150 210 L150 38Z" fill="#fff" opacity=".08"/>
+            <!-- 盾牌内边框 -->
+            <path d="M150 48 L205 72 L205 130 C205 165 180 190 150 202 C120 190 95 165 95 130 L95 72 Z" stroke="#38bdf8" stroke-width="1" fill="none" opacity=".4"/>
+            <!-- 锁体 -->
+            <rect x="128" y="120" width="44" height="36" rx="6" fill="#fff" opacity=".9"/>
+            <rect x="132" y="124" width="36" height="28" rx="4" fill="#0ea5e9" opacity=".12"/>
+            <!-- 锁环 -->
+            <path d="M135 120 L135 105 C135 90 145 82 150 82 C155 82 165 90 165 105 L165 120" stroke="#fff" stroke-width="5" stroke-linecap="round" fill="none" opacity=".9"/>
+            <path d="M138 120 L138 106 C138 93 146 86 150 86 C154 86 162 93 162 106 L162 120" stroke="#0ea5e9" stroke-width="2" stroke-linecap="round" fill="none" opacity=".3"/>
+            <!-- 锁孔 -->
+            <circle cx="150" cy="135" r="4" fill="#0ea5e9" opacity=".5"/>
+            <rect x="148" y="137" width="4" height="8" rx="1" fill="#0ea5e9" opacity=".5"/>
+            <!-- 禁止标志（圆+斜线） -->
+            <circle cx="150" cy="100" r="16" stroke="#ef4444" stroke-width="2.5" fill="none" opacity=".6"/>
+            <line x1="138" y1="88" x2="162" y2="112" stroke="#ef4444" stroke-width="2.5" opacity=".6"/>
+            <!-- 装饰线 -->
+            <line x1="110" y1="170" x2="190" y2="170" stroke="#38bdf8" stroke-width="1" opacity=".2"/>
+            <!-- 科技装饰点 -->
+            <circle cx="90" cy="55" r="2" fill="#7dd3fc" opacity=".4"/>
+            <circle cx="210" cy="55" r="2" fill="#7dd3fc" opacity=".4"/>
+            <circle cx="75" cy="90" r="1.5" fill="#bae6fd" opacity=".3"/>
+            <circle cx="225" cy="90" r="1.5" fill="#bae6fd" opacity=".3"/>
+            <defs>
+                <linearGradient id="shield-grad" x1="80" y1="30" x2="220" y2="220" gradientUnits="userSpaceOnUse">
+                    <stop offset="0%" stop-color="#0ea5e9"/>
+                    <stop offset="100%" stop-color="#38bdf8"/>
+                </linearGradient>
+            </defs>
+        </svg>
+    </div>
+    <div class="auth-error-code auth-anim auth-anim-2">403<span class="auth-glitch">403</span></div>
+    <div class="auth-error-message auth-anim auth-anim-2">抱歉，您没有权限访问此页面</div>
+</div>
+<script>
+(function(){
+    var cvs=document.getElementById('bgCvs'),ctx=cvs.getContext('2d'),particles=[];
+    var PARTICLE_COUNT=25;
+    function resize(){cvs.width=innerWidth;cvs.height=innerHeight;}
+    resize();window.addEventListener('resize',resize);
+    function createParticle(){
+        return{x:Math.random()*cvs.width,y:Math.random()*cvs.height,vx:(Math.random()-.5)*.4,vy:(Math.random()-.5)*.4,r:Math.random()*3+1.5};
+    }
+    for(var i=0;i<PARTICLE_COUNT;i++) particles.push(createParticle());
+    function draw(){
+        ctx.clearRect(0,0,cvs.width,cvs.height);
+        for(var i=0;i<particles.length;i++){
+            var p=particles[i];
+            ctx.beginPath();ctx.arc(p.x,p.y,p.r,0,Math.PI*2);
+            ctx.fillStyle='rgba(14,165,233,'+(0.08+p.r*0.04)+')';ctx.fill();
+            p.x+=p.vx;p.y+=p.vy;
+            if(p.x<0||p.x>cvs.width)p.vx*=-1;
+            if(p.y<0||p.y>cvs.height)p.vy*=-1;
+        }
+        requestAnimationFrame(draw);
+    }
+    draw();
+})();
+</script>
+</body>
+</html>
