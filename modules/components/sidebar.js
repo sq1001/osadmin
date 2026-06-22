@@ -934,12 +934,16 @@ layui.define(['jquery', 'layer', 'themeModule', 'routerModule', 'commonMod'], fu
       this.closeAllNestedDropdowns();
     },
 
-    setActive: function(pageId) {
+    setActive: function(pageId, options) {
       $('.menu-item.active, .submenu-item.active, .submenu-panel-item.active, .submenu-panel-group-title.active, .submenu-panel-dropdown-item.active, .dropdown-menu-item.active, .dropdown-menu-group-title.active, .nested-dropdown-item.active')
         .removeClass('active');
 
       var self = this;
       var state = theme.getState();
+      // 预览时允许覆盖 layout
+      if (options && options.layout) {
+        state.layout = options.layout;
+      }
       var isMobile = window.innerWidth <= 768;
       
       this.collapsed = $('#sidebar').hasClass('collapsed');
@@ -972,10 +976,6 @@ layui.define(['jquery', 'layer', 'themeModule', 'routerModule', 'commonMod'], fu
         } else {
           this.setActiveItems(pageId, menuPath, state);
         }
-      }
-      else if (state.layout === 'dropdown' && this.collapsed && menuPath.length > 0 && $triggerItem) {
-        // ✅ 页面切换时不自动弹出下拉菜单，只设置激活状态
-        this.setActiveItems(pageId, menuPath, state);
       }
       else {
         this.setActiveItems(pageId, menuPath, state);

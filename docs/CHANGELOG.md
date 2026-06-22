@@ -4,6 +4,67 @@
 
 ---
 
+## v1.9.4 (2026-06-20)
+
+### Toast 模块重构
+- **默认无关闭按钮**：`closable` 默认值从 `true` 改为 `false`，与 Element Plus ElMessage / Ant Design message 等主流 UI 库保持一致
+- **新增 skin 皮肤配置**：默认不再显示左边框色条，色条作为可选的 `skin` 配置项保留（`skin: 'success'` 等），色条颜色与对应图标颜色统一
+- **skin 支持对象格式**：`skin` 可传对象自定义样式，支持 `borderColor/borderLeft/background/color/boxShadow/iconColor/titleColor/contentColor`
+- **标题默认为空**：`title` 默认值从 `'提示'` 改为 `''`，无标题时不显示标题行
+- **统一 close/dismiss 逻辑**：`close()` 内部调用 `dismiss(id, true)`，删除冗余的 `animateClose()` 方法
+- **新增 closeLoading() 方法**：用于手动关闭 loading 类型的 toast
+- **新增 animateDismiss() 方法**：统一消散动画处理
+- **修复无图标无标题时内容不居中**：添加 `toast-group-plain` 类，垂直居中显示纯内容
+- **Toast 示例页更新**：新增自定义皮肤示例（预设名+对象格式）、有图标无标题示例、配置表更新
+
+### 认证页面 Toast 统一
+- **风格1 (auth/)**：4个页面从 `alert()` 全部替换为自定义 toast 提示，样式与框架 toast 模块一致
+- **风格2 (auth2/)**：4个页面 toast 样式统一为框架 toast 模块标准，图标改为完整 SVG
+- **所有风格页面**：默认无关闭按钮，3秒自动消失
+
+### 表单验证统一
+- **风格1 (auth/)**：4个页面新增表单验证变色+小提示效果
+- **验证方式统一**：所有8个认证页面统一为逐个验证（遇到第一个错误就提示）
+- **移除浏览器原生验证**：移除所有 `required` 属性
+
+### 风格3 - 天蓝科技模板（新增）
+- **认证页面**：login / register / forgot-password / lock-screen，天蓝色系（#0ea5e9）
+- **错误页面**：404 / 403 / 500 / maintenance
+- **预览页面**：style3-preview.html
+- **背景全屏化改造**：去掉左栏渐变背景，Canvas粒子+浮动气泡全屏化，SVG插画放大丰富
+- **设计特色**：Canvas 浮动光点粒子、科技主题 SVG 插画（数据中心/云同步/盾牌锁钥/星空）、表单卡片天蓝渐变装饰条
+
+### URL 拼接优化
+- **移除智能路径处理**：删除 `resolveUrl()` / `getRelativeUrl()` / `baseUrl` 体系，改用浏览器原生相对路径解析
+- **影响文件**：index.js、app.js、resource-loader.js、user-profile.html
+
+### 登录页架构
+- **方案C实施**：登录页保持独立 HTML，添加框架资源预加载脚本（prefetch）
+
+### 模板页面新增与重构
+- **系统设置页重构**：移除独立 layui 导入、CSS 变量化、改为左右分栏 tabs 布局
+- **Layui标签页模板** (`layui-tabs-page.html`)：使用 layui 2.10+ 新版 `layui-tabs` 组件
+- **侧边导航模板** (`nav-page.html`)：自定义一级平铺导航+滑动跟随指示条+右侧内容面板
+- **自定义标签页模板** (`tabs-page.html`)：底部边框改为滑动指示器效果
+- **详情页模板** (`detail-page.html`)：左侧锚点导航+右侧信息流
+- **菜单注册**：menu.json 新增 Layui标签页(id:935)、侧边导航(id:936)
+
+### 仪表盘重构
+- **欢迎卡片**：加快捷操作按钮
+- **统计卡片 4→5**：新增"待处理"卡片，迷你 sparkline 折线图
+- **数字滚动动画**：easeOutCubic 缓动计数效果
+- **图表行拆分**：销售趋势（柱+折线混合图）+ 访问量趋势（PV/UV 双线面积图）
+- **新增待办事项**：左侧优先级色条+右侧紧急度标签
+- **新增第三行**：商品分类饼图横向布局 + 系统动态流
+
+### 样式统一
+- **输入框边框**：风格1/风格2 统一为 1px
+- **聚焦 ring**：风格1/风格2 统一为 2px
+- **步骤条配色**：风格2 忘记密码页步骤条成功色与输入框主色统一
+- **步骤图标着色**：SVG 改为 `stroke="currentColor"` + CSS `color` 控制
+
+---
+
 ## v1.9.3 (2026-06-17)
 
 ### 🎨 模板页面双风格体系重构

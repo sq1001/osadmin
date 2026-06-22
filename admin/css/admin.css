@@ -1029,7 +1029,7 @@ body {
   border-bottom: none;
 }
 
-.layui-tabs-scroll-btn {
+.layui-tabs-container .layui-tabs-scroll-btn {
   width: 32px;
   height: 32px;
   display: flex;
@@ -1044,17 +1044,17 @@ body {
   border-radius: 6px;
 }
 
-.layui-tabs-scroll-btn:hover:not(:disabled) {
+.layui-tabs-container .layui-tabs-scroll-btn:hover:not(:disabled) {
   background: var(--bg-content);
   color: var(--text-primary);
 }
 
-.layui-tabs-scroll-btn:disabled {
+.layui-tabs-container .layui-tabs-scroll-btn:disabled {
   opacity: 0.3;
   cursor: not-allowed;
 }
 
-.layui-tabs-scroll-btn .layui-icon {
+.layui-tabs-container .layui-tabs-scroll-btn .layui-icon {
   font-size: 14px;
 }
 
@@ -1160,7 +1160,7 @@ body {
   font-size: 10px;
 }
 
-.layui-tabs-bar .layui-icon {
+.layui-tabs-container .layui-tabs-bar .layui-icon {
   position: unset !important;
   /* left: unset !important; */
   /* top: unset !important; */

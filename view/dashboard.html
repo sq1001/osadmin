@@ -9,80 +9,112 @@
 
 <body>
 <div class="page-content">
-  <div class="welcome-card">
-    <h1 class="welcome-title">欢迎回来，管理员</h1>
-    <p class="welcome-subtitle">今天是 2024年12月15日 星期日，祝您工作愉快</p>
-    <div class="welcome-stats">
-      <div class="welcome-stat-item">
-        <div class="welcome-stat-value" data-count="128">0</div>
-        <div class="welcome-stat-label">今日订单</div>
+
+  <!-- 大号提示栏：欢迎语 + 日期 + 每日一言 -->
+  <div class="greeting-bar">
+    <div class="greeting-left">
+      <div class="greeting-text">
+        <span class="greeting-hello" id="greetingHello">早上好</span>，<span id="greetingNickname">管理员</span>
       </div>
-      <div class="welcome-stat-item">
-        <div class="welcome-stat-value">¥<span data-count="56420">0</span></div>
-        <div class="welcome-stat-label">今日销售额</div>
-      </div>
-      <div class="welcome-stat-item">
-        <div class="welcome-stat-value" data-count="89">0</div>
-        <div class="welcome-stat-label">新增用户</div>
+      <div class="greeting-date" id="greetingDate"></div>
+    </div>
+    <div class="greeting-divider"></div>
+    <div class="greeting-quote">
+      <i class="layui-icon layui-icon-about"></i>
+      <div class="greeting-quote-content">
+        <span class="quote-text" id="quoteText">加载中...</span>
+        <span class="quote-from" id="quoteFrom"></span>
       </div>
     </div>
   </div>
 
-  <div class="stats-grid">
-    <div class="stat-card">
-      <div class="stat-icon">
-        <svg viewBox="0 0 24 24"><path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 01-8 0"/></svg>
+  <!-- 统计卡片 (4列) -->
+  <div class="stats-grid" id="statsGrid"></div>
+
+  <!-- 服务器概览 + 系统信息 + 系统授权 (3列) -->
+  <div class="mid-row">
+    <div class="card">
+      <div class="card-header">
+        <h3 class="card-title">服务器概览</h3>
       </div>
-      <div class="stat-value" data-count="3847">0</div>
-      <div class="stat-label">总订单数</div>
-      <div class="stat-trend up">
-        <svg viewBox="0 0 24 24"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg>
-        较上月 +12.5%
-      </div>
-    </div>
-    <div class="stat-card">
-      <div class="stat-icon">
-        <svg viewBox="0 0 24 24"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 000 7h5a3.5 3.5 0 010 7H6"/></svg>
-      </div>
-      <div class="stat-value">¥<span data-count="892450">0</span></div>
-      <div class="stat-label">总销售额</div>
-      <div class="stat-trend up">
-        <svg viewBox="0 0 24 24"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg>
-        较上月 +8.2%
-      </div>
-    </div>
-    <div class="stat-card">
-      <div class="stat-icon">
-        <svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87"/><path d="M16 3.13a4 4 0 010 7.75"/></svg>
-      </div>
-      <div class="stat-value" data-count="12584">0</div>
-      <div class="stat-label">注册用户</div>
-      <div class="stat-trend up">
-        <svg viewBox="0 0 24 24"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg>
-        较上月 +23.1%
+      <div class="card-body">
+        <div class="ring-charts-grid">
+          <div class="ring-chart-item">
+            <div class="ring-chart-wrap" id="ringCpu"></div>
+            <div class="ring-chart-label">CPU</div>
+          </div>
+          <div class="ring-chart-item">
+            <div class="ring-chart-wrap" id="ringMemory"></div>
+            <div class="ring-chart-label">内存</div>
+          </div>
+          <div class="ring-chart-item">
+            <div class="ring-chart-wrap" id="ringDisk"></div>
+            <div class="ring-chart-label">磁盘</div>
+          </div>
+          <div class="ring-chart-item">
+            <div class="ring-chart-wrap" id="ringBandwidth"></div>
+            <div class="ring-chart-label">带宽</div>
+          </div>
+        </div>
       </div>
     </div>
-    <div class="stat-card">
-      <div class="stat-icon">
-        <svg viewBox="0 0 24 24"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 002 1.61h9.72a2 2 0 002-1.61L23 6H6"/></svg>
+    <div class="card">
+      <div class="card-header">
+        <h3 class="card-title">系统信息</h3>
       </div>
-      <div class="stat-value" data-count="856">0</div>
-      <div class="stat-label">在售商品</div>
-      <div class="stat-trend down">
-        <svg viewBox="0 0 24 24"><polyline points="23 18 13.5 8.5 8.5 13.5 1 6"/><polyline points="17 18 23 18 23 12"/></svg>
-        较上月 -3.2%
+      <div class="card-body">
+        <div class="sys-info-grid" id="sysInfoGrid"></div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-header">
+        <h3 class="card-title">系统授权</h3>
+      </div>
+      <div class="card-body">
+        <div class="license-info" id="licenseInfo"></div>
       </div>
     </div>
   </div>
 
+  <!-- 快捷导航 + 最近操作 + 公告通知 (3列) -->
+  <div class="nav-notice-row">
+    <div class="card">
+      <div class="card-header">
+        <h3 class="card-title">快捷导航</h3>
+      </div>
+      <div class="card-body">
+        <div class="quick-nav-grid" id="quickNavGrid"></div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-header">
+        <h3 class="card-title">最近操作</h3>
+        <button class="card-btn">更多</button>
+      </div>
+      <div class="card-body">
+        <div class="recent-list" id="recentList"></div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-header">
+        <h3 class="card-title">公告通知</h3>
+        <button class="card-btn">全部</button>
+      </div>
+      <div class="card-body">
+        <div class="notice-list" id="noticeList"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 图表行：销售趋势 + 访问量 (2列等宽) -->
   <div class="charts-row">
     <div class="card">
       <div class="card-header">
         <h3 class="card-title">销售趋势</h3>
         <div class="card-actions">
-          <button class="card-btn active">本周</button>
-          <button class="card-btn">本月</button>
-          <button class="card-btn">本年</button>
+          <button class="card-btn active" data-range="week">本周</button>
+          <button class="card-btn" data-range="month">本月</button>
+          <button class="card-btn" data-range="year">本年</button>
         </div>
       </div>
       <div class="card-body">
@@ -91,238 +123,511 @@
     </div>
     <div class="card">
       <div class="card-header">
-        <h3 class="card-title">商品分类占比</h3>
+        <h3 class="card-title">访问量趋势</h3>
+        <div class="card-actions">
+          <button class="card-btn active" data-range="week">本周</button>
+          <button class="card-btn" data-range="month">本月</button>
+        </div>
       </div>
       <div class="card-body">
-        <div class="pie-container">
-          <div id="categoryChart" class="pie-chart"></div>
-          <div class="pie-legend">
-            <div class="legend-item">
-              <div class="legend-left">
-                <div class="legend-dot" style="background: var(--accent);"></div>
-                <span class="legend-label">数码电子</span>
-              </div>
-              <span class="legend-value">35%</span>
-            </div>
-            <div class="legend-item">
-              <div class="legend-left">
-                <div class="legend-dot" style="background: #3b82f6;"></div>
-                <span class="legend-label">服装鞋帽</span>
-              </div>
-              <span class="legend-value">28%</span>
-            </div>
-            <div class="legend-item">
-              <div class="legend-left">
-                <div class="legend-dot" style="background: #f59e0b;"></div>
-                <span class="legend-label">美妆护肤</span>
-              </div>
-              <span class="legend-value">20%</span>
-            </div>
-            <div class="legend-item">
-              <div class="legend-left">
-                <div class="legend-dot" style="background: #8b5cf6;"></div>
-                <span class="legend-label">家居生活</span>
-              </div>
-              <span class="legend-value">12%</span>
-            </div>
-            <div class="legend-item">
-              <div class="legend-left">
-                <div class="legend-dot" style="background: #ef4444;"></div>
-                <span class="legend-label">其他</span>
-              </div>
-              <span class="legend-value">5%</span>
-            </div>
-          </div>
-        </div>
+        <div id="visitChart" class="chart-container"></div>
       </div>
     </div>
   </div>
 
-  <div class="data-row">
+  <!-- 待办事项 + 系统动态 (2列) -->
+  <div class="todo-timeline-row">
     <div class="card">
       <div class="card-header">
-        <h3 class="card-title">最近订单</h3>
-        <button class="card-btn">查看全部</button>
+        <h3 class="card-title">待办事项</h3>
+        <button class="card-btn">全部</button>
       </div>
-      <div class="card-body" style="padding: 0;">
-        <table class="data-table">
-          <thead>
-            <tr>
-              <th>订单号</th>
-              <th>客户</th>
-              <th>金额</th>
-              <th>状态</th>
-              <th>时间</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td class="order-id">ORD-2024-8847</td>
-              <td>
-                <div class="customer-cell">
-                  <div class="customer-avatar">张</div>张小明
-                </div>
-              </td>
-              <td>¥2,599</td>
-              <td><span class="status-badge completed">已完成</span></td>
-              <td style="color: var(--text-muted);">10分钟前</td>
-            </tr>
-            <tr>
-              <td class="order-id">ORD-2024-8846</td>
-              <td>
-                <div class="customer-cell">
-                  <div class="customer-avatar">李</div>李华
-                </div>
-              </td>
-              <td>¥899</td>
-              <td><span class="status-badge shipped">已发货</span></td>
-              <td style="color: var(--text-muted);">25分钟前</td>
-            </tr>
-            <tr>
-              <td class="order-id">ORD-2024-8845</td>
-              <td>
-                <div class="customer-cell">
-                  <div class="customer-avatar">王</div>王芳
-                </div>
-              </td>
-              <td>¥1,299</td>
-              <td><span class="status-badge pending">待付款</span></td>
-              <td style="color: var(--text-muted);">1小时前</td>
-            </tr>
-          </tbody>
-        </table>
+      <div class="card-body">
+        <div class="todo-list" id="todoList"></div>
       </div>
     </div>
     <div class="card">
       <div class="card-header">
-        <h3 class="card-title">热销商品</h3>
-        <button class="card-btn">查看全部</button>
+        <h3 class="card-title">系统动态</h3>
+        <button class="card-btn">更多</button>
       </div>
       <div class="card-body">
-        <div class="hot-product">
-          <div class="rank-badge top1">1</div>
-          <div class="product-info">
-            <div class="product-name">iPhone 15 Pro Max</div>
-            <div class="product-category">数码电子</div>
-          </div>
-          <div class="product-sales">
-            <div class="product-sales-value">1,245</div>
-            <div class="product-sales-label">销量</div>
-          </div>
-        </div>
-        <div class="hot-product">
-          <div class="rank-badge top2">2</div>
-          <div class="product-info">
-            <div class="product-name">Air Jordan 1 高帮</div>
-            <div class="product-category">服装鞋帽</div>
-          </div>
-          <div class="product-sales">
-            <div class="product-sales-value">892</div>
-            <div class="product-sales-label">销量</div>
-          </div>
-        </div>
-        <div class="hot-product">
-          <div class="rank-badge top3">3</div>
-          <div class="product-info">
-            <div class="product-name">兰蔻小黑瓶精华</div>
-            <div class="product-category">美妆护肤</div>
-          </div>
-          <div class="product-sales">
-            <div class="product-sales-value">756</div>
-            <div class="product-sales-label">销量</div>
-          </div>
-        </div>
+        <div class="timeline" id="timelineList"></div>
       </div>
     </div>
   </div>
+
 </div>
 
 <script>
-layui.use(['echartsMod'], function() {
+layui.use(['echartsMod', 'layer'], function() {
   var echarts = layui.echartsMod;
-  
+  var layer = layui.layer;
+  var $ = layui.$;
+
   var isDark = document.documentElement.getAttribute('data-theme') === 'dark';
-  var textColor = isDark ? '#f1f5f9' : '#1f2937';
+  var textColor = isDark ? '#94a3b8' : '#64748b';
   var axisLineColor = isDark ? '#334155' : '#e5e7eb';
   var splitLineColor = isDark ? '#1e293b' : '#f3f4f6';
-  var accentColor = getComputedStyle(document.documentElement).getPropertyValue('--accent').trim() || '#16baaa';
-  
-  var salesChart, categoryChart;
-  
-  setTimeout(function() {
-    salesChart = echarts.init(document.getElementById('salesChart'));
-    salesChart.setOption({
-      animation: true,
-      animationDuration: 800,
-      animationEasing: 'cubicOut',
-      tooltip: { trigger: 'axis', axisPointer: { type: 'shadow' } },
-      grid: { left: '3%', right: '4%', bottom: '3%', top: '10%', containLabel: true },
-      xAxis: {
-        type: 'category',
-        data: ['周一', '周二', '周三', '周四', '周五', '周六', '周日'],
-        axisLine: { lineStyle: { color: axisLineColor } },
-        axisLabel: { color: textColor }
-      },
-      yAxis: {
-        type: 'value',
-        axisLine: { show: false },
-        splitLine: { lineStyle: { color: splitLineColor } },
-        axisLabel: { color: textColor, formatter: '{value}k' }
-      },
+  var accentColor = getComputedStyle(document.documentElement).getPropertyValue('--accent').trim() || '#6366f1';
+
+  var salesChart, visitChart;
+
+  // ========== 加载仪表盘数据 ==========
+  $.ajax({
+    url: 'view/data/dashboard.json',
+    dataType: 'json',
+    success: function(res) {
+      if (res.code !== 0) return;
+      var data = res.data;
+      renderAdmin(data.admin);
+      renderStats(data.stats);
+      renderServerRings(data.server);
+      renderSysInfo(data.sysInfo);
+      renderLicense(data.license);
+      renderQuickNav(data.quickNav);
+      renderRecentActions(data.recentActions);
+      renderNotices(data.notices);
+      renderCharts(data.charts);
+      renderTodos(data.todos);
+      renderTimeline(data.timeline);
+    }
+  });
+
+  // ========== 问候语 + 日期 ==========
+  (function initGreeting() {
+    var now = new Date();
+    var hour = now.getHours();
+    var hello = '晚上好';
+    if (hour >= 6 && hour < 12) hello = '早上好';
+    else if (hour >= 12 && hour < 14) hello = '中午好';
+    else if (hour >= 14 && hour < 18) hello = '下午好';
+
+    document.getElementById('greetingHello').textContent = hello;
+
+    var weekDays = ['日', '一', '二', '三', '四', '五', '六'];
+    var dateStr = now.getFullYear() + '年' + (now.getMonth() + 1) + '月' + now.getDate() + '日 星期' + weekDays[now.getDay()];
+    document.getElementById('greetingDate').textContent = dateStr;
+  })();
+
+  // ========== 每日一言 (Hitokoto API) ==========
+  (function fetchQuote() {
+    var quoteText = document.getElementById('quoteText');
+    var quoteFrom = document.getElementById('quoteFrom');
+    fetch('https://v1.hitokoto.cn/?c=d&c=h&c=i&c=k')
+      .then(function(res) { return res.json(); })
+      .then(function(data) {
+        quoteText.textContent = data.hitokoto || '生活不止眼前的苟且，还有诗和远方';
+        if (data.from) {
+          quoteFrom.textContent = '—— ' + data.from;
+        }
+      })
+      .catch(function() {
+        quoteText.textContent = '生活不止眼前的苟且，还有诗和远方';
+        quoteFrom.textContent = '—— 高晓松';
+      });
+  })();
+
+  // ========== 渲染：管理员信息 ==========
+  function renderAdmin(admin) {
+    if (!admin) return;
+    var el = document.getElementById('greetingNickname');
+    if (el) el.textContent = admin.nickname || '管理员';
+  }
+
+  // ========== 渲染：统计卡片 ==========
+  function renderStats(stats) {
+    var html = '';
+    stats.forEach(function(item) {
+      var trendIcon = item.trend === 'up' ? 'layui-icon-up' : 'layui-icon-down';
+      var prefix = item.prefix || '';
+      html += '<div class="stat-card">'
+        + '<div class="stat-card-top">'
+        + '<div class="stat-icon ' + item.iconColor + '"><i class="layui-icon ' + item.icon + '"></i></div>'
+        + '<div class="stat-trend ' + item.trend + '"><i class="layui-icon ' + trendIcon + '"></i> ' + item.trendValue + '</div>'
+        + '</div>'
+        + '<div class="stat-value">' + prefix + '<span data-count="' + item.value + '">0</span></div>'
+        + '<div class="stat-label">' + item.label + '</div>'
+        + '<div class="stat-sparkline" id="spark_' + item.id + '"></div>'
+        + '</div>';
+    });
+    document.getElementById('statsGrid').innerHTML = html;
+
+    // 数字滚动动画
+    document.querySelectorAll('[data-count]').forEach(function(counter) {
+      var target = parseInt(counter.getAttribute('data-count'));
+      var duration = 1200;
+      var startTime = performance.now();
+      function update(currentTime) {
+        var progress = Math.min((currentTime - startTime) / duration, 1);
+        counter.textContent = Math.round(target * (1 - Math.pow(1 - progress, 3))).toLocaleString();
+        if (progress < 1) requestAnimationFrame(update);
+      }
+      requestAnimationFrame(update);
+    });
+
+    // 迷你折线图
+    setTimeout(function() {
+      stats.forEach(function(item) {
+        var color = item.sparklineColor || accentColor;
+        renderSparkline('spark_' + item.id, item.sparkline, color);
+      });
+    }, 100);
+  }
+
+  // ========== 渲染：服务器环形图 ==========
+  function renderServerRings(server) {
+    setTimeout(function() {
+      renderRing('ringCpu', server.cpu, accentColor);
+      renderRing('ringMemory', server.memory, '#3b82f6');
+      renderRing('ringDisk', server.disk, '#f59e0b');
+      renderRing('ringBandwidth', server.bandwidth, '#52c41a');
+    }, 150);
+  }
+
+  // ========== 渲染：系统信息 ==========
+  function renderSysInfo(info) {
+    var items = [
+      { icon: 'layui-icon-app', color: 'accent', label: '系统版本', value: info.systemVersion },
+      { icon: 'layui-icon-website', color: 'blue', label: '前端框架', value: info.framework },
+      { icon: 'layui-icon-engine', color: 'green', label: '运行环境', value: info.runtime },
+      { icon: 'layui-icon-time', color: 'orange', label: '运行时间', value: '', id: 'sysUptime' },
+      { icon: 'layui-icon-engine', color: 'purple', label: '服务器', value: info.server },
+      { icon: 'layui-icon-table', color: 'cyan', label: '数据库', value: info.database }
+    ];
+    var html = '';
+    items.forEach(function(item) {
+      var valueHtml = item.id
+        ? '<div class="sys-info-value" id="' + item.id + '">0天 0小时 0分钟</div>'
+        : '<div class="sys-info-value">' + item.value + '</div>';
+      html += '<div class="sys-info-item">'
+        + '<div class="sys-info-icon ' + item.color + '"><i class="layui-icon ' + item.icon + '"></i></div>'
+        + '<div class="sys-info-body">'
+        + '<div class="sys-info-label">' + item.label + '</div>'
+        + valueHtml
+        + '</div></div>';
+    });
+    document.getElementById('sysInfoGrid').innerHTML = html;
+
+    // 运行时间
+    initUptime();
+  }
+
+  // ========== 渲染：系统授权 ==========
+  function renderLicense(lic) {
+    var isLatest = lic.currentVersion === lic.latestVersion;
+    var latestHtml = lic.latestVersion + (isLatest ? '<span class="license-updated">已是最新</span>' : '');
+    var html = '<div class="license-status">'
+      + '<div class="license-badge authorized"><i class="layui-icon layui-icon-ok-circle"></i> 已授权</div>'
+      + '</div>'
+      + '<div class="license-grid">'
+      + '<div class="license-item"><div class="license-label">授权类型</div><div class="license-value">' + lic.type + '</div></div>'
+      + '<div class="license-item"><div class="license-label">授权域名</div><div class="license-value">' + lic.domain + '</div></div>'
+      + '<div class="license-item"><div class="license-label">当前版本</div><div class="license-value">' + lic.currentVersion + '</div></div>'
+      + '<div class="license-item"><div class="license-label">最新版本</div><div class="license-value">' + latestHtml + '</div></div>'
+      + '<div class="license-item"><div class="license-label">授权到期</div><div class="license-value">' + lic.expiry + '</div></div>'
+      + '<div class="license-item"><div class="license-label">技术支持</div><div class="license-value">' + lic.support + '</div></div>'
+      + '</div>';
+    document.getElementById('licenseInfo').innerHTML = html;
+  }
+
+  // ========== 渲染：快捷导航 ==========
+  function renderQuickNav(nav) {
+    var html = '';
+    nav.forEach(function(item) {
+      html += '<a class="quick-nav-item" href="javascript:;">'
+        + '<div class="quick-nav-icon ' + item.color + '"><i class="layui-icon ' + item.icon + '"></i></div>'
+        + '<span class="quick-nav-label">' + item.label + '</span>'
+        + '</a>';
+    });
+    document.getElementById('quickNavGrid').innerHTML = html;
+
+    // 点击事件
+    $('.quick-nav-item').on('click', function() {
+      var idx = $(this).index();
+      var item = nav[idx];
+      if (item && item.href) {
+        layui.routerModule.navigateByCode(item.href);
+      } else {
+        layer.msg('正在跳转 ' + item.label + '...', { icon: 1, time: 1500 });
+      }
+    });
+  }
+
+  // ========== 渲染：最近操作 ==========
+  function renderRecentActions(actions) {
+    var html = '';
+    actions.forEach(function(item) {
+      html += '<div class="recent-item">'
+        + '<div class="recent-avatar ' + item.type + '">' + item.initial + '</div>'
+        + '<div class="recent-body">'
+        + '<div class="recent-title"><span class="recent-user">' + item.user + '</span> ' + item.action + '</div>'
+        + '<div class="recent-meta">' + item.module + ' · ' + item.time + '</div>'
+        + '</div></div>';
+    });
+    document.getElementById('recentList').innerHTML = html;
+  }
+
+  // ========== 渲染：公告通知 ==========
+  function renderNotices(notices) {
+    var html = '';
+    notices.forEach(function(item) {
+      html += '<div class="notice-item">'
+        + '<div class="notice-type ' + item.type + '">' + item.typeLabel + '</div>'
+        + '<div class="notice-body">'
+        + '<div class="notice-title">' + item.title + '</div>'
+        + '<div class="notice-meta">' + item.desc + '</div>'
+        + '</div>'
+        + '<div class="notice-time">' + item.time + '</div>'
+        + '</div>';
+    });
+    document.getElementById('noticeList').innerHTML = html;
+  }
+
+  // ========== 渲染：图表 ==========
+  function renderCharts(charts) {
+    setTimeout(function() {
+      salesChart = echarts.init(document.getElementById('salesChart'));
+      salesChart.setOption({
+        animation: true,
+        animationDuration: 800,
+        animationEasing: 'cubicOut',
+        tooltip: { trigger: 'axis', axisPointer: { type: 'shadow' } },
+        legend: { data: ['销售额', '订单量'], right: 0, top: 0, textStyle: { color: textColor, fontSize: 11 } },
+        grid: { left: '3%', right: '4%', bottom: '3%', top: '14%', containLabel: true },
+        xAxis: {
+          type: 'category',
+          data: charts.sales.categories,
+          axisLine: { lineStyle: { color: axisLineColor } },
+          axisLabel: { color: textColor, fontSize: 11 }
+        },
+        yAxis: [
+          {
+            type: 'value',
+            axisLine: { show: false },
+            splitLine: { lineStyle: { color: splitLineColor } },
+            axisLabel: { color: textColor, fontSize: 11, formatter: '{value}k' }
+          },
+          {
+            type: 'value',
+            axisLine: { show: false },
+            splitLine: { show: false },
+            axisLabel: { color: textColor, fontSize: 11 }
+          }
+        ],
+        series: [
+          {
+            name: '销售额',
+            type: 'bar',
+            barWidth: '40%',
+            itemStyle: {
+              color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
+                { offset: 0, color: accentColor },
+                { offset: 1, color: accentColor + '40' }
+              ]),
+              borderRadius: [4, 4, 0, 0]
+            },
+            data: charts.sales.salesData
+          },
+          {
+            name: '订单量',
+            type: 'line',
+            yAxisIndex: 1,
+            smooth: true,
+            symbol: 'circle',
+            symbolSize: 6,
+            lineStyle: { width: 2, color: '#f59e0b' },
+            itemStyle: { color: '#f59e0b' },
+            data: charts.sales.orderData
+          }
+        ]
+      });
+
+      visitChart = echarts.init(document.getElementById('visitChart'));
+      visitChart.setOption({
+        animation: true,
+        animationDuration: 800,
+        animationEasing: 'cubicOut',
+        tooltip: { trigger: 'axis' },
+        legend: { data: ['PV', 'UV'], right: 0, top: 0, textStyle: { color: textColor, fontSize: 11 } },
+        grid: { left: '3%', right: '4%', bottom: '3%', top: '14%', containLabel: true },
+        xAxis: {
+          type: 'category',
+          data: charts.visit.categories,
+          axisLine: { lineStyle: { color: axisLineColor } },
+          axisLabel: { color: textColor, fontSize: 11 }
+        },
+        yAxis: {
+          type: 'value',
+          axisLine: { show: false },
+          splitLine: { lineStyle: { color: splitLineColor } },
+          axisLabel: { color: textColor, fontSize: 11 }
+        },
+        series: [
+          {
+            name: 'PV',
+            type: 'line',
+            smooth: true,
+            symbol: 'none',
+            lineStyle: { width: 2, color: '#3b82f6' },
+            areaStyle: {
+              color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
+                { offset: 0, color: '#3b82f630' },
+                { offset: 1, color: '#3b82f605' }
+              ])
+            },
+            data: charts.visit.pvData
+          },
+          {
+            name: 'UV',
+            type: 'line',
+            smooth: true,
+            symbol: 'none',
+            lineStyle: { width: 2, color: '#8b5cf6' },
+            areaStyle: {
+              color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
+                { offset: 0, color: '#8b5cf630' },
+                { offset: 1, color: '#8b5cf605' }
+              ])
+            },
+            data: charts.visit.uvData
+          }
+        ]
+      });
+    }, 50);
+
+    window.addEventListener('resize', function() {
+      if (salesChart) salesChart.resize();
+      if (visitChart) visitChart.resize();
+    });
+  }
+
+  // ========== 渲染：待办事项 ==========
+  function renderTodos(todos) {
+    var html = '';
+    todos.forEach(function(item) {
+      var badgeClass = item.priority === 'high' ? 'urgent' : (item.priority === 'medium' ? 'normal' : 'low-tag');
+      html += '<div class="todo-item">'
+        + '<div class="todo-priority ' + item.priority + '"></div>'
+        + '<div class="todo-body">'
+        + '<div class="todo-title">' + item.title + '</div>'
+        + '<div class="todo-meta">' + item.module + ' · ' + item.deadline + '</div>'
+        + '</div>'
+        + '<span class="todo-badge ' + badgeClass + '">' + item.badge + '</span>'
+        + '</div>';
+    });
+    document.getElementById('todoList').innerHTML = html;
+  }
+
+  // ========== 渲染：系统动态 ==========
+  function renderTimeline(timeline) {
+    var html = '';
+    timeline.forEach(function(item) {
+      html += '<div class="timeline-item">'
+        + '<div class="timeline-dot ' + item.dotColor + '"></div>'
+        + '<div class="timeline-content">'
+        + '<div class="timeline-title"><span class="timeline-user">' + item.user + '</span> ' + item.action + '</div>'
+        + '<div class="timeline-time">' + item.time + '</div>'
+        + '</div></div>';
+    });
+    document.getElementById('timelineList').innerHTML = html;
+  }
+
+  // ========== 系统运行时间 ==========
+  function initUptime() {
+    var startTime = Date.now() - 7 * 24 * 3600 * 1000 - 14 * 3600 * 1000 - 32 * 60 * 1000;
+    function update() {
+      var el = document.getElementById('sysUptime');
+      if (!el) return;
+      var diff = Date.now() - startTime;
+      var days = Math.floor(diff / 86400000);
+      var hours = Math.floor((diff % 86400000) / 3600000);
+      var minutes = Math.floor((diff % 3600000) / 60000);
+      el.textContent = days + '天 ' + hours + '小时 ' + minutes + '分钟';
+    }
+    update();
+    setInterval(update, 60000);
+  }
+
+  // ========== 迷你折线图 ==========
+  function renderSparkline(id, data, color) {
+    var el = document.getElementById(id);
+    if (!el) return;
+    var chart = echarts.init(el);
+    chart.setOption({
+      grid: { left: 0, right: 0, top: 4, bottom: 4 },
+      xAxis: { type: 'category', show: false, data: data.map(function(_, i) { return i; }) },
+      yAxis: { type: 'value', show: false, min: Math.min.apply(null, data) * 0.8 },
       series: [{
-        data: [45, 52, 48, 61, 55, 72, 68],
-        type: 'bar',
-        barWidth: '50%',
-        itemStyle: {
+        type: 'line',
+        data: data,
+        smooth: true,
+        symbol: 'none',
+        lineStyle: { width: 2, color: color },
+        areaStyle: {
           color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
-            { offset: 0, color: accentColor },
-            { offset: 1, color: accentColor + '40' }
-          ]),
-          borderRadius: [4, 4, 0, 0]
+            { offset: 0, color: color + '30' },
+            { offset: 1, color: color + '05' }
+          ])
         }
       }]
     });
-    
-    categoryChart = echarts.init(document.getElementById('categoryChart'));
-    categoryChart.setOption({
+    window.addEventListener('resize', function() { chart.resize(); });
+  }
+
+  // ========== 圆形进度图 ==========
+  function renderRing(id, value, color) {
+    var el = document.getElementById(id);
+    if (!el) return;
+    var chart = echarts.init(el);
+    chart.setOption({
       animation: true,
-      animationDuration: 1000,
+      animationDuration: 1200,
       animationEasing: 'cubicOut',
-      animationDelay: 200,
-      tooltip: { trigger: 'item' },
       series: [{
         type: 'pie',
-        radius: ['55%', '85%'],
+        radius: ['68%', '85%'],
         center: ['50%', '50%'],
-        avoidLabelOverlap: false,
-        label: { show: false },
+        startAngle: 90,
+        silent: true,
+        label: {
+          show: true,
+          position: 'center',
+          formatter: function() { return '{val|' + value + '%}'; },
+          rich: {
+            val: {
+              fontSize: 16,
+              fontWeight: 700,
+              color: color,
+              lineHeight: 22
+            }
+          }
+        },
         labelLine: { show: false },
         data: [
-          { value: 35, name: '数码电子', itemStyle: { color: accentColor } },
-          { value: 28, name: '服装鞋帽', itemStyle: { color: '#3b82f6' } },
-          { value: 20, name: '美妆护肤', itemStyle: { color: '#f59e0b' } },
-          { value: 12, name: '家居生活', itemStyle: { color: '#8b5cf6' } },
-          { value: 5, name: '其他', itemStyle: { color: '#ef4444' } }
+          {
+            value: value,
+            itemStyle: {
+              color: new echarts.graphic.LinearGradient(0, 0, 1, 1, [
+                { offset: 0, color: color },
+                { offset: 1, color: color + '80' }
+              ])
+            }
+          },
+          {
+            value: 100 - value,
+            itemStyle: { color: isDark ? '#253048' : '#f1f5f9' }
+          }
         ]
       }]
     });
-  }, 50);
-  
-  document.querySelectorAll('[data-count]').forEach(function(counter) {
-    var target = parseInt(counter.getAttribute('data-count'));
-    var duration = 1200;
-    var startTime = performance.now();
-    function update(currentTime) {
-      var progress = Math.min((currentTime - startTime) / duration, 1);
-      counter.textContent = Math.round(target * (1 - Math.pow(1 - progress, 3))).toLocaleString();
-      if (progress < 1) requestAnimationFrame(update);
-    }
-    requestAnimationFrame(update);
-  });
-  
-  window.addEventListener('resize', function() {
-    if (salesChart) salesChart.resize();
-    if (categoryChart) categoryChart.resize();
+    window.addEventListener('resize', function() { chart.resize(); });
+  }
+
+  // ========== 时间范围切换 ==========
+  $('.card-actions').on('click', '.card-btn', function() {
+    $(this).siblings().removeClass('active');
+    $(this).addClass('active');
   });
 });
 </script>

@@ -1,0 +1,130 @@
+{
+  "code": 0,
+  "msg": "ok",
+  "data": {
+    "admin": {
+      "nickname": "超级管理员测试测试测试长度",
+      "role": "超级管理员",
+      "avatar": "admin/images/avatar.webp"
+    },
+    "stats": [
+      {
+        "id": "order",
+        "icon": "layui-icon-cart-simple",
+        "iconColor": "accent",
+        "value": 128,
+        "label": "今日订单",
+        "trend": "up",
+        "trendValue": "12.5%",
+        "sparkline": [45, 52, 48, 61, 55, 72, 68, 75, 82, 78]
+      },
+      {
+        "id": "sales",
+        "icon": "layui-icon-rmb",
+        "iconColor": "blue",
+        "value": 56420,
+        "label": "今日销售额",
+        "trend": "up",
+        "trendValue": "8.2%",
+        "prefix": "¥",
+        "sparkline": [32, 38, 35, 42, 40, 48, 52, 56, 50, 54],
+        "sparklineColor": "#3b82f6"
+      },
+      {
+        "id": "user",
+        "icon": "layui-icon-group",
+        "iconColor": "green",
+        "value": 89,
+        "label": "新增用户",
+        "trend": "up",
+        "trendValue": "23.1%",
+        "sparkline": [12, 18, 15, 22, 20, 28, 25, 32, 30, 35],
+        "sparklineColor": "#52c41a"
+      },
+      {
+        "id": "product",
+        "icon": "layui-icon-app",
+        "iconColor": "purple",
+        "value": 856,
+        "label": "在售商品",
+        "trend": "down",
+        "trendValue": "3.2%",
+        "sparkline": [860, 855, 850, 848, 852, 856, 854, 850, 853, 856],
+        "sparklineColor": "#8b5cf6"
+      }
+    ],
+    "server": {
+      "cpu": 67,
+      "memory": 82,
+      "disk": 45,
+      "bandwidth": 58
+    },
+    "sysInfo": {
+      "systemVersion": "OSAdmin v1.9.4",
+      "framework": "Layui 2.10.x",
+      "runtime": "Node.js 20.x",
+      "server": "Nginx 1.24.0",
+      "database": "MySQL 8.0",
+      "uptimeStart": -1
+    },
+    "license": {
+      "status": "authorized",
+      "type": "商业版",
+      "domain": "*.osadmin.com",
+      "currentVersion": "v1.9.4",
+      "latestVersion": "v1.9.4",
+      "expiry": "2027-06-20",
+      "support": "专属技术支持"
+    },
+    "quickNav": [
+      { "label": "用户管理", "icon": "layui-icon-user", "color": "accent", "href": "view/user-list" },
+      { "label": "权限管理", "icon": "layui-icon-auz", "color": "red", "href": "view/system/permission-role" },
+      { "label": "订单管理", "icon": "layui-icon-cart-simple", "color": "blue", "href": "view/order-list" },
+      { "label": "商品管理", "icon": "layui-icon-app", "color": "green", "href": "view/product-list" },
+      { "label": "内容管理", "icon": "layui-icon-website", "color": "cyan", "href": "view/content-list" },
+      { "label": "文件管理", "icon": "layui-icon-upload-drag", "color": "pink", "href": "view/file-list" },
+      { "label": "数据统计", "icon": "layui-icon-chart", "color": "orange", "href": "view/analytics" },
+      { "label": "系统设置", "icon": "layui-icon-set", "color": "purple", "href": "view/settings" },
+      { "label": "操作日志", "icon": "layui-icon-log", "color": "accent", "href": "view/system/monitor-log" }
+    ],
+    "recentActions": [
+      { "user": "管理员", "initial": "管", "type": "admin", "action": "修改了系统配置参数", "module": "系统设置", "time": "3分钟前" },
+      { "user": "张三", "initial": "张", "type": "user", "action": "提交了订单 #20240620001", "module": "订单管理", "time": "15分钟前" },
+      { "user": "李四", "initial": "李", "type": "user", "action": "上传了3个商品图片", "module": "商品管理", "time": "28分钟前" },
+      { "user": "管理员", "initial": "管", "type": "admin", "action": "审核通过了退款申请 #2048", "module": "退款管理", "time": "1小时前" },
+      { "user": "王五", "initial": "王", "type": "user", "action": "更新了个人资料信息", "module": "用户管理", "time": "2小时前" }
+    ],
+    "notices": [
+      { "type": "update", "typeLabel": "更新", "title": "OSAdmin v1.9.4 版本发布", "desc": "新增 Toast 模块重构、风格3认证页面、Layui Tabs 模板等", "time": "06-20" },
+      { "type": "notice", "typeLabel": "通知", "title": "系统维护通知", "desc": "6月22日凌晨2:00-4:00进行服务器升级维护", "time": "06-18" },
+      { "type": "security", "typeLabel": "安全", "title": "安全补丁更新提醒", "desc": "请及时更新至最新版本以修复已知安全漏洞", "time": "06-15" },
+      { "type": "notice", "typeLabel": "通知", "title": "端午节放假安排", "desc": "5月31日-6月2日放假，期间暂停技术支持服务", "time": "05-28" }
+    ],
+    "charts": {
+      "sales": {
+        "categories": ["周一", "周二", "周三", "周四", "周五", "周六", "周日"],
+        "salesData": [45, 52, 48, 61, 55, 72, 68],
+        "orderData": [128, 145, 132, 168, 152, 198, 185]
+      },
+      "visit": {
+        "categories": ["周一", "周二", "周三", "周四", "周五", "周六", "周日"],
+        "pvData": [2840, 3120, 2960, 3580, 3240, 4120, 3860],
+        "uvData": [980, 1120, 1050, 1280, 1160, 1480, 1350]
+      }
+    },
+    "todos": [
+      { "title": "审核3笔退款申请", "module": "退款管理", "deadline": "截止今天", "priority": "high", "badge": "紧急" },
+      { "title": "处理5条用户投诉", "module": "用户反馈", "deadline": "截止今天", "priority": "high", "badge": "紧急" },
+      { "title": "更新商品分类信息", "module": "商品管理", "deadline": "截止明天", "priority": "medium", "badge": "一般" },
+      { "title": "导出月度运营报表", "module": "数据统计", "deadline": "本周五", "priority": "low", "badge": "低" }
+    ],
+    "timeline": [
+      { "user": "张三", "action": "注册了新账号", "time": "5分钟前", "dotColor": "blue" },
+      { "user": "系统", "action": "自动备份已完成", "time": "30分钟前", "dotColor": "green" },
+      { "user": "李四", "action": "提交了退款申请 #2048", "time": "1小时前", "dotColor": "orange" },
+      { "user": "管理员", "action": "修改了上传配置", "time": "2小时前", "dotColor": "purple" },
+      { "user": "王五", "action": "导出了月度报表", "time": "3小时前", "dotColor": "accent" },
+      { "user": "系统", "action": "v1.9.4 版本更新完成", "time": "昨天 22:30", "dotColor": "green" }
+    ]
+  }
+}

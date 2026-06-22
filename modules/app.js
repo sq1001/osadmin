@@ -916,6 +916,7 @@ layui.define(['jquery', 'util', 'routerModule', 'themeModule', 'sidebarComp', 't
       });
 
       $('#themePanelClose, #themePanelOverlay').on('click', function() {
+        theme.cancelPreview();
         theme.hideConfigPanel();
       });
 

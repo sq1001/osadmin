@@ -10,16 +10,12 @@
     .detail-page-container {
       display: flex;
       gap: 20px;
-      min-height: calc(100vh - 180px);
+      height: calc(100vh - 180px);
     }
 
     .detail-page-sidebar {
       width: 220px;
       flex-shrink: 0;
-      position: sticky;
-      top: 0;
-      align-self: flex-start;
-      max-height: calc(100vh - 180px);
       overflow-y: auto;
     }
 
@@ -65,6 +61,7 @@
     .detail-page-main {
       flex: 1;
       min-width: 0;
+      overflow-y: auto;
     }
 
     .detail-page-section {

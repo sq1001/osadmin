@@ -255,8 +255,9 @@
         "children": [
           { "id": 931, "type": 1, "code": "view/template/settings", "title": "系统设置", "icon": "layui-icon-set", "href": "view/template/settings.html" },
           { "id": 932, "type": 1, "code": "view/template/user-profile", "title": "用户资料", "icon": "layui-icon-user", "href": "view/template/user-profile.html" },
-          { "id": 933, "type": 1, "code": "view/template/tabs-page", "title": "标签页", "icon": "layui-icon-tab", "href": "view/template/tabs-page.html" },
-          { "id": 934, "type": 1, "code": "view/template/detail-page", "title": "详情页", "icon": "layui-icon-read", "href": "view/template/detail-page.html" }
+          { "id": 933, "type": 1, "code": "view/template/tabs-page", "title": "标签页", "icon": "layui-icon-edit", "href": "view/template/tabs-page.html" },
+          { "id": 934, "type": 1, "code": "view/template/detail-page", "title": "详情页", "icon": "layui-icon-read", "href": "view/template/detail-page.html" },
+          { "id": 935, "type": 1, "code": "view/template/nav-page", "title": "侧边导航", "icon": "layui-icon-shrink-right", "href": "view/template/nav-page.html" }
         ]
       }
     ]

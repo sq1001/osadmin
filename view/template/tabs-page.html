@@ -8,7 +8,9 @@
 <body>
   <style>
     .tabs-page-container {
-      min-height: calc(100vh - 180px);
+      height: calc(100vh - 180px);
+      display: flex;
+      flex-direction: column;
     }
 
     .tabs-page-header {
@@ -22,6 +24,7 @@
       display: flex;
       gap: 0;
       overflow-x: auto;
+      position: relative;
     }
 
     .tabs-page-tab {
@@ -31,8 +34,7 @@
       padding: 14px 24px;
       cursor: pointer;
       color: var(--text-secondary);
-      border-bottom: 2px solid transparent;
-      transition: all 0.15s;
+      transition: color 0.2s;
       white-space: nowrap;
       user-select: none;
     }
@@ -44,11 +46,20 @@
 
     .tabs-page-tab.active {
       color: var(--accent);
-      border-bottom-color: var(--accent);
     }
 
     .tabs-page-tab i {
       font-size: 16px;
+    }
+
+    /* 滑动指示器 */
+    .tabs-page-indicator {
+      position: absolute;
+      bottom: 0;
+      height: 2px;
+      background: var(--accent);
+      border-radius: 1px;
+      transition: left 0.3s cubic-bezier(0.4, 0, 0.2, 1), width 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     }
 
     .tabs-page-body {
@@ -56,7 +67,9 @@
       border-radius: 0 0 12px 12px;
       border: 1px solid var(--border);
       border-top: none;
-      min-height: 400px;
+      flex: 1;
+      overflow-y: auto;
+      min-height: 0;
     }
 
     .tabs-page-panel {
@@ -294,6 +307,7 @@
             <i class="layui-icon layui-icon-log"></i>
             <span>操作日志</span>
           </div>
+          <div class="tabs-page-indicator"></div>
         </div>
       </div>
 
@@ -461,11 +475,35 @@
       var layer = layui.layer;
       var $ = layui.$;
 
+      var $indicator = $('.tabs-page-indicator');
+      var $nav = $('.tabs-page-nav');
+
+      // 更新指示器位置
+      function moveIndicator($tab) {
+        var navOffset = $nav.offset().left;
+        var $icon = $tab.find('i');
+        var $text = $tab.find('span');
+        var contentLeft = $icon.length ? $icon.offset().left : $text.offset().left;
+        var contentRight = $text.offset().left + $text.outerWidth();
+        var contentWidth = contentRight - contentLeft;
+        $indicator.css({
+          left: (contentLeft - navOffset + $nav.scrollLeft()) + 'px',
+          width: contentWidth + 'px'
+        });
+      }
+
+      // 初始化指示器位置
+      setTimeout(function() {
+        moveIndicator($('.tabs-page-tab.active'));
+      }, 50);
+
       // Tab切换
       $('.tabs-page-tab').on('click', function() {
         var tab = $(this).data('tab');
         $('.tabs-page-tab').removeClass('active');
         $(this).addClass('active');
+
+        moveIndicator($(this));
 
         $('.tabs-page-panel').removeClass('active');
         $('#panel' + tab.charAt(0).toUpperCase() + tab.slice(1)).addClass('active');

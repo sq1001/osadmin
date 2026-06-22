@@ -134,7 +134,11 @@ layui.define(['jquery'], function(exports) {
       }
 
       if (opts.skin) {
-        opts.className = (opts.className ? opts.className + ' ' : '') + 'toast-skin-' + opts.skin;
+        if (typeof opts.skin === 'string') {
+          opts.className = (opts.className ? opts.className + ' ' : '') + 'toast-skin-' + opts.skin;
+        } else if (typeof opts.skin === 'object') {
+          opts.skinStyle = opts.skin;
+        }
       }
 
       if (opts.mode === 'replace') {
@@ -195,6 +199,21 @@ layui.define(['jquery'], function(exports) {
       setTimeout(function() {
         $box.removeClass('toast-entering');
       }, 400);
+
+      // 应用自定义皮肤样式
+      if (opts.skinStyle) {
+        var styles = [];
+        var s = opts.skinStyle;
+        if (s.borderColor) styles.push('border-color:' + s.borderColor);
+        if (s.borderLeft) styles.push('border-left:' + s.borderLeft);
+        if (s.background) styles.push('background:' + s.background);
+        if (s.color) styles.push('color:' + s.color);
+        if (s.boxShadow) styles.push('box-shadow:' + s.boxShadow);
+        if (s.iconColor) $box.find('.toast-icon').css('color', s.iconColor);
+        if (s.titleColor) $box.find('.toast-title').css('color', s.titleColor);
+        if (s.contentColor) $box.find('.toast-content').css('color', s.contentColor);
+        if (styles.length) $box.css('cssText', styles.join(';'));
+      }
 
       return $box;
     },

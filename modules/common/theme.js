@@ -279,10 +279,6 @@ layui.define(['jquery', 'layer', 'form', 'colorpicker', 'watermarkMod'], functio
       $('body').attr('data-layout', layout);
       $('body').removeClass('layout-double layout-dropdown layout-fixed-double');
       $('body').addClass('layout-' + layout);
-      if (layout === 'fixed-double') {
-        $('#sidebar').removeClass('collapsed');
-        $('#submenuPanel').addClass('show');
-      }
     },
 
     applyTabsVisible: function (visible) {
@@ -673,6 +669,18 @@ layui.define(['jquery', 'layer', 'form', 'colorpicker', 'watermarkMod'], functio
       this.tempState.layout = layout;
       this.applyLayout(layout);
       this._updateWidthConfigVisibility(layout);
+
+      var sidebarComp = window.layui && window.layui.sidebarComp;
+      var routerModule = window.layui && window.layui.routerModule;
+      if (!sidebarComp || !routerModule) return;
+
+      sidebarComp.hideSubmenuPanel();
+      sidebarComp.hideDropdownMenu();
+
+      var currentId = routerModule.getCurrentId();
+      if (currentId !== null && currentId !== undefined) {
+        sidebarComp.setActive(currentId, { layout: layout });
+      }
     },
 
     _updateWidthConfigVisibility: function (layout) {
@@ -750,6 +758,18 @@ layui.define(['jquery', 'layer', 'form', 'colorpicker', 'watermarkMod'], functio
     cancelPreview: function () {
       this.tempState = $.extend(true, {}, this.state);
       this.applyTheme(this.state);
+
+      // 恢复侧边栏菜单状态
+      var sidebarComp = window.layui && window.layui.sidebarComp;
+      var routerModule = window.layui && window.layui.routerModule;
+      if (sidebarComp && routerModule) {
+        sidebarComp.hideSubmenuPanel();
+        sidebarComp.hideDropdownMenu();
+        var currentId = routerModule.getCurrentId();
+        if (currentId !== null && currentId !== undefined) {
+          sidebarComp.setActive(currentId);
+        }
+      }
     },
 
     clearTabsState: function () {

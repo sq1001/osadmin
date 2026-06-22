@@ -14,26 +14,27 @@
 <!-- Canvas 粒子背景 -->
 <canvas class="auth-canvas-bg" id="bgCvs"></canvas>
 
+<!-- 全屏浮动气泡 -->
+<div class="auth-float-bubble auth-float-1"></div>
+<div class="auth-float-bubble auth-float-2"></div>
+<div class="auth-float-bubble auth-float-3"></div>
+<div class="auth-float-bubble auth-float-4"></div>
+
 <!-- Toast 容器 -->
 <div class="auth-toast-box" id="TB"></div>
 
 <!-- 主分栏布局 -->
 <div class="auth-split">
 
-    <!-- 左侧：天蓝渐变 + 浮动气泡 + 插画 -->
-    <div class="auth-split-left auth-bg-violet">
-        <div class="auth-float-bubble auth-float-1"></div>
-        <div class="auth-float-bubble auth-float-2"></div>
-        <div class="auth-float-bubble auth-float-3"></div>
-        <div class="auth-float-bubble auth-float-4"></div>
-
+    <!-- 左侧：科技插画 -->
+    <div class="auth-split-left">
         <div class="auth-left-content">
             <!-- 锁屏场景 SVG 插画：盾牌+锁+星空 -->
             <div class="auth-illustration auth-anim auth-anim-1">
-                <svg viewBox="0 0 400 300" xmlns="http://www.w3.org/2000/svg">
+                <svg viewBox="0 0 500 400" xmlns="http://www.w3.org/2000/svg">
                     <defs>
                         <linearGradient id="lockOrb1" x1="0" y1="0" x2="1" y2="1">
-                            <stop offset="0%" stop-color="#fff"/>
+                            <stop offset="0%" stop-color="#e0f2fe"/>
                             <stop offset="100%" stop-color="#bae6fd"/>
                         </linearGradient>
                         <linearGradient id="lockOrb2" x1="0" y1="0" x2="1" y2="1">
@@ -44,128 +45,209 @@
                             <stop offset="0%" stop-color="#e0f2fe"/>
                             <stop offset="100%" stop-color="#7dd3fc"/>
                         </linearGradient>
+                        <radialGradient id="bgGlow" cx="50%" cy="50%" r="50%">
+                            <stop offset="0%" stop-color="#0ea5e9" stop-opacity="0.08"/>
+                            <stop offset="100%" stop-color="#0ea5e9" stop-opacity="0"/>
+                        </radialGradient>
                     </defs>
 
+                    <!-- 背景光晕椭圆 -->
+                    <ellipse cx="250" cy="200" rx="220" ry="160" fill="url(#bgGlow)"/>
+
                     <!-- 外圈轨道 -->
-                    <ellipse cx="200" cy="150" rx="155" ry="100" fill="none" stroke="#fff" stroke-width="1" opacity="0.08"/>
-                    <ellipse cx="200" cy="150" rx="130" ry="82" fill="none" stroke="#fff" stroke-width="0.8" opacity="0.06"/>
+                    <ellipse cx="250" cy="200" rx="194" ry="125" fill="none" stroke="#0ea5e9" stroke-width="1" opacity="0.08"/>
+                    <ellipse cx="250" cy="200" rx="163" ry="103" fill="none" stroke="#0ea5e9" stroke-width="0.8" opacity="0.06"/>
+                    <!-- 第3条轨道环（虚线） -->
+                    <ellipse cx="250" cy="200" rx="120" ry="75" fill="none" stroke="#38bdf8" stroke-width="0.6" opacity="0.05" stroke-dasharray="6 4"/>
 
                     <!-- 轨道上的小光点 -->
-                    <circle r="3" fill="#38bdf8" opacity="0.6">
-                        <animateMotion dur="8s" repeatCount="indefinite" path="M200,50 A100,100 0 1,1 199,50"/>
+                    <circle r="3.75" fill="#38bdf8" opacity="0.6">
+                        <animateMotion dur="8s" repeatCount="indefinite" path="M250,75 A125,125 0 1,1 248.75,75"/>
                     </circle>
-                    <circle r="2" fill="#7dd3fc" opacity="0.5">
-                        <animateMotion dur="12s" repeatCount="indefinite" path="M200,68 A82,82 0 1,0 201,68"/>
+                    <circle r="2.5" fill="#7dd3fc" opacity="0.5">
+                        <animateMotion dur="12s" repeatCount="indefinite" path="M250,97.5 A103,103 0 1,0 251.25,97.5"/>
+                    </circle>
+                    <!-- 第3个轨道光点 -->
+                    <circle r="2" fill="#7dd3fc" opacity="0.4">
+                        <animateMotion dur="16s" repeatCount="indefinite" path="M250,125 A75,75 0 1,1 248.75,125"/>
                     </circle>
 
                     <!-- 中心大球 - 盾牌球 -->
-                    <circle cx="200" cy="140" r="52" fill="url(#lockOrb2)" opacity="0.9"/>
+                    <circle cx="250" cy="192.5" r="65" fill="url(#lockOrb2)" opacity="0.9"/>
                     <!-- 球面高光 -->
-                    <ellipse cx="188" cy="122" rx="22" ry="16" fill="#fff" opacity="0.25"/>
+                    <ellipse cx="235" cy="172.5" rx="27.5" ry="20" fill="#bae6fd" opacity="0.25"/>
                     <!-- 球内盾牌图标 -->
-                    <g transform="translate(200, 132)">
-                        <path d="M0,-20 L16,-13 L16,5 C16,14 8,22 0,26 C-8,22 -16,14 -16,5 L-16,-13 Z" fill="#fff" opacity="0.85"/>
-                        <path d="M0,-12 L8,-8 L8,2 C8,7 4,11 0,13 C-4,11 -8,7 -8,2 L-8,-8 Z" fill="#0ea5e9" opacity="0.5"/>
+                    <g transform="translate(250, 190)">
+                        <path d="M0,-25 L20,-16.25 L20,6.25 C20,17.5 10,27.5 0,32.5 C-10,27.5 -20,17.5 -20,6.25 L-20,-16.25 Z" fill="#7dd3fc" opacity="0.85"/>
+                        <path d="M0,-15 L10,-10 L10,2.5 C10,8.75 5,13.75 0,16.25 C-5,13.75 -10,8.75 -10,2.5 L-10,-10 Z" fill="#0ea5e9" opacity="0.5"/>
                         <!-- 盾牌内锁 -->
-                        <path d="M-5,-5 C-5,-10 5,-10 5,-5" stroke="#0ea5e9" stroke-width="2.5" stroke-linecap="round" fill="none" opacity="0.7"/>
-                        <rect x="-6" y="-5" width="12" height="9" rx="2" fill="#0ea5e9" opacity="0.7"/>
-                        <circle cx="0" cy="-1.5" r="2" fill="#fff" opacity="0.6"/>
+                        <path d="M-6.25,-6.25 C-6.25,-12.5 6.25,-12.5 6.25,-6.25" stroke="#0ea5e9" stroke-width="3" stroke-linecap="round" fill="none" opacity="0.7"/>
+                        <rect x="-7.5" y="-6.25" width="15" height="11.25" rx="2.5" fill="#0ea5e9" opacity="0.7"/>
+                        <circle cx="0" cy="-1.875" r="2.5" fill="#bae6fd" opacity="0.6"/>
                     </g>
 
                     <!-- 卫星球 - 左上：指纹 -->
-                    <circle cx="115" cy="90" r="20" fill="url(#lockOrb1)" opacity="0.7"/>
-                    <circle cx="115" cy="90" r="20" fill="none" stroke="#38bdf8" stroke-width="1.5" opacity="0.3"/>
-                    <g transform="translate(115, 90)" opacity="0.6">
-                        <path d="M-6,-7 C-6,-3 -6,3 0,7" stroke="#0ea5e9" stroke-width="1.5" fill="none" stroke-linecap="round"/>
-                        <path d="M0,-9 C0,-5 0,1 0,5" stroke="#0ea5e9" stroke-width="1.5" fill="none" stroke-linecap="round"/>
-                        <path d="M6,-7 C6,-3 6,3 0,7" stroke="#0ea5e9" stroke-width="1.5" fill="none" stroke-linecap="round"/>
+                    <circle cx="169" cy="112.5" r="25" fill="url(#lockOrb1)" opacity="0.7"/>
+                    <circle cx="169" cy="112.5" r="25" fill="none" stroke="#38bdf8" stroke-width="1.5" opacity="0.3"/>
+                    <g transform="translate(169, 112.5)" opacity="0.6">
+                        <path d="M-7.5,-8.75 C-7.5,-3.75 -7.5,3.75 0,8.75" stroke="#0ea5e9" stroke-width="2" fill="none" stroke-linecap="round"/>
+                        <path d="M0,-11.25 C0,-6.25 0,1.25 0,6.25" stroke="#0ea5e9" stroke-width="2" fill="none" stroke-linecap="round"/>
+                        <path d="M7.5,-8.75 C7.5,-3.75 7.5,3.75 0,8.75" stroke="#0ea5e9" stroke-width="2" fill="none" stroke-linecap="round"/>
                     </g>
 
                     <!-- 卫星球 - 右下：锁 -->
-                    <circle cx="290" cy="185" r="18" fill="url(#lockOrb3)" opacity="0.7"/>
-                    <circle cx="290" cy="185" r="18" fill="none" stroke="#7dd3fc" stroke-width="1.5" opacity="0.3"/>
-                    <g transform="translate(290, 183)">
-                        <path d="M-5,-8 C-5,-14 5,-14 5,-8" stroke="#0ea5e9" stroke-width="2.5" fill="none" stroke-linecap="round" opacity="0.6"/>
-                        <rect x="-7" y="-8" width="14" height="10" rx="2.5" fill="#0ea5e9" opacity="0.6"/>
-                        <circle cx="0" cy="-4" r="2" fill="#fff" opacity="0.5"/>
+                    <circle cx="362.5" cy="244" r="22.5" fill="url(#lockOrb3)" opacity="0.7"/>
+                    <circle cx="362.5" cy="244" r="22.5" fill="none" stroke="#7dd3fc" stroke-width="1.5" opacity="0.3"/>
+                    <g transform="translate(362.5, 241)">
+                        <path d="M-6.25,-10 C-6.25,-17.5 6.25,-17.5 6.25,-10" stroke="#0ea5e9" stroke-width="3" fill="none" stroke-linecap="round" opacity="0.6"/>
+                        <rect x="-8.75" y="-10" width="17.5" height="12.5" rx="3" fill="#0ea5e9" opacity="0.6"/>
+                        <circle cx="0" cy="-5" r="2.5" fill="#bae6fd" opacity="0.5"/>
                     </g>
 
                     <!-- 卫星球 - 右上：钥匙 -->
-                    <circle cx="285" cy="95" r="14" fill="url(#lockOrb1)" opacity="0.6"/>
-                    <circle cx="285" cy="95" r="14" fill="none" stroke="#38bdf8" stroke-width="1" opacity="0.25"/>
-                    <g transform="translate(285, 93)">
-                        <circle cx="0" cy="-3" r="4" fill="#0ea5e9" opacity="0.6"/>
-                        <circle cx="0" cy="-3" r="2" fill="#fff" opacity="0.5"/>
-                        <rect x="-1.2" y="1" width="2.4" height="7" rx="0.8" fill="#0ea5e9" opacity="0.6"/>
-                        <rect x="1.2" y="5" width="2.5" height="1.5" rx="0.5" fill="#0ea5e9" opacity="0.6"/>
+                    <circle cx="356" cy="131" r="17.5" fill="url(#lockOrb1)" opacity="0.6"/>
+                    <circle cx="356" cy="131" r="17.5" fill="none" stroke="#38bdf8" stroke-width="1" opacity="0.25"/>
+                    <g transform="translate(356, 129)">
+                        <circle cx="0" cy="-3.75" r="5" fill="#0ea5e9" opacity="0.6"/>
+                        <circle cx="0" cy="-3.75" r="2.5" fill="#bae6fd" opacity="0.5"/>
+                        <rect x="-1.5" y="1.25" width="3" height="8.75" rx="1" fill="#0ea5e9" opacity="0.6"/>
+                        <rect x="1.5" y="6.25" width="3.125" height="1.875" rx="0.625" fill="#0ea5e9" opacity="0.6"/>
+                    </g>
+
+                    <!-- 新卫星球 - 左下：信号 -->
+                    <circle cx="138" cy="268" r="16" fill="url(#lockOrb3)" opacity="0.6"/>
+                    <circle cx="138" cy="268" r="16" fill="none" stroke="#7dd3fc" stroke-width="1" opacity="0.25"/>
+                    <g transform="translate(138, 268)" opacity="0.55">
+                        <circle cx="0" cy="2" r="2.5" fill="#0ea5e9"/>
+                        <path d="M-6,-3 A8,8 0 0,1 6,-3" stroke="#0ea5e9" stroke-width="1.5" fill="none" stroke-linecap="round"/>
+                        <path d="M-10,-6 A13,13 0 0,1 10,-6" stroke="#0ea5e9" stroke-width="1.5" fill="none" stroke-linecap="round"/>
+                    </g>
+
+                    <!-- 新卫星球 - 右中：盾牌锁 -->
+                    <circle cx="390" cy="175" r="14" fill="url(#lockOrb1)" opacity="0.55"/>
+                    <circle cx="390" cy="175" r="14" fill="none" stroke="#38bdf8" stroke-width="1" opacity="0.2"/>
+                    <g transform="translate(390, 174)" opacity="0.5">
+                        <path d="M0,-8 L6,-5 L6,2 C6,5.5 3,8.5 0,10 C-3,8.5 -6,5.5 -6,2 L-6,-5 Z" fill="#0ea5e9" opacity="0.6"/>
+                        <path d="M-2,-2 C-2,-5 2,-5 2,-2" stroke="#7dd3fc" stroke-width="1.5" fill="none" stroke-linecap="round" opacity="0.6"/>
+                        <rect x="-2.5" y="-2" width="5" height="4" rx="1" fill="#7dd3fc" opacity="0.5"/>
                     </g>
 
                     <!-- 连接线 -->
-                    <line x1="155" y1="115" x2="130" y2="98" stroke="#fff" stroke-width="1" opacity="0.15" stroke-dasharray="3 3"/>
-                    <line x1="240" y1="170" x2="275" y2="180" stroke="#fff" stroke-width="1" opacity="0.15" stroke-dasharray="3 3"/>
-                    <line x1="240" y1="115" x2="272" y2="100" stroke="#fff" stroke-width="1" opacity="0.12" stroke-dasharray="3 3"/>
+                    <line x1="194" y1="156" x2="169" y2="135" stroke="#0ea5e9" stroke-width="1" opacity="0.15" stroke-dasharray="3 3"/>
+                    <line x1="300" y1="213" x2="344" y2="238" stroke="#0ea5e9" stroke-width="1" opacity="0.15" stroke-dasharray="3 3"/>
+                    <line x1="300" y1="156" x2="340" y2="138" stroke="#0ea5e9" stroke-width="1" opacity="0.12" stroke-dasharray="3 3"/>
+                    <!-- 新连接线 -->
+                    <line x1="200" y1="230" x2="155" y2="258" stroke="#0ea5e9" stroke-width="0.8" opacity="0.12" stroke-dasharray="3 3"/>
+                    <line x1="310" y1="195" x2="378" y2="180" stroke="#0ea5e9" stroke-width="0.8" opacity="0.12" stroke-dasharray="3 3"/>
 
                     <!-- 数据流 - 左侧 -->
                     <g opacity="0.3">
-                        <line x1="30" y1="80" x2="90" y2="100" stroke="#38bdf8" stroke-width="1.5" stroke-dasharray="4 3"/>
-                        <circle cx="30" cy="80" r="3" fill="#38bdf8" opacity="0.5"/>
-                        <circle cx="90" cy="100" r="2" fill="#38bdf8" opacity="0.4"/>
+                        <line x1="88" y1="125" x2="163" y2="150" stroke="#38bdf8" stroke-width="1.5" stroke-dasharray="4 3"/>
+                        <circle cx="88" cy="125" r="4" fill="#38bdf8" opacity="0.5"/>
+                        <circle cx="163" cy="150" r="2.5" fill="#38bdf8" opacity="0.4"/>
                     </g>
                     <g opacity="0.2">
-                        <line x1="40" y1="220" x2="100" y2="195" stroke="#7dd3fc" stroke-width="1" stroke-dasharray="3 4"/>
-                        <circle cx="40" cy="220" r="2" fill="#7dd3fc" opacity="0.4"/>
+                        <line x1="100" y1="275" x2="175" y2="244" stroke="#7dd3fc" stroke-width="1" stroke-dasharray="3 4"/>
+                        <circle cx="100" cy="275" r="2.5" fill="#7dd3fc" opacity="0.4"/>
                     </g>
 
                     <!-- 数据流 - 右侧 -->
                     <g opacity="0.3">
-                        <line x1="320" y1="75" x2="370" y2="60" stroke="#7dd3fc" stroke-width="1.5" stroke-dasharray="4 3"/>
-                        <circle cx="370" cy="60" r="3" fill="#7dd3fc" opacity="0.5"/>
+                        <line x1="400" y1="119" x2="463" y2="100" stroke="#7dd3fc" stroke-width="1.5" stroke-dasharray="4 3"/>
+                        <circle cx="463" cy="100" r="4" fill="#7dd3fc" opacity="0.5"/>
                     </g>
                     <g opacity="0.2">
-                        <line x1="330" y1="230" x2="375" y2="245" stroke="#38bdf8" stroke-width="1" stroke-dasharray="3 4"/>
-                        <circle cx="375" cy="245" r="2.5" fill="#38bdf8" opacity="0.4"/>
+                        <line x1="413" y1="288" x2="469" y2="306" stroke="#38bdf8" stroke-width="1" stroke-dasharray="3 4"/>
+                        <circle cx="469" cy="306" r="3" fill="#38bdf8" opacity="0.4"/>
+                    </g>
+
+                    <!-- 数据流 - 左下 -->
+                    <g opacity="0.2">
+                        <line x1="55" y1="330" x2="120" y2="300" stroke="#38bdf8" stroke-width="1" stroke-dasharray="3 4"/>
+                        <circle cx="55" cy="330" r="2.5" fill="#38bdf8" opacity="0.35"/>
+                        <circle cx="120" cy="300" r="1.5" fill="#38bdf8" opacity="0.25"/>
+                    </g>
+
+                    <!-- 数据流 - 右下 -->
+                    <g opacity="0.2">
+                        <line x1="440" y1="340" x2="480" y2="355" stroke="#7dd3fc" stroke-width="1" stroke-dasharray="3 4"/>
+                        <circle cx="480" cy="355" r="2.5" fill="#7dd3fc" opacity="0.35"/>
                     </g>
 
                     <!-- 星空装饰 - 小星星 -->
-                    <g fill="#fff">
-                        <polygon points="50,40 52,46 58,46 53,50 55,56 50,52 45,56 47,50 42,46 48,46" opacity="0.5">
+                    <g fill="#7dd3fc">
+                        <polygon points="62.5,62.5 65,70 72.5,70 66.25,75 68.75,82.5 62.5,77.5 56.25,82.5 58.75,75 52.5,70 60,70" opacity="0.5">
                             <animate attributeName="opacity" values="0.5;1;0.5" dur="2.5s" repeatCount="indefinite"/>
                         </polygon>
-                        <polygon points="360,50 361.5,54 366,54 362.5,57 363.5,61 360,58.5 356.5,61 357.5,57 354,54 358.5,54" opacity="0.4">
+                        <polygon points="450,75 451.875,80 457.5,80 453.125,83.75 454.375,88.75 450,85.625 445.625,88.75 446.875,83.75 442.5,80 448.125,80" opacity="0.4">
                             <animate attributeName="opacity" values="0.4;0.9;0.4" dur="3s" repeatCount="indefinite"/>
                         </polygon>
-                        <polygon points="70,250 71.5,254 76,254 72.5,257 73.5,261 70,258.5 66.5,261 67.5,257 64,254 68.5,254" opacity="0.3">
+                        <polygon points="87.5,325 89.375,330 95,330 90.625,333.75 91.875,338.75 87.5,335.625 83.125,338.75 84.375,333.75 80,330 85.625,330" opacity="0.3">
                             <animate attributeName="opacity" values="0.3;0.8;0.3" dur="2.8s" repeatCount="indefinite"/>
                         </polygon>
-                        <polygon points="340,240 341.5,244 346,244 342.5,247 343.5,251 340,248.5 336.5,251 337.5,247 334,244 338.5,244" opacity="0.35">
+                        <polygon points="468.75,312.5 470.625,317.5 477.5,317.5 473.125,321.25 474.375,326.25 468.75,323.125 464.375,326.25 465.625,321.25 462.5,317.5 466.875,317.5" opacity="0.35">
                             <animate attributeName="opacity" values="0.35;0.85;0.35" dur="3.2s" repeatCount="indefinite"/>
                         </polygon>
                     </g>
 
                     <!-- 装饰六边形 -->
-                    <polygon points="52,55 66,47 80,55 80,71 66,79 52,71" fill="url(#lockOrb1)" opacity="0.25"/>
-                    <polygon points="340,230 352,223 364,230 364,244 352,251 340,244" fill="url(#lockOrb1)" opacity="0.18"/>
+                    <polygon points="65,81.25 82.5,71.25 100,81.25 100,101.25 82.5,111.25 65,101.25" fill="url(#lockOrb1)" opacity="0.25"/>
+                    <polygon points="468.75,312.5 490,303.75 505,312.5 505,330 490,338.75 468.75,330" fill="url(#lockOrb1)" opacity="0.18"/>
+
+                    <!-- 装饰菱形 -->
+                    <polygon points="30,200 40,190 50,200 40,210" fill="#38bdf8" opacity="0.12"/>
+                    <polygon points="460,220 468,212 476,220 468,228" fill="#7dd3fc" opacity="0.1"/>
+                    <polygon points="250,370 258,362 266,370 258,378" fill="#38bdf8" opacity="0.08"/>
 
                     <!-- 装饰圆环 -->
-                    <circle cx="42" cy="160" r="14" fill="none" stroke="#38bdf8" stroke-width="2" opacity="0.2"/>
-                    <circle cx="42" cy="160" r="6" fill="#38bdf8" opacity="0.12"/>
-                    <circle cx="365" cy="140" r="10" fill="none" stroke="#7dd3fc" stroke-width="1.5" opacity="0.2"/>
-                    <circle cx="365" cy="140" r="4" fill="#7dd3fc" opacity="0.12"/>
+                    <circle cx="77.5" cy="212.5" r="17.5" fill="none" stroke="#38bdf8" stroke-width="2" opacity="0.2"/>
+                    <circle cx="77.5" cy="212.5" r="7.5" fill="#38bdf8" opacity="0.12"/>
+                    <circle cx="456.25" cy="187.5" r="12.5" fill="none" stroke="#7dd3fc" stroke-width="1.5" opacity="0.2"/>
+                    <circle cx="456.25" cy="187.5" r="5" fill="#7dd3fc" opacity="0.12"/>
 
                     <!-- 浮动粒子 -->
-                    <circle cx="75" cy="85" r="2.5" fill="#38bdf8" opacity="0.3"/>
-                    <circle cx="90" cy="50" r="1.8" fill="#7dd3fc" opacity="0.25"/>
-                    <circle cx="60" cy="40" r="1.2" fill="#38bdf8" opacity="0.2"/>
-                    <circle cx="340" cy="70" r="2" fill="#7dd3fc" opacity="0.25"/>
-                    <circle cx="355" cy="55" r="1.5" fill="#38bdf8" opacity="0.2"/>
-                    <circle cx="65" cy="250" r="2" fill="#38bdf8" opacity="0.2"/>
-                    <circle cx="350" cy="250" r="2.5" fill="#38bdf8" opacity="0.2"/>
-                    <circle cx="370" cy="265" r="1.5" fill="#7dd3fc" opacity="0.15"/>
+                    <circle cx="106" cy="119" r="3" fill="#38bdf8" opacity="0.3"/>
+                    <circle cx="125" cy="75" r="2.25" fill="#7dd3fc" opacity="0.25"/>
+                    <circle cx="100" cy="62.5" r="1.5" fill="#38bdf8" opacity="0.2"/>
+                    <circle cx="450" cy="100" r="2.5" fill="#7dd3fc" opacity="0.25"/>
+                    <circle cx="469" cy="81" r="2" fill="#38bdf8" opacity="0.2"/>
+                    <circle cx="106" cy="325" r="2.5" fill="#38bdf8" opacity="0.2"/>
+                    <circle cx="463" cy="325" r="3" fill="#38bdf8" opacity="0.2"/>
+                    <circle cx="488" cy="344" r="2" fill="#7dd3fc" opacity="0.15"/>
+                    <!-- 更多浮动粒子 -->
+                    <circle cx="150" cy="55" r="1.5" fill="#7dd3fc" opacity="0.2"/>
+                    <circle cx="320" cy="60" r="2" fill="#38bdf8" opacity="0.18"/>
+                    <circle cx="420" cy="340" r="1.8" fill="#7dd3fc" opacity="0.15"/>
+                    <circle cx="75" cy="290" r="2" fill="#38bdf8" opacity="0.18"/>
+                    <circle cx="200" cy="45" r="1.2" fill="#7dd3fc" opacity="0.15"/>
+                    <circle cx="380" cy="50" r="1.5" fill="#38bdf8" opacity="0.12"/>
 
                     <!-- 底部地面线 -->
-                    <line x1="50" y1="260" x2="350" y2="260" stroke="#38bdf8" stroke-width="1" opacity="0.1"/>
-                    <circle cx="50" cy="260" r="2" fill="#38bdf8" opacity="0.15"/>
-                    <circle cx="350" cy="260" r="2" fill="#38bdf8" opacity="0.15"/>
+                    <line x1="113" y1="325" x2="463" y2="325" stroke="#38bdf8" stroke-width="1" opacity="0.1"/>
+                    <circle cx="113" cy="325" r="2.5" fill="#38bdf8" opacity="0.15"/>
+                    <circle cx="463" cy="325" r="2.5" fill="#38bdf8" opacity="0.15"/>
+
+                    <!-- 底部小服务器 - 左 -->
+                    <g transform="translate(130, 355)" opacity="0.5">
+                        <rect x="-12" y="-10" width="24" height="20" rx="3" fill="#e0f2fe" stroke="#38bdf8" stroke-width="0.8"/>
+                        <line x1="-8" y1="-4" x2="8" y2="-4" stroke="#0ea5e9" stroke-width="0.8" opacity="0.5"/>
+                        <line x1="-8" y1="0" x2="8" y2="0" stroke="#0ea5e9" stroke-width="0.8" opacity="0.5"/>
+                        <line x1="-8" y1="4" x2="8" y2="4" stroke="#0ea5e9" stroke-width="0.8" opacity="0.5"/>
+                        <circle cx="6" cy="-4" r="1.5" fill="#38bdf8" opacity="0.6"/>
+                        <circle cx="6" cy="0" r="1.5" fill="#38bdf8" opacity="0.6"/>
+                    </g>
+                    <line x1="130" y1="345" x2="220" y2="255" stroke="#0ea5e9" stroke-width="0.8" opacity="0.12" stroke-dasharray="4 3"/>
+
+                    <!-- 底部小服务器 - 右 -->
+                    <g transform="translate(370, 355)" opacity="0.5">
+                        <rect x="-12" y="-10" width="24" height="20" rx="3" fill="#e0f2fe" stroke="#7dd3fc" stroke-width="0.8"/>
+                        <line x1="-8" y1="-4" x2="8" y2="-4" stroke="#0ea5e9" stroke-width="0.8" opacity="0.5"/>
+                        <line x1="-8" y1="0" x2="8" y2="0" stroke="#0ea5e9" stroke-width="0.8" opacity="0.5"/>
+                        <line x1="-8" y1="4" x2="8" y2="4" stroke="#0ea5e9" stroke-width="0.8" opacity="0.5"/>
+                        <circle cx="6" cy="-4" r="1.5" fill="#7dd3fc" opacity="0.6"/>
+                        <circle cx="6" cy="0" r="1.5" fill="#7dd3fc" opacity="0.6"/>
+                    </g>
+                    <line x1="370" y1="345" x2="280" y2="255" stroke="#0ea5e9" stroke-width="0.8" opacity="0.12" stroke-dasharray="4 3"/>
                 </svg>
             </div>
         </div>
@@ -259,7 +341,7 @@
             var p = particles[i];
             ctx.beginPath();
             ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
-            ctx.fillStyle = 'rgba(14, 165, 233, ' + (0.08 + p.r * 0.04) + ')';
+            ctx.fillStyle = 'rgba(14, 165, 233, ' + (0.12 + p.r * 0.06) + ')';
             ctx.fill();
             p.x += p.vx;
             p.y += p.vy;

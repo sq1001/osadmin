@@ -10,18 +10,19 @@
     .profile-container {
       display: flex;
       gap: 20px;
-      min-height: calc(100vh - 180px);
+      height: calc(100vh - 180px);
     }
 
     .profile-sidebar {
       width: 240px;
       flex-shrink: 0;
+      overflow-y: auto;
     }
 
     .profile-avatar-card {
       background: var(--card-bg);
       border-radius: 12px;
-      padding: 30px 20px;
+      padding: 30px 20px 10px 20px;
       text-align: center;
       border: 1px solid var(--border);
       margin-bottom: 12px;
@@ -83,12 +84,37 @@
       font-size: 16px;
       font-weight: 600;
       color: var(--text-primary);
-      margin-bottom: 4px;
+      margin-bottom: 6px;
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      word-break: break-all;
+    }
+
+    .profile-role-tag {
+      display: inline-block;
+      font-size: 12px;
+      padding: 2px 10px;
+      border-radius: 10px;
+      background: var(--accent-light);
+      color: var(--accent);
+      margin-bottom: 8px;
+      max-width: 100%;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      vertical-align: bottom;
     }
 
     .profile-role {
       font-size: 13px;
       color: var(--text-muted);
+      margin-bottom: 8px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
     }
 
     .profile-menu {
@@ -127,6 +153,7 @@
     .profile-main {
       flex: 1;
       min-width: 0;
+      overflow-y: auto;
     }
 
     .profile-panel {
@@ -224,24 +251,26 @@
     .bind-icon {
       width: 44px;
       height: 44px;
-      border-radius: 8px;
+      border-radius: 50%;
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 22px;
-      color: #fff;
+      flex-shrink: 0;
+      border: 2px solid var(--border);
+      background: var(--card-bg);
+      overflow: hidden;
+      padding: 0;
+      transition: all 0.25s;
     }
 
-    .bind-icon.wechat {
-      background: #07c160;
+    .bind-icon:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 14px rgba(14, 165, 233, 0.12);
     }
 
-    .bind-icon.qq {
-      background: #12b7f5;
-    }
-
-    .bind-icon.weibo {
-      background: #e6162d;
+    .bind-icon svg {
+      width: 20px;
+      height: 20px;
     }
 
     .bind-info {
@@ -293,10 +322,10 @@
               <i class="layui-icon layui-icon-upload"></i>
               <span>更换头像</span>
             </div>
-            <input type="file" id="avatarInput" accept="image/*" hidden>
           </div>
           <div class="profile-name" id="profileName">超级管理员</div>
           <div class="profile-role" id="profileRole">admin</div>
+          <div class="profile-role-tag" id="profileRoleTag">超级管理员</div>
         </div>
         
         <div class="profile-menu">
@@ -438,8 +467,8 @@
             
             <div class="third-party-bind">
               <div class="bind-item">
-                <div class="bind-icon wechat">
-                  <i class="layui-icon layui-icon-login-wechat"></i>
+                <div class="bind-icon">
+                  <svg viewBox="0 0 24 24"><path d="M8.691 2.188C3.891 2.188 0 5.476 0 9.53c0 2.212 1.17 4.203 3.002 5.55a.59.59 0 01.213.665l-.39 1.48c-.019.07-.048.141-.048.213 0 .163.13.295.29.295a.326.326 0 00.167-.054l1.903-1.114a.864.864 0 01.717-.098 10.16 10.16 0 002.837.403c.276 0 .543-.027.811-.05-.857-2.578.157-4.972 1.932-6.446 1.703-1.415 3.882-1.98 5.853-1.838-.576-3.583-4.196-6.348-8.596-6.348zM5.785 5.991c.642 0 1.162.529 1.162 1.18a1.17 1.17 0 01-1.162 1.178A1.17 1.17 0 014.623 7.17c0-.651.52-1.18 1.162-1.18zm5.813 0c.642 0 1.162.529 1.162 1.18a1.17 1.17 0 01-1.162 1.178 1.17 1.17 0 01-1.162-1.178c0-.651.52-1.18 1.162-1.18zm5.34 2.867c-1.797-.052-3.746.512-5.28 1.786-1.72 1.428-2.687 3.72-1.78 6.22.942 2.453 3.666 4.229 6.884 4.229.826 0 1.622-.12 2.361-.336a.722.722 0 01.598.082l1.584.926a.272.272 0 00.14.045c.134 0 .24-.11.24-.245 0-.06-.024-.12-.04-.178l-.325-1.233a.49.49 0 01.177-.554C23.028 18.553 24 16.803 24 14.861c0-3.252-2.83-5.94-7.062-6.003zm-2.735 2.96c.535 0 .969.44.969.982a.976.976 0 01-.969.983.976.976 0 01-.969-.983c0-.542.434-.982.97-.982zm4.842 0c.535 0 .969.44.969.982a.976.976 0 01-.969.983.976.976 0 01-.969-.983c0-.542.434-.982.97-.982z" fill="#07C160"/></svg>
                 </div>
                 <div class="bind-info">
                   <div class="bind-name">微信</div>
@@ -448,8 +477,8 @@
                 <button class="layui-btn layui-btn-sm layui-btn-primary" id="bindWechat">立即绑定</button>
               </div>
               <div class="bind-item">
-                <div class="bind-icon qq">
-                  <i class="layui-icon layui-icon-login-qq"></i>
+                <div class="bind-icon">
+                  <svg viewBox="0 0 24 24"><path d="M21.395 15.035a39.548 39.548 0 0 0-.803-2.264l-1.079-2.695c.001-.032.014-.562.014-.836C19.526 4.632 17.351 0 12 0S4.474 4.632 4.474 9.241c0 .274.013.804.014.836l-1.08 2.695a38.97 38.97 0 0 0-.802 2.264c-1.021 3.283-.69 4.643-.438 4.673.54.065 2.103-2.472 2.103-2.472 0 1.469.756 3.387 2.394 4.771-.612.188-1.363.479-1.845.835-.434.32-.379.646-.301.778.343.578 5.883.703 7.479.703 1.596 0 7.135-.125 7.478-.703.078-.132.132-.458-.301-.778-.481-.356-1.233-.646-1.845-.835 1.638-1.384 2.394-3.302 2.394-4.771 0 0 1.563 2.537 2.103 2.472.251-.03.581-1.39-.438-4.673z" fill="#12B7F5"/></svg>
                 </div>
                 <div class="bind-info">
                   <div class="bind-name">QQ</div>
@@ -458,14 +487,24 @@
                 <button class="layui-btn layui-btn-sm layui-btn-primary" id="bindQq">立即绑定</button>
               </div>
               <div class="bind-item">
-                <div class="bind-icon weibo">
-                  <i class="layui-icon layui-icon-login-weibo"></i>
+                <div class="bind-icon">
+                  <svg viewBox="0 0 24 24"><path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92a5.06 5.06 0 01-2.2 3.32v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.1z" fill="#4285F4"/><path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/><path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z" fill="#FBBC05"/><path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/></svg>
                 </div>
                 <div class="bind-info">
-                  <div class="bind-name">微博</div>
-                  <div class="bind-status" id="weiboStatus">未绑定</div>
+                  <div class="bind-name">Google</div>
+                  <div class="bind-status" id="googleStatus">未绑定</div>
                 </div>
-                <button class="layui-btn layui-btn-sm layui-btn-primary" id="bindWeibo">立即绑定</button>
+                <button class="layui-btn layui-btn-sm layui-btn-primary" id="bindGoogle">立即绑定</button>
+              </div>
+              <div class="bind-item">
+                <div class="bind-icon">
+                  <svg viewBox="0 0 24 24"><path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12" fill="#24292e"/></svg>
+                </div>
+                <div class="bind-info">
+                  <div class="bind-name">GitHub</div>
+                  <div class="bind-status" id="githubStatus">未绑定</div>
+                </div>
+                <button class="layui-btn layui-btn-sm layui-btn-primary" id="bindGithub">立即绑定</button>
               </div>
             </div>
           </div>
@@ -505,7 +544,8 @@
         if (!data) return;
         
         $('#profileName').text(data.nickname || '未设置昵称');
-        $('#profileRole').text(data.rolename || '普通用户');
+        $('#profileRole').text(data.username || 'user');
+        $('#profileRoleTag').text(data.rolename || '普通用户');
         
         if (data.avatar) {
           $('#avatarPreview').attr('src', data.avatar);
@@ -515,9 +555,9 @@
         }
         
         $('#userId').val(data.id || '');
-        $('#userName').val(data.rolename || '');
+        $('#userName').val(data.username || '');
         $('#userNickname').val(data.nickname || '');
-        $('#userRolename').val(data.isSuperAdmin ? '超级管理员' : (data.rolename || ''));
+        $('#userRolename').val(data.rolename || '');
         $('#userEmail').val(data.email || '');
         $('#userMobile').val(data.mobile || '');
         
@@ -535,19 +575,15 @@
         $('#panel' + tab.charAt(0).toUpperCase() + tab.slice(1)).addClass('active');
       });
 
-      $('.profile-avatar-wrapper').on('click', function() {
-        $('#avatarInput').click();
-      });
-
-      $('#avatarInput').on('change', function(e) {
-        var file = e.target.files[0];
-        if (file) {
-          var reader = new FileReader();
-          reader.onload = function(e) {
-            $('#avatarPreview').attr('src', e.target.result);
+      upload.render({
+        elem: '.profile-avatar-wrapper',
+        url: '', // 后端上传接口
+        auto: false,
+        choose: function(obj) {
+          obj.preview(function(index, file, result) {
+            $('#avatarPreview').attr('src', result);
             layer.msg('头像已选择，请点击保存', { icon: 1 });
-          };
-          reader.readAsDataURL(file);
+          });
         }
       });
 

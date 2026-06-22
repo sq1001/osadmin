@@ -178,10 +178,13 @@
           <button class="layui-btn layui-btn-primary" id="skinLoading">
             <i class="layui-icon layui-icon-loading-1"></i> 加载皮肤
           </button>
+          <button class="layui-btn" id="skinCustom" style="background:#e91e63;border-color:#e91e63">
+            <i class="layui-icon layui-icon-star"></i> 自定义皮肤
+          </button>
         </div>
         <div class="demo-tip">
           <i class="layui-icon layui-icon-tips"></i>
-          通过 <code>skin</code> 配置项启用左侧色条皮肤，色条颜色与图标颜色一致
+          通过 <code>skin</code> 配置项启用左侧色条皮肤（预设名），或传对象自定义样式
         </div>
       </div>
     </div>
@@ -262,7 +265,7 @@ toast.show('消息', { dismissEffect: false });  // 禁用消散动画
 toast.show('自定义内容', {
   title: '自定义标题',     // 标题，为空则不显示
   icon: 'success',         // 图标类型
-  skin: 'success',         // 皮肤类型，启用左侧色条：success/error/warning/info/loading
+  skin: 'success',         // 皮肤：预设名(success/error/warning/info/loading)或对象{borderLeft,iconColor,...}
   time: 3000,              // 自动关闭时间，0 不自动关闭
   offset: 'rt',            // 显示位置
   mode: 'stack',           // 显示模式
@@ -282,6 +285,16 @@ toast.success('操作成功', { skin: 'success' });  // 绿色色条
 toast.error('操作失败', { skin: 'error' });      // 红色色条
 toast.warning('警告信息', { skin: 'warning' });  // 橙色色条
 toast.info('提示信息', { skin: 'info' });        // 蓝色色条
+
+// 自定义皮肤（对象格式，自定义样式）
+toast.show('自定义提示', {
+  skin: {
+    borderLeft: '3px solid #e91e63',  // 左侧色条
+    iconColor: '#e91e63'              // 图标颜色
+  }
+});
+// 支持的属性：borderColor, borderLeft, background, color, boxShadow,
+//             iconColor, titleColor, contentColor
 
 // 加载状态
 var loadId = toast.loading('加载中...');
@@ -324,9 +337,9 @@ toast.dismissAll();             // 消散所有（带动画，触发回调）</p
         </tr>
         <tr>
           <td><code>skin</code></td>
-          <td>String</td>
+          <td>String / Object</td>
           <td>''</td>
-          <td>皮肤类型：success/error/warning/info/loading，启用左侧色条</td>
+          <td>皮肤配置：字符串为预设名(success/error/warning/info/loading)启用左侧色条；对象格式可自定义样式，支持 borderColor/borderLeft/background/color/boxShadow/iconColor/titleColor/contentColor</td>
         </tr>
         <tr>
           <td><code>time</code></td>
@@ -693,6 +706,16 @@ layui.use(['toastMod', 'layer'], function() {
 
   $('#skinLoading').on('click', function() {
     toast.loading('加载中...', { skin: 'loading' });
+  });
+
+  $('#skinCustom').on('click', function() {
+    toast.show('自定义皮肤样式', {
+      icon: 'success',
+      skin: {
+        borderLeft: '3px solid #e91e63',
+        iconColor: '#e91e63'
+      }
+    });
   });
 
   $('#cancelCallbackBtn').on('click', function() {

@@ -1,0 +1,1011 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>侧边导航模板</title>
+</head>
+<body>
+  <style>
+    .nav-page-container {
+      display: flex;
+      gap: 20px;
+      height: calc(100vh - 180px);
+    }
+
+    /* 左侧导航 */
+    .nav-page-sidebar {
+      width: 220px;
+      flex-shrink: 0;
+      overflow-y: auto;
+    }
+
+    /* 导航卡片容器 */
+    .nav-page-nav-card {
+      background: var(--card-bg);
+      border-radius: 12px;
+      border: 1px solid var(--border);
+      overflow: hidden;
+      position: relative;
+    }
+
+    /* 导航标题 */
+    .nav-page-nav-title {
+      padding: 16px 20px 12px;
+      font-weight: 600;
+      color: var(--text-primary);
+      border-bottom: 1px solid var(--border);
+      font-size: 14px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .nav-page-nav-title i {
+      color: var(--accent);
+    }
+
+    /* 自定义导航列表 */
+    .nav-page-nav-list {
+      position: relative;
+      padding: 8px 0;
+    }
+
+    .nav-page-nav-item {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 11px 20px;
+      cursor: pointer;
+      color: var(--text-secondary);
+      transition: color 0.15s, background 0.15s;
+      font-size: 14px;
+      position: relative;
+    }
+
+    .nav-page-nav-item:hover {
+      color: var(--accent);
+      background: var(--accent-light);
+    }
+
+    .nav-page-nav-item.active {
+      color: var(--accent);
+      background: var(--accent-light);
+    }
+
+    .nav-page-nav-item i {
+      font-size: 16px;
+      width: 20px;
+      text-align: center;
+    }
+
+    .nav-page-nav-badge {
+      margin-left: auto;
+      background: var(--accent);
+      color: #fff;
+      font-size: 10px;
+      padding: 1px 6px;
+      border-radius: 10px;
+      line-height: 1.5;
+    }
+
+    /* 滑动跟随条 */
+    .nav-page-nav-indicator {
+      position: absolute;
+      left: 0;
+      width: 3px;
+      background: var(--accent);
+      border-radius: 0 2px 2px 0;
+      transition: top 0.3s cubic-bezier(0.4, 0, 0.2, 1), height 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    /* 右侧内容 */
+    .nav-page-main {
+      flex: 1;
+      min-width: 0;
+      overflow-y: auto;
+    }
+
+    .nav-page-panel {
+      display: none;
+      background: var(--card-bg);
+      border-radius: 12px;
+      border: 1px solid var(--border);
+    }
+
+    .nav-page-panel.active {
+      display: block;
+    }
+
+    .nav-page-panel-header {
+      padding: 20px 24px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .nav-page-panel-header h3 {
+      font-size: 16px;
+      font-weight: 600;
+      color: var(--text-primary);
+      margin: 0 0 4px;
+    }
+
+    .nav-page-panel-header p {
+      font-size: 13px;
+      color: var(--text-muted);
+      margin: 0;
+    }
+
+    .nav-page-panel-body {
+      padding: 24px;
+    }
+
+    /* 统计卡片 */
+    .stat-row {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 16px;
+      margin-bottom: 24px;
+    }
+
+    .stat-box {
+      background: var(--bg-content);
+      border-radius: 10px;
+      padding: 20px;
+      border: 1px solid var(--border);
+    }
+
+    .stat-box-top {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 12px;
+    }
+
+    .stat-box-label {
+      font-size: 13px;
+      color: var(--text-muted);
+    }
+
+    .stat-box-icon {
+      width: 36px;
+      height: 36px;
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 18px;
+      color: #fff;
+    }
+
+    .stat-box-icon.blue { background: #4e7cff; }
+    .stat-box-icon.green { background: #52c41a; }
+    .stat-box-icon.orange { background: #fa8c16; }
+
+    .stat-box-value {
+      font-size: 28px;
+      font-weight: 700;
+      color: var(--text-primary);
+      line-height: 1.2;
+    }
+
+    .stat-box-trend {
+      font-size: 12px;
+      margin-top: 6px;
+    }
+
+    .stat-box-trend.up { color: #52c41a; }
+    .stat-box-trend.down { color: #ff4d4f; }
+
+    /* 消息列表 */
+    .msg-list {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .msg-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 14px;
+      padding: 16px;
+      background: var(--bg-content);
+      border-radius: 10px;
+      border: 1px solid var(--border);
+      transition: all 0.15s;
+    }
+
+    .msg-item:hover {
+      border-color: var(--accent);
+    }
+
+    .msg-item-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: var(--accent);
+      flex-shrink: 0;
+      margin-top: 6px;
+    }
+
+    .msg-item-dot.read {
+      background: var(--border);
+    }
+
+    .msg-item-body {
+      flex: 1;
+      min-width: 0;
+    }
+
+    .msg-item-title {
+      font-size: 14px;
+      font-weight: 500;
+      color: var(--text-primary);
+      margin-bottom: 4px;
+    }
+
+    .msg-item-desc {
+      font-size: 13px;
+      color: var(--text-muted);
+      line-height: 1.6;
+    }
+
+    .msg-item-time {
+      font-size: 12px;
+      color: var(--text-muted);
+      flex-shrink: 0;
+      white-space: nowrap;
+    }
+
+    /* 收藏项 */
+    .fav-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 16px;
+    }
+
+    .fav-item {
+      background: var(--bg-content);
+      border-radius: 10px;
+      border: 1px solid var(--border);
+      padding: 20px;
+      cursor: pointer;
+      transition: all 0.15s;
+    }
+
+    .fav-item:hover {
+      border-color: var(--accent);
+    }
+
+    .fav-item-icon {
+      width: 40px;
+      height: 40px;
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 20px;
+      color: #fff;
+      background: var(--accent);
+      margin-bottom: 12px;
+    }
+
+    .fav-item-name {
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--text-primary);
+      margin-bottom: 4px;
+    }
+
+    .fav-item-desc {
+      font-size: 12px;
+      color: var(--text-muted);
+      line-height: 1.5;
+    }
+
+    /* 配置表 */
+    .config-table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+
+    .config-table th,
+    .config-table td {
+      padding: 10px 16px;
+      text-align: left;
+      border-bottom: 1px solid var(--border);
+      font-size: 13px;
+    }
+
+    .config-table th {
+      color: var(--text-primary);
+      font-weight: 600;
+      background: var(--bg-content);
+    }
+
+    .config-table td {
+      color: var(--text-secondary);
+    }
+
+    .config-table td code {
+      background: var(--bg-content);
+      padding: 2px 6px;
+      border-radius: 4px;
+      font-size: 12px;
+      color: var(--accent);
+    }
+
+    /* 表单 */
+    .nav-form {
+      max-width: 500px;
+    }
+
+    .nav-form .layui-form-label {
+      width: 120px;
+    }
+
+    .nav-form .layui-input-block {
+      margin-left: 150px;
+    }
+
+    .form-help {
+      color: var(--text-muted);
+      font-size: 12px;
+      margin-top: 5px;
+      line-height: 1.6;
+    }
+
+    .form-actions {
+      margin-top: 24px;
+      padding-top: 20px;
+      border-top: 1px solid var(--border);
+      text-align: right;
+    }
+
+    /* 文件列表 */
+    .file-list {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .file-item {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 12px 16px;
+      background: var(--bg-content);
+      border-radius: 8px;
+      border: 1px solid var(--border);
+      cursor: pointer;
+      transition: all 0.15s;
+    }
+
+    .file-item:hover {
+      border-color: var(--accent);
+    }
+
+    .file-item i {
+      font-size: 20px;
+      color: var(--accent);
+    }
+
+    .file-item-info {
+      flex: 1;
+      min-width: 0;
+    }
+
+    .file-item-name {
+      font-size: 14px;
+      color: var(--text-primary);
+      font-weight: 500;
+    }
+
+    .file-item-meta {
+      font-size: 12px;
+      color: var(--text-muted);
+      margin-top: 2px;
+    }
+
+    .file-item-size {
+      font-size: 12px;
+      color: var(--text-muted);
+      flex-shrink: 0;
+    }
+
+    /* 时间线 */
+    .timeline {
+      position: relative;
+      padding-left: 24px;
+    }
+
+    .timeline::before {
+      content: '';
+      position: absolute;
+      left: 8px;
+      top: 4px;
+      bottom: 4px;
+      width: 2px;
+      background: var(--border);
+    }
+
+    .timeline-item {
+      position: relative;
+      padding-bottom: 24px;
+    }
+
+    .timeline-item:last-child {
+      padding-bottom: 0;
+    }
+
+    .timeline-dot {
+      position: absolute;
+      left: -20px;
+      top: 4px;
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+      background: var(--accent);
+      border: 2px solid var(--card-bg);
+    }
+
+    .timeline-time {
+      font-size: 12px;
+      color: var(--text-muted);
+      margin-bottom: 4px;
+    }
+
+    .timeline-content {
+      font-size: 14px;
+      color: var(--text-secondary);
+      line-height: 1.6;
+    }
+
+    .timeline-user {
+      font-weight: 500;
+      color: var(--text-primary);
+    }
+
+    @media (max-width: 768px) {
+      .nav-page-container {
+        flex-direction: column;
+      }
+
+      .nav-page-sidebar {
+        width: 100%;
+        position: static;
+        max-height: none;
+      }
+
+      .stat-row {
+        grid-template-columns: 1fr;
+      }
+
+      .fav-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+
+  <div class="page-content">
+    <div class="nav-page-container">
+      <div class="nav-page-sidebar">
+        <div class="nav-page-nav-card">
+          <div class="nav-page-nav-title">
+            <i class="layui-icon layui-icon-app"></i>
+            <span>工作台</span>
+          </div>
+          <div class="nav-page-nav-list">
+            <div class="nav-page-nav-item active" data-panel="overview">
+              <i class="layui-icon layui-icon-home"></i>
+              <span>总览</span>
+            </div>
+            <div class="nav-page-nav-item" data-panel="messages">
+              <i class="layui-icon layui-icon-notice"></i>
+              <span>消息中心</span>
+              <span class="nav-page-nav-badge">5</span>
+            </div>
+            <div class="nav-page-nav-item" data-panel="favorites">
+              <i class="layui-icon layui-icon-star"></i>
+              <span>我的收藏</span>
+            </div>
+            <div class="nav-page-nav-item" data-panel="files">
+              <i class="layui-icon layui-icon-file"></i>
+              <span>文件管理</span>
+            </div>
+            <div class="nav-page-nav-item" data-panel="schedule">
+              <i class="layui-icon layui-icon-date"></i>
+              <span>日程安排</span>
+            </div>
+            <div class="nav-page-nav-item" data-panel="tasks">
+              <i class="layui-icon layui-icon-list"></i>
+              <span>任务清单</span>
+              <span class="nav-page-nav-badge">3</span>
+            </div>
+            <div class="nav-page-nav-item" data-panel="account">
+              <i class="layui-icon layui-icon-set"></i>
+              <span>账号设置</span>
+            </div>
+            <div class="nav-page-nav-item" data-panel="logs">
+              <i class="layui-icon layui-icon-log"></i>
+              <span>操作日志</span>
+            </div>
+            <div class="nav-page-nav-indicator"></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="nav-page-main">
+        <!-- 总览 -->
+        <div class="nav-page-panel active" id="panelOverview">
+          <div class="nav-page-panel-header">
+            <h3>总览</h3>
+            <p>工作台数据概览与快捷入口</p>
+          </div>
+          <div class="nav-page-panel-body">
+            <div class="stat-row">
+              <div class="stat-box">
+                <div class="stat-box-top">
+                  <span class="stat-box-label">今日访问</span>
+                  <div class="stat-box-icon blue"><i class="layui-icon layui-icon-read"></i></div>
+                </div>
+                <div class="stat-box-value">1,284</div>
+                <div class="stat-box-trend up">↑ 18.2% 较昨日</div>
+              </div>
+              <div class="stat-box">
+                <div class="stat-box-top">
+                  <span class="stat-box-label">待处理</span>
+                  <div class="stat-box-icon orange"><i class="layui-icon layui-icon-tips"></i></div>
+                </div>
+                <div class="stat-box-value">12</div>
+                <div class="stat-box-trend down">↓ 3 较昨日</div>
+              </div>
+              <div class="stat-box">
+                <div class="stat-box-top">
+                  <span class="stat-box-label">已完成</span>
+                  <div class="stat-box-icon green"><i class="layui-icon layui-icon-ok-circle"></i></div>
+                </div>
+                <div class="stat-box-value">86</div>
+                <div class="stat-box-trend up">↑ 10 较昨日</div>
+              </div>
+            </div>
+
+            <div class="timeline">
+              <div class="timeline-item">
+                <div class="timeline-dot"></div>
+                <div class="timeline-time">今天 14:30</div>
+                <div class="timeline-content"><span class="timeline-user">系统</span> 自动备份已完成</div>
+              </div>
+              <div class="timeline-item">
+                <div class="timeline-dot"></div>
+                <div class="timeline-time">今天 11:20</div>
+                <div class="timeline-content"><span class="timeline-user">张三</span> 提交了订单审核</div>
+              </div>
+              <div class="timeline-item">
+                <div class="timeline-dot"></div>
+                <div class="timeline-time">今天 09:15</div>
+                <div class="timeline-content"><span class="timeline-user">管理员</span> 更新了系统公告</div>
+              </div>
+              <div class="timeline-item">
+                <div class="timeline-dot"></div>
+                <div class="timeline-time">昨天 17:42</div>
+                <div class="timeline-content"><span class="timeline-user">李四</span> 上传了3个文件</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 消息中心 -->
+        <div class="nav-page-panel" id="panelMessages">
+          <div class="nav-page-panel-header">
+            <h3>消息中心</h3>
+            <p>查看系统通知与个人消息</p>
+          </div>
+          <div class="nav-page-panel-body">
+            <div class="msg-list">
+              <div class="msg-item">
+                <div class="msg-item-dot"></div>
+                <div class="msg-item-body">
+                  <div class="msg-item-title">系统升级通知</div>
+                  <div class="msg-item-desc">系统将于本周六凌晨 2:00-4:00 进行升级维护，届时服务将暂停</div>
+                </div>
+                <div class="msg-item-time">10分钟前</div>
+              </div>
+              <div class="msg-item">
+                <div class="msg-item-dot"></div>
+                <div class="msg-item-body">
+                  <div class="msg-item-title">订单审核提醒</div>
+                  <div class="msg-item-desc">您有 3 笔订单待审核，请及时处理</div>
+                </div>
+                <div class="msg-item-time">1小时前</div>
+              </div>
+              <div class="msg-item">
+                <div class="msg-item-dot"></div>
+                <div class="msg-item-body">
+                  <div class="msg-item-title">新成员加入</div>
+                  <div class="msg-item-desc">用户「王五」已加入开发组，请确认权限分配</div>
+                </div>
+                <div class="msg-item-time">3小时前</div>
+              </div>
+              <div class="msg-item">
+                <div class="msg-item-dot read"></div>
+                <div class="msg-item-body">
+                  <div class="msg-item-title">密码修改成功</div>
+                  <div class="msg-item-desc">您的登录密码已于 2025-06-14 修改成功</div>
+                </div>
+                <div class="msg-item-time">昨天</div>
+              </div>
+              <div class="msg-item">
+                <div class="msg-item-dot read"></div>
+                <div class="msg-item-body">
+                  <div class="msg-item-title">月度报表已生成</div>
+                  <div class="msg-item-desc">5月份运营数据报表已自动生成，可前往文件管理下载</div>
+                </div>
+                <div class="msg-item-time">2天前</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 我的收藏 -->
+        <div class="nav-page-panel" id="panelFavorites">
+          <div class="nav-page-panel-header">
+            <h3>我的收藏</h3>
+            <p>常用功能与页面快捷入口</p>
+          </div>
+          <div class="nav-page-panel-body">
+            <div class="fav-grid">
+              <div class="fav-item">
+                <div class="fav-item-icon"><i class="layui-icon layui-icon-user"></i></div>
+                <div class="fav-item-name">用户管理</div>
+                <div class="fav-item-desc">查看和管理系统用户</div>
+              </div>
+              <div class="fav-item">
+                <div class="fav-item-icon"><i class="layui-icon layui-icon-chart"></i></div>
+                <div class="fav-item-name">数据报表</div>
+                <div class="fav-item-desc">运营数据统计与分析</div>
+              </div>
+              <div class="fav-item">
+                <div class="fav-item-icon"><i class="layui-icon layui-icon-set"></i></div>
+                <div class="fav-item-name">系统设置</div>
+                <div class="fav-item-desc">系统参数与配置管理</div>
+              </div>
+              <div class="fav-item">
+                <div class="fav-item-icon"><i class="layui-icon layui-icon-upload"></i></div>
+                <div class="fav-item-name">文件上传</div>
+                <div class="fav-item-desc">批量上传与管理文件</div>
+              </div>
+              <div class="fav-item">
+                <div class="fav-item-icon"><i class="layui-icon layui-icon-auz"></i></div>
+                <div class="fav-item-name">权限配置</div>
+                <div class="fav-item-desc">角色与菜单权限管理</div>
+              </div>
+              <div class="fav-item">
+                <div class="fav-item-icon"><i class="layui-icon layui-icon-log"></i></div>
+                <div class="fav-item-name">操作日志</div>
+                <div class="fav-item-desc">系统操作记录查询</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 文件管理 -->
+        <div class="nav-page-panel" id="panelFiles">
+          <div class="nav-page-panel-header">
+            <h3>文件管理</h3>
+            <p>查看和管理上传的文件</p>
+          </div>
+          <div class="nav-page-panel-body">
+            <div class="file-list">
+              <div class="file-item">
+                <i class="layui-icon layui-icon-file"></i>
+                <div class="file-item-info">
+                  <div class="file-item-name">月度运营报告-202506.pdf</div>
+                  <div class="file-item-meta">管理员 上传于 2025-06-15</div>
+                </div>
+                <div class="file-item-size">2.4 MB</div>
+              </div>
+              <div class="file-item">
+                <i class="layui-icon layui-icon-picture"></i>
+                <div class="file-item-info">
+                  <div class="file-item-name">产品封面图.png</div>
+                  <div class="file-item-meta">张三 上传于 2025-06-14</div>
+                </div>
+                <div class="file-item-size">856 KB</div>
+              </div>
+              <div class="file-item">
+                <i class="layui-icon layui-icon-file"></i>
+                <div class="file-item-info">
+                  <div class="file-item-name">用户数据导出.xlsx</div>
+                  <div class="file-item-meta">李四 上传于 2025-06-13</div>
+                </div>
+                <div class="file-item-size">1.1 MB</div>
+              </div>
+              <div class="file-item">
+                <i class="layui-icon layui-icon-file"></i>
+                <div class="file-item-info">
+                  <div class="file-item-name">系统部署文档.md</div>
+                  <div class="file-item-meta">管理员 上传于 2025-06-12</div>
+                </div>
+                <div class="file-item-size">45 KB</div>
+              </div>
+              <div class="file-item">
+                <i class="layui-icon layui-icon-picture"></i>
+                <div class="file-item-info">
+                  <div class="file-item-name">活动海报.jpg</div>
+                  <div class="file-item-meta">王五 上传于 2025-06-11</div>
+                </div>
+                <div class="file-item-size">3.2 MB</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 日程安排 -->
+        <div class="nav-page-panel" id="panelSchedule">
+          <div class="nav-page-panel-header">
+            <h3>日程安排</h3>
+            <p>查看和管理个人日程</p>
+          </div>
+          <div class="nav-page-panel-body">
+            <table class="config-table">
+              <thead>
+                <tr>
+                  <th>时间</th>
+                  <th>日程</th>
+                  <th>类型</th>
+                  <th>状态</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>09:00 - 10:00</td>
+                  <td>项目周会</td>
+                  <td><code>会议</code></td>
+                  <td style="color:#52c41a">已完成</td>
+                </tr>
+                <tr>
+                  <td>10:30 - 11:30</td>
+                  <td>需求评审</td>
+                  <td><code>会议</code></td>
+                  <td style="color:#52c41a">已完成</td>
+                </tr>
+                <tr>
+                  <td>14:00 - 15:00</td>
+                  <td>代码审查</td>
+                  <td><code>工作</code></td>
+                  <td style="color:#4e7cff">进行中</td>
+                </tr>
+                <tr>
+                  <td>16:00 - 17:00</td>
+                  <td>客户演示</td>
+                  <td><code>会议</code></td>
+                  <td style="color:#fa8c16">待开始</td>
+                </tr>
+                <tr>
+                  <td>17:30 - 18:00</td>
+                  <td>日报总结</td>
+                  <td><code>工作</code></td>
+                  <td style="color:#fa8c16">待开始</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- 任务清单 -->
+        <div class="nav-page-panel" id="panelTasks">
+          <div class="nav-page-panel-header">
+            <h3>任务清单</h3>
+            <p>跟踪和管理待办任务</p>
+          </div>
+          <div class="nav-page-panel-body">
+            <table id="taskTable" lay-filter="taskTable"></table>
+          </div>
+        </div>
+
+        <!-- 账号设置 -->
+        <div class="nav-page-panel" id="panelAccount">
+          <div class="nav-page-panel-header">
+            <h3>账号设置</h3>
+            <p>管理个人信息与安全设置</p>
+          </div>
+          <div class="nav-page-panel-body">
+            <form class="layui-form nav-form" lay-filter="accountForm">
+              <div class="layui-form-item">
+                <label class="layui-form-label">用户名</label>
+                <div class="layui-input-block">
+                  <input type="text" name="username" value="admin"
+                         placeholder="请输入用户名" class="layui-input">
+                </div>
+              </div>
+              <div class="layui-form-item">
+                <label class="layui-form-label">昵称</label>
+                <div class="layui-input-block">
+                  <input type="text" name="nickname" value="管理员"
+                         placeholder="请输入昵称" class="layui-input">
+                </div>
+              </div>
+              <div class="layui-form-item">
+                <label class="layui-form-label">邮箱</label>
+                <div class="layui-input-block">
+                  <input type="email" name="email" value="admin@example.com"
+                         placeholder="请输入邮箱" class="layui-input">
+                </div>
+              </div>
+              <div class="layui-form-item">
+                <label class="layui-form-label">消息通知</label>
+                <div class="layui-input-block">
+                  <input type="checkbox" name="notify" lay-skin="switch"
+                         lay-text="开启|关闭" checked>
+                  <div class="form-help">接收系统消息和邮件通知</div>
+                </div>
+              </div>
+              <div class="layui-form-item">
+                <label class="layui-form-label">两步验证</label>
+                <div class="layui-input-block">
+                  <input type="checkbox" name="2fa" lay-skin="switch"
+                         lay-text="开启|关闭">
+                  <div class="form-help">登录时需要额外验证码确认</div>
+                </div>
+              </div>
+              <div class="form-actions">
+                <button type="reset" class="layui-btn layui-btn-primary">
+                  <i class="layui-icon layui-icon-refresh"></i> 重置
+                </button>
+                <button type="button" class="layui-btn layui-btn-normal" lay-submit lay-filter="saveAccount">
+                  <i class="layui-icon layui-icon-ok"></i> 保存
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+
+        <!-- 操作日志 -->
+        <div class="nav-page-panel" id="panelLogs">
+          <div class="nav-page-panel-header">
+            <h3>操作日志</h3>
+            <p>账号相关的操作记录</p>
+          </div>
+          <div class="nav-page-panel-body">
+            <div class="timeline">
+              <div class="timeline-item">
+                <div class="timeline-dot"></div>
+                <div class="timeline-time">2025-06-15 14:32</div>
+                <div class="timeline-content"><span class="timeline-user">当前账号</span> 修改了昵称</div>
+              </div>
+              <div class="timeline-item">
+                <div class="timeline-dot"></div>
+                <div class="timeline-time">2025-06-15 09:10</div>
+                <div class="timeline-content"><span class="timeline-user">当前账号</span> 登录系统（IP: 192.168.1.100）</div>
+              </div>
+              <div class="timeline-item">
+                <div class="timeline-dot"></div>
+                <div class="timeline-time">2025-06-14 17:55</div>
+                <div class="timeline-content"><span class="timeline-user">当前账号</span> 修改了密码</div>
+              </div>
+              <div class="timeline-item">
+                <div class="timeline-dot"></div>
+                <div class="timeline-time">2025-06-14 08:45</div>
+                <div class="timeline-content"><span class="timeline-user">当前账号</span> 登录系统（IP: 192.168.1.100）</div>
+              </div>
+              <div class="timeline-item">
+                <div class="timeline-dot"></div>
+                <div class="timeline-time">2025-06-13 16:20</div>
+                <div class="timeline-content"><span class="timeline-user">当前账号</span> 开启了两步验证</div>
+              </div>
+              <div class="timeline-item">
+                <div class="timeline-dot"></div>
+                <div class="timeline-time">2025-06-13 09:00</div>
+                <div class="timeline-content"><span class="timeline-user">当前账号</span> 登录系统（IP: 10.0.0.55）</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    layui.use(['table', 'form', 'layer'], function() {
+      var table = layui.table;
+      var form = layui.form;
+      var layer = layui.layer;
+      var $ = layui.$;
+
+      var $indicator = $('.nav-page-nav-indicator');
+      var $navList = $('.nav-page-nav-list');
+
+      // 更新滑动条位置
+      function moveIndicator($item) {
+        var listOffset = $navList.offset().top;
+        var itemOffset = $item.offset().top;
+        var itemHeight = $item.outerHeight();
+        $indicator.css({
+          top: (itemOffset - listOffset + $navList.scrollTop()) + 'px',
+          height: itemHeight + 'px'
+        });
+      }
+
+      // 初始化滑动条位置
+      setTimeout(function() {
+        moveIndicator($('.nav-page-nav-item.active'));
+      }, 50);
+
+      // 导航切换
+      $('.nav-page-nav-item').on('click', function() {
+        var panel = $(this).data('panel');
+        if (!panel) return;
+
+        $('.nav-page-nav-item').removeClass('active');
+        $(this).addClass('active');
+
+        moveIndicator($(this));
+
+        $('.nav-page-panel').removeClass('active');
+        $('#panel' + panel.charAt(0).toUpperCase() + panel.slice(1)).addClass('active');
+
+        // 首次切换到任务清单时渲染表格
+        if (panel === 'tasks' && !window._taskTableRendered) {
+          renderTaskTable();
+          window._taskTableRendered = true;
+        }
+      });
+
+      // 渲染任务表格
+      function renderTaskTable() {
+        table.render({
+          elem: '#taskTable',
+          data: [
+            { id: 1, title: '完成首页改版设计', priority: '高', assignee: '张三', status: '进行中', deadline: '2025-06-18' },
+            { id: 2, title: '修复登录页面样式问题', priority: '中', assignee: '李四', status: '待处理', deadline: '2025-06-20' },
+            { id: 3, title: '优化数据表格加载性能', priority: '高', assignee: '王五', status: '进行中', deadline: '2025-06-22' },
+            { id: 4, title: '编写API接口文档', priority: '低', assignee: '赵六', status: '待处理', deadline: '2025-06-25' },
+            { id: 5, title: '升级Layui到最新版本', priority: '中', assignee: '管理员', status: '已完成', deadline: '2025-06-15' },
+            { id: 6, title: '配置CI/CD自动部署', priority: '低', assignee: '管理员', status: '已完成', deadline: '2025-06-12' }
+          ],
+          cols: [[
+            { field: 'id', title: 'ID', width: 60, sort: true },
+            { field: 'title', title: '任务', minWidth: 200 },
+            { field: 'priority', title: '优先级', width: 100, templet: function(d) {
+              var colors = { '高': '#ff4d4f', '中': '#fa8c16', '低': '#52c41a' };
+              return '<span style="color:' + (colors[d.priority] || '#999') + '">' + d.priority + '</span>';
+            }},
+            { field: 'assignee', title: '负责人', width: 100 },
+            { field: 'status', title: '状态', width: 100, templet: function(d) {
+              var colors = { '待处理': '#fa8c16', '进行中': '#4e7cff', '已完成': '#52c41a' };
+              return '<span style="color:' + (colors[d.status] || '#999') + '">' + d.status + '</span>';
+            }},
+            { field: 'deadline', title: '截止日期', width: 120, sort: true }
+          ]],
+          page: true,
+          limit: 5,
+          limits: [5, 10]
+        });
+      }
+
+      // 保存账号设置
+      form.on('submit(saveAccount)', function(data) {
+        layer.msg('正在保存...', { icon: 16, shade: 0.3, time: false });
+        setTimeout(function() {
+          layer.closeAll('dialog');
+          layer.msg('账号设置保存成功', { icon: 1 });
+        }, 1500);
+        console.log('保存账号设置:', data.field);
+        return false;
+      });
+
+      // 收藏项点击
+      $('.fav-item').on('click', function() {
+        var name = $(this).find('.fav-item-name').text();
+        layer.msg('正在跳转：' + name, { icon: 1, time: 1500 });
+      });
+
+      // 文件项点击
+      $('.file-item').on('click', function() {
+        var name = $(this).find('.file-item-name').text();
+        layer.msg('打开文件：' + name, { icon: 1, time: 1500 });
+      });
+    });
+  </script>
+</body>
+</html>

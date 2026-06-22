@@ -12,20 +12,22 @@
 <!-- Canvas 粒子背景 -->
 <canvas class="auth-canvas-bg" id="bgCvs"></canvas>
 
+<!-- 全屏浮动气泡 -->
+<div class="auth-float-bubble auth-float-1"></div>
+<div class="auth-float-bubble auth-float-2"></div>
+<div class="auth-float-bubble auth-float-3"></div>
+<div class="auth-float-bubble auth-float-4"></div>
+
 <!-- Toast 容器 -->
 <div class="auth-toast-box" id="TB"></div>
 
 <!-- 主分栏布局 -->
 <div class="auth-split">
-    <!-- 左侧(视觉): 天蓝渐变 + 插画 -->
-    <div class="auth-split-left auth-bg-teal">
-        <div class="auth-float-bubble auth-float-1"></div>
-        <div class="auth-float-bubble auth-float-2"></div>
-        <div class="auth-float-bubble auth-float-3"></div>
-        <div class="auth-float-bubble auth-float-4"></div>
+    <!-- 左侧：科技插画 -->
+    <div class="auth-split-left">
         <div class="auth-left-content">
             <!-- SVG 插画: 云同步/数据上传 -->
-            <svg class="auth-illustration" viewBox="0 0 400 300" fill="none">
+            <svg class="auth-illustration" viewBox="0 0 500 400" fill="none">
                 <defs>
                     <linearGradient id="cloudGrad" x1="0" y1="0" x2="0" y2="1">
                         <stop offset="0%" stop-color="#e0f2fe"/>
@@ -39,121 +41,230 @@
                         <stop offset="0%" stop-color="#38bdf8"/>
                         <stop offset="100%" stop-color="#7dd3fc"/>
                     </linearGradient>
+                    <radialGradient id="glowGrad" cx="50%" cy="50%" r="50%">
+                        <stop offset="0%" stop-color="#0ea5e9" stop-opacity="0.12"/>
+                        <stop offset="100%" stop-color="#0ea5e9" stop-opacity="0"/>
+                    </radialGradient>
                 </defs>
 
+                <!-- 背景光晕椭圆 -->
+                <ellipse cx="250" cy="200" rx="220" ry="170" fill="url(#glowGrad)"/>
+
                 <!-- 背景装饰圆 -->
-                <circle cx="200" cy="150" r="130" fill="rgba(255,255,255,.08)"/>
-                <circle cx="200" cy="150" r="90" fill="rgba(255,255,255,.06)"/>
+                <circle cx="250" cy="200" r="163" fill="rgba(14,165,233,.08)"/>
+                <circle cx="250" cy="200" r="113" fill="rgba(14,165,233,.06)"/>
+
+                <!-- 轨道环1 -->
+                <ellipse cx="250" cy="200" rx="180" ry="60" fill="none" stroke="#38bdf8" stroke-width="0.8" opacity="0.2" transform="rotate(-15 250 200)"/>
+                <!-- 轨道环2 -->
+                <ellipse cx="250" cy="200" rx="180" ry="60" fill="none" stroke="#38bdf8" stroke-width="0.8" opacity="0.15" transform="rotate(25 250 200)"/>
+                <!-- 轨道环3（虚线） -->
+                <ellipse cx="250" cy="200" rx="200" ry="70" fill="none" stroke="#7dd3fc" stroke-width="0.8" stroke-dasharray="6 4" opacity="0.18" transform="rotate(50 250 200)"/>
+
+                <!-- 轨道光点1 -->
+                <g transform="rotate(-15 250 200)">
+                    <circle r="4" fill="#38bdf8" opacity="0.7">
+                        <animateMotion dur="8s" repeatCount="indefinite" path="M430,200 A180,60 0 1,1 70,200 A180,60 0 1,1 430,200"/>
+                    </circle>
+                </g>
+                <!-- 轨道光点2 -->
+                <g transform="rotate(25 250 200)">
+                    <circle r="3.5" fill="#7dd3fc" opacity="0.6">
+                        <animateMotion dur="10s" repeatCount="indefinite" path="M430,200 A180,60 0 1,1 70,200 A180,60 0 1,1 430,200"/>
+                    </circle>
+                </g>
+                <!-- 轨道光点3 -->
+                <g transform="rotate(50 250 200)">
+                    <circle r="3" fill="#0ea5e9" opacity="0.5">
+                        <animateMotion dur="12s" repeatCount="indefinite" path="M450,200 A200,70 0 1,1 50,200 A200,70 0 1,1 450,200"/>
+                    </circle>
+                </g>
 
                 <!-- 云朵主体 -->
                 <g>
-                    <ellipse cx="200" cy="140" rx="80" ry="45" fill="url(#cloudGrad)" opacity="0.9"/>
-                    <circle cx="155" cy="125" r="35" fill="url(#cloudGrad)" opacity="0.9"/>
-                    <circle cx="200" cy="110" r="40" fill="url(#cloudGrad)" opacity="0.9"/>
-                    <circle cx="245" cy="125" r="35" fill="url(#cloudGrad)" opacity="0.9"/>
+                    <ellipse cx="250" cy="188" rx="100" ry="56" fill="url(#cloudGrad)" opacity="0.9"/>
+                    <circle cx="194" cy="169" r="44" fill="url(#cloudGrad)" opacity="0.9"/>
+                    <circle cx="250" cy="138" r="50" fill="url(#cloudGrad)" opacity="0.9"/>
+                    <circle cx="306" cy="169" r="44" fill="url(#cloudGrad)" opacity="0.9"/>
                     <!-- 云朵底部 -->
-                    <rect x="120" y="130" width="160" height="30" rx="0" fill="url(#cloudGrad)" opacity="0.9"/>
+                    <rect x="150" y="163" width="200" height="38" rx="0" fill="url(#cloudGrad)" opacity="0.9"/>
                     <!-- 云朵高光 -->
-                    <ellipse cx="190" cy="105" rx="25" ry="12" fill="#fff" opacity="0.3"/>
+                    <ellipse cx="238" cy="131" rx="31" ry="15" fill="#7dd3fc" opacity="0.3"/>
                     <animate attributeName="transform" values="translate(0,0);translate(0,-5);translate(0,0)" dur="4s" repeatCount="indefinite"/>
                 </g>
 
                 <!-- 上传箭头 -->
                 <g>
-                    <rect x="193" y="170" width="14" height="50" rx="7" fill="url(#uploadGrad)"/>
-                    <polygon points="200,145 180,175 220,175" fill="url(#uploadGrad)"/>
+                    <rect x="241" y="213" width="18" height="63" rx="9" fill="url(#uploadGrad)"/>
+                    <polygon points="250,181 225,219 275,219" fill="url(#uploadGrad)"/>
                     <animate attributeName="transform" values="translate(0,0);translate(0,-8);translate(0,0)" dur="2s" repeatCount="indefinite"/>
                 </g>
 
                 <!-- 数据块1 - 左下 -->
                 <g>
-                    <rect x="80" y="200" width="40" height="28" rx="5" fill="url(#dataGrad)" opacity="0.7"/>
-                    <rect x="88" y="208" width="24" height="3" rx="1.5" fill="#fff" opacity="0.5"/>
-                    <rect x="88" y="214" width="18" height="3" rx="1.5" fill="#fff" opacity="0.3"/>
+                    <rect x="100" y="250" width="50" height="35" rx="6" fill="url(#dataGrad)" opacity="0.7"/>
+                    <rect x="110" y="260" width="30" height="4" rx="2" fill="#0ea5e9" opacity="0.5"/>
+                    <rect x="110" y="268" width="23" height="4" rx="2" fill="#0ea5e9" opacity="0.3"/>
                     <animate attributeName="transform" values="translate(0,0);translate(0,-6);translate(0,0)" dur="3s" repeatCount="indefinite"/>
                 </g>
 
                 <!-- 数据块2 - 右下 -->
                 <g>
-                    <rect x="280" y="195" width="40" height="28" rx="5" fill="url(#dataGrad)" opacity="0.7"/>
-                    <rect x="288" y="203" width="24" height="3" rx="1.5" fill="#fff" opacity="0.5"/>
-                    <rect x="288" y="209" width="18" height="3" rx="1.5" fill="#fff" opacity="0.3"/>
+                    <rect x="325" y="244" width="50" height="35" rx="6" fill="url(#dataGrad)" opacity="0.7"/>
+                    <rect x="335" y="254" width="30" height="4" rx="2" fill="#0ea5e9" opacity="0.5"/>
+                    <rect x="335" y="262" width="23" height="4" rx="2" fill="#0ea5e9" opacity="0.3"/>
                     <animate attributeName="transform" values="translate(0,0);translate(0,-5);translate(0,0)" dur="3.5s" repeatCount="indefinite"/>
                 </g>
 
                 <!-- 数据块3 - 左 -->
                 <g>
-                    <rect x="60" y="140" width="35" height="24" rx="4" fill="#7dd3fc" opacity="0.5"/>
-                    <rect x="67" y="147" width="20" height="2.5" rx="1" fill="#fff" opacity="0.4"/>
-                    <rect x="67" y="152" width="14" height="2.5" rx="1" fill="#fff" opacity="0.3"/>
+                    <rect x="75" y="175" width="44" height="30" rx="5" fill="#7dd3fc" opacity="0.5"/>
+                    <rect x="84" y="184" width="25" height="3" rx="1.5" fill="#0ea5e9" opacity="0.4"/>
+                    <rect x="84" y="190" width="18" height="3" rx="1.5" fill="#0ea5e9" opacity="0.3"/>
                     <animate attributeName="opacity" values="0.5;0.8;0.5" dur="3s" repeatCount="indefinite"/>
                 </g>
 
                 <!-- 数据块4 - 右 -->
                 <g>
-                    <rect x="310" y="135" width="35" height="24" rx="4" fill="#7dd3fc" opacity="0.5"/>
-                    <rect x="317" y="142" width="20" height="2.5" rx="1" fill="#fff" opacity="0.4"/>
-                    <rect x="317" y="147" width="14" height="2.5" rx="1" fill="#fff" opacity="0.3"/>
+                    <rect x="363" y="169" width="44" height="30" rx="5" fill="#7dd3fc" opacity="0.5"/>
+                    <rect x="371" y="178" width="25" height="3" rx="1.5" fill="#0ea5e9" opacity="0.4"/>
+                    <rect x="371" y="184" width="18" height="3" rx="1.5" fill="#0ea5e9" opacity="0.3"/>
                     <animate attributeName="opacity" values="0.5;0.8;0.5" dur="3.2s" repeatCount="indefinite"/>
                 </g>
 
+                <!-- 卫星: 数据库圆柱 - 左上 -->
+                <g>
+                    <ellipse cx="130" cy="100" rx="18" ry="7" fill="#38bdf8" opacity="0.6"/>
+                    <rect x="112" y="100" width="36" height="25" fill="#38bdf8" opacity="0.5"/>
+                    <ellipse cx="130" cy="125" rx="18" ry="7" fill="#38bdf8" opacity="0.6"/>
+                    <ellipse cx="130" cy="100" rx="18" ry="7" fill="#7dd3fc" opacity="0.4"/>
+                    <line x1="112" y1="108" x2="148" y2="108" stroke="#0ea5e9" stroke-width="0.8" opacity="0.3"/>
+                    <line x1="112" y1="116" x2="148" y2="116" stroke="#0ea5e9" stroke-width="0.8" opacity="0.3"/>
+                    <animate attributeName="transform" values="translate(0,0);translate(0,-4);translate(0,0)" dur="4.5s" repeatCount="indefinite"/>
+                </g>
+
+                <!-- 卫星: 小云朵 - 右上 -->
+                <g>
+                    <ellipse cx="390" cy="95" rx="28" ry="16" fill="url(#cloudGrad)" opacity="0.7"/>
+                    <circle cx="375" cy="88" r="14" fill="url(#cloudGrad)" opacity="0.7"/>
+                    <circle cx="395" cy="85" r="16" fill="url(#cloudGrad)" opacity="0.7"/>
+                    <circle cx="408" cy="90" r="12" fill="url(#cloudGrad)" opacity="0.7"/>
+                    <animate attributeName="transform" values="translate(0,0);translate(0,-3);translate(0,0)" dur="5s" repeatCount="indefinite"/>
+                </g>
+
                 <!-- 连接线 - 数据流向云 -->
-                <line x1="100" y1="200" x2="160" y2="165" stroke="#38bdf8" stroke-width="1.5" stroke-dasharray="4 3" opacity="0.3">
+                <line x1="125" y1="250" x2="200" y2="206" stroke="#0ea5e9" stroke-width="1.5" stroke-dasharray="4 3" opacity="0.3">
                     <animate attributeName="stroke-dashoffset" values="0;-7" dur="1s" repeatCount="indefinite"/>
                 </line>
-                <line x1="300" y1="195" x2="245" y2="165" stroke="#38bdf8" stroke-width="1.5" stroke-dasharray="4 3" opacity="0.3">
+                <line x1="375" y1="244" x2="306" y2="206" stroke="#0ea5e9" stroke-width="1.5" stroke-dasharray="4 3" opacity="0.3">
                     <animate attributeName="stroke-dashoffset" values="0;-7" dur="1s" repeatCount="indefinite"/>
                 </line>
 
+                <!-- 新增数据流线 - 左下 -->
+                <line x1="90" y1="310" x2="175" y2="260" stroke="#0ea5e9" stroke-width="1.2" stroke-dasharray="3 3" opacity="0.2">
+                    <animate attributeName="stroke-dashoffset" values="0;-6" dur="1.2s" repeatCount="indefinite"/>
+                </line>
+                <!-- 新增数据流线 - 右下 -->
+                <line x1="410" y1="310" x2="325" y2="260" stroke="#0ea5e9" stroke-width="1.2" stroke-dasharray="3 3" opacity="0.2">
+                    <animate attributeName="stroke-dashoffset" values="0;-6" dur="1.2s" repeatCount="indefinite"/>
+                </line>
+
                 <!-- 信号波纹 -->
-                <circle cx="200" cy="140" r="50" fill="none" stroke="#38bdf8" stroke-width="1" opacity="0">
-                    <animate attributeName="r" values="50;80" dur="2s" repeatCount="indefinite"/>
+                <circle cx="250" cy="188" r="63" fill="none" stroke="#38bdf8" stroke-width="1" opacity="0">
+                    <animate attributeName="r" values="63;100" dur="2s" repeatCount="indefinite"/>
                     <animate attributeName="opacity" values="0.3;0" dur="2s" repeatCount="indefinite"/>
                 </circle>
-                <circle cx="200" cy="140" r="50" fill="none" stroke="#38bdf8" stroke-width="1" opacity="0">
-                    <animate attributeName="r" values="50;80" dur="2s" begin="1s" repeatCount="indefinite"/>
+                <circle cx="250" cy="188" r="63" fill="none" stroke="#38bdf8" stroke-width="1" opacity="0">
+                    <animate attributeName="r" values="63;100" dur="2s" begin="1s" repeatCount="indefinite"/>
                     <animate attributeName="opacity" values="0.3;0" dur="2s" begin="1s" repeatCount="indefinite"/>
                 </circle>
 
                 <!-- 星星装饰 -->
-                <g fill="#fff">
-                    <polygon points="80,60 83,68 91,68 85,73 87,81 80,76 73,81 75,73 69,68 77,68">
+                <g fill="#38bdf8">
+                    <polygon points="100,75 104,85 114,85 106,91 109,101 100,95 91,101 94,91 86,85 96,85">
                         <animate attributeName="opacity" values="0.5;1;0.5" dur="2.5s" repeatCount="indefinite"/>
                     </polygon>
-                    <polygon points="340,80 342,86 348,86 343,90 345,96 340,92 335,96 337,90 332,86 338,86" opacity="0.7">
+                    <polygon points="425,100 428,107 435,107 429,112 431,119 425,115 419,119 421,112 415,107 422,107" opacity="0.7">
                         <animate attributeName="opacity" values="0.4;0.9;0.4" dur="3s" repeatCount="indefinite"/>
                     </polygon>
-                    <polygon points="55,180 57,185 62,185 58,188 59,193 55,190 51,193 52,188 48,185 53,185" opacity="0.6">
+                    <polygon points="69,244 71,249 76,249 72,252 73,257 69,254 65,257 66,252 62,249 67,249" opacity="0.6">
                         <animate attributeName="opacity" values="0.3;0.8;0.3" dur="2.8s" repeatCount="indefinite"/>
                     </polygon>
                 </g>
 
                 <!-- 浮动粒子/圆点 -->
-                <circle cx="100" cy="100" r="3" fill="rgba(56,189,248,.5)">
-                    <animate attributeName="cy" values="100;92;100" dur="3.5s" repeatCount="indefinite"/>
+                <circle cx="125" cy="125" r="4" fill="rgba(56,189,248,.5)">
+                    <animate attributeName="cy" values="125;115;125" dur="3.5s" repeatCount="indefinite"/>
                 </circle>
-                <circle cx="310" cy="110" r="2.5" fill="rgba(125,211,252,.4)">
-                    <animate attributeName="cy" values="110;103;110" dur="4s" repeatCount="indefinite"/>
+                <circle cx="388" cy="138" r="3" fill="rgba(125,211,252,.4)">
+                    <animate attributeName="cy" values="138;130;138" dur="4s" repeatCount="indefinite"/>
                 </circle>
-                <circle cx="55" cy="240" r="2" fill="rgba(14,165,233,.5)">
-                    <animate attributeName="cy" values="240;234;240" dur="3s" repeatCount="indefinite"/>
+                <circle cx="69" cy="280" r="3" fill="rgba(14,165,233,.5)">
+                    <animate attributeName="cy" values="280;272;280" dur="3s" repeatCount="indefinite"/>
                 </circle>
-                <circle cx="350" cy="220" r="2.5" fill="rgba(56,189,248,.35)">
-                    <animate attributeName="cy" values="220;214;220" dur="3.2s" repeatCount="indefinite"/>
+                <circle cx="438" cy="263" r="3" fill="rgba(56,189,248,.35)">
+                    <animate attributeName="cy" values="263;256;263" dur="3.2s" repeatCount="indefinite"/>
+                </circle>
+                <!-- 新增浮动粒子 -->
+                <circle cx="170" cy="310" r="2.5" fill="rgba(14,165,233,.4)">
+                    <animate attributeName="cy" values="310;303;310" dur="3.8s" repeatCount="indefinite"/>
+                </circle>
+                <circle cx="350" cy="320" r="2" fill="rgba(56,189,248,.35)">
+                    <animate attributeName="cy" values="320;314;320" dur="4.2s" repeatCount="indefinite"/>
+                </circle>
+                <circle cx="460" cy="180" r="2.5" fill="rgba(125,211,252,.3)">
+                    <animate attributeName="cy" values="180;174;180" dur="3.6s" repeatCount="indefinite"/>
+                </circle>
+                <circle cx="40" cy="160" r="2" fill="rgba(14,165,233,.4)">
+                    <animate attributeName="cy" values="160;154;160" dur="4.5s" repeatCount="indefinite"/>
                 </circle>
 
-                <!-- 几何装饰: 小菱形 -->
-                <rect x="70" y="95" width="8" height="8" rx="1" fill="rgba(56,189,248,.4)" transform="rotate(45 74 99)">
+                <!-- 几何装饰: 菱形 -->
+                <rect x="88" y="119" width="10" height="10" rx="1" fill="rgba(56,189,248,.4)" transform="rotate(45 93 124)">
                     <animate attributeName="opacity" values="0.3;0.7;0.3" dur="4s" repeatCount="indefinite"/>
                 </rect>
-                <rect x="325" y="250" width="6" height="6" rx="1" fill="rgba(125,211,252,.3)" transform="rotate(45 328 253)">
+                <rect x="406" y="313" width="8" height="8" rx="1" fill="rgba(125,211,252,.3)" transform="rotate(45 410 317)">
                     <animate attributeName="opacity" values="0.2;0.6;0.2" dur="3.5s" repeatCount="indefinite"/>
+                </rect>
+                <!-- 新增装饰菱形 -->
+                <rect x="440" y="120" width="7" height="7" rx="1" fill="rgba(14,165,233,.3)" transform="rotate(45 443.5 123.5)">
+                    <animate attributeName="opacity" values="0.2;0.5;0.2" dur="3.8s" repeatCount="indefinite"/>
+                </rect>
+                <rect x="30" y="290" width="6" height="6" rx="1" fill="rgba(56,189,248,.25)" transform="rotate(45 33 293)">
+                    <animate attributeName="opacity" values="0.15;0.45;0.15" dur="4.2s" repeatCount="indefinite"/>
                 </rect>
 
                 <!-- 小三角装饰 -->
-                <polygon points="260,250 264,258 256,258" fill="rgba(14,165,233,.35)">
+                <polygon points="325,313 330,323 320,323" fill="rgba(14,165,233,.35)">
                     <animate attributeName="opacity" values="0.2;0.5;0.2" dur="3s" repeatCount="indefinite"/>
                 </polygon>
+
+                <!-- 底部小服务器 - 左 -->
+                <g>
+                    <rect x="80" y="340" width="36" height="28" rx="4" fill="#38bdf8" opacity="0.5"/>
+                    <rect x="86" y="346" width="24" height="2.5" rx="1" fill="#0ea5e9" opacity="0.4"/>
+                    <rect x="86" y="351" width="18" height="2.5" rx="1" fill="#0ea5e9" opacity="0.3"/>
+                    <circle cx="110" cy="360" r="2" fill="#7dd3fc" opacity="0.6"/>
+                    <animate attributeName="opacity" values="0.5;0.8;0.5" dur="4s" repeatCount="indefinite"/>
+                </g>
+
+                <!-- 底部小服务器 - 右 -->
+                <g>
+                    <rect x="384" y="340" width="36" height="28" rx="4" fill="#38bdf8" opacity="0.5"/>
+                    <rect x="390" y="346" width="24" height="2.5" rx="1" fill="#0ea5e9" opacity="0.4"/>
+                    <rect x="390" y="351" width="18" height="2.5" rx="1" fill="#0ea5e9" opacity="0.3"/>
+                    <circle cx="414" cy="360" r="2" fill="#7dd3fc" opacity="0.6"/>
+                    <animate attributeName="opacity" values="0.5;0.8;0.5" dur="4.3s" repeatCount="indefinite"/>
+                </g>
+
+                <!-- 底部服务器连接线 - 左 -->
+                <line x1="98" y1="340" x2="200" y2="276" stroke="#0ea5e9" stroke-width="1" stroke-dasharray="4 3" opacity="0.25">
+                    <animate attributeName="stroke-dashoffset" values="0;-7" dur="1.5s" repeatCount="indefinite"/>
+                </line>
+                <!-- 底部服务器连接线 - 右 -->
+                <line x1="402" y1="340" x2="300" y2="276" stroke="#0ea5e9" stroke-width="1" stroke-dasharray="4 3" opacity="0.25">
+                    <animate attributeName="stroke-dashoffset" values="0;-7" dur="1.5s" repeatCount="indefinite"/>
+                </line>
             </svg>
 
         </div>
@@ -320,7 +431,7 @@
             var p = pts[k];
             x.beginPath();
             x.arc(p.x, p.y, Math.max(0.5, p.r), 0, Math.PI * 2);
-            x.fillStyle = 'rgba(14, 165, 233, ' + (0.08 + p.r * 0.04) + ')';
+            x.fillStyle = 'rgba(14, 165, 233, ' + (0.12 + p.r * 0.06) + ')';
             x.fill();
             p.x += p.vx;
             p.y += p.vy;

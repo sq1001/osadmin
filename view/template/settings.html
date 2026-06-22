@@ -10,12 +10,13 @@
     .settings-container {
       display: flex;
       gap: 20px;
-      min-height: calc(100vh - 180px);
+      height: calc(100vh - 180px);
     }
 
     .settings-sidebar {
       width: 240px;
       flex-shrink: 0;
+      overflow-y: auto;
     }
 
     .settings-nav-card {
@@ -54,6 +55,7 @@
     .settings-main {
       flex: 1;
       min-width: 0;
+      overflow-y: auto;
     }
 
     .settings-panel {
@@ -106,6 +108,61 @@
       font-size: 12px;
       margin-top: 5px;
       line-height: 1.6;
+    }
+
+    .upload-preview {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .upload-preview-img {
+      width: 64px;
+      height: 64px;
+      border-radius: 8px;
+      border: 1px dashed var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+      background: var(--bg-content);
+      flex-shrink: 0;
+    }
+
+    .upload-preview-img.square {
+      width: 48px;
+      height: 48px;
+      border-radius: 4px;
+    }
+
+    .upload-preview-img img {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+    }
+
+    .upload-preview-img .placeholder-icon {
+      font-size: 24px;
+      color: var(--text-muted);
+    }
+
+    .upload-preview-img.square .placeholder-icon {
+      font-size: 20px;
+    }
+
+    .upload-actions {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .upload-actions .layui-btn {
+      width: fit-content;
+    }
+
+    .upload-tip {
+      font-size: 12px;
+      color: var(--text-muted);
     }
 
     .settings-actions {
@@ -162,6 +219,42 @@
           <div class="settings-panel-body">
             <form class="layui-form settings-form" lay-filter="basicForm">
               <div class="layui-form-item">
+                <label class="layui-form-label">网站Logo</label>
+                <div class="layui-input-block">
+                  <div class="upload-preview">
+                    <div class="upload-preview-img" id="logoPreview">
+                      <i class="layui-icon layui-icon-picture placeholder-icon"></i>
+                    </div>
+                    <div class="upload-actions">
+                      <button type="button" class="layui-btn layui-btn-sm" id="uploadLogo">
+                        <i class="layui-icon layui-icon-upload"></i> 上传Logo
+                      </button>
+                      <span class="upload-tip">建议尺寸 200×60，支持 PNG/SVG</span>
+                    </div>
+                  </div>
+                  <input type="hidden" name="siteLogo" id="siteLogoInput" value="">
+                </div>
+              </div>
+
+              <div class="layui-form-item">
+                <label class="layui-form-label">站点ICO</label>
+                <div class="layui-input-block">
+                  <div class="upload-preview">
+                    <div class="upload-preview-img square" id="icoPreview">
+                      <i class="layui-icon layui-icon-picture placeholder-icon"></i>
+                    </div>
+                    <div class="upload-actions">
+                      <button type="button" class="layui-btn layui-btn-sm" id="uploadIco">
+                        <i class="layui-icon layui-icon-upload"></i> 上传ICO
+                      </button>
+                      <span class="upload-tip">建议 32×32，支持 ICO/PNG</span>
+                    </div>
+                  </div>
+                  <input type="hidden" name="siteIco" id="siteIcoInput" value="">
+                </div>
+              </div>
+
+              <div class="layui-form-item">
                 <label class="layui-form-label">网站名称</label>
                 <div class="layui-input-block">
                   <input type="text" name="siteName" value="OSAdmin 后台管理系统"
@@ -209,11 +302,29 @@
                 </div>
               </div>
 
+              <div class="layui-form-item">
+                <label class="layui-form-label">版权信息</label>
+                <div class="layui-input-block">
+                  <input type="text" name="copyright" value="Copyright © 2025 OSAdmin. All Rights Reserved."
+                         placeholder="请输入版权信息" class="layui-input">
+                  <div class="form-help">显示在页面底部的版权声明</div>
+                </div>
+              </div>
+
+              <div class="layui-form-item">
+                <label class="layui-form-label">备案号</label>
+                <div class="layui-input-block">
+                  <input type="text" name="icpNumber" value=""
+                         placeholder="请输入ICP备案号，如：京ICP备XXXXXXXX号" class="layui-input">
+                  <div class="form-help">网站ICP备案号，留空则不显示</div>
+                </div>
+              </div>
+
               <div class="settings-actions">
                 <button type="reset" class="layui-btn layui-btn-primary">
                   <i class="layui-icon layui-icon-refresh"></i> 重置
                 </button>
-                <button type="button" class="layui-btn layui-btn-normal" lay-submit lay-filter="saveBasic">
+                <button type="button" class="layui-btn" lay-submit lay-filter="saveBasic">
                   <i class="layui-icon layui-icon-ok"></i> 保存设置
                 </button>
               </div>
@@ -274,7 +385,7 @@
                 <button type="reset" class="layui-btn layui-btn-primary">
                   <i class="layui-icon layui-icon-refresh"></i> 重置
                 </button>
-                <button type="button" class="layui-btn layui-btn-normal" lay-submit lay-filter="saveUser">
+                <button type="button" class="layui-btn" lay-submit lay-filter="saveUser">
                   <i class="layui-icon layui-icon-ok"></i> 保存设置
                 </button>
               </div>
@@ -332,7 +443,7 @@
                 <button type="reset" class="layui-btn layui-btn-primary">
                   <i class="layui-icon layui-icon-refresh"></i> 重置
                 </button>
-                <button type="button" class="layui-btn layui-btn-normal" lay-submit lay-filter="saveUpload">
+                <button type="button" class="layui-btn" lay-submit lay-filter="saveUpload">
                   <i class="layui-icon layui-icon-ok"></i> 保存设置
                 </button>
               </div>
@@ -344,10 +455,41 @@
   </div>
 
   <script>
-    layui.use(['form', 'layer'], function() {
+    layui.use(['form', 'layer', 'upload'], function() {
       var form = layui.form;
       var layer = layui.layer;
+      var upload = layui.upload;
       var $ = layui.$;
+
+      // Logo上传
+      upload.render({
+        elem: '#uploadLogo',
+        url: '',
+        auto: false,
+        accept: 'images',
+        acceptMime: 'image/png,image/svg+xml,image/jpeg',
+        choose: function(obj) {
+          obj.preview(function(index, file, result) {
+            $('#logoPreview').html('<img src="' + result + '" alt="Logo预览">');
+            $('#siteLogoInput').val(result);
+          });
+        }
+      });
+
+      // ICO上传
+      upload.render({
+        elem: '#uploadIco',
+        url: '',
+        auto: false,
+        accept: 'images',
+        acceptMime: 'image/x-icon,image/png',
+        choose: function(obj) {
+          obj.preview(function(index, file, result) {
+            $('#icoPreview').html('<img src="' + result + '" alt="ICO预览">');
+            $('#siteIcoInput').val(result);
+          });
+        }
+      });
 
       // 导航切换
       $('.settings-nav-item').on('click', function() {

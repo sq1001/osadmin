@@ -2,7 +2,8 @@
   "code": 0,
   "data": {
     "id": 1,
-    "rolename": "admin",
+    "rolename": "超级管理员",
+    "username": "admin",
     "nickname": "超级管理员测试测试测试长度",
     "avatar": "admin/images/avatar.webp",
     "email": null,
