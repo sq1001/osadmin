@@ -52,7 +52,10 @@ layui.define(['jquery', 'layer', 'form', 'colorpicker', 'watermarkMod'], functio
         submenuFixedWidth: (appConfig.sidebar && appConfig.sidebar.submenuWidth) || 180,
         watermarkEnabled: watermarkConfig.enabled !== false,
         watermarkText: watermarkConfig.text || '',
-        lang: langConfig.default || 'zh-CN'
+        lang: langConfig.default || 'zh-CN',
+        fontSize: 14,
+        borderRadius: 8,
+        breadcrumbVisible: false
       };
 
       this.loadState();
@@ -131,11 +134,14 @@ layui.define(['jquery', 'layer', 'form', 'colorpicker', 'watermarkMod'], functio
 
       this.applyLayout(state.layout);
       this.applyTabsVisible(state.tabsVisible);
+      this.applyBreadcrumbVisible(state.breadcrumbVisible);
       this.applyWatermark(state.watermarkEnabled, state.watermarkText);
       this.applyDensity(state.density);
       this.applySidebarWidth(state.sidebarWidth);
       this.applySubmenuWidth(state.submenuWidth);
       this.applySubmenuFixedWidth(state.submenuFixedWidth);
+      this.applyFontSize(state.fontSize);
+      this.applyBorderRadius(state.borderRadius);
       this.emit('themeChange', state);
     },
 
@@ -183,8 +189,8 @@ layui.define(['jquery', 'layer', 'form', 'colorpicker', 'watermarkMod'], functio
         document.documentElement.animate({
           clipPath: clipPath
         }, {
-          duration: 400,
-          easing: 'ease-out',
+          duration: 600,
+          easing: 'cubic-bezier(0.4, 0, 0.2, 1)',
           pseudoElement: '::view-transition-new(root)'
         });
       });
@@ -289,6 +295,14 @@ layui.define(['jquery', 'layer', 'form', 'colorpicker', 'watermarkMod'], functio
       }
     },
 
+    applyBreadcrumbVisible: function (visible) {
+      if (visible) {
+        $('#breadcrumbContainer').removeClass('hidden');
+      } else {
+        $('#breadcrumbContainer').addClass('hidden');
+      }
+    },
+
     applyWatermark: function (enabled, text) {
       if (this._watermarkInstance) {
         this._watermarkInstance.destroy();
@@ -356,6 +370,20 @@ layui.define(['jquery', 'layer', 'form', 'colorpicker', 'watermarkMod'], functio
       if (isNaN(w) || w < 140) { w = 140; }
       if (w > 240) { w = 240; }
       document.documentElement.style.setProperty('--submenu-fixed-width', w + 'px');
+    },
+
+    applyFontSize: function (size) {
+      var s = parseInt(size, 10);
+      if (isNaN(s) || s < 12) { s = 12; }
+      if (s > 20) { s = 20; }
+      document.documentElement.style.setProperty('--font-size-base', s + 'px');
+    },
+
+    applyBorderRadius: function (radius) {
+      var r = parseInt(radius, 10);
+      if (isNaN(r) || r < 4) { r = 4; }
+      if (r > 20) { r = 20; }
+      document.documentElement.style.setProperty('--border-radius-base', r + 'px');
     },
 
     getWatermarkText: function () {
@@ -446,11 +474,28 @@ layui.define(['jquery', 'layer', 'form', 'colorpicker', 'watermarkMod'], functio
       $('.layout-option[data-layout="' + state.layout + '"]').addClass('active');
       $('#tabsToggle').prop('checked', state.tabsVisible);
       $('#rememberTabsToggle').prop('checked', state.rememberTabs);
+      $('#breadcrumbToggle').prop('checked', state.breadcrumbVisible);
       $('#accordionToggle').prop('checked', state.accordion);
       $('#watermarkToggle').prop('checked', state.watermarkEnabled);
       $('#pageAnimationSelect').val(state.pageAnimation);
       $('#densityToggle').prop('checked', state.density === 'compact');
       $('#sidebarWidthInput').val(state.sidebarWidth);
+      $('#fontSizeInput').val(state.fontSize);
+      $('#borderRadiusInput').val(state.borderRadius);
+
+      // 字体大小预设按钮状态
+      $('#fontSizeInput').closest('.sidebar-width-controls').find('.sidebar-width-preset').removeClass('active');
+      var matchedFontSizePreset = $('#fontSizeInput').closest('.sidebar-width-controls').find('.sidebar-width-preset[data-size="' + state.fontSize + '"]');
+      if (matchedFontSizePreset.length) {
+        matchedFontSizePreset.addClass('active');
+      }
+
+      // 圆角大小预设按钮状态
+      $('#borderRadiusInput').closest('.sidebar-width-controls').find('.sidebar-width-preset').removeClass('active');
+      var matchedBorderRadiusPreset = $('#borderRadiusInput').closest('.sidebar-width-controls').find('.sidebar-width-preset[data-radius="' + state.borderRadius + '"]');
+      if (matchedBorderRadiusPreset.length) {
+        matchedBorderRadiusPreset.addClass('active');
+      }
 
       $('#sidebarWidthInput').closest('.sidebar-width-controls').find('.sidebar-width-preset').removeClass('active');
       var matchedPreset = $('#sidebarWidthInput').closest('.sidebar-width-controls').find('.sidebar-width-preset[data-width="' + state.sidebarWidth + '"]');
@@ -570,6 +615,10 @@ layui.define(['jquery', 'layer', 'form', 'colorpicker', 'watermarkMod'], functio
         self.previewTabsVisible($(this).prop('checked'));
       });
 
+      $(document).on('change', '#breadcrumbToggle', function () {
+        self.previewBreadcrumbVisible($(this).prop('checked'));
+      });
+
       $(document).on('change', '#rememberTabsToggle', function () {
         self.previewRememberTabs($(this).prop('checked'));
       });
@@ -616,6 +665,48 @@ layui.define(['jquery', 'layer', 'form', 'colorpicker', 'watermarkMod'], functio
         } else if ($input.attr('id') === 'submenuFixedWidthInput') {
           self.previewSubmenuFixedWidth(width);
         }
+      });
+
+      // 字体大小
+      $(document).on('input', '#fontSizeInput', function () {
+        var val = parseInt($(this).val(), 10) || 14;
+        if (val < 12) val = 12;
+        if (val > 20) val = 20;
+        self.previewFontSize(val);
+        // 更新预设按钮状态
+        $(this).closest('.sidebar-width-controls').find('.sidebar-width-preset').removeClass('active');
+        var matched = $(this).closest('.sidebar-width-controls').find('.sidebar-width-preset[data-size="' + val + '"]');
+        if (matched.length) matched.addClass('active');
+      });
+
+      // 字体大小预设按钮
+      $(document).on('click', '.sidebar-width-preset[data-size]', function () {
+        var size = parseInt($(this).data('size'), 10);
+        $('#fontSizeInput').val(size);
+        self.previewFontSize(size);
+        $(this).closest('.sidebar-width-controls').find('.sidebar-width-preset').removeClass('active');
+        $(this).addClass('active');
+      });
+
+      // 圆角大小
+      $(document).on('input', '#borderRadiusInput', function () {
+        var val = parseInt($(this).val(), 10) || 8;
+        if (val < 4) val = 4;
+        if (val > 20) val = 20;
+        self.previewBorderRadius(val);
+        // 更新预设按钮状态
+        $(this).closest('.sidebar-width-controls').find('.sidebar-width-preset').removeClass('active');
+        var matched = $(this).closest('.sidebar-width-controls').find('.sidebar-width-preset[data-radius="' + val + '"]');
+        if (matched.length) matched.addClass('active');
+      });
+
+      // 圆角大小预设按钮
+      $(document).on('click', '.sidebar-width-preset[data-radius]', function () {
+        var radius = parseInt($(this).data('radius'), 10);
+        $('#borderRadiusInput').val(radius);
+        self.previewBorderRadius(radius);
+        $(this).closest('.sidebar-width-controls').find('.sidebar-width-preset').removeClass('active');
+        $(this).addClass('active');
       });
     },
 
@@ -676,6 +767,7 @@ layui.define(['jquery', 'layer', 'form', 'colorpicker', 'watermarkMod'], functio
 
       sidebarComp.hideSubmenuPanel();
       sidebarComp.hideDropdownMenu();
+      sidebarComp.updateTopbarMenu();
 
       var currentId = routerModule.getCurrentId();
       if (currentId !== null && currentId !== undefined) {
@@ -689,11 +781,22 @@ layui.define(['jquery', 'layer', 'form', 'colorpicker', 'watermarkMod'], functio
         var allowed = layouts.split(',');
         $(this).toggle(allowed.indexOf(layout) !== -1);
       });
+
+      // 字体大小和圆角配置项在所有布局下都可见
+      $('#fontSizeConfigItem, #borderRadiusConfigItem').show();
     },
 
     previewTabsVisible: function (visible) {
       this.tempState.tabsVisible = visible;
       this.applyTabsVisible(visible);
+    },
+
+    previewBreadcrumbVisible: function (visible) {
+      this.tempState.breadcrumbVisible = visible;
+      this.applyBreadcrumbVisible(visible);
+      if (visible && window.layui && window.layui.sidebarComp) {
+        window.layui.sidebarComp.renderBreadcrumb();
+      }
     },
 
     previewRememberTabs: function (enabled) {
@@ -727,6 +830,16 @@ layui.define(['jquery', 'layer', 'form', 'colorpicker', 'watermarkMod'], functio
     previewSubmenuFixedWidth: function (width) {
       this.tempState.submenuFixedWidth = width;
       this.applySubmenuFixedWidth(width);
+    },
+
+    previewFontSize: function (size) {
+      this.tempState.fontSize = size;
+      this.applyFontSize(size);
+    },
+
+    previewBorderRadius: function (radius) {
+      this.tempState.borderRadius = radius;
+      this.applyBorderRadius(radius);
     },
 
     previewPageAnimation: function (animation) {
@@ -765,6 +878,7 @@ layui.define(['jquery', 'layer', 'form', 'colorpicker', 'watermarkMod'], functio
       if (sidebarComp && routerModule) {
         sidebarComp.hideSubmenuPanel();
         sidebarComp.hideDropdownMenu();
+        sidebarComp.updateTopbarMenu();
         var currentId = routerModule.getCurrentId();
         if (currentId !== null && currentId !== undefined) {
           sidebarComp.setActive(currentId);
@@ -864,11 +978,14 @@ layui.define(['jquery', 'layer', 'form', 'colorpicker', 'watermarkMod'], functio
         case 'changeColor': return p.canChangeColor !== false;
         case 'changeLayout': return p.canChangeLayout !== false;
         case 'toggleTabs': return p.canToggleTabs !== false;
+        case 'toggleBreadcrumb': return p.canToggleBreadcrumb !== false;
         case 'toggleAccordion': return p.canToggleAccordion !== false;
         case 'toggleWatermark': return p.canToggleWatermark !== false;
         case 'changeAnimation': return p.canChangeAnimation !== false;
         case 'changeDensity': return p.canChangeDensity !== false;
         case 'changeSidebarWidth': return p.canChangeSidebarWidth !== false;
+        case 'changeFontSize': return p.canChangeFontSize !== false;
+        case 'changeBorderRadius': return p.canChangeBorderRadius !== false;
         default: return true;
       }
     },
@@ -946,11 +1063,14 @@ layui.define(['jquery', 'layer', 'form', 'colorpicker', 'watermarkMod'], functio
         canChangeColor: true,
         canChangeLayout: true,
         canToggleTabs: true,
+        canToggleBreadcrumb: true,
         canToggleAccordion: true,
         canToggleWatermark: true,
         canChangeAnimation: true,
         canChangeDensity: true,
         canChangeSidebarWidth: true,
+        canChangeFontSize: true,
+        canChangeBorderRadius: true,
         allowedSchemes: ['*'],
         allowedColors: ['*'],
         allowedLayouts: ['*'],

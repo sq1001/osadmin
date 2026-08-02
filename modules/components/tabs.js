@@ -29,6 +29,7 @@ layui.define(['jquery', 'themeModule', 'routerModule'], function(exports) {
     tabs: [],
     activeTabId: null,
     _events: {},
+    _dragSourceIndex: -1,
 
     init: function(config, menu) {
       appConfig = config || {};
@@ -179,12 +180,12 @@ layui.define(['jquery', 'themeModule', 'routerModule'], function(exports) {
       var html = '';
       var self = this;
 
-      this.tabs.forEach(function(tab) {
+      this.tabs.forEach(function(tab, index) {
         var isActive = tab.id === self.activeTabId;
         var closeClass = tab.closable ? 'able-close' : 'disable-close';
         var activeClass = isActive ? 'active' : '';
 
-        html += '<div class="tab-item ' + activeClass + ' ' + closeClass + '" data-id="' + tab.id + '">';
+        html += '<div class="tab-item ' + activeClass + ' ' + closeClass + '" data-id="' + tab.id + '" data-index="' + index + '" draggable="true">';
         html += '<span class="tab-text">' + tab.title + '</span>';
         if (tab.closable) {
           html += '<span class="tab-close"><i class="layui-icon layui-icon-close"></i></span>';
@@ -198,6 +199,55 @@ layui.define(['jquery', 'themeModule', 'routerModule'], function(exports) {
 
     bindEvents: function() {
       var self = this;
+
+      // 拖拽排序事件
+      $('#tabsBar').on('dragstart', '.tab-item', function(e) {
+        var $this = $(this);
+        self._dragSourceIndex = parseInt($this.data('index'), 10);
+        e.originalEvent.dataTransfer.effectAllowed = 'move';
+        e.originalEvent.dataTransfer.setData('text/plain', $this.data('id'));
+        $this.addClass('tab-dragging');
+      });
+
+      $('#tabsBar').on('dragend', '.tab-item', function(e) {
+        $(this).removeClass('tab-dragging');
+        $('.tab-item').removeClass('tab-drag-over');
+        self._dragSourceIndex = -1;
+      });
+
+      $('#tabsBar').on('dragover', '.tab-item', function(e) {
+        e.preventDefault();
+        e.originalEvent.dataTransfer.dropEffect = 'move';
+        $(this).addClass('tab-drag-over');
+      });
+
+      $('#tabsBar').on('dragleave', '.tab-item', function(e) {
+        $(this).removeClass('tab-drag-over');
+      });
+
+      $('#tabsBar').on('drop', '.tab-item', function(e) {
+        e.preventDefault();
+        var $target = $(this);
+        $target.removeClass('tab-drag-over');
+        $('.tab-item').removeClass('tab-drag-over');
+
+        var targetIndex = parseInt($target.data('index'), 10);
+        var sourceIndex = self._dragSourceIndex;
+
+        if (sourceIndex === -1 || sourceIndex === targetIndex) {
+          self._dragSourceIndex = -1;
+          return;
+        }
+
+        // 执行拖拽排序
+        var item = self.tabs.splice(sourceIndex, 1)[0];
+        self.tabs.splice(targetIndex, 0, item);
+
+        self._dragSourceIndex = -1;
+        self.saveTabsState();
+        self.render();
+        self.scrollToActiveTab();
+      });
 
       $('#tabsBar').on('mouseenter', '.tab-item:not(.active)', function(e) {
         var tabId = $(this).data('id');

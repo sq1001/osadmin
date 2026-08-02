@@ -393,6 +393,12 @@
 
     <div class="layui-submenu-panel" id="submenuPanel">
       <div class="layui-submenu-panel-header">
+        <div class="layui-mixed-logo" id="mixedLogo">
+          <div class="layui-logo-icon">
+            <i class="layui-icon layui-icon-loading" id="mixedLogoIcon"></i>
+          </div>
+          <span class="layui-logo-text" id="mixedLogoText">Loading...</span>
+        </div>
         <div class="layui-submenu-panel-title" id="submenuPanelTitle"></div>
       </div>
       <div class="layui-submenu-panel-content" id="submenuPanelContent"></div>
@@ -411,13 +417,20 @@
     <main class="layui-main-wrapper" id="mainWrapper">
       <header class="layui-topbar">
         <div class="layui-topbar-left">
-          <div class="layui-breadcrumb">
-            <span>首页</span>
-            <span class="layui-breadcrumb-sep">/</span>
-            <span class="layui-breadcrumb-current" id="currentPageName">控制台</span>
+          <div class="layui-topbar-logo" id="topbarLogo">
+            <div class="layui-logo-icon">
+              <i class="layui-icon layui-icon-loading" id="topbarLogoIcon"></i>
+            </div>
+            <span class="layui-logo-text" id="topbarLogoText">Loading...</span>
           </div>
+          <div class="layui-topbar-menu" id="topbarMenu"></div>
         </div>
         <div class="layui-topbar-right">
+          <div class="layui-topbar-search" id="topbarSearch">
+            <i class="layui-icon layui-icon-search"></i>
+            <input type="text" id="globalSearchInput" placeholder="搜索菜单..." autocomplete="off">
+            <div class="layui-search-dropdown" id="searchDropdown"></div>
+          </div>
           <div class="layui-topbar-btn-group">
             <button class="layui-topbar-btn" id="reloadBtn" aria-label="刷新页面" title="刷新页面">
               <i class="layui-icon layui-icon-refresh"></i>
@@ -467,6 +480,10 @@
         </div>
       </header>
 
+      <div class="layui-topbar-dropdown" id="topbarDropdown">
+        <div class="layui-topbar-dropdown-content" id="topbarDropdownContent"></div>
+      </div>
+
       <div class="layui-tabs-container hidden" id="tabsContainer">
         <button class="layui-tabs-scroll-btn" id="scrollLeftBtn" aria-label="向左滚动">
           <i class="layui-icon layui-icon-left"></i>
@@ -498,7 +515,19 @@
         </div>
       </div>
 
-      <div class="layui-content-wrapper" id="contentWrapper"></div>
+      <div class="layui-breadcrumb-container hidden" id="breadcrumbContainer">
+        <button class="layui-breadcrumb-scroll-btn" id="breadcrumbScrollLeftBtn" aria-label="向左滚动">
+          <i class="layui-icon layui-icon-left"></i>
+        </button>
+        <div class="layui-breadcrumb-bar" id="breadcrumbBar"></div>
+        <button class="layui-breadcrumb-scroll-btn" id="breadcrumbScrollRightBtn" aria-label="向右滚动">
+          <i class="layui-icon layui-icon-right"></i>
+        </button>
+      </div>
+
+      <div class="layui-content-wrapper" id="contentWrapper">
+        <div class="layui-content-scroll" id="contentScroll"></div>
+      </div>
     </main>
   </div>
 
@@ -663,6 +692,26 @@
             </div>
             <div class="layout-option-label">下拉菜单</div>
           </div>
+          <div class="layout-option" data-layout="topbar">
+            <div class="layout-option-icon">
+              <div class="layout-icon-topbar"></div>
+              <div class="layout-content">
+                <div class="layout-tabs"></div>
+                <div class="layout-body"></div>
+              </div>
+            </div>
+            <div class="layout-option-label">顶栏布局</div>
+          </div>
+          <div class="layout-option" data-layout="mixed">
+            <div class="layout-option-icon">
+              <div class="layout-icon-fixed-sidebar"></div>
+              <div class="layout-content" style="margin-left: 0;">
+                <div class="layout-tabs"></div>
+                <div class="layout-body"></div>
+              </div>
+            </div>
+            <div class="layout-option-label">混合布局</div>
+          </div>
         </div>
       </div>
 
@@ -698,7 +747,7 @@
             </div>
           </div>
         </div>      
-        <div class="config-item layout-config-item" data-layouts="fixed-double">
+        <div class="config-item layout-config-item" data-layouts="fixed-double,mixed">
           <div class="config-item-label-wrapper">
             <span class="config-item-label">子面板宽度</span>
             <span class="config-item-desc">调整固定双列子面板宽度</span>
@@ -715,7 +764,7 @@
         </div>
       </div>
 
-      <div class="config-section" data-permission="toggleTabs toggleAccordion toggleWatermark">
+      <div class="config-section" data-permission="toggleTabs toggleAccordion toggleWatermark toggleBreadcrumb">
         <div class="config-section-title">功能开关</div>
         <div class="config-item" data-permission="toggleTabs">
           <div class="config-item-label-wrapper">
@@ -734,6 +783,16 @@
           </div>
           <label class="toggle-switch">
             <input type="checkbox" id="rememberTabsToggle" checked>
+            <span class="toggle-slider"></span>
+          </label>
+        </div>
+        <div class="config-item" data-permission="toggleBreadcrumb">
+          <div class="config-item-label-wrapper">
+            <span class="config-item-label">面包屑导航</span>
+            <span class="config-item-desc">显示/隐藏面包屑导航栏</span>
+          </div>
+          <label class="toggle-switch">
+            <input type="checkbox" id="breadcrumbToggle">
             <span class="toggle-slider"></span>
           </label>
         </div>
@@ -766,6 +825,40 @@
             <input type="checkbox" id="densityToggle">
             <span class="toggle-slider"></span>
           </label>
+        </div>
+      </div>
+
+      <div class="config-section" data-permission="changeFontSize changeBorderRadius">
+        <div class="config-section-title">显示尺寸</div>
+        <div class="config-item" id="fontSizeConfigItem" data-permission="changeFontSize">
+          <div class="config-item-label-wrapper">
+            <span class="config-item-label">系统字体</span>
+            <span class="config-item-desc">调整系统整体字体大小</span>
+          </div>
+          <div class="sidebar-width-controls">
+            <button type="button" class="sidebar-width-preset" data-size="12">小</button>
+            <button type="button" class="sidebar-width-preset active" data-size="14">默认</button>
+            <button type="button" class="sidebar-width-preset" data-size="16">大</button>
+            <div class="sidebar-width-custom">
+              <input type="number" id="fontSizeInput" min="12" max="20" value="14" class="sidebar-width-input">
+              <span class="sidebar-width-unit">px</span>
+            </div>
+          </div>
+        </div>
+        <div class="config-item" id="borderRadiusConfigItem" data-permission="changeBorderRadius">
+          <div class="config-item-label-wrapper">
+            <span class="config-item-label">组件圆角</span>
+            <span class="config-item-desc">调整系统组件的圆角大小</span>
+          </div>
+          <div class="sidebar-width-controls">
+            <button type="button" class="sidebar-width-preset" data-radius="4">小</button>
+            <button type="button" class="sidebar-width-preset active" data-radius="8">默认</button>
+            <button type="button" class="sidebar-width-preset" data-radius="14">大</button>
+            <div class="sidebar-width-custom">
+              <input type="number" id="borderRadiusInput" min="4" max="20" value="8" class="sidebar-width-input">
+              <span class="sidebar-width-unit">px</span>
+            </div>
+          </div>
         </div>
       </div>
 

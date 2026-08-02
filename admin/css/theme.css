@@ -239,6 +239,42 @@
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.35);
 }
 
+/* 暗色模式: 顶栏菜单下拉 */
+[data-theme="dark"] .layui-topbar-dropdown-content {
+  background: var(--card-bg);
+  border-color: var(--border);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.35);
+}
+
+[data-theme="dark"] .topbar-menu-item:hover {
+  background: var(--bg-sidebar-hover);
+}
+
+[data-theme="dark"] .topbar-menu-item.active {
+  background: var(--accent-light);
+}
+
+[data-theme="dark"] .topbar-dropdown-item:hover {
+  background: var(--bg-content);
+}
+
+[data-theme="dark"] .topbar-dropdown-item.active {
+  background: var(--accent-light);
+}
+
+[data-theme="dark"] .topbar-dropdown-group-title:hover {
+  background: var(--bg-content);
+}
+
+[data-theme="dark"] .topbar-dropdown-divider {
+  background: var(--border);
+}
+
+/* 暗色模式: 混合布局子面板 */
+[data-theme="dark"] body[data-layout="mixed"] .layui-submenu-panel.show {
+  box-shadow: 4px 0 20px rgba(0, 0, 0, 0.3);
+}
+
 .layui-notification-dropdown {
   position: absolute;
   top: 100%;
@@ -705,6 +741,28 @@
   background: var(--accent);
   opacity: 0.3;
   border-radius: 1px;
+}
+
+.layout-option[data-layout="topbar"] .layout-icon-topbar {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 8px;
+  background: var(--accent);
+  opacity: 0.5;
+  border-radius: 3px 3px 0 0;
+}
+
+.layout-option[data-layout="mixed"] .layout-icon-fixed-sidebar {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 10px;
+  height: 100%;
+  background: var(--accent);
+  opacity: 0.5;
+  border-radius: 3px 0 0 3px;
 }
 
 .layout-option-label {

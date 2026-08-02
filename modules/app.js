@@ -147,7 +147,6 @@ layui.define(['jquery', 'util', 'routerModule', 'themeModule', 'sidebarComp', 't
         this.menuConfig = window.OSLAY.menuConfig;
         this.initModules();
         this.initialized = true;
-        console.log('OSLAY initialized');
       } else {
         console.error('[App] OSLAY global not found, config not injected');
       }
@@ -314,10 +313,14 @@ layui.define(['jquery', 'util', 'routerModule', 'themeModule', 'sidebarComp', 't
       
       if (site.name) {
         $('#logoText').text(site.name);
+        $('#topbarLogoText').text(site.name);
+        $('#mixedLogoText').text(site.name);
       }
-      
+
       if (site.logo) {
         $('#logoIcon').replaceWith('<img src="' + site.logo + '" alt="' + (site.name || 'Logo') + '" class="layui-logo-img">');
+        $('#topbarLogoIcon').replaceWith('<img src="' + site.logo + '" alt="' + (site.name || 'Logo') + '" class="layui-logo-img">');
+        $('#mixedLogoIcon').replaceWith('<img src="' + site.logo + '" alt="' + (site.name || 'Logo') + '" class="layui-logo-img">');
       }
       
       this.loadUserinfo();
@@ -457,7 +460,6 @@ layui.define(['jquery', 'util', 'routerModule', 'themeModule', 'sidebarComp', 't
         item.read = true;
       });
       this.renderNotifications();
-      // layer.msg('已全部标记为已读', { icon: 1, time: 1500 });
       toast.success('已全部标记为已读');
     },
 
@@ -510,7 +512,15 @@ layui.define(['jquery', 'util', 'routerModule', 'themeModule', 'sidebarComp', 't
     handleRouteChange: function(routeInfo) {
       var selectId = (this.appConfig.menu && this.appConfig.menu.selectId) || 0;
       var pageId = routeInfo.id !== null && routeInfo.id !== undefined ? routeInfo.id : selectId;
-      
+
+      // 同步router的currentId/currentPath，处理初始化时直接调用本方法绕过router.handleRouteChange的情况
+      if (router.currentId !== pageId) {
+        router.currentId = pageId;
+      }
+      if (routeInfo.path && router.currentPath !== routeInfo.path) {
+        router.currentPath = routeInfo.path;
+      }
+
       tabs.openTab(pageId);
       sidebar.setActive(pageId);
       
@@ -632,17 +642,17 @@ layui.define(['jquery', 'util', 'routerModule', 'themeModule', 'sidebarComp', 't
     },
 
     showLoading: function() {
-      var $wrapper = $('#contentWrapper');
+      var $wrapper = $('#contentScroll');
       $wrapper.removeClass('page-anim-fadeIn page-anim-slideDown page-anim-slideLeft page-anim-slideRight');
       $wrapper.html('<div class="page-loading"><i class="layui-icon layui-icon-loading layui-anim layui-anim-rotate layui-anim-loop"></i></div>');
     },
 
     hideLoading: function() {
-      $('#contentWrapper .page-loading').remove();
+      $('#contentScroll .page-loading').remove();
     },
 
     showContent: function(content) {
-      var $wrapper = $('#contentWrapper');
+      var $wrapper = $('#contentScroll');
       var animation = this.currentAnimation;
 
       this.cleanupBeforePageChange();
@@ -862,7 +872,7 @@ layui.define(['jquery', 'util', 'routerModule', 'themeModule', 'sidebarComp', 't
     },
 
     loadIframeContent: function(url, title) {
-      var $wrapper = $('#contentWrapper');
+      var $wrapper = $('#contentScroll');
       var animation = this.currentAnimation;
       
       $wrapper.removeClass('page-anim-fadeIn page-anim-slideDown page-anim-slideLeft page-anim-slideRight');
@@ -976,27 +986,14 @@ layui.define(['jquery', 'util', 'routerModule', 'themeModule', 'sidebarComp', 't
 
       // 自定义固定条
       util.fixbar({
-        // bars: [{
-        //   type: 'menu',
-        //   icon: 'layui-icon-spread-left',
-        //   style: 'display: none;'
-        // }],
         css: {right: 18, bottom: 18},
         default: true,
-        scroll: '#contentWrapper',
+        scroll: '#contentScroll',
         bgcolor: '',
         margin: 200,
         duration: 300,
         on: {
           mouseenter: function(type) {
-            var tips = {
-              menu: '菜单',
-              top: '回到顶部'
-            };
-            // layer.tips(tips[type] || type, this, {
-            //   tips: 4,
-            //   fixed: true
-            // });
           },
           mouseleave: function(type) {
             layer.closeAll('tips');
@@ -1006,7 +1003,7 @@ layui.define(['jquery', 'util', 'routerModule', 'themeModule', 'sidebarComp', 't
           if (type === 'menu') {
             self.toggleMobileSidebar();
           } else if (type === 'top') {
-            $('#contentWrapper').animate({
+            $('#contentScroll').animate({
               scrollTop: 0
             }, 300);
           }

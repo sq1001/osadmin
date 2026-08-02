@@ -36,6 +36,7 @@
 
 /* LayUI 扩展样式 */
 @import './extends/toast.css';
+@import './extends/drawer.css';
 /* @import './extends/resetForm.css'; */
 
 /* 页面样式 */

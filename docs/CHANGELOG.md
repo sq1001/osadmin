@@ -4,6 +4,61 @@
 
 ---
 
+## v1.9.5 (2026-08-01)
+
+### 布局系统优化
+- **顶部栏布局溢出滚动**：顶栏布局（topbar）新增溢出滚动支持，与混合布局统一由滚动条接管，滚动条高度对齐标签栏（2px）
+- **混合布局子面板宽度配置**：修复混合布局子面板宽度未跟随主题配置生效的问题，统一使用 `--submenu-fixed-width` 变量
+- **顶栏右侧间距规范化**：`.layui-topbar-right` 左边距使用 `var(--space-sm)`（8px），与内部 `gap: 4px` 形成视觉层级
+- **三点菜单死代码清理**：彻底删除顶栏三点菜单（`#topbarMenuMore`）相关 HTML/CSS/JS，统一由滚动条方案处理溢出
+
+### 层级与显示修复
+- **标签栏层级修复**：移除标签栏和面包屑栏的 `z-index` 声明，避免形成独立层叠上下文覆盖顶栏用户下拉菜单，标签栏与面包屑栏层级一致
+- **面包屑位置调整**：面包屑导航功能开关移至"标签页记忆"之后，与标签栏相关功能归组
+- **面包屑刷新同步**：`renderBreadcrumb` 接受 `currentIdOverride`，`handleRouteChange` 同步 `router.currentId`，修复刷新后面包屑只显示"主页"的问题
+
+### 抽屉组件（drawer）完善
+- **挂载逻辑修复**：移除挂载点上移逻辑，直接使用用户指定的 `container`，容器内抽屉正确从容器边缘滑出
+- **最小化堆叠**：实现 `updateMinimizedStackPosition` 横向排列计算，多个最小化抽屉右下角堆叠
+- **最小化拖动**：新增 `bindMinimizedDrag` 支持最小化条带自由拖动
+- **最小化恢复优化**：仅 max-btn 按钮/ESC 触发恢复，标题区域点击不再误触发
+- **最小化关闭优化**：最小化状态直接销毁 DOM，跳过反向滑出动画，避免卡顿感
+- **最小化重排修复**：`destroy(wasMined)` 参数传递，最小化抽屉关闭后正确触发其他最小化抽屉重排
+- **最小化遮罩修复**：最小化状态下遮罩 `display: none`，不阻挡页面操作
+- **最小化层级修复**：最小化 z-index 调整为 1500，低于主题配置面板（2000）
+- **主容器滚动隔离**：`#contentWrapper`（overflow:hidden）+ `.layui-content-scroll`（overflow-y:auto）嵌套结构，解决抽屉随页面滚动问题
+
+### 主题切换优化
+- **动画时长**：明暗主题切换圆形扩散动画 400ms → 600ms，节奏更舒缓
+- **缓动曲线**：`ease-out` → `cubic-bezier(0.4, 0, 0.2, 1)`（Material Design 标准曲线），过渡更自然
+
+### 标签栏拖拽排序
+- **拖拽事件**：tabs.js 新增 `dragstart`/`dragend`/`dragover`/`dragleave`/`drop` 事件委托
+- **排序持久化**：拖拽完成后自动调用 `saveTabsState` 持久化新顺序，并触发表格重渲染与滚动到激活标签
+
+### 全局样式规范化
+- **CSS 变量化**：全局字号/圆角通过 `--font-size-base`/`--border-radius-base` 变量驱动，body 设置 `font-size: var(--font-size-base)`
+- **重复定义合并**：合并 `body[data-layout="mixed"] .layui-topbar-menu` 两处重复定义为单一定义
+- **滚动条样式修复**：2px 滚动条添加 `border: none` 覆盖全局 thumb 样式，避免渲染异常
+- **暗色模式补全**：theme.css 补充顶栏菜单下拉（`layui-topbar-dropdown-content`/`topbar-menu-item`/`topbar-dropdown-item`）和混合布局子面板阴影的暗色模式样式
+- **布局图标样式**：theme.css 为顶栏布局/混合布局在主题选择面板中的图标样式补全（`layout-icon-topbar`/`layout-icon-fixed-sidebar`）
+- **抽屉样式导入**：index.css 新增 `@import './extends/drawer.css'`
+
+### 代码规范化清理
+- **drawer.js**：常量命名 `zIndexBase`/`zIndexStep` → `Z_INDEX_BASE`/`Z_INDEX_STEP`，删除未使用变量 `isVertical`，修复错误注释，简化冗余条件
+- **sidebar.js**：清理 emoji 注释，统一双引号为单引号，简化 `isMobile` 三元嵌套，L1127-L1611 缩进统一为 4 空格
+- **app.js**：删除 `console.log('OSLAY initialized')` 调试残留，清理 fixbar 注释代码块，删除未使用 `tips` 变量
+- **permission-demo.html**：修正 API 引用 `modules.permission` → `modules.permissionModule`（与 index.js 中 coreModules 注册键名一致）
+- **语法验证**：全框架 12 个 JS 文件 `node -c` 语法检查通过
+
+### 配置同步
+- **config/rolesTheme.json**：补充 `changeFontSize`/`changeBorderRadius`/`toggleBreadcrumb` 权限配置项
+
+### .gitignore 更新
+- 新增 `scripts/` 目录忽略，禁止临时脚本文件推送
+
+---
+
 ## v1.9.4 (2026-06-20)
 
 ### Toast 模块重构

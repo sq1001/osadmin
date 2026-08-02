@@ -84,3 +84,6 @@ upload/
 
 # LayUI 官方样式（不需要上传，后续更新从官方获取）
 admin/css/layui-override/modules官方样式/
+
+# 脚本临时文件目录（禁止推送）
+scripts/

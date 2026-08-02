@@ -74,7 +74,7 @@
       <pre class="layui-code" lay-options="{header: true, title: 'API 示例'}">
 // 方式1: 通过 OSLAY 全局对象
 OSLAY.ready(function(modules) {
-  var permission = modules.permission;
+  var permission = modules.permissionModule;
   
   // 检查单个权限
   if (permission.hasPermission('user-edit')) {
@@ -212,7 +212,7 @@ layui.use(['permissionModule'], function() {
 
 <script>
 OSLAY.ready(function(modules) {
-  var permission = modules.permission;
+  var permission = modules.permissionModule;
   var $ = layui.$;
   
   // 显示权限状态

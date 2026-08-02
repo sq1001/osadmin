@@ -22,19 +22,50 @@ layui.define(['jquery', 'layer', 'themeModule', 'routerModule', 'commonMod'], fu
   var layer = layui.layer;
   var common = layui.commonMod;
   var menuData = null;
+  var sidebarConfig = null;
 
   var Sidebar = {
     collapsed: false,
   currentSubmenuPanel: null,
   currentDropdownMenu: null,
+  currentTopbarDropdown: null,
   // 保存每个顶级菜单对应的子菜单展开状态
   submenuPanelExpandedStates: {},
 
     init: function(config) {
       menuData = config ? (config.data || []) : [];
+      sidebarConfig = config || {};
       this.render();
+      this.renderTopbarMenu();
       this.loadCollapseState();
       this.bindEvents();
+      this.bindTopbarMenuEvents();
+      this.bindBreadcrumbEvents();
+      this.initGlobalSearch();
+      // 初始化时主动渲染面包屑（如果可见）
+      var $bc = $('#breadcrumbContainer');
+      if ($bc.length && !$bc.hasClass('hidden')) {
+        this.renderBreadcrumb();
+      }
+      // 混合布局初始化：默认显示第一个目录的子菜单
+      var state = theme && theme.getState ? theme.getState() : { layout: 'double' };
+      if (state.layout === 'mixed' && menuData.length > 0) {
+        var firstDir = null;
+        for (var i = 0; i < menuData.length; i++) {
+          if (this.getMenuItemType(menuData[i]) === 0 && menuData[i].children && menuData[i].children.length > 0) {
+            firstDir = menuData[i];
+            break;
+          }
+        }
+        if (firstDir) {
+          var firstId = firstDir.id !== undefined ? firstDir.id : firstDir.code;
+          var $firstItem = $('.menu-item[data-id="' + firstId + '"]');
+          this.showSubmenuPanel(firstId, $firstItem);
+          // 默认激活第一个目录的顶栏菜单项
+          $('.topbar-menu-item').removeClass('active');
+          $('.topbar-menu-item[data-id="' + firstId + '"]').addClass('active');
+        }
+      }
       return this;
     },
 
@@ -374,7 +405,7 @@ layui.define(['jquery', 'layer', 'themeModule', 'routerModule', 'commonMod'], fu
         if (!$(e.target).closest('.layui-sidebar, .layui-submenu-panel, .layui-dropdown-menu-panel-wrapper, .layui-mobile-menu-fab, .layui-theme-config-panel').length) {
           var state = theme.getState();
           
-          if (state.layout !== 'fixed-double' && state.layout !== 'double') {
+          if (state.layout !== 'fixed-double' && state.layout !== 'double' && state.layout !== 'mixed') {
             self.hideSubmenuPanel();
             self.hideDropdownMenu();
             self.closeAllNestedDropdowns();
@@ -415,7 +446,7 @@ layui.define(['jquery', 'layer', 'themeModule', 'routerModule', 'commonMod'], fu
         
         var state = theme.getState();
         
-        if (state.layout === 'double' || state.layout === 'fixed-double') {
+        if (state.layout === 'double' || state.layout === 'fixed-double' || state.layout === 'mixed') {
           this.showSubmenuPanel(menuId, $el);
           this.hideDropdownMenu();
         } else {
@@ -456,7 +487,7 @@ layui.define(['jquery', 'layer', 'themeModule', 'routerModule', 'commonMod'], fu
           title: ' ',
           content: href,
           closeBtn: 1,
-          area: [common.isMobile()?"100%":"550px", common.isMobile()?"100%":"600px"],
+          area: common.isMobile() ? ['100%', '100%'] : ['550px', '600px'],
           shadeClose: true,
           maxmin: true
         });
@@ -716,7 +747,7 @@ layui.define(['jquery', 'layer', 'themeModule', 'routerModule', 'commonMod'], fu
 
       this.currentDropdownMenu = menuId;
 
-      // ✅ 读取触发元素位置
+      // 读取触发元素位置
       var rect = $triggerEl[0].getBoundingClientRect();
       var panelWidth = 180;
       var viewportWidth = window.innerWidth;
@@ -870,6 +901,10 @@ layui.define(['jquery', 'layer', 'themeModule', 'routerModule', 'commonMod'], fu
       $('.submenu-panel-dropdown.show').removeClass('show');
       $('.dropdown-menu-group.open').removeClass('open');
       $('.dropdown-submenu.show').removeClass('show');
+      $('.topbar-dropdown-group.open').removeClass('open');
+      $('.topbar-dropdown-submenu.show').removeClass('show');
+      
+      this.hideTopbarDropdown();
       
       if (this.currentSubmenuPanel && this.submenuPanelExpandedStates[this.currentSubmenuPanel]) {
         this.submenuPanelExpandedStates[this.currentSubmenuPanel] = {};
@@ -935,7 +970,7 @@ layui.define(['jquery', 'layer', 'themeModule', 'routerModule', 'commonMod'], fu
     },
 
     setActive: function(pageId, options) {
-      $('.menu-item.active, .submenu-item.active, .submenu-panel-item.active, .submenu-panel-group-title.active, .submenu-panel-dropdown-item.active, .dropdown-menu-item.active, .dropdown-menu-group-title.active, .nested-dropdown-item.active')
+      $('.menu-item.active, .submenu-item.active, .submenu-panel-item.active, .submenu-panel-group-title.active, .submenu-panel-dropdown-item.active, .dropdown-menu-item.active, .dropdown-menu-group-title.active, .nested-dropdown-item.active, .topbar-menu-item.active, .topbar-dropdown-item.active')
         .removeClass('active');
 
       var self = this;
@@ -965,12 +1000,19 @@ layui.define(['jquery', 'layer', 'themeModule', 'routerModule', 'commonMod'], fu
             $triggerItem = $item;
           }
         });
+        
+        // 同步顶栏菜单激活状态
+        $('.topbar-menu-item').each(function() {
+          if ($(this).data('id') === topItemId) {
+            $(this).addClass('active');
+          }
+        });
       }
 
       if (isMobile) {
         this.setActiveItems(pageId, menuPath, state);
       }
-      else if ((state.layout === 'double' || state.layout === 'fixed-double') && menuPath.length > 0 && $triggerItem) {
+      else if ((state.layout === 'double' || state.layout === 'fixed-double' || state.layout === 'mixed') && menuPath.length > 0 && $triggerItem) {
         if (this.currentSubmenuPanel !== topItemId) {
           this.showSubmenuPanel(topItemId, $triggerItem, pageId);
         } else {
@@ -979,6 +1021,12 @@ layui.define(['jquery', 'layer', 'themeModule', 'routerModule', 'commonMod'], fu
       }
       else {
         this.setActiveItems(pageId, menuPath, state);
+      }
+
+      // 同步面包屑导航（只要容器可见就渲染，传入当前pageId确保刷新后立即对应）
+      var $bc = $('#breadcrumbContainer');
+      if ($bc.length && !$bc.hasClass('hidden')) {
+        this.renderBreadcrumb(pageId);
       }
     },
     
@@ -1070,8 +1118,498 @@ layui.define(['jquery', 'layer', 'themeModule', 'routerModule', 'commonMod'], fu
           $dropdownGroup.find('.dropdown-submenu').first().addClass('show');
         }
       }
+    },
+
+    // ============================================================
+    // 顶栏菜单 — 用于顶栏布局(topbar)和混合布局(mixed)
+    // ============================================================
+
+    renderTopbarMenu: function() {
+      var $container = $('#topbarMenu');
+      var $dropdown = $('#topbarDropdownContent');
+      if (!$container.length) return;
+      
+      $container.empty();
+      
+      // 只渲染一级菜单（type=0 或 type=1 的顶级项）
+      var html = '';
+      var self = this;
+      
+      menuData.forEach(function(item) {
+        if (item.hidden) return;
+        var itemId = item.id !== undefined ? item.id : item.code;
+        var itemType = self.getMenuItemType(item);
+        var hasChildren = itemType === 0;
+        
+        html += '<div class="topbar-menu-item" data-id="' + itemId + '" data-type="' + itemType + '"';
+        if (!hasChildren && item.href) {
+          html += ' data-href="' + item.href + '"';
+        }
+        if (item.openType) {
+          html += ' data-open-type="' + item.openType + '"';
+        }
+        html += '>';
+        html += '<span class="menu-icon"><i class="layui-icon ' + item.icon + '"></i></span>';
+        html += '<span class="menu-text">' + item.title + '</span>';
+        if (hasChildren) {
+          html += '<span class="menu-arrow"><i class="layui-icon layui-icon-down"></i></span>';
+        }
+        html += '</div>';
+      });
+      
+      $container.html(html);
+
+      // 应用顶栏激活状态
+      this.updateTopbarActiveState();
+    },
+
+    updateTopbarActiveState: function() {
+      var currentId = null;
+      if (window.layui && window.layui.routerModule) {
+        currentId = window.layui.routerModule.getCurrentId();
+      }
+      if (currentId === null || currentId === undefined) return;
+      
+      // 找到当前页面对应的顶级菜单
+      var menuPath = this.findMenuPath(menuData, currentId);
+      if (menuPath.length === 0) return;
+      
+      var topItem = menuPath[0];
+      var topItemId = topItem.id !== undefined ? topItem.id : topItem.code;
+      
+      $('.topbar-menu-item').removeClass('active');
+      $('.topbar-menu-item[data-id="' + topItemId + '"]').addClass('active');
+    },
+
+    handleTopbarMenuItemClick: function(itemId, $el) {
+      var item = this.findMenu(itemId);
+      if (!item) return;
+      
+      var itemType = this.getMenuItemType(item);
+      var isDirectory = itemType === 0;
+      var state = theme && theme.getState ? theme.getState() : { layout: 'topbar' };
+      
+      if (isDirectory) {
+        // 目录类型：显示下拉菜单或联动侧边栏面板
+        if (state.layout === 'mixed') {
+          // 混合布局：展开侧边栏面板显示嵌套菜单
+          this.handleTopbarMixedLayoutClick(itemId, $el);
+        } else {
+          // 顶栏布局：显示下拉菜单
+          this.showTopbarDropdown(itemId, $el);
+        }
+        return;
+      }
+      
+      // 菜单类型：直接导航
+      var href = item.href;
+      var openType = item.openType;
+      var isExternal = href && this.isExternalUrl(href);
+      
+      if (this.currentTopbarDropdown) {
+        this.hideTopbarDropdown();
+      }
+      
+      if (isExternal && openType === '_blank') {
+        window.open(href, '_blank');
+        return;
+      }
+      
+      if (isExternal && openType === '_dialog') {
+        layer.open({
+          type: 2,
+          title: ' ',
+          content: href,
+          closeBtn: 1,
+          area: common && common.isMobile() ? ['100%', '100%'] : ['550px', '600px'],
+          shadeClose: true,
+          maxmin: true
+        });
+        return;
+      }
+
+      if (window.layui && window.layui.routerModule) {
+        window.layui.routerModule.navigateById(itemId);
+      }
+    },
+
+    handleTopbarMixedLayoutClick: function(menuId, $el) {
+      // 混合布局：点击顶栏一级菜单 → 切换常驻子面板内容（不 toggle 隐藏）
+      // 找到对应的侧边栏菜单项并触发子面板更新
+      var $sidebarMenuItem = $('.menu-item[data-id="' + menuId + '"]');
+      if ($sidebarMenuItem.length) {
+        this.showSubmenuPanel(menuId, $sidebarMenuItem);
+      }
+
+      // 更新顶栏激活状态
+      $('.topbar-menu-item').removeClass('active');
+      $el.addClass('active');
+    },
+
+    showTopbarDropdown: function(menuId, $triggerEl) {
+      var menu = this.findMenu(menuId);
+      if (!menu || !menu.children) return;
+      
+      this.currentTopbarDropdown = menuId;
+      
+      var html = this.buildTopbarDropdownHTML(menu.children, 2);
+      $('#topbarDropdownContent').html(html);
+      
+      // 定位下拉菜单
+      var rect = $triggerEl[0].getBoundingClientRect();
+      var $dropdown = $('#topbarDropdown');
+      var dropdownWidth = Math.min(260, Math.max(180, rect.width + 40));
+      
+      var left = rect.left;
+      var top = rect.bottom + 4;
+      
+      // 防止溢出右侧
+      if (left + dropdownWidth > window.innerWidth - 16) {
+        left = window.innerWidth - dropdownWidth - 16;
+      }
+      if (left < 8) left = 8;
+      
+      $dropdown.css({
+        left: left + 'px',
+        top: top + 'px',
+        minWidth: dropdownWidth + 'px'
+      });
+      
+      $dropdown.addClass('show');
+      
+      // 绑定下拉菜单事件
+      this.bindTopbarDropdownEvents();
+    },
+
+    hideTopbarDropdown: function() {
+      $('#topbarDropdown').removeClass('show');
+      this.currentTopbarDropdown = null;
+    },
+
+    buildTopbarDropdownHTML: function(children, level) {
+      var self = this;
+      var html = '';
+      
+      children.forEach(function(child) {
+        var childIcon = child.icon || 'layui-icon-circle';
+        var childType = self.getMenuItemType(child);
+        var isDirectory = childType === 0;
+        var itemId = child.id !== undefined ? child.id : child.code;
+        var isExternal = !isDirectory && child.href && self.isExternalUrl(child.href);
+        
+        if (isDirectory) {
+          // 目录：折叠分组
+          html += '<div class="topbar-dropdown-group" data-id="' + itemId + '" data-type="' + childType + '">';
+          html += '<div class="topbar-dropdown-group-title" data-id="' + itemId + '" data-level="' + level + '" data-has-dropdown="true">';
+          html += '<span class="menu-icon"><i class="layui-icon ' + childIcon + '"></i></span>';
+          html += '<span class="menu-text">' + child.title + '</span>';
+          html += '<span class="menu-dropdown-arrow"><i class="layui-icon layui-icon-right"></i></span>';
+          html += '</div>';
+          html += '<div class="topbar-dropdown-submenu">';
+          html += self.buildTopbarDropdownHTML(child.children, level + 1);
+          html += '</div>';
+          html += '</div>';
+        } else {
+          html += '<a class="topbar-dropdown-item" data-id="' + itemId + '" data-level="' + level + '" data-type="' + childType + '"';
+          if (child.href) {
+            html += ' data-href="' + child.href + '"';
+          }
+          if (child.openType) {
+            html += ' data-open-type="' + child.openType + '"';
+          }
+          if (isExternal) {
+            html += ' data-external="true"';
+          }
+          html += '>';
+          html += '<span class="menu-icon"><i class="layui-icon ' + childIcon + '"></i></span>';
+          html += '<span class="menu-text">' + child.title + '</span>';
+          html += '</a>';
+        }
+      });
+      
+      return html;
+    },
+
+    bindTopbarMenuEvents: function() {
+      var self = this;
+      
+      // 顶栏菜单项点击
+      $(document).on('click', '.topbar-menu-item', function(e) {
+        e.stopPropagation();
+        var $this = $(this);
+        var itemId = $this.data('id');
+        self.handleTopbarMenuItemClick(itemId, $this);
+      });
+
+      // 点击文档关闭顶栏下拉
+      $(document).on('click', function(e) {
+        if (!$(e.target).closest('.layui-topbar-menu, .layui-topbar-dropdown').length) {
+          self.hideTopbarDropdown();
+        }
+      });
+    },
+
+    bindTopbarDropdownEvents: function() {
+      var self = this;
+      
+      // 清除所有点击事件处理（包括溢出菜单的），重新绑定常规下拉菜单专用处理
+      $('#topbarDropdownContent').off('click');
+      
+      // 下拉菜单项点击
+      $('#topbarDropdownContent').on('click', '.topbar-dropdown-item', function(e) {
+        e.preventDefault();
+        e.stopPropagation();
+        var $this = $(this);
+        var pageId = $this.data('id');
+        var itemType = $this.data('type');
+        var href = $this.data('href');
+        var openType = $this.data('open-type');
+        var isExternal = $this.data('external') === true || $this.data('external') === 'true';
+        
+        self.hideTopbarDropdown();
+        
+        if (itemType === 0) return;
+        
+        if (isExternal && openType === '_blank') {
+          window.open(href, '_blank');
+          return;
+        }
+        
+        if (isExternal && openType === '_dialog') {
+          layer.open({
+            type: 2,
+            title: ' ',
+            content: href,
+            closeBtn: 1,
+            area: common && common.isMobile() ? ['100%', '100%'] : ['550px', '600px'],
+            shadeClose: true,
+            maxmin: true
+          });
+          return;
+        }
+
+        if (window.layui && window.layui.routerModule) {
+          window.layui.routerModule.navigateById(pageId);
+        }
+      });
+      
+      // 分组标题点击（展开/折叠子菜单）
+      $('#topbarDropdownContent').off('click', '.topbar-dropdown-group-title').on('click', '.topbar-dropdown-group-title', function(e) {
+        e.preventDefault();
+        e.stopPropagation();
+        var $group = $(this).closest('.topbar-dropdown-group');
+        var $submenu = $group.find('.topbar-dropdown-submenu').first();
+        var wasOpen = $group.hasClass('open');
+
+        $group.toggleClass('open', !wasOpen);
+        $submenu.toggleClass('show', !wasOpen);
+      });
+    },
+
+    updateTopbarMenu: function() {
+      this.renderTopbarMenu();
+    },
+
+    // ============================================================
+    // 面包屑导航栏
+    // ============================================================
+    renderBreadcrumb: function(currentIdOverride) {
+      var $bar = $('#breadcrumbBar');
+      if (!$bar.length) return;
+
+      var currentId = currentIdOverride !== undefined ? currentIdOverride : null;
+      if (currentId === null || currentId === undefined) {
+        if (window.layui && window.layui.routerModule) {
+          currentId = window.layui.routerModule.getCurrentId();
+        }
+      }
+      if (currentId === null || currentId === undefined) {
+        $bar.html('<span class="breadcrumb-item active">主页</span>');
+        return;
+      }
+
+      var menuPath = this.findMenuPath(menuData, currentId);
+      var html = '';
+      var self = this;
+
+      // 菜单路径（从一级菜单开始，不添加首页）
+      menuPath.forEach(function(item, index) {
+        var itemId = item.id !== undefined ? item.id : item.code;
+        var isLast = index === menuPath.length - 1;
+        var icon = item.icon || 'layui-icon-circle';
+        var itemType = self.getMenuItemType(item);
+
+        if (index > 0) {
+          html += '<span class="breadcrumb-separator"><i class="layui-icon layui-icon-right"></i></span>';
+        }
+
+        if (isLast) {
+          html += '<span class="breadcrumb-item active"><i class="layui-icon ' + icon + '"></i><span>' + item.title + '</span></span>';
+        } else if (itemType === 1 && item.href) {
+          html += '<span class="breadcrumb-item clickable" data-id="' + itemId + '"><i class="layui-icon ' + icon + '"></i><span>' + item.title + '</span></span>';
+        } else {
+          html += '<span class="breadcrumb-item"><i class="layui-icon ' + icon + '"></i><span>' + item.title + '</span></span>';
+        }
+      });
+
+      $bar.html(html);
+
+      // 可点击面包屑导航
+      $bar.off('click', '.breadcrumb-item.clickable').on('click', '.breadcrumb-item.clickable', function(e) {
+        e.preventDefault();
+        e.stopPropagation();
+        var id = $(this).data('id');
+        if (window.layui && window.layui.routerModule) {
+          window.layui.routerModule.navigateById(id);
+        }
+      });
+
+      // 滚动到末尾
+      setTimeout(function() {
+        $bar.scrollLeft($bar[0].scrollWidth);
+        self.updateBreadcrumbScrollButtons();
+      }, 50);
+    },
+
+    bindBreadcrumbEvents: function() {
+      var self = this;
+      var $container = $('#breadcrumbContainer');
+      var $bar = $('#breadcrumbBar');
+
+      // 滚动按钮
+      $container.find('#breadcrumbScrollLeftBtn').on('click', function() {
+        $bar.stop(true).animate({ scrollLeft: '-=200' }, 200, function() {
+          self.updateBreadcrumbScrollButtons();
+        });
+      });
+
+      $container.find('#breadcrumbScrollRightBtn').on('click', function() {
+        $bar.stop(true).animate({ scrollLeft: '+=200' }, 200, function() {
+          self.updateBreadcrumbScrollButtons();
+        });
+      });
+
+      // 滚动时更新按钮状态
+      $bar.on('scroll', function() {
+        self.updateBreadcrumbScrollButtons();
+      });
+
+      // 窗口大小变化时更新按钮状态
+      $(window).on('resize', function() {
+        self.updateBreadcrumbScrollButtons();
+      });
+
+      // 初始状态
+      setTimeout(function() {
+        self.updateBreadcrumbScrollButtons();
+      }, 100);
+    },
+
+    updateBreadcrumbScrollButtons: function() {
+      var $bar = $('#breadcrumbBar');
+      var el = $bar[0];
+      if (!el) return;
+
+      var scrollWidth = el.scrollWidth;
+      var barWidth = $bar.width();
+      var currentScroll = el.scrollLeft;
+      var maxScroll = scrollWidth - barWidth - 1;
+
+      var needScroll = scrollWidth > barWidth;
+
+      $('#breadcrumbScrollLeftBtn').prop('disabled', !needScroll || currentScroll <= 0);
+      $('#breadcrumbScrollRightBtn').prop('disabled', !needScroll || currentScroll >= maxScroll);
+    },
+
+    // ============================================================
+    // 全局搜索
+    // ============================================================
+    initGlobalSearch: function() {
+      var self = this;
+      var $input = $('#globalSearchInput');
+      var $dropdown = $('#searchDropdown');
+      if (!$input.length) return;
+
+      $input.on('input', function() {
+        var keyword = $(this).val().trim().toLowerCase();
+        if (!keyword) {
+          $dropdown.removeClass('show');
+          return;
+        }
+
+        var results = self.searchMenu(keyword);
+        if (results.length === 0) {
+          $dropdown.html('<div class="search-empty">未找到匹配的菜单</div>');
+        } else {
+          var html = '';
+          results.forEach(function(item) {
+            var pathText = item.path.join(' / ');
+            html += '<div class="search-result-item" data-id="' + item.id + '">';
+            html += '<i class="layui-icon ' + (item.icon || 'layui-icon-circle') + '"></i>';
+            html += '<span>' + item.title + '</span>';
+            html += '<span class="search-result-path">' + pathText + '</span>';
+            html += '</div>';
+          });
+          $dropdown.html(html);
+        }
+        $dropdown.addClass('show');
+      });
+
+      $input.on('focus', function() {
+        if ($(this).val().trim()) {
+          $dropdown.addClass('show');
+        }
+      });
+
+      // 点击搜索结果导航
+      $dropdown.on('click', '.search-result-item', function(e) {
+        e.preventDefault();
+        var id = $(this).data('id');
+        $dropdown.removeClass('show');
+        $input.val('');
+        if (window.layui && window.layui.routerModule) {
+          window.layui.routerModule.navigateById(id);
+        }
+      });
+
+      // 点击外部关闭
+      $(document).on('click', function(e) {
+        if (!$(e.target).closest('.layui-topbar-search').length) {
+          $dropdown.removeClass('show');
+        }
+      });
+    },
+
+    searchMenu: function(keyword) {
+      var results = [];
+      var self = this;
+
+      function traverse(items, path) {
+        items.forEach(function(item) {
+          if (item.hidden) return;
+          var title = (item.title || '').toLowerCase();
+          var currentPath = path.concat([item.title || '']);
+          var itemType = self.getMenuItemType(item);
+
+          if (title.indexOf(keyword) !== -1 && itemType === 1) {
+            results.push({
+              id: item.id !== undefined ? item.id : item.code,
+              title: item.title,
+              icon: item.icon,
+              path: currentPath
+            });
+          }
+
+          if (item.children && item.children.length > 0) {
+            traverse(item.children, currentPath);
+          }
+        });
+      }
+
+      traverse(menuData, []);
+      return results.slice(0, 20);
     }
-  };
+};
 
   exports('sidebarComp', Sidebar);
 });
