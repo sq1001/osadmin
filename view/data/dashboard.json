@@ -61,7 +61,7 @@
     },
     "sysInfo": {
       "systemVersion": "OSAdmin v1.9.5",
-      "framework": "Layui 2.10.x",
+      "framework": "Layui 2.13.8",
       "runtime": "Node.js 20.x",
       "server": "Nginx 1.24.0",
       "database": "MySQL 8.0",
