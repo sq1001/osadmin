@@ -2535,10 +2535,20 @@ body {
   cursor: grabbing;
 }
 
-/* 拖拽目标：仅通过单侧指示线提示插入方向，不做整体高亮，避免视觉干扰 */
+/* 拖拽目标：单侧边框变色 + 单侧插入指示线，明确提示插入方向 */
 .tab-item.tab-drag-over-left,
 .tab-item.tab-drag-over-right {
   position: relative;
+}
+
+/* 左半区：左侧边框变色（2px 外阴影实现，不影响布局） */
+.tab-item.tab-drag-over-left {
+  box-shadow: -2px 0 0 var(--accent);
+}
+
+/* 右半区：右侧边框变色 */
+.tab-item.tab-drag-over-right {
+  box-shadow: 2px 0 0 var(--accent);
 }
 
 /* 左侧插入指示线：仅在鼠标处于目标标签左半区时显示 */

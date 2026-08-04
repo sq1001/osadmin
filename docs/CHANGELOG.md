@@ -8,18 +8,27 @@
 
 ### 标签栏拖拽插入指示线优化
 - **单侧显示插入方向**：dragover 事件根据鼠标 `e.clientX` 与目标标签 `getBoundingClientRect()` 中点比较，判定鼠标处于目标标签左半区或右半区，仅点亮对应一侧的插入指示线（`::before` 左 / `::after` 右），替代原来"目标标签左右两边同时显示指示线"的模糊视觉
-- **移除整体高亮干扰**：删除 `.tab-drag-over` 类的整体背景色与 1px 外发光边框，避免与单侧指示线叠加造成视觉冗余，目标标签仅保留 `position: relative` 以承载伪元素指示线
-- **CSS 类名拆分**：原 `.tab-drag-over` 拆分为 `.tab-drag-over-left` 与 `.tab-drag-over-right` 两个独立类，分别承载 `::before`（left:-2px）与 `::after`（right:-2px）单侧 3px 指示线，颜色为 `var(--accent)` + 6px 发光阴影
+- **单侧边框变色**：恢复边框变色效果，但改为单侧——左半区 `box-shadow: -2px 0 0 var(--accent)` 点亮左边框，右半区 `box-shadow: 2px 0 0 var(--accent)` 点亮右边框，与单侧插入指示线配合，明确提示插入方向
+- **CSS 类名拆分**：原 `.tab-drag-over` 拆分为 `.tab-drag-over-left` 与 `.tab-drag-over-right` 两个独立类，分别承载单侧边框变色 + 单侧 `::before`/`::after` 3px 指示线
 - **drop 索引精确修正**：drop 时根据左/右半区计算目标插入位置（左半→目标索引，右半→目标索引+1），并修正 `splice` 移除源后的索引偏移（`sourceIndex < targetInsertPosition` 时插入索引 -1），避免跨向拖拽时位置错乱
 - **边界无操作判定**：拖回自身位置（含拖到相邻标签贴近侧，即 `sourceIndex === targetInsertPosition` 或 `sourceIndex + 1 === targetInsertPosition`）直接 return，不触发状态保存与重渲染
+
+### Cloudflare Pages 部署卡死骨架屏修复
+- **添加 `_redirects` 文件**：配置 `/* /index.html 200` SPA fallback，CF Pages 在文件不存在时回退到 `index.html`，文件存在时直接返回不受影响，保证 hash 路由正常工作
+- **骨架屏超时保护**：`init.js` 新增 8 秒超时定时器 `OSLAY_SKELETON_TIMEOUT`，若超时后骨架屏仍未隐藏则强制隐藏并输出警告，防止模块加载失败或 Promise pending 导致永久卡死
+- **权限请求超时**：`permission.init()` 的 ajax 新增 `timeout: 10000`（10 秒），避免网络异常时 Promise 永远 pending 导致骨架屏无法隐藏
+- **超时定时器清理**：`index.js` 中 `OSLAY_HIDE_SKELETON` 调用前增加 `clearTimeout(window.OSLAY_SKELETON_TIMEOUT)`，正常初始化时清除超时定时器避免误触发
 
 ### 文件变更
 | 文件 | 说明 |
 |------|------|
 | `modules/components/tabs.js` | dragover/dragleave/drop 重写，左右半区判定 + 索引修正 |
-| `admin/css/admin.css` | 拖拽样式重构，单侧指示线 + 移除整体高亮 |
+| `admin/css/admin.css` | 拖拽样式重构，单侧边框变色 + 单侧指示线 |
+| `_redirects` | 新增 Cloudflare Pages SPA fallback 配置 |
+| `admin/js/init.js` | 新增骨架屏 8 秒超时保护 |
+| `admin/js/index.js` | 隐藏骨架屏前清理超时定时器 + App.version 同步 |
+| `modules/common/permission.js` | ajax 新增 timeout: 10000 |
 | `config/app.json` | 版本号 1.9.5 → 1.9.6 |
-| `admin/js/index.js` | App.version 1.9.5 → 1.9.6 |
 | `view/data/dashboard.json` | 系统版本、许可证版本、更新公告、时间线同步 v1.9.6 |
 | `docs/README.md` | 文档版本与最后更新时间同步 |
 

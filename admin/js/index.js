@@ -223,6 +223,7 @@
           self.triggerReady();
           
           if (window.OSLAY_HIDE_SKELETON) {
+            clearTimeout(window.OSLAY_SKELETON_TIMEOUT);
             window.OSLAY_HIDE_SKELETON();
           }
 
@@ -237,6 +238,7 @@
           self.triggerReady();
           
           if (window.OSLAY_HIDE_SKELETON) {
+            clearTimeout(window.OSLAY_SKELETON_TIMEOUT);
             window.OSLAY_HIDE_SKELETON();
           }
         });
