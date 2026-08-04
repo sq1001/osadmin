@@ -5,7 +5,7 @@
  */
 
 // 缓存名称（版本号更新会清除旧缓存）
-const CACHE_NAME = 'osadmin-cache-v2';
+const CACHE_NAME = 'osadmin-cache-v3';
 
 // 预缓存核心资源
 const PRECACHE_CORE = [

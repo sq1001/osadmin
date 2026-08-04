@@ -15,16 +15,23 @@
 - **边界无操作判定**：拖回自身位置（含拖到相邻标签贴近侧，即 `sourceIndex === targetInsertPosition` 或 `sourceIndex + 1 === targetInsertPosition`）直接 return，不触发状态保存与重渲染
 
 ### Cloudflare Pages 部署不存在路径卡死骨架屏修复
-- **根因**：系统应用层有 404 处理逻辑（app.js ajax `.fail` 回调显示"该页面正在开发中"），但 CF Pages 根目录无 `404.html` 时自动启用 SPA fallback，将所有不存在的文件请求返回 `index.html`（200 状态码）。导致 ajax 请求不存在的页面文件时走 `.done` 回调而非 `.fail`，`extractContent` 提取 index.html 的 body（含骨架屏 div），`showContent` 将骨架屏 HTML 显示到内容区域，永久卡死
+- **根因**：系统应用层有 404 处理逻辑（app.js ajax `.fail` 回调显示"该页面正在开发中"），但 CF Pages 根目录无 `404.html` 时自动启用 SPA fallback，将所有不存在的文件请求返回 `index.html`（200 状态码）。导致 ajax 请求不存在的页面文件时走 `.done` 回调而非 `.fail`，`extractContent` 提取 index.html 的 body（含骨架屏 div 与内联脚本），`showContent` 通过 jQuery `.html()` 执行内联脚本触发 SPA 重新初始化，形成无限循环，骨架屏永久卡死
 - **开发环境正常的原因**：`python http.server` 对不存在文件返回 404 状态码，ajax 正常走 `.fail` 回调显示"该页面正在开发中"
 - **修复**：根目录新增 `404.html`，CF Pages 检测到后不再自动 SPA fallback，不存在文件返回 404 状态码，ajax `.fail` 回调正常触发，显示"该页面正在开发中"
+
+### 路由 404 逻辑修复
+- **问题**：hash 路径对应的菜单不存在时（如 `/#/nonexistent`），`handleRouteChange` 的 `pageId` 静默 fallback 到 `selectId`（默认页），导致 URL 显示错误路径但内容区加载默认页，用户无感知
+- **修复**：`handleRouteChange` 入口增加菜单存在性判断，`routeInfo.id` 为 null/undefined 时调用新增的 `showNotFoundPage` 方法显示 404 提示页（复用 `page-placeholder` 样式，显示"404 页面不存在：/路径"），不再静默 fallback 到默认页
+- **影响场景**：初始化时直接访问不存在的 hash 路径、hashchange 切换到不存在的路径，均显示 404 提示
 
 ### 文件变更
 | 文件 | 说明 |
 |------|------|
 | `modules/components/tabs.js` | dragover/dragleave/drop 重写，左右半区判定 + 索引修正 |
-| `admin/css/admin.css` | 拖拽样式重构，整体边框常驻变色 + 单侧插入指示线 |
-| `404.html` | 新增根目录 404 页面，重定向到 SPA hash 路由 |
+| `admin/css/admin.css` | 拖拽样式重构，左右边框同时常驻变色 + 单侧指示线 |
+| `404.html` | 新增根目录 404 页面，避免 CF Pages SPA fallback 干扰 ajax |
+| `modules/app.js` | handleRouteChange 增加菜单存在性判断 + 新增 showNotFoundPage 方法 |
+| `admin/js/service-worker.js` | 缓存版本 v2 → v3，强制刷新 app.js 等核心资源 |
 | `config/app.json` | 版本号 1.9.5 → 1.9.6 |
 | `admin/js/index.js` | App.version 1.9.5 → 1.9.6 |
 | `view/data/dashboard.json` | 系统版本、许可证版本、更新公告、时间线同步 v1.9.6 |

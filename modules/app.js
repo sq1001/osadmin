@@ -511,7 +511,17 @@ layui.define(['jquery', 'util', 'routerModule', 'themeModule', 'sidebarComp', 't
 
     handleRouteChange: function(routeInfo) {
       var selectId = (this.appConfig.menu && this.appConfig.menu.selectId) || 0;
-      var pageId = routeInfo.id !== null && routeInfo.id !== undefined ? routeInfo.id : selectId;
+
+      // 菜单不存在时显示 404 提示，不静默 fallback 到默认页
+      if (routeInfo.id === null || routeInfo.id === undefined) {
+        if (routeInfo.path && router.currentPath !== routeInfo.path) {
+          router.currentPath = routeInfo.path;
+        }
+        this.showNotFoundPage(routeInfo.code || routeInfo.path);
+        return;
+      }
+
+      var pageId = routeInfo.id;
 
       // 同步router的currentId/currentPath，处理初始化时直接调用本方法绕过router.handleRouteChange的情况
       if (router.currentId !== pageId) {
@@ -672,6 +682,14 @@ layui.define(['jquery', 'util', 'routerModule', 'themeModule', 'sidebarComp', 't
       }
 
       this.initLazyLoad();
+    },
+
+    // 显示 404 提示页（hash 路径对应的菜单不存在时）
+    showNotFoundPage: function(code) {
+      this.hideLoading();
+      var path = code ? ('/' + code) : '';
+      this.showContent('<div class="page-placeholder"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg><div class="page-placeholder-title">404</div><div class="page-placeholder-desc">页面不存在：' + path + '</div></div>');
+      $('#currentPageName').text('404');
     },
 
     cleanupBeforePageChange: function() {
