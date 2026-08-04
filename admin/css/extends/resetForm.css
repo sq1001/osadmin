@@ -22,20 +22,30 @@ a {
 .img-4 { max-width: 128px; max-height: 128px; border-radius: 6px; }
 
 /** 表详情顶部搜索框 Start **/
-/* 左右分栏：字段在左流动，按钮区域固定右侧 */
+/*
+ * 三层结构（flex-wrap 实现）：
+ *   第一行：字段项（左侧流动填满） + 按钮区域（margin-left:auto 固定右侧）
+ *   第二行：放不下的字段项（展开时显示）
+ *   独立行：展开/收起按钮（flex-basis:100% + 居中）
+ * 注意：.form-actions 与 .toggle-btn 不参与展开/收起，仅字段项参与
+ */
 .top-search-from {
     display: flex;
     flex-wrap: wrap;
     align-items: flex-start;
 }
+/* 字段项：固定宽度，flex 容器内自动流动排列 */
 .top-search-from .layui-form-item {
     position: relative;
-    display: inline-block;
-    vertical-align: middle;
+    width: 370px;
+    flex: 0 0 370px;
+    margin-right: 10px;
+    margin-bottom: 0;
+    box-sizing: border-box;
 }
 .top-search-from .layui-form-item .layui-input-block {
     width: 270px;
-    margin-right: 10px;
+    margin-right: 0;
     margin-left: 0;
     display: inline-block;
     vertical-align: middle;
@@ -59,9 +69,6 @@ a {
     width: 128px;
     display: inline-block;
 }
-.top-search-from .layui-form-item {
-    width: 370px;
-}
 .top-search-from .date-range {
     display: flex;
     align-items: center;
@@ -74,11 +81,12 @@ a {
     color: var(--text-muted, #999);
     flex-shrink: 0;
 }
-/* 按钮区域固定右侧，与字段分离 */
+/* 按钮区域：固定右侧，不参与展开/收起 */
 .top-search-from .form-actions {
-    width: auto;
+    flex: 0 0 auto;
     margin-left: auto;
-    flex-shrink: 0;
+    margin-right: 0;
+    margin-bottom: 0;
 }
 .top-search-from .form-actions .layui-form-label {
     display: none;
@@ -89,11 +97,11 @@ a {
     margin-right: 0;
     white-space: nowrap;
 }
-/* 展开/收起按钮独立一行，不混入两栏布局 */
+/* 展开/收起按钮：独立一行居中，不混入两栏布局 */
 .top-search-from .toggle-btn {
-    flex-basis: 100%;
+    flex: 0 0 100%;
     width: 100%;
-    text-align: right;
+    text-align: center;
     padding-top: 8px;
     box-sizing: border-box;
 }
@@ -111,12 +119,29 @@ a {
 [data-theme="dark"] .top-search-from .toggle-btn a:hover {
     color: #e0e0e0;
 }
+/* 移动端：每行一个字段，按钮区域跟随字段流动不固定 */
 @media screen and (max-width:768px) {
-    .top-search-from .layui-form-label {
-        width: 80px;
+    .top-search-from .layui-form-item {
+        flex: 0 0 100%;
+        width: 100%;
+        margin-right: 0;
+    }
+    .top-search-from .layui-form-item .layui-input-block {
+        width: auto;
+        flex: 1;
     }
     .top-search-from .layui-input {
         max-width: 234px;
+    }
+    .top-search-from .layui-form-label {
+        width: 80px;
+    }
+    .top-search-from .form-actions {
+        margin-left: 0;
+        flex: 0 0 100%;
+    }
+    .top-search-from .form-actions .layui-input-block {
+        width: 100%;
     }
     .top-search-from .date-range .layui-input {
         width: 102px;

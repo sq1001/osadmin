@@ -25,9 +25,13 @@
 - **修复**：`handleRouteChange` 入口增加菜单存在性判断，`routeInfo.id` 为 null/undefined 时调用新增的 `showNotFoundPage` 方法显示 404 提示页，不再静默 fallback
 
 #### 4. 搜索栏左右分栏优化
-- **问题**：CRUD 搜索栏字段与搜索/重置按钮同为 `inline-block` 流动排列，按钮位置随字段数量漂移，弹性挤压；展开/收起按钮混入两栏布局导致效果错乱
-- **CSS 修复**：`resetForm.css` 中 `.top-search-from` 改为 `display: flex; flex-wrap: wrap`，字段项左侧流动填满显示区域，`.form-actions` 用 `margin-left: auto` 固定右侧，隐藏空 label；`.toggle-btn` 用 `flex-basis: 100%` 强制换行独立成行
-- **JS 修复**：`searchForm.js` 的 `countPerRow` 计算仅扣除右侧按钮区域（`.form-actions`）占用宽度，`toggle-btn` 已独立一行不占第一行宽度，左栏字段尽量填满第一行，放不下的字段才归类到展开
+- **问题**：CRUD 搜索栏字段与搜索/重置按钮同为 `inline-block` 流动排列，按钮位置随字段数量漂移；展开/收起按钮混入两栏布局；JS 把 `.form-actions` 当字段处理导致按钮被展开/收起控制
+- **CSS 重构**：`resetForm.css` 采用 flex-wrap 三层结构
+  - 字段项：`flex: 0 0 370px` 固定宽度，自动流动填满左侧显示区域
+  - 按钮区域：`.form-actions` 用 `margin-left: auto` 固定右侧，隐藏空 label
+  - 展开/收起按钮：`.toggle-btn` 用 `flex: 0 0 100%` 强制独立一行，`text-align: center` 居中显示
+- **JS 修复**：`searchForm.js` 的 `items` 选择器用 `.not('.form-actions')` 排除按钮区域，展开/收起仅作用于字段项；`itemWidth` 改用 `items.first().outerWidth(true)`；收起逻辑改为 `index >= countPerRow` 隐藏超出第一行的字段
+- **移动端适配**：`@media (max-width:768px)` 字段项 `flex: 0 0 100%` 每行一个，按钮区域 `flex: 0 0 100%` 跟随字段流动不固定右侧
 
 #### 5. 版本同步
 - 版本号 1.9.5 → 1.9.6，同步至 config/app.json、admin/js/index.js、view/data/dashboard.json、docs/README.md
