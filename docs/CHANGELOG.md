@@ -8,16 +8,16 @@
 
 ### 标签栏拖拽插入指示线优化
 - **单侧显示插入方向**：dragover 事件根据鼠标 `e.clientX` 与目标标签 `getBoundingClientRect()` 中点比较，判定鼠标处于目标标签左半区或右半区，仅点亮对应一侧的插入指示线（`::before` 左 / `::after` 右），替代原来"目标标签左右两边同时显示指示线"的模糊视觉
-- **整体边框常驻变色**：拖拽目标标签整体边框变色（`border-color: var(--accent)` + `box-shadow: 0 0 0 1px var(--accent)`），高亮提示当前拖拽目标
+- **左右单侧边框变色（常驻）**：拖拽目标标签根据鼠标左/右半区位置，对应一侧边框常驻变色（左半区 `box-shadow: -2px 0 0 var(--accent)`，右半区 `box-shadow: 2px 0 0 var(--accent)`），明确提示当前拖拽目标
 - **单侧插入指示线**：根据鼠标左/右半区位置，仅点亮对应一侧的 3px 插入指示线（`::before` 左 / `::after` 右），明确提示插入方向
-- **CSS 类名拆分**：原 `.tab-drag-over` 拆分为 `.tab-drag-over-left` 与 `.tab-drag-over-right` 两个独立类，共享整体边框变色，分别承载单侧 `::before`/`::after` 3px 指示线
+- **CSS 类名拆分**：原 `.tab-drag-over` 拆分为 `.tab-drag-over-left` 与 `.tab-drag-over-right` 两个独立类，分别承载单侧边框变色 + 单侧 `::before`/`::after` 3px 指示线
 - **drop 索引精确修正**：drop 时根据左/右半区计算目标插入位置（左半→目标索引，右半→目标索引+1），并修正 `splice` 移除源后的索引偏移（`sourceIndex < targetInsertPosition` 时插入索引 -1），避免跨向拖拽时位置错乱
 - **边界无操作判定**：拖回自身位置（含拖到相邻标签贴近侧，即 `sourceIndex === targetInsertPosition` 或 `sourceIndex + 1 === targetInsertPosition`）直接 return，不触发状态保存与重渲染
 
 ### Cloudflare Pages 部署不存在路径卡死骨架屏修复
-- **根因**：项目根目录缺少 `404.html`。CF Pages 在根目录无 `404.html` 时自动启用 SPA fallback，将所有不存在路径返回 `index.html`（200）。这导致 Service Worker 的 fetch 拦截器缓存了 navigation 请求的异常响应，骨架屏加载后无法正常隐藏
-- **修复方案**：根目录新增 `404.html`，通过 meta refresh + JS 重定向到 `/#/原路径`，让 SPA 的 hash 路由接管。CF Pages 检测到根 `404.html` 后不再自动 SPA fallback，不存在路径返回 404.html（404 状态码），由 404.html 内部重定向到 SPA 入口，避免 SW 缓存异常
-- **回退过度修复**：删除上次错误添加的 `_redirects`（其 `/* /index.html 200` 会覆盖 404.html 行为）；回退 init.js 超时保护、permission.js ajax timeout、index.js clearTimeout（这些是过度分析的防御性代码，非真正根因）
+- **根因**：系统应用层有 404 处理逻辑（app.js ajax `.fail` 回调显示"该页面正在开发中"），但 CF Pages 根目录无 `404.html` 时自动启用 SPA fallback，将所有不存在的文件请求返回 `index.html`（200 状态码）。导致 ajax 请求不存在的页面文件时走 `.done` 回调而非 `.fail`，`extractContent` 提取 index.html 的 body（含骨架屏 div），`showContent` 将骨架屏 HTML 显示到内容区域，永久卡死
+- **开发环境正常的原因**：`python http.server` 对不存在文件返回 404 状态码，ajax 正常走 `.fail` 回调显示"该页面正在开发中"
+- **修复**：根目录新增 `404.html`，CF Pages 检测到后不再自动 SPA fallback，不存在文件返回 404 状态码，ajax `.fail` 回调正常触发，显示"该页面正在开发中"
 
 ### 文件变更
 | 文件 | 说明 |

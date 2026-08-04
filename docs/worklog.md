@@ -11,14 +11,14 @@
 #### 1. 标签栏拖拽插入指示线优化
 - 分析原 `dragover` 逻辑：仅给目标标签加 `tab-drag-over` 类，CSS 中 `::before` 和 `::after` 伪元素同时点亮左右两侧 3px 指示线，用户无法判断插入方向
 - 重写 `tabs.js` 的 dragover/dragleave/drop 事件：用 `e.clientX` 与 `getBoundingClientRect()` 中点比较，判定左半/右半区，分别加 `tab-drag-over-left` / `tab-drag-over-right` 类
-- 重构 `admin.css` 拖拽样式：拆分 `.tab-drag-over` 为两个独立类，整体边框常驻变色（`border-color` + `box-shadow: 0 0 0 1px`）+ 单侧伪元素指示线
+- 重构 `admin.css` 拖拽样式：拆分 `.tab-drag-over` 为两个独立类，左右单侧边框常驻变色（`box-shadow: -2px 0 0` / `2px 0 0`）+ 单侧伪元素指示线
 - 修正 drop 索引：左半→目标索引，右半→目标索引+1，splice 移除源后按 `sourceIndex < targetInsertPosition` 修正插入索引 -1
 - 增加边界无操作判定：拖回自身位置或相邻标签贴近侧直接 return
 
 #### 2. Cloudflare Pages 部署不存在路径卡死骨架屏修复
-- **根因**：项目根目录缺少 `404.html`，CF Pages 自动启用 SPA fallback，将不存在路径返回 `index.html`（200），导致 Service Worker 缓存 navigation 请求的异常响应，骨架屏加载后无法正常隐藏
-- **修复**：根目录新增 `404.html`，通过 meta refresh + JS 重定向到 `/#/原路径`，让 SPA 的 hash 路由接管。CF Pages 检测到根 404.html 后不再自动 SPA fallback
-- **回退过度修复**：删除上次错误添加的 `_redirects`；回退 init.js 超时保护、permission.js ajax timeout、index.js clearTimeout
+- **根因**：系统应用层有 404 处理（app.js ajax `.fail` 回调显示"该页面正在开发中"），但 CF Pages 根目录无 `404.html` 时自动 SPA fallback，将不存在文件请求返回 `index.html`（200）。ajax 走 `.done` 回调，`extractContent` 提取 index.html body（含骨架屏 div），`showContent` 显示骨架屏 HTML，永久卡死
+- **开发环境正常的原因**：`python http.server` 对不存在文件返回 404 状态码，ajax 正常走 `.fail` 回调
+- **修复**：根目录新增 `404.html`，CF Pages 检测到后不再自动 SPA fallback，不存在文件返回 404 状态码，ajax `.fail` 回调正常触发
 
 #### 3. 版本同步
 - 版本号 1.9.5 → 1.9.6，同步至 config/app.json、admin/js/index.js、view/data/dashboard.json、docs/README.md

@@ -2535,12 +2535,20 @@ body {
   cursor: grabbing;
 }
 
-/* 拖拽目标：整体边框变色（常驻高亮）+ 单侧插入指示线（提示插入方向） */
+/* 拖拽目标：左右单侧边框变色（常驻）+ 单侧插入指示线（提示插入方向） */
 .tab-item.tab-drag-over-left,
 .tab-item.tab-drag-over-right {
   position: relative;
-  border-color: var(--accent);
-  box-shadow: 0 0 0 1px var(--accent);
+}
+
+/* 左半区：左边框常驻变色 */
+.tab-item.tab-drag-over-left {
+  box-shadow: -2px 0 0 var(--accent);
+}
+
+/* 右半区：右边框常驻变色 */
+.tab-item.tab-drag-over-right {
+  box-shadow: 2px 0 0 var(--accent);
 }
 
 /* 左侧插入指示线：仅在鼠标处于目标标签左半区时显示 */
