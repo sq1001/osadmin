@@ -16,7 +16,13 @@ function toggleSearchFormShow()
             toggle();
         });
     }
-    let countPerRow = Math.max(2, parseInt($('.top-search-from').width()/$('.layui-form-item').width()));
+    // 可用宽度需扣除右侧固定的按钮区域与展开/收起按钮
+    let formWidth = $('.top-search-from').width();
+    let itemWidth = $('.layui-form-item').width();
+    let actionsWidth = $('.top-search-from .form-actions').outerWidth(true) || 0;
+    let toggleWidth = $('.top-search-from .toggle-btn').outerWidth(true) || 0;
+    let availableWidth = formWidth - actionsWidth - toggleWidth;
+    let countPerRow = Math.max(2, parseInt(availableWidth / itemWidth));
     if (items.length <= countPerRow) {
         return;
     }

@@ -22,6 +22,12 @@ a {
 .img-4 { max-width: 128px; max-height: 128px; border-radius: 6px; }
 
 /** 表详情顶部搜索框 Start **/
+/* 左右分栏：字段在左流动，按钮区域固定右侧 */
+.top-search-from {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: flex-start;
+}
 .top-search-from .layui-form-item {
     position: relative;
     display: inline-block;
@@ -68,8 +74,27 @@ a {
     color: var(--text-muted, #999);
     flex-shrink: 0;
 }
+/* 按钮区域固定右侧，与字段分离 */
+.top-search-from .form-actions {
+    width: auto;
+    margin-left: auto;
+    flex-shrink: 0;
+}
+.top-search-from .form-actions .layui-form-label {
+    display: none;
+}
+.top-search-from .form-actions .layui-input-block {
+    width: auto;
+    margin-left: 0;
+    margin-right: 0;
+    white-space: nowrap;
+}
 .top-search-from .toggle-btn {
-    text-align: center;
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    margin-left: 8px;
+    white-space: nowrap;
 }
 .top-search-from .toggle-btn a {
     cursor: pointer;

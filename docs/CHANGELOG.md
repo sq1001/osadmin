@@ -24,6 +24,12 @@
 - **修复**：`handleRouteChange` 入口增加菜单存在性判断，`routeInfo.id` 为 null/undefined 时调用新增的 `showNotFoundPage` 方法显示 404 提示页（复用 `page-placeholder` 样式，显示"404 页面不存在：/路径"），不再静默 fallback 到默认页
 - **影响场景**：初始化时直接访问不存在的 hash 路径、hashchange 切换到不存在的路径，均显示 404 提示
 
+### 搜索栏左右分栏优化
+- **问题**：CRUD 搜索栏的搜索/重置按钮与字段项同为 `inline-block` 流动排列，按钮位置随字段数量变化而漂移，字段与按钮弹性挤压
+- **修复**：`.top-search-from` 改为 `display: flex; flex-wrap: wrap`，字段项在左侧按 370px 宽度流动排列，`.form-actions` 用 `margin-left: auto` 固定在右侧，`.toggle-btn` 紧随按钮区域
+- **按钮区域精简**：`.form-actions` 隐藏空 label，`.layui-input-block` 宽度 auto + `white-space: nowrap`，按钮区域宽度仅占按钮实际宽度
+- **展开/收起计算修正**：`searchForm.js` 的 `countPerRow` 计算扣除右侧按钮区域（`.form-actions`）与展开/收起按钮（`.toggle-btn`）占用宽度，避免收起时第一行字段数偏多导致按钮被挤换行
+
 ### 文件变更
 | 文件 | 说明 |
 |------|------|
@@ -31,6 +37,8 @@
 | `admin/css/admin.css` | 拖拽样式重构，左右边框同时常驻变色 + 单侧指示线 |
 | `404.html` | 新增根目录 404 页面，避免 CF Pages SPA fallback 干扰 ajax |
 | `modules/app.js` | handleRouteChange 增加菜单存在性判断 + 新增 showNotFoundPage 方法 |
+| `admin/css/extends/resetForm.css` | 搜索栏 flex 左右分栏，按钮区域固定右侧 |
+| `admin/js/extends/searchForm.js` | countPerRow 计算扣除右侧按钮区域宽度 |
 | `admin/js/service-worker.js` | 缓存版本 v2 → v3，强制刷新 app.js 等核心资源 |
 | `config/app.json` | 版本号 1.9.5 → 1.9.6 |
 | `admin/js/index.js` | App.version 1.9.5 → 1.9.6 |

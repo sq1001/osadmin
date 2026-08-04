@@ -24,7 +24,12 @@
 - **问题**：hash 路径对应的菜单不存在时（如 `/#/nonexistent`），`handleRouteChange` 的 `pageId` 静默 fallback 到 `selectId`（默认页），URL 显示错误路径但内容区加载默认页
 - **修复**：`handleRouteChange` 入口增加菜单存在性判断，`routeInfo.id` 为 null/undefined 时调用新增的 `showNotFoundPage` 方法显示 404 提示页，不再静默 fallback
 
-#### 4. 版本同步
+#### 4. 搜索栏左右分栏优化
+- **问题**：CRUD 搜索栏字段与搜索/重置按钮同为 `inline-block` 流动排列，按钮位置随字段数量漂移，弹性挤压
+- **CSS 修复**：`resetForm.css` 中 `.top-search-from` 改为 `display: flex; flex-wrap: wrap`，字段项左侧流动，`.form-actions` 用 `margin-left: auto` 固定右侧，隐藏空 label，`.toggle-btn` 紧随按钮区域
+- **JS 修复**：`searchForm.js` 的 `countPerRow` 计算扣除右侧按钮区域（`.form-actions`）与展开/收起按钮（`.toggle-btn`）占用宽度，避免收起时第一行字段数偏多导致按钮被挤换行
+
+#### 5. 版本同步
 - 版本号 1.9.5 → 1.9.6，同步至 config/app.json、admin/js/index.js、view/data/dashboard.json、docs/README.md
 - dashboard.json 更新公告与时间线新增 v1.9.6 记录
 - CHANGELOG.md 与 worklog.md 新增 v1.9.6 条目
@@ -34,6 +39,8 @@
 - admin/css/admin.css
 - 404.html（新增）
 - modules/app.js
+- admin/css/extends/resetForm.css
+- admin/js/extends/searchForm.js
 - admin/js/service-worker.js
 - config/app.json
 - admin/js/index.js
