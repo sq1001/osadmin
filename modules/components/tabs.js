@@ -211,37 +211,53 @@ layui.define(['jquery', 'themeModule', 'routerModule'], function(exports) {
 
       $('#tabsBar').on('dragend', '.tab-item', function(e) {
         $(this).removeClass('tab-dragging');
-        $('.tab-item').removeClass('tab-drag-over');
+        $('.tab-item').removeClass('tab-drag-over-left tab-drag-over-right');
         self._dragSourceIndex = -1;
       });
 
+      // 根据鼠标在目标标签的水平位置判定插入方向：左半→插到目标左侧，右半→插到目标右侧
       $('#tabsBar').on('dragover', '.tab-item', function(e) {
         e.preventDefault();
         e.originalEvent.dataTransfer.dropEffect = 'move';
-        $(this).addClass('tab-drag-over');
+        var $this = $(this);
+        var rect = this.getBoundingClientRect();
+        var isLeftHalf = (e.clientX - rect.left) < rect.width / 2;
+        // 清除其他标签及自身的反向状态，仅保留当前侧指示线
+        $('.tab-item').not($this).removeClass('tab-drag-over-left tab-drag-over-right');
+        $this.removeClass('tab-drag-over-left tab-drag-over-right')
+             .addClass(isLeftHalf ? 'tab-drag-over-left' : 'tab-drag-over-right');
       });
 
       $('#tabsBar').on('dragleave', '.tab-item', function(e) {
-        $(this).removeClass('tab-drag-over');
+        $(this).removeClass('tab-drag-over-left tab-drag-over-right');
       });
 
       $('#tabsBar').on('drop', '.tab-item', function(e) {
         e.preventDefault();
         var $target = $(this);
-        $target.removeClass('tab-drag-over');
-        $('.tab-item').removeClass('tab-drag-over');
+        var rect = this.getBoundingClientRect();
+        var isLeftHalf = (e.clientX - rect.left) < rect.width / 2;
+        $target.removeClass('tab-drag-over-left tab-drag-over-right');
+        $('.tab-item').removeClass('tab-drag-over-left tab-drag-over-right');
 
-        var targetIndex = parseInt($target.data('index'), 10);
+        var targetElementIndex = parseInt($target.data('index'), 10);
+        // 目标插入位置：左半→目标索引，右半→目标索引+1
+        var targetInsertPosition = isLeftHalf ? targetElementIndex : targetElementIndex + 1;
         var sourceIndex = self._dragSourceIndex;
 
-        if (sourceIndex === -1 || sourceIndex === targetIndex) {
+        if (sourceIndex === -1) {
+          return;
+        }
+        // 拖回自身位置（含拖到相邻标签的贴近侧）视为无变化
+        if (sourceIndex === targetInsertPosition || sourceIndex + 1 === targetInsertPosition) {
           self._dragSourceIndex = -1;
           return;
         }
 
-        // 执行拖拽排序
+        // 执行拖拽排序：先移除源，再根据源位置修正插入索引
         var item = self.tabs.splice(sourceIndex, 1)[0];
-        self.tabs.splice(targetIndex, 0, item);
+        var insertIndex = sourceIndex < targetInsertPosition ? targetInsertPosition - 1 : targetInsertPosition;
+        self.tabs.splice(insertIndex, 0, item);
 
         self._dragSourceIndex = -1;
         self.saveTabsState();

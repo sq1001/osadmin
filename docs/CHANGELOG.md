@@ -4,6 +4,27 @@
 
 ---
 
+## v1.9.6 (2026-08-04)
+
+### 标签栏拖拽插入指示线优化
+- **单侧显示插入方向**：dragover 事件根据鼠标 `e.clientX` 与目标标签 `getBoundingClientRect()` 中点比较，判定鼠标处于目标标签左半区或右半区，仅点亮对应一侧的插入指示线（`::before` 左 / `::after` 右），替代原来"目标标签左右两边同时显示指示线"的模糊视觉
+- **移除整体高亮干扰**：删除 `.tab-drag-over` 类的整体背景色与 1px 外发光边框，避免与单侧指示线叠加造成视觉冗余，目标标签仅保留 `position: relative` 以承载伪元素指示线
+- **CSS 类名拆分**：原 `.tab-drag-over` 拆分为 `.tab-drag-over-left` 与 `.tab-drag-over-right` 两个独立类，分别承载 `::before`（left:-2px）与 `::after`（right:-2px）单侧 3px 指示线，颜色为 `var(--accent)` + 6px 发光阴影
+- **drop 索引精确修正**：drop 时根据左/右半区计算目标插入位置（左半→目标索引，右半→目标索引+1），并修正 `splice` 移除源后的索引偏移（`sourceIndex < targetInsertPosition` 时插入索引 -1），避免跨向拖拽时位置错乱
+- **边界无操作判定**：拖回自身位置（含拖到相邻标签贴近侧，即 `sourceIndex === targetInsertPosition` 或 `sourceIndex + 1 === targetInsertPosition`）直接 return，不触发状态保存与重渲染
+
+### 文件变更
+| 文件 | 说明 |
+|------|------|
+| `modules/components/tabs.js` | dragover/dragleave/drop 重写，左右半区判定 + 索引修正 |
+| `admin/css/admin.css` | 拖拽样式重构，单侧指示线 + 移除整体高亮 |
+| `config/app.json` | 版本号 1.9.5 → 1.9.6 |
+| `admin/js/index.js` | App.version 1.9.5 → 1.9.6 |
+| `view/data/dashboard.json` | 系统版本、许可证版本、更新公告、时间线同步 v1.9.6 |
+| `docs/README.md` | 文档版本与最后更新时间同步 |
+
+---
+
 ## v1.9.5 (2026-08-01)
 
 ### 布局系统优化

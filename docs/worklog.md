@@ -4,6 +4,34 @@
 
 ---
 
+## v1.9.6 (2026-08-04)
+
+### 工作内容
+
+#### 1. 标签栏拖拽插入指示线优化
+- 分析原 `dragover` 逻辑：仅给目标标签加 `tab-drag-over` 类，CSS 中 `::before` 和 `::after` 伪元素同时点亮左右两侧 3px 指示线，用户无法判断插入方向
+- 重写 `tabs.js` 的 dragover/dragleave/drop 事件：用 `e.clientX` 与 `getBoundingClientRect()` 中点比较，判定左半/右半区，分别加 `tab-drag-over-left` / `tab-drag-over-right` 类
+- 重构 `admin.css` 拖拽样式：拆分 `.tab-drag-over` 为两个独立类，移除整体背景高亮与外发光边框，仅保留单侧伪元素指示线
+- 修正 drop 索引：左半→目标索引，右半→目标索引+1，splice 移除源后按 `sourceIndex < targetInsertPosition` 修正插入索引 -1
+- 增加边界无操作判定：拖回自身位置或相邻标签贴近侧直接 return
+
+#### 2. 版本同步
+- 版本号 1.9.5 → 1.9.6，同步至 config/app.json、admin/js/index.js、view/data/dashboard.json、docs/README.md
+- dashboard.json 更新公告与时间线新增 v1.9.6 记录
+- CHANGELOG.md 与 worklog.md 新增 v1.9.6 条目
+
+### 修改文件清单
+- modules/components/tabs.js
+- admin/css/admin.css
+- config/app.json
+- admin/js/index.js
+- view/data/dashboard.json
+- docs/README.md
+- docs/CHANGELOG.md
+- docs/worklog.md
+
+---
+
 ## v1.9.5 (2026-08-01)
 
 ### 工作内容
