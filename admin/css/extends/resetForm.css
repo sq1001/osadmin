@@ -104,6 +104,9 @@ a {
     margin-right: 0;
     white-space: nowrap;
 }
+.top-search-from .form-actions .layui-btn + .layui-btn {
+    margin-left: 10px; /* 查询/重置按钮间距 */
+}
 /* 展开/收起按钮：独立一行居中，不混入字段流动 */
 .top-search-from .toggle-btn {
     flex: 0 0 100%;
@@ -125,7 +128,7 @@ a {
 [data-theme="dark"] .top-search-from .toggle-btn a:hover {
     color: #e0e0e0;
 }
-/* 移动端：每行一个字段，按钮区域跟随字段流动不固定 */
+/* 移动端：每行一个字段，按钮区域跟随字段流动，右对齐显示 */
 @media screen and (max-width:768px) {
     .top-search-from {
         padding-right: 0;
@@ -149,10 +152,15 @@ a {
         position: static;
         flex: 0 0 100%;
         width: 100%;
-        margin-bottom: 10px;
+        text-align: right; /* 让内部 input-block（inline-block）靠右 */
     }
     .top-search-from .form-actions .layui-input-block {
-        width: 100%;
+        width: auto;
+        text-align: right; /* 按钮右对齐 */
+        font-size: 0; /* 消除按钮间 inline 空白，间距精确为 margin-left:10px */
+    }
+    .top-search-from .form-actions .layui-btn {
+        font-size: 14px;
     }
     .top-search-from .date-range .layui-input {
         width: 102px;

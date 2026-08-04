@@ -41,10 +41,11 @@
   - 字段数不超过一行时隐藏展开/收起按钮
   - 新增 window resize 监听，窗口变化时重新计算
 - **浏览器验证**：Edge 无头实测 1280px 视口收起态 2 字段，点击展开后 8 字段全显示每行 2 个，行距 53px（38+15），按钮位置展开前后一致，初始显示"展开"
-- **移动端适配**：`@media (max-width:768px)` form 取消 padding-right，字段每行一个，按钮区域改为 `position: static` 跟随流动
+- **移动端适配**：`@media (max-width:768px)` form 取消 padding-right，字段每行一个
   - JS 增加 `isMobile` 判断，移动端不动态设置 padding-right（修复覆盖 CSS 导致字段区被压缩）
   - `.toggle-btn` 移除 padding-top/margin-top，展开/收起按钮紧贴上方
-  - Edge 无头 375px 视口实测：padding-right=0、每行 1 字段、按钮 static、toggle 紧贴、初始收起显示 1 个字段
+  - **按钮右对齐**：`.form-actions` 补 `text-align: right`（修复 block 靠左问题），`input-block` 加 `font-size: 0` 使按钮间距精确 10px（消除 inline 空白），按钮恢复 14px 字体；间距规则提升为通用
+  - Edge 无头 375px 视口实测：按钮块右边缘 360 = form 右边缘，间距精确 10px，字体正常
 
 #### 5. 版本同步
 - 版本号 1.9.5 → 1.9.6，同步至 config/app.json、admin/js/index.js、view/data/dashboard.json、docs/README.md

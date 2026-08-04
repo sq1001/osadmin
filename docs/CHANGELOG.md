@@ -40,9 +40,10 @@
   - **修复字眼反转**：收起状态显示"展开"按钮（提示下一步操作），展开状态显示"收起"按钮
   - 字段数不超过一行时隐藏展开/收起按钮
   - 新增 window resize 监听，窗口尺寸变化时重新计算 countPerRow
-- **移动端适配**：`@media (max-width:768px)` form 取消 padding-right，字段项 `flex: 0 0 100%` 每行一个，按钮区域改为 `position: static` 跟随字段流动
+- **移动端适配**：`@media (max-width:768px)` form 取消 padding-right，字段项 `flex: 0 0 100%` 每行一个
   - **移动端 padding-right 强制归零**：JS 增加 `isMobile` 判断（`window.innerWidth <= 768`），移动端不再动态设置 `padding-right`（原逻辑无条件设置会覆盖 CSS 的 `padding-right: 0`，导致移动端字段区被右侧预留压缩）
   - **展开/收起按钮紧贴**：`.toggle-btn` 移除 `padding-top: 8px` 与 `margin-top: 4px`，消除与上方字段/按钮区域的多余间距
+  - **移动端按钮右对齐**：`.form-actions` 增加 `text-align: right` 使内部 block 靠右（修复仅 block 设 right 但自身靠左的问题），`input-block` 加 `font-size: 0` 消除按钮间 inline 空白使间距精确为 10px，按钮自身恢复 14px 字体；按钮间距规则提升为通用（桌面/移动端统一 10px）
 
 ### 文件变更
 | 文件 | 说明 |
