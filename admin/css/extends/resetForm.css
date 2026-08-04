@@ -39,12 +39,12 @@ a {
     box-sizing: border-box;
 }
 /* 字段项：固定宽度，flex 容器内自动流动排列 */
+/* margin-bottom 不覆盖，保留 layui 默认垂直间距（15px） */
 .top-search-from .layui-form-item {
     position: relative;
     width: 370px;
     flex: 0 0 370px;
     margin-right: 10px;
-    margin-bottom: 10px;
     box-sizing: border-box;
 }
 .top-search-from .layui-form-item .layui-input-block {
@@ -67,6 +67,7 @@ a {
 }
 .top-search-from .layui-form-label {
     width: 85px;
+    box-sizing: border-box; /* 85px 含 padding，避免与 input-block 堆叠 */
     white-space: nowrap;
 }
 .top-search-from .inline-block {

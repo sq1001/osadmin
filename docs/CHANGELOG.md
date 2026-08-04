@@ -25,15 +25,17 @@
 - **影响场景**：初始化时直接访问不存在的 hash 路径、hashchange 切换到不存在的路径，均显示 404 提示
 
 ### 搜索栏左右分栏优化
-- **问题**：CRUD 搜索栏的搜索/重置按钮与字段项同为 `inline-block` 流动排列，按钮位置随字段数量漂移；展开/收起按钮混入两栏布局；JS 把 `.form-actions` 当字段处理导致按钮被展开/收起控制；展开/收起字眼逻辑反了；按钮无法真正固定右侧
+- **问题**：CRUD 搜索栏的搜索/重置按钮与字段项同为 `inline-block` 流动排列，按钮位置随字段数量漂移；展开/收起按钮混入两栏布局；JS 把 `.form-actions` 当字段处理导致按钮被展开/收起控制；展开/收起字眼逻辑反了；按钮无法真正固定右侧；点击展开/收起无效果；label 与 input 垂直堆叠导致字段行距过大
 - **CSS 重构**：`.top-search-from` 采用 absolute 定位方案
-  - form 预留 `padding-right: 200px` 为按钮区域腾出空间
-  - 字段项：`flex: 0 0 370px` 固定宽度，在 form 内容区（排除 padding-right）内自动流动排列
-  - 按钮区域：`.form-actions` 用 `position: absolute; top: 0; right: 0` 真正固定右上角，脱离 flex 流动
+  - `padding-right` 由 JS 动态测量按钮区域宽度精确预留，字段可用宽度最大化
+  - 字段项：`flex: 0 0 370px` 固定宽度，在 form 内容区（排除 padding-right）内自动流动排列，保留 layui 默认垂直间距
+  - 按钮区域：`.form-actions` 用 `position: absolute; top: 0; right: 0` 真正固定右上角，脱离 flex 流动，展开/收起时位置不变
   - 展开/收起按钮：`.toggle-btn` 用 `flex: 0 0 100%` 强制独立一行，`text-align: center` 居中显示
+  - **label 堆叠修复**：`.layui-form-label` 加 `box-sizing: border-box`，85px 宽度包含 padding，label 与 input 并排同行（字段高恢复 38px）
 - **JS 修复**：
   - `items` 选择器用 `.not('.form-actions')` 排除按钮区域，展开/收起仅作用于字段项
   - `countPerRow` 计算用 `Math.floor((formWidth + marginRight) / itemWidth)` 修正边界（最后一个字段无 right margin）
+  - **状态翻转修复**：点击事件绑定 `toggle(true)` 仅用户点击时翻转 `toggle.hide`，初始化与 resize 只重算布局不翻转，解决点击展开/收起无效果与初始化即展开的问题
   - 显式初始化 `toggle.hide = true`（初始为收起状态）
   - **修复字眼反转**：收起状态显示"展开"按钮（提示下一步操作），展开状态显示"收起"按钮
   - 字段数不超过一行时隐藏展开/收起按钮
