@@ -1,4 +1,0 @@
-# Cloudflare Pages SPA 重定向配置
-# 规则：文件存在时直接返回，不存在的路径 fallback 到 index.html（状态码 200）
-# 这样 SPA 的 hash 路由可以正常工作，同时保证 config/*.json、view/data/*.json 等静态资源不受影响
-/*  /index.html  200

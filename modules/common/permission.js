@@ -23,7 +23,6 @@ layui.define(['jquery'], function(exports) {
           url: url,
           dataType: 'json',
           cache: cache,
-          timeout: 10000,
           success: function(res) {
             self.permissions = res.data || [];
             self.isSuperAdmin = self.permissions.indexOf('*') !== -1;

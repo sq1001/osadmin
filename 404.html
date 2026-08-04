@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <title>页面跳转中...</title>
+    <!--
+        Cloudflare Pages SPA 404 处理
+        当访问不存在的路径时，CF Pages 会返回此 404.html
+        通过 meta refresh 重定向到根路径，由 SPA 的 hash 路由接管
+        保留原路径作为 hash，SPA 路由会自动处理（匹配不到则显示默认页）
+    -->
+    <meta http-equiv="refresh" content="0; url=/">
+    <script>
+        // 优先用 JS 重定向，保留原路径到 hash，比 meta refresh 更可靠
+        var path = window.location.pathname;
+        var search = window.location.search;
+        if (path && path !== '/' && path !== '/index.html') {
+            window.location.href = '/#' + path + search;
+        } else {
+            window.location.href = '/';
+        }
+    </script>
+</head>
+<body>
+    <p>页面正在跳转，请稍候...</p>
+</body>
+</html>
