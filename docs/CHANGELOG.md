@@ -26,9 +26,10 @@
 
 ### 搜索栏左右分栏优化
 - **问题**：CRUD 搜索栏的搜索/重置按钮与字段项同为 `inline-block` 流动排列，按钮位置随字段数量变化而漂移，字段与按钮弹性挤压
-- **修复**：`.top-search-from` 改为 `display: flex; flex-wrap: wrap`，字段项在左侧按 370px 宽度流动排列，`.form-actions` 用 `margin-left: auto` 固定在右侧，`.toggle-btn` 紧随按钮区域
+- **修复**：`.top-search-from` 改为 `display: flex; flex-wrap: wrap`，字段项在左侧按 370px 宽度流动排列填满显示区域，`.form-actions` 用 `margin-left: auto` 固定在右侧
+- **展开/收起按钮独立一行**：`.toggle-btn` 用 `flex-basis: 100%` 强制换行独立成行，不混入两栏布局，避免视觉效果错乱
 - **按钮区域精简**：`.form-actions` 隐藏空 label，`.layui-input-block` 宽度 auto + `white-space: nowrap`，按钮区域宽度仅占按钮实际宽度
-- **展开/收起计算修正**：`searchForm.js` 的 `countPerRow` 计算扣除右侧按钮区域（`.form-actions`）与展开/收起按钮（`.toggle-btn`）占用宽度，避免收起时第一行字段数偏多导致按钮被挤换行
+- **展开/收起计算修正**：`searchForm.js` 的 `countPerRow` 计算仅扣除右侧按钮区域（`.form-actions`）占用宽度，`toggle-btn` 已独立一行不占第一行宽度，左栏字段尽量填满第一行，放不下的字段才归类到展开
 
 ### 文件变更
 | 文件 | 说明 |

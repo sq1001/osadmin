@@ -25,9 +25,9 @@
 - **修复**：`handleRouteChange` 入口增加菜单存在性判断，`routeInfo.id` 为 null/undefined 时调用新增的 `showNotFoundPage` 方法显示 404 提示页，不再静默 fallback
 
 #### 4. 搜索栏左右分栏优化
-- **问题**：CRUD 搜索栏字段与搜索/重置按钮同为 `inline-block` 流动排列，按钮位置随字段数量漂移，弹性挤压
-- **CSS 修复**：`resetForm.css` 中 `.top-search-from` 改为 `display: flex; flex-wrap: wrap`，字段项左侧流动，`.form-actions` 用 `margin-left: auto` 固定右侧，隐藏空 label，`.toggle-btn` 紧随按钮区域
-- **JS 修复**：`searchForm.js` 的 `countPerRow` 计算扣除右侧按钮区域（`.form-actions`）与展开/收起按钮（`.toggle-btn`）占用宽度，避免收起时第一行字段数偏多导致按钮被挤换行
+- **问题**：CRUD 搜索栏字段与搜索/重置按钮同为 `inline-block` 流动排列，按钮位置随字段数量漂移，弹性挤压；展开/收起按钮混入两栏布局导致效果错乱
+- **CSS 修复**：`resetForm.css` 中 `.top-search-from` 改为 `display: flex; flex-wrap: wrap`，字段项左侧流动填满显示区域，`.form-actions` 用 `margin-left: auto` 固定右侧，隐藏空 label；`.toggle-btn` 用 `flex-basis: 100%` 强制换行独立成行
+- **JS 修复**：`searchForm.js` 的 `countPerRow` 计算仅扣除右侧按钮区域（`.form-actions`）占用宽度，`toggle-btn` 已独立一行不占第一行宽度，左栏字段尽量填满第一行，放不下的字段才归类到展开
 
 #### 5. 版本同步
 - 版本号 1.9.5 → 1.9.6，同步至 config/app.json、admin/js/index.js、view/data/dashboard.json、docs/README.md
