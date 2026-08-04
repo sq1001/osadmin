@@ -25,13 +25,20 @@
 - **修复**：`handleRouteChange` 入口增加菜单存在性判断，`routeInfo.id` 为 null/undefined 时调用新增的 `showNotFoundPage` 方法显示 404 提示页，不再静默 fallback
 
 #### 4. 搜索栏左右分栏优化
-- **问题**：CRUD 搜索栏字段与搜索/重置按钮同为 `inline-block` 流动排列，按钮位置随字段数量漂移；展开/收起按钮混入两栏布局；JS 把 `.form-actions` 当字段处理导致按钮被展开/收起控制
-- **CSS 重构**：`resetForm.css` 采用 flex-wrap 三层结构
-  - 字段项：`flex: 0 0 370px` 固定宽度，自动流动填满左侧显示区域
-  - 按钮区域：`.form-actions` 用 `margin-left: auto` 固定右侧，隐藏空 label
-  - 展开/收起按钮：`.toggle-btn` 用 `flex: 0 0 100%` 强制独立一行，`text-align: center` 居中显示
-- **JS 修复**：`searchForm.js` 的 `items` 选择器用 `.not('.form-actions')` 排除按钮区域，展开/收起仅作用于字段项；`itemWidth` 改用 `items.first().outerWidth(true)`；收起逻辑改为 `index >= countPerRow` 隐藏超出第一行的字段
-- **移动端适配**：`@media (max-width:768px)` 字段项 `flex: 0 0 100%` 每行一个，按钮区域 `flex: 0 0 100%` 跟随字段流动不固定右侧
+- **问题**：CRUD 搜索栏按钮与字段同为 inline-block 流动排列，按钮无法真正固定右侧；展开/收起按钮混入两栏布局；JS 把 .form-actions 当字段处理导致按钮被展开/收起控制；展开/收起字眼逻辑反了；初始状态字段数量显示不对
+- **CSS 重构**：采用 absolute 定位方案
+  - form 预留 `padding-right: 200px` 为按钮区域腾出空间
+  - 字段项 `flex: 0 0 370px` 在内容区内自动流动排列
+  - 按钮区域 `.form-actions` 用 `position: absolute; top: 0; right: 0` 真正固定右上角，脱离 flex 流动
+  - 展开/收起按钮 `.toggle-btn` 用 `flex: 0 0 100%` 强制独立一行，`text-align: center` 居中
+- **JS 修复**：
+  - `items` 用 `.not('.form-actions')` 排除按钮区域
+  - `countPerRow` 用 `Math.floor((formWidth + marginRight) / itemWidth)` 修正边界
+  - 显式初始化 `toggle.hide = true`（初始为收起状态）
+  - 修复字眼反转：收起状态显示"展开"，展开状态显示"收起"
+  - 字段数不超过一行时隐藏展开/收起按钮
+  - 新增 window resize 监听，窗口变化时重新计算
+- **移动端适配**：`@media (max-width:768px)` form 取消 padding-right，字段每行一个，按钮区域改为 `position: static` 跟随流动
 
 #### 5. 版本同步
 - 版本号 1.9.5 → 1.9.6，同步至 config/app.json、admin/js/index.js、view/data/dashboard.json、docs/README.md

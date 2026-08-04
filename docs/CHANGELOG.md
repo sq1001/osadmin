@@ -25,13 +25,20 @@
 - **影响场景**：初始化时直接访问不存在的 hash 路径、hashchange 切换到不存在的路径，均显示 404 提示
 
 ### 搜索栏左右分栏优化
-- **问题**：CRUD 搜索栏的搜索/重置按钮与字段项同为 `inline-block` 流动排列，按钮位置随字段数量漂移；展开/收起按钮混入两栏布局；JS 把 `.form-actions` 当字段处理导致按钮被展开/收起控制
-- **CSS 重构**：`.top-search-from` 采用 flex-wrap 三层结构
-  - 字段项：`flex: 0 0 370px` 固定宽度，自动流动填满左侧显示区域
-  - 按钮区域：`.form-actions` 用 `margin-left: auto` 固定右侧，隐藏空 label，宽度仅占按钮实际宽度
+- **问题**：CRUD 搜索栏的搜索/重置按钮与字段项同为 `inline-block` 流动排列，按钮位置随字段数量漂移；展开/收起按钮混入两栏布局；JS 把 `.form-actions` 当字段处理导致按钮被展开/收起控制；展开/收起字眼逻辑反了；按钮无法真正固定右侧
+- **CSS 重构**：`.top-search-from` 采用 absolute 定位方案
+  - form 预留 `padding-right: 200px` 为按钮区域腾出空间
+  - 字段项：`flex: 0 0 370px` 固定宽度，在 form 内容区（排除 padding-right）内自动流动排列
+  - 按钮区域：`.form-actions` 用 `position: absolute; top: 0; right: 0` 真正固定右上角，脱离 flex 流动
   - 展开/收起按钮：`.toggle-btn` 用 `flex: 0 0 100%` 强制独立一行，`text-align: center` 居中显示
-- **JS 修复**：`searchForm.js` 的 `items` 选择器用 `.not('.form-actions')` 排除按钮区域，展开/收起仅作用于字段项；`itemWidth` 改用 `items.first().outerWidth(true)` 精确计算；收起逻辑改为 `index >= countPerRow` 隐藏超出第一行的字段
-- **移动端适配**：`@media (max-width:768px)` 字段项 `flex: 0 0 100%` 每行一个，按钮区域 `flex: 0 0 100%` 跟随字段流动不固定右侧
+- **JS 修复**：
+  - `items` 选择器用 `.not('.form-actions')` 排除按钮区域，展开/收起仅作用于字段项
+  - `countPerRow` 计算用 `Math.floor((formWidth + marginRight) / itemWidth)` 修正边界（最后一个字段无 right margin）
+  - 显式初始化 `toggle.hide = true`（初始为收起状态）
+  - **修复字眼反转**：收起状态显示"展开"按钮（提示下一步操作），展开状态显示"收起"按钮
+  - 字段数不超过一行时隐藏展开/收起按钮
+  - 新增 window resize 监听，窗口尺寸变化时重新计算 countPerRow
+- **移动端适配**：`@media (max-width:768px)` form 取消 padding-right，字段项 `flex: 0 0 100%` 每行一个，按钮区域改为 `position: static` 跟随字段流动
 
 ### 文件变更
 | 文件 | 说明 |

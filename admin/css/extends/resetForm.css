@@ -23,16 +23,20 @@ a {
 
 /** 表详情顶部搜索框 Start **/
 /*
- * 三层结构（flex-wrap 实现）：
- *   第一行：字段项（左侧流动填满） + 按钮区域（margin-left:auto 固定右侧）
- *   第二行：放不下的字段项（展开时显示）
- *   独立行：展开/收起按钮（flex-basis:100% + 居中）
- * 注意：.form-actions 与 .toggle-btn 不参与展开/收起，仅字段项参与
+ * 布局结构：
+ *   - form 预留 padding-right 给按钮区域
+ *   - 字段项在 form 内 flex-wrap 流动排列，仅占左侧区域
+ *   - .form-actions 用 absolute 定位真正固定在右上角，不参与 flex 流动
+ *   - .toggle-btn 独立一行居中
+ *   - 展开/收起仅作用于字段项，按钮区域始终固定
  */
 .top-search-from {
     display: flex;
     flex-wrap: wrap;
     align-items: flex-start;
+    position: relative;
+    padding-right: 200px; /* 为右侧固定按钮区域预留空间 */
+    box-sizing: border-box;
 }
 /* 字段项：固定宽度，flex 容器内自动流动排列 */
 .top-search-from .layui-form-item {
@@ -40,7 +44,7 @@ a {
     width: 370px;
     flex: 0 0 370px;
     margin-right: 10px;
-    margin-bottom: 0;
+    margin-bottom: 10px;
     box-sizing: border-box;
 }
 .top-search-from .layui-form-item .layui-input-block {
@@ -81,12 +85,14 @@ a {
     color: var(--text-muted, #999);
     flex-shrink: 0;
 }
-/* 按钮区域：固定右侧，不参与展开/收起 */
+/* 按钮区域：absolute 定位真正固定右上角，不参与 flex 流动 */
 .top-search-from .form-actions {
-    flex: 0 0 auto;
-    margin-left: auto;
-    margin-right: 0;
-    margin-bottom: 0;
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: auto;
+    margin: 0;
+    z-index: 2;
 }
 .top-search-from .form-actions .layui-form-label {
     display: none;
@@ -97,12 +103,13 @@ a {
     margin-right: 0;
     white-space: nowrap;
 }
-/* 展开/收起按钮：独立一行居中，不混入两栏布局 */
+/* 展开/收起按钮：独立一行居中，不混入字段流动 */
 .top-search-from .toggle-btn {
     flex: 0 0 100%;
     width: 100%;
     text-align: center;
     padding-top: 8px;
+    margin-top: 4px;
     box-sizing: border-box;
 }
 .top-search-from .toggle-btn a {
@@ -121,6 +128,9 @@ a {
 }
 /* 移动端：每行一个字段，按钮区域跟随字段流动不固定 */
 @media screen and (max-width:768px) {
+    .top-search-from {
+        padding-right: 0;
+    }
     .top-search-from .layui-form-item {
         flex: 0 0 100%;
         width: 100%;
@@ -137,8 +147,10 @@ a {
         width: 80px;
     }
     .top-search-from .form-actions {
-        margin-left: 0;
+        position: static;
         flex: 0 0 100%;
+        width: 100%;
+        margin-bottom: 10px;
     }
     .top-search-from .form-actions .layui-input-block {
         width: 100%;
