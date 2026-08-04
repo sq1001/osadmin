@@ -109,8 +109,6 @@ a {
     flex: 0 0 100%;
     width: 100%;
     text-align: center;
-    padding-top: 8px;
-    margin-top: 4px;
     box-sizing: border-box;
 }
 .top-search-from .toggle-btn a {

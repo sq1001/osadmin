@@ -33,8 +33,14 @@ function toggleSearchFormShow(flip)
     }
 
     // 动态测量按钮区域宽度，精确预留右侧空间，字段可用宽度最大化
-    let actionsWidth = form.find('.form-actions').outerWidth(true) || 180;
-    form.css('padding-right', actionsWidth + 'px');
+    // 仅桌面端（>768px）按钮 absolute 定位需预留空间；移动端按钮跟随流动，无需预留
+    let isMobile = window.innerWidth <= 768;
+    if (!isMobile) {
+        let actionsWidth = form.find('.form-actions').outerWidth(true) || 180;
+        form.css('padding-right', actionsWidth + 'px');
+    } else {
+        form.css('padding-right', '0');
+    }
 
     // 第一行可容纳字段数：字段容器内容宽度 / 单字段宽度（含水平 margin）
     let formWidth = form.width(); // .width() 为 content-box，已排除 padding-right

@@ -41,6 +41,8 @@
   - 字段数不超过一行时隐藏展开/收起按钮
   - 新增 window resize 监听，窗口尺寸变化时重新计算 countPerRow
 - **移动端适配**：`@media (max-width:768px)` form 取消 padding-right，字段项 `flex: 0 0 100%` 每行一个，按钮区域改为 `position: static` 跟随字段流动
+  - **移动端 padding-right 强制归零**：JS 增加 `isMobile` 判断（`window.innerWidth <= 768`），移动端不再动态设置 `padding-right`（原逻辑无条件设置会覆盖 CSS 的 `padding-right: 0`，导致移动端字段区被右侧预留压缩）
+  - **展开/收起按钮紧贴**：`.toggle-btn` 移除 `padding-top: 8px` 与 `margin-top: 4px`，消除与上方字段/按钮区域的多余间距
 
 ### 文件变更
 | 文件 | 说明 |
