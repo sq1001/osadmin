@@ -4,6 +4,41 @@
 
 ---
 
+## v1.9.7 (2026-08-05)
+
+### 工作内容
+
+#### 1. 搜索栏 label 宽度规范化
+- **问题**：搜索栏 label 桌面 85px / 移动端 80px，移动端四字 label（"登录时间""用户名"等 ≈86px）被截断成省略号；桌面端 label 未做省略号样式，超长直接溢出
+- 参考综合表单基本信息字段设计，确认搜索栏整体布局无需改动，仅需统一 label 宽度
+- 桌面端 label 85px → 90px，移动端 80px → 90px；字段 370px 不变（90 + 270 + 10 精确填满）
+- 桌面端 `.layui-form-label` 补 `overflow: hidden; text-overflow: ellipsis`，与移动端行为一致
+- 移动端 `.layui-input` 由 `max-width: 234px` 改为 `width: 100%` 弹性填充，label 加宽后输入框自动适配剩余宽度，避免溢出；date-range（102px）与 inline-block（110px）特异性更高不受影响
+- **验证**：Edge 无头 CDP 实测——桌面 1280px：label 90px + input 270px + ellipsis ✓；移动端 375px：label 90px（x:27-117）+ input 206px 弹性、无溢出、ellipsis 生效 ✓
+
+#### 2. 抽屉最小化移动端丢失修复
+- **复现**：Edge 无头 CDP 在 SPA 环境（`/#/view/components/form-comprehensive`）移动端 375×667 视口实测：单抽屉最小化正常（right:10px 可见），打开第二个抽屉最小化后 left:-85px 完全出屏"丢失"
+- **根因**：`updateMinimizedStackPosition` 对所有端统一横向堆叠（`rightOffset = 10 + index × 230px`），窄屏下条带右偏移 + 220px 条带宽超过视口宽度，越靠左的条带越出屏
+- **修复**：增加 `isMobile`（`window.innerWidth <= 768`）分支——移动端改右下角纵向堆叠（`bottom = 10 + index × 50px` 向上排列），条带始终在屏内；桌面端横向堆叠不变
+- **验证**：移动端 375×667 两个抽屉最小化后第 1 个 bottom:10px（y:617）、第 2 个 bottom:60px（y:567）纵向排列均可见；桌面端 1280×800 第 1 个 right:10px（x:1050）、第 2 个 right:240px（x:820）横向堆叠不受影响 ✓
+
+#### 3. 版本同步
+- 版本号 1.9.6 → 1.9.7，同步至 config/app.json、admin/js/index.js、view/data/dashboard.json、docs/README.md
+- dashboard.json 更新公告与时间线新增 v1.9.7 记录
+- CHANGELOG.md 与 worklog.md 新增 v1.9.7 条目
+
+### 修改文件清单
+- admin/css/extends/resetForm.css
+- modules/extends/drawer.js
+- config/app.json
+- admin/js/index.js
+- view/data/dashboard.json
+- docs/README.md
+- docs/CHANGELOG.md
+- docs/worklog.md
+
+---
+
 ## v1.9.6 (2026-08-04)
 
 ### 工作内容

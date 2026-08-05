@@ -4,6 +4,33 @@
 
 ---
 
+## v1.9.7 (2026-08-05)
+
+### 搜索栏 label 宽度规范化
+- **问题**：搜索栏字段 label 宽度（桌面 85px / 移动端 80px）不足，移动端四个汉字的 label（56px + 左右 padding 30px ≈ 86px）被截断显示省略号；桌面端 label 未配置省略号样式，超长文字直接溢出
+- **修复**：label 宽度统一提升为 90px（桌面端 85px → 90px，移动端 80px → 90px），四字 label 可完整显示
+- **桌面端补省略号**：`.layui-form-label` 补充 `overflow: hidden; text-overflow: ellipsis`，与移动端行为一致，超长 label 不再溢出
+- **字段宽度不变**：字段整体仍为 370px（90px label + 270px input + 10px margin 精确填满），桌面端布局不受影响
+- **移动端 input 弹性化**：`.layui-input` 由 `max-width: 234px` 改为 `width: 100%`，label 加宽后输入框自动适配剩余宽度（375px 视口下 label 90px + input 206px，无溢出）；date-range（102px）与 inline-block（110px）窄框规则特异性更高，不受影响
+- **验证**：Edge 无头 CDP 实测桌面 1280px（label 90px + input 270px + ellipsis）与移动端 375px（label 90px + input 206px + ellipsis）均正常
+
+### 抽屉最小化移动端丢失修复
+- **根因**：移动端（≤768px）多个抽屉最小化时沿用桌面端横向堆叠逻辑（`rightOffset = 10 + index × 230px`）。375px 窄屏下第 2 个条带右偏移 240px + 条带宽 220px → 左边界 = 375 - 240 - 220 = -85px，条带完全移出屏幕左边界，表现为"最小化后丢失不见"
+- **修复**：`updateMinimizedStackPosition` 增加移动端分支，移动端改为右下角纵向堆叠（`bottom = 10 + index × 50px` 向上排列），条带始终保持在屏幕内；桌面端横向堆叠逻辑保持不变
+- **验证**：Edge 无头 CDP 实测移动端 375×667 视口，两个抽屉最小化后第 1 个 bottom:10px、第 2 个 bottom:60px 纵向排列均可见（修复前第 2 个 left:-85px 丢失）；桌面端 1280×800 横向堆叠（right:10px / 240px）不受影响
+
+### 文件变更
+| 文件 | 说明 |
+|------|------|
+| `admin/css/extends/resetForm.css` | label 宽度统一 90px + 桌面端省略号，移动端 input 弹性化 |
+| `modules/extends/drawer.js` | 最小化堆叠移动端纵向排列，修复窄屏横向堆叠溢出 |
+| `config/app.json` | 版本号 1.9.6 → 1.9.7 |
+| `admin/js/index.js` | App.version 1.9.6 → 1.9.7 |
+| `view/data/dashboard.json` | 系统版本、许可证版本、更新公告、时间线同步 v1.9.7 |
+| `docs/README.md` | 版本号与更新时间同步 v1.9.7 |
+
+---
+
 ## v1.9.6 (2026-08-04)
 
 ### 标签栏拖拽插入指示线优化

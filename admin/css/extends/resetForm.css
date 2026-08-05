@@ -66,9 +66,11 @@ a {
     margin-right: 7px;
 }
 .top-search-from .layui-form-label {
-    width: 85px;
-    box-sizing: border-box; /* 85px 含 padding，避免与 input-block 堆叠 */
+    width: 90px;
+    box-sizing: border-box; /* 90px 含 padding，避免与 input-block 堆叠 */
     white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 .top-search-from .inline-block {
     width: 128px;
@@ -143,10 +145,10 @@ a {
         flex: 1;
     }
     .top-search-from .layui-input {
-        max-width: 234px;
+        width: 100%;
     }
     .top-search-from .layui-form-label {
-        width: 80px;
+        width: 90px;
     }
     .top-search-from .form-actions {
         position: static;

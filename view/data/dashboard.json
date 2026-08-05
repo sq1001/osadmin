@@ -60,7 +60,7 @@
       "bandwidth": 58
     },
     "sysInfo": {
-      "systemVersion": "OSAdmin v1.9.6",
+      "systemVersion": "OSAdmin v1.9.7",
       "framework": "Layui 2.13.8",
       "runtime": "Node.js 20.x",
       "server": "Nginx 1.24.0",
@@ -71,8 +71,8 @@
       "status": "authorized",
       "type": "商业版",
       "domain": "*.osadmin.com",
-      "currentVersion": "v1.9.6",
-      "latestVersion": "v1.9.6",
+      "currentVersion": "v1.9.7",
+      "latestVersion": "v1.9.7",
       "expiry": "2027-06-20",
       "support": "专属技术支持"
     },
@@ -95,6 +95,7 @@
       { "user": "王五", "initial": "王", "type": "user", "action": "更新了个人资料信息", "module": "用户管理", "time": "2小时前" }
     ],
     "notices": [
+      { "type": "update", "typeLabel": "更新", "title": "OSAdmin v1.9.7 版本发布", "desc": "搜索栏 label 宽度统一 90px 支持四字完整显示，修复抽屉最小化移动端多抽屉堆叠超出屏幕丢失问题", "time": "08-05" },
       { "type": "update", "typeLabel": "更新", "title": "OSAdmin v1.9.6 版本发布", "desc": "优化标签栏拖拽插入指示线，根据鼠标位置单侧显示插入方向，移除整体高亮避免视觉干扰", "time": "08-04" },
       { "type": "update", "typeLabel": "更新", "title": "OSAdmin v1.9.5 版本发布", "desc": "新增顶部栏布局溢出滚动、混合布局子面板宽度配置、抽屉组件最小化堆叠拖动、主题切换动画优化等", "time": "08-01" },
       { "type": "notice", "typeLabel": "通知", "title": "系统维护通知", "desc": "6月22日凌晨2:00-4:00进行服务器升级维护", "time": "06-18" },
@@ -125,8 +126,9 @@
       { "user": "李四", "action": "提交了退款申请 #2048", "time": "1小时前", "dotColor": "orange" },
       { "user": "管理员", "action": "修改了上传配置", "time": "2小时前", "dotColor": "purple" },
       { "user": "王五", "action": "导出了月度报表", "time": "3小时前", "dotColor": "accent" },
-      { "user": "系统", "action": "v1.9.6 版本更新完成", "time": "今天 10:00", "dotColor": "green" },
-      { "user": "系统", "action": "v1.9.5 版本更新完成", "time": "昨天 22:30", "dotColor": "green" }
+      { "user": "系统", "action": "v1.9.7 版本更新完成", "time": "今天 09:30", "dotColor": "green" },
+      { "user": "系统", "action": "v1.9.6 版本更新完成", "time": "昨天 10:00", "dotColor": "green" },
+      { "user": "系统", "action": "v1.9.5 版本更新完成", "time": "08-01 22:30", "dotColor": "green" }
     ]
   }
 }
