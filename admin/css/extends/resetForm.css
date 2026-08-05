@@ -140,11 +140,14 @@ a {
         width: 100%;
         margin-right: 0;
     }
-    .top-search-from .layui-form-item .layui-input-block {
+    /* 覆盖桌面端 inline-block：移动端弹性占满剩余宽度，:not(.form-actions) 排除按钮区 */
+    .top-search-from .layui-form-item:not(.form-actions) .layui-input-block {
         width: auto;
         flex: 1;
+        display: block;
+        margin-left: 90px; /* 与 .layui-form-label 宽度一致，占满剩余宽度 */
     }
-    .top-search-from .layui-input {
+    .top-search-from .layui-input, .top-search-from .layui-select, .top-search-from .layui-textarea {
         width: 100%;
     }
     .top-search-from .layui-form-label {
@@ -164,8 +167,10 @@ a {
     .top-search-from .form-actions .layui-btn {
         font-size: 14px;
     }
+    /* 日期范围弹性平分剩余宽度，与普通输入框占满对齐 */
     .top-search-from .date-range .layui-input {
-        width: 102px;
+        width: 100%;
+        flex: 1;
     }
     .top-search-from .layui-input.inline-block {
         max-width: 110px;

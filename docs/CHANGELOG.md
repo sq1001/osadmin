@@ -4,6 +4,29 @@
 
 ---
 
+## v1.9.8 (2026-08-05)
+
+### 移动端搜索栏输入框弹性占满修复
+- **问题**：移动端各字段输入框宽度参差不齐（实测 UID/等级/余额 206px，用户名/昵称/邮箱/登录IP 171px，日期范围 102px×2），未全部占满对齐
+- **根因**：桌面端 `.layui-input-block` 使用 `display: inline-block; width: 270px` 固定宽度。移动端媒体查询只覆盖了 `width: auto`，**未覆盖 `display: inline-block`**。inline-block 元素宽度 `auto` 时按 shrink-to-fit 收缩到内容宽度（受 layui affix 图标、输入内容等影响），导致各字段宽度不一
+- **修复**：
+  - 移动端 input-block 改为 `display: block; margin-left: 90px`（与 label 宽度一致），block 元素弹性占满剩余宽度（375px 视口下统一 225px，右边缘与字段右缘精确对齐）
+  - 用 `.layui-form-item:not(.form-actions)` 限定，排除按钮区（按钮区仍需 inline-block 靠右对齐，避免受 margin-left 影响）
+  - 日期范围改为弹性平分：`.date-range .layui-input` 由固定 `102px` 改为 `width: 100%; flex: 1`，双框 + 分隔符自动平分占满（实测各 98px），与综合表单主表单移动端行为一致
+  - `.layui-select`、`.layui-textarea` 同步加入 `width: 100%` 弹性化
+- **验证**：Edge 无头 CDP 实测移动端 375px 视口——8 个字段 input-block 全部统一 225px，date-range 双框 98px 平分，按钮区右对齐不受影响；桌面端 1280px input-block 保持固定 270px 不变
+
+### 文件变更
+| 文件 | 说明 |
+|------|------|
+| `admin/css/extends/resetForm.css` | 移动端 input-block 改 block 弹性占满（排除按钮区），date-range 弹性平分 |
+| `config/app.json` | 版本号 1.9.7 → 1.9.8 |
+| `admin/js/index.js` | App.version 1.9.7 → 1.9.8 |
+| `view/data/dashboard.json` | 系统版本、许可证版本、更新公告、时间线同步 v1.9.8 |
+| `docs/README.md` | 版本号与更新时间同步 v1.9.8 |
+
+---
+
 ## v1.9.7 (2026-08-05)
 
 ### 搜索栏 label 宽度规范化

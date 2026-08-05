@@ -4,6 +4,37 @@
 
 ---
 
+## v1.9.8 (2026-08-05)
+
+### 工作内容
+
+#### 1. 移动端搜索栏输入框弹性占满修复
+- **用户反馈**：移动端输入框宽度不一样，期望全部占满对齐
+- **复现**：Edge 无头 CDP 展开全部字段实测——UID/等级/余额 206px，用户名/昵称/邮箱/登录IP 171px，登录时间 102px×2，宽度参差不齐
+- **根因排查**：桌面端 `.layui-input-block` 为 `display: inline-block; width: 270px` 固定宽度。移动端媒体查询只覆盖 `width: auto` 未覆盖 `display`，inline-block + `width: auto` 按 shrink-to-fit 收缩到内容宽度，受 layui affix 图标（number 类型 input 有后缀图标）等影响，各字段宽度不一
+- **修复**（resetForm.css 移动端）：
+  - input-block 改 `display: block; margin-left: 90px`（= label 宽度），弹性占满剩余宽度，实测统一 225px、右缘与字段右缘精确对齐
+  - 选择器加 `:not(.form-actions)` 排除按钮区（按钮区保持 inline-block 靠右，实测 right 与 form 右缘对齐不受影响）
+  - date-range 由固定 102px 改 `width: 100%; flex: 1` 弹性平分（实测双框各 98px），与综合表单主表单移动端一致
+  - select/textarea 同步 `width: 100%`
+- **验证**：移动端 375px 8 字段全部 225px 占满、按钮区右对齐正常；桌面端 1280px 保持固定 270px 不变 ✓
+
+#### 2. 版本同步
+- 版本号 1.9.7 → 1.9.8，同步至 config/app.json、admin/js/index.js、view/data/dashboard.json、docs/README.md
+- dashboard.json 更新公告与时间线新增 v1.9.8 记录
+- CHANGELOG.md 与 worklog.md 新增 v1.9.8 条目
+
+### 修改文件清单
+- admin/css/extends/resetForm.css
+- config/app.json
+- admin/js/index.js
+- view/data/dashboard.json
+- docs/README.md
+- docs/CHANGELOG.md
+- docs/worklog.md
+
+---
+
 ## v1.9.7 (2026-08-05)
 
 ### 工作内容
