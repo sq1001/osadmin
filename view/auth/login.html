@@ -175,10 +175,21 @@
                 </linearGradient>
             </defs>
             <rect width="400" height="180" fill="url(#mobileBg)"/>
-            <circle cx="320" cy="50" r="30" fill="#ffffff" opacity="0.15"/>
-            <circle cx="80" cy="130" r="40" fill="#ffffff" opacity="0.12"/>
-            <circle cx="200" cy="90" r="25" fill="#ffffff" opacity="0.1"/>
-            <path d="M 50,150 Q 100,110 150,130 T 250,120 T 350,140" stroke="#ffffff" stroke-width="3" fill="none" opacity="0.2"/>
+            <circle cx="320" cy="50" r="30" fill="#ffffff" opacity="0.15">
+                <animate attributeName="opacity" values="0.15;0.3;0.15" dur="3.5s" repeatCount="indefinite"/>
+                <animate attributeName="cy" values="50;58;50" dur="5s" repeatCount="indefinite"/>
+            </circle>
+            <circle cx="80" cy="130" r="40" fill="#ffffff" opacity="0.12">
+                <animate attributeName="opacity" values="0.12;0.26;0.12" dur="4s" repeatCount="indefinite"/>
+                <animate attributeName="cy" values="130;138;130" dur="6s" repeatCount="indefinite"/>
+            </circle>
+            <circle cx="200" cy="90" r="25" fill="#ffffff" opacity="0.1">
+                <animate attributeName="opacity" values="0.1;0.24;0.1" dur="3s" repeatCount="indefinite"/>
+            </circle>
+            <path d="M 50,150 Q 100,110 150,130 T 250,120 T 350,140" stroke="#ffffff" stroke-width="3" fill="none" opacity="0.2">
+                <animate attributeName="opacity" values="0.2;0.35;0.2" dur="4.5s" repeatCount="indefinite"/>
+                <animateTransform attributeName="transform" type="translate" values="0 0; 18 0; 0 0" dur="7s" repeatCount="indefinite"/>
+            </path>
             <g transform="translate(180, 70)">
                 <rect x="-18" y="-15" width="36" height="30" rx="4" fill="#ffffff" opacity="0.25"/>
                 <rect x="-15" y="-12" width="30" height="24" rx="3" fill="#34d399" opacity="0.3"/>

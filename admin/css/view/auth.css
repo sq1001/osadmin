@@ -550,7 +550,7 @@ body.lock-screen-page {
         margin: auto; /* flex 双轴居中，内容超高时自动对齐顶部可滚动 */
     }
 
-    /* 移动端装饰：全屏渐变背景 + 顶部插画，表单卡片居中显示 */
+    /* 移动端装饰：全屏柔和渐变背景 + 顶部插画 + 漂浮气泡，表单卡片居中显示 */
     .mobile-decoration {
         display: block;
         position: fixed;
@@ -561,13 +561,40 @@ body.lock-screen-page {
         height: auto;
         z-index: 0;
         overflow: hidden;
-        background: linear-gradient(135deg, #60a5fa 0%, #34d399 100%);
+        background: linear-gradient(160deg, #34d399 0%, #6ee7b7 40%, #a7f3d0 70%, #ecfdf5 100%);
     }
 
-    .login-page .mobile-decoration { background: linear-gradient(135deg, #60a5fa 0%, #34d399 100%); }
-    .register-page .mobile-decoration { background: linear-gradient(135deg, #f472b6 0%, #fbbf24 100%); }
-    .forgot-password-page .mobile-decoration { background: linear-gradient(135deg, #a78bfa 0%, #6ee7b7 100%); }
-    .lock-screen-page .mobile-decoration { background: linear-gradient(135deg, #6366f1 0%, #22d3ee 100%); }
+    /* 各页面主题色柔和延伸：上方衔接插画区深色，向下平滑过渡到浅色，消除 180px 以下空区生硬感 */
+    .login-page .mobile-decoration { background: linear-gradient(160deg, #34d399 0%, #6ee7b7 40%, #a7f3d0 70%, #ecfdf5 100%); }
+    .register-page .mobile-decoration { background: linear-gradient(160deg, #fbbf24 0%, #fcd34d 40%, #fde68a 70%, #fffbeb 100%); }
+    .forgot-password-page .mobile-decoration { background: linear-gradient(160deg, #6ee7b7 0%, #86efac 40%, #bbf7d0 70%, #f0fdf4 100%); }
+    .lock-screen-page .mobile-decoration { background: linear-gradient(160deg, #22d3ee 0%, #67e8f9 40%, #a5f3fc 70%, #ecfeff 100%); }
+
+    /* 漂浮气泡（对齐风格2/3 的 auth-float 呼吸感） */
+    .mobile-decoration::before,
+    .mobile-decoration::after {
+        content: '';
+        position: absolute;
+        border-radius: 50%;
+        background: rgba(255, 255, 255, 0.14);
+        pointer-events: none;
+        animation: auth-mobile-float 10s ease-in-out infinite;
+    }
+
+    .mobile-decoration::before {
+        width: 150px;
+        height: 150px;
+        bottom: 16%;
+        left: -45px;
+    }
+
+    .mobile-decoration::after {
+        width: 84px;
+        height: 84px;
+        top: 46%;
+        right: -24px;
+        animation-delay: -5s;
+    }
 
     .mobile-decoration svg {
         position: absolute;
@@ -576,6 +603,11 @@ body.lock-screen-page {
         width: 100%;
         height: 180px;
         display: block;
+    }
+
+    @keyframes auth-mobile-float {
+        0%, 100% { transform: translateY(0) translateX(0) scale(1); }
+        50% { transform: translateY(-26px) translateX(14px) scale(1.06); }
     }
 
     .auth-left {

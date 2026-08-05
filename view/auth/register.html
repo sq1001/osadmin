@@ -201,8 +201,14 @@
                 </linearGradient>
             </defs>
             <rect width="400" height="180" fill="url(#mobileBgRegister)"/>
-            <circle cx="100" cy="65" r="35" fill="#ffffff" opacity="0.15"/>
-            <circle cx="300" cy="120" r="30" fill="#ffffff" opacity="0.12"/>
+            <circle cx="100" cy="65" r="35" fill="#ffffff" opacity="0.15">
+                <animate attributeName="opacity" values="0.15;0.3;0.15" dur="3.8s" repeatCount="indefinite"/>
+                <animate attributeName="cy" values="65;73;65" dur="5.5s" repeatCount="indefinite"/>
+            </circle>
+            <circle cx="300" cy="120" r="30" fill="#ffffff" opacity="0.12">
+                <animate attributeName="opacity" values="0.12;0.26;0.12" dur="4.2s" repeatCount="indefinite"/>
+                <animate attributeName="cy" values="120;128;120" dur="6.5s" repeatCount="indefinite"/>
+            </circle>
             <g transform="translate(120, 105)">
                 <circle cx="0" cy="0" r="9" fill="#fbbf24" opacity="0.3"/>
                 <circle cx="-12" cy="-12" r="7" fill="#ffffff" opacity="0.4"/>
@@ -217,7 +223,10 @@
                 <circle cx="0" cy="-18" r="6" fill="#ffffff" opacity="0.35"/>
                 <circle cx="0" cy="9" r="6" fill="#ffffff" opacity="0.35"/>
             </g>
-            <path d="M 30,130 Q 80,85 130,110 T 230,100 T 330,125" stroke="#ffffff" stroke-width="2.5" fill="none" opacity="0.2"/>
+            <path d="M 30,130 Q 80,85 130,110 T 230,100 T 330,125" stroke="#ffffff" stroke-width="2.5" fill="none" opacity="0.2">
+                <animate attributeName="opacity" values="0.2;0.35;0.2" dur="4.5s" repeatCount="indefinite"/>
+                <animateTransform attributeName="transform" type="translate" values="0 0; 16 0; 0 0" dur="7s" repeatCount="indefinite"/>
+            </path>
         </svg>
     </div>
 

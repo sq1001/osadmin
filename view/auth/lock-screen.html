@@ -204,8 +204,12 @@
                 </linearGradient>
             </defs>
             <rect width="400" height="180" fill="url(#mobileBgLock)"/>
-            <circle cx="300" cy="65" r="26" fill="#fde047" opacity="0.35"/>
-            <circle cx="300" cy="65" r="34" fill="#fde047" opacity="0.15"/>
+            <circle cx="300" cy="65" r="26" fill="#fde047" opacity="0.35">
+                <animate attributeName="r" values="26;29;26" dur="3.5s" repeatCount="indefinite"/>
+            </circle>
+            <circle cx="300" cy="65" r="34" fill="#fde047" opacity="0.15">
+                <animate attributeName="opacity" values="0.15;0.24;0.15" dur="3.5s" repeatCount="indefinite"/>
+            </circle>
             <circle cx="120" cy="120" r="22" fill="#ffffff" opacity="0.2">
                 <animate attributeName="opacity" values="0.2;0.35;0.2" dur="2s" repeatCount="indefinite"/>
             </circle>
@@ -215,7 +219,9 @@
             <circle cx="180" cy="130" r="15" fill="#ffffff" opacity="0.15">
                 <animate attributeName="opacity" values="0.15;0.28;0.15" dur="2.2s" repeatCount="indefinite"/>
             </circle>
-            <path d="M 350,155 L 345,162 L 340,148 L 335,162 L 330,152" stroke="#ffffff" stroke-width="2.5" fill="none" opacity="0.25"/>
+            <path d="M 350,155 L 345,162 L 340,148 L 335,162 L 330,152" stroke="#ffffff" stroke-width="2.5" fill="none" opacity="0.25">
+                <animate attributeName="opacity" values="0.25;0.6;0.25" dur="2.6s" repeatCount="indefinite"/>
+            </path>
         </svg>
     </div>
 

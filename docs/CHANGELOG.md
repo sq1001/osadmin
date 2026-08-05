@@ -57,11 +57,23 @@
   - lock-screen 移除头像 `margin-top: -60px` 骑跨与 `padding-top: 60px` 特例，头像按居中卡片内正常显示
 - **验证**：Edge 无头 CDP 实测 375/560/800/1280 四档视口 4 个页面——装饰全屏渐变完整覆盖，卡片在视口内垂直水平居中（375×667 下 login 容器 top 60px、register 29px、forgot 119px、lock 127px），桌面端分栏布局不受影响
 
+### 风格1移动端背景动态特效与配色协调
+- **问题**：移动端背景"全是死的"——login/register 插画无任何动画，forgot 仅 3 个小圆点微动；且配色割裂——顶部 180px 插画区有图案、下方纯色渐变空无一物，上下"断档"，与风格2/3 的动态粒子+气泡呼吸感差距明显
+- **修复**（经用户确认方案：CSS气泡+插画动画 + 柔和延伸渐变）：
+  - **配色**：全屏渐变由硬朗 135° 双色改为 160° 四段**柔和延伸**（login 绿系 / register 橙系 / forgot 绿系 / lock 青系），上方衔接插画区深色、向下平滑过渡到浅色，消除 180px 以下空区生硬感
+  - **动态气泡**：`.mobile-decoration` 新增 `::before`/`::after` 两个半透明白色气泡（150px/84px），`auth-mobile-float` 10s 呼吸浮动（位移+缩放），对齐风格2/3 的 auth-float 观感
+  - **插画动画**：4 个页面移动端 SVG 补 SMIL 动画——白色圆点 opacity 呼吸 + cy 上下漂浮、波浪线 opacity 呼吸 + 水平漂移、彩虹呼吸；lock-screen 月亮 r 呼吸脉动 + 星星闪烁（原流星/萤火虫保留）
+- **验证**：Edge 无头 CDP 实测 4 页面——渐变背景四段柔和渐变生效、气泡伪元素渲染（150px + auth-mobile-float 动画）、SVG animate 元素 login 7 / register 6 / forgot 8 / lock 6 个，卡片仍居中布局不变
+
 ### 文件变更
 | 文件 | 说明 |
 |------|------|
 | `config/menu.json` | 外部链接新增 Gitee/GitHub 仓库地址 |
 | `admin/css/view/auth.css` | 移动端装饰改全屏渐变背景 + 表单卡片视口居中 + 移除多余 padding 特例 |
+| `view/auth/login.html` | 移动端插画补 SMIL 动画（圆点呼吸漂浮、波浪漂移） |
+| `view/auth/register.html` | 移动端插画补 SMIL 动画 |
+| `view/auth/forgot-password.html` | 移动端插画补 SMIL 动画（白圆/彩虹呼吸漂浮） |
+| `view/auth/lock-screen.html` | 移动端插画补月亮呼吸脉动 + 星星闪烁 |
 | `admin/css/extends/resetForm.css` | 移动端 input-block 改 block 弹性占满（排除按钮区），date-range 弹性平分 |
 | `admin/css/admin.css` | 主框架/侧边栏/子菜单/主内容 4 处 100vh → 100dvh |
 | `admin/css/theme.css` | 主题配置面板 100vh → 100dvh（修复移动端底部按钮被地址栏遮挡） |
