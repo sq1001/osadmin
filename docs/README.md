@@ -7,7 +7,8 @@
 **描述**: 基于 LayUI 的轻量化原生管理后台系统\
 **技术栈**: LayUI + jQuery + 原生 JavaScript\
 **架构模式**: 模块化架构 + 配置驱动\
-**开源协议**: Apache 2.0
+**开源协议**: Apache 2.0\
+**开源演示**: https://osadmin.pages.dev
 
 ### 核心特性
 
