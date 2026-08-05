@@ -535,9 +535,7 @@ body.lock-screen-page {
 
 @media (max-width: 980px) {
     body.auth-page {
-        display: flex;
-        align-items: center;
-        justify-content: center;
+        display: block; /* 移动端取消 flex 垂直居中，容器靠 margin-top 对齐装饰底部，避免内容较矮时被居中下推 */
         padding: 20px;
     }
 
@@ -549,11 +547,7 @@ body.lock-screen-page {
         flex-direction: column;
         position: relative;
         overflow: hidden;
-    }
-
-    .login-page .auth-container,
-    .register-page .auth-container {
-        margin-top: 110px;
+        margin-top: 160px; /* 容器顶部对齐移动端装饰底部(180px - body padding 20px)，保证装饰完整显示 */
     }
 
     .mobile-decoration {
@@ -585,7 +579,6 @@ body.lock-screen-page {
         flex: 1;
         width: 100%;
         padding: 32px 24px;
-        padding-top: 160px;
         background: rgba(255, 255, 255, 1);
         position: relative;
         z-index: 2;
@@ -665,7 +658,7 @@ body.lock-screen-page {
     }
 
     .lock-screen-page .auth-right {
-        padding-top: 140px;
+        padding-top: 60px; /* 容器顶对齐装饰底后，配合头像 margin-top:-60px 保持头像骑跨装饰底部边缘 */
     }
 
     .lock-screen-page .auth-title {
@@ -681,11 +674,11 @@ body.lock-screen-page {
     .auth-container {
         max-width: 100%;
         border-radius: 12px;
+        margin-top: 164px; /* 560 断点 body padding 16px，容器顶部仍对齐装饰底部 180px */
     }
 
     .auth-right {
         padding: 28px 20px;
-        padding-top: 160px; /* 保留顶部装饰避让，避免被 560px 断点的 padding 覆盖 */
     }
 
     .auth-title {

@@ -47,8 +47,16 @@
   - GitHub仓库 id 560：`https://github.com/sq1001/osadmin`
 - **验证**：外部链接渲染复用 sidebar.js 现有 external + openType 分支（data-external / data-open-type），handleSubmenuItemClick 对 `_blank` 走 window.open 新窗口，无新增逻辑 ✓
 
+#### 6. 风格1认证页移动端布局协调修复
+- **用户反馈**：风格1模板表单不协调，表单顶部空出很多，画布背景（顶部装饰）高度变低
+- **复现**：Edge 无头 CDP 375px 实测 4 个页面——登录页装饰可见高度仅 126px（原 180px），表单标题距装饰底部 106px 白色空隙；forgot/lock 装饰可见仅 53/101px
+- **根因**：①容器 z-index:2 白色背景盖住装饰底部（容器顶 126px < 装饰底 180px）②auth-right padding-top:160px 上轮临时避让残留，与可见装饰不匹配 ③body flex 垂直居中使内容较矮的 forgot/lock 容器下推错位（容器顶 201/223px）
+- **修复**（auth.css）：移动端容器 margin-top 对齐装饰底（980 断点 160px / 560 断点 164px，容器顶恒 = 装饰底 180px）；body 移动端改 display:block 取消 flex 居中；auth-right 移除 160px 避让恢复 32px/28px；lock-screen padding-top 140→60px 配合头像 -60px 保持骑跨
+- **验证**：375/560/800/1280 四档视口 × 4 页面，装饰全部完整 180px，表单标题距装饰底 28/32px，容器顶恒等于装饰底，桌面端不变 ✓
+
 ### 修改文件清单
 - config/menu.json
+- admin/css/view/auth.css
 - admin/css/extends/resetForm.css
 - admin/css/admin.css
 - admin/css/theme.css
