@@ -550,7 +550,7 @@ body.lock-screen-page {
         margin: auto; /* flex 双轴居中，内容超高时自动对齐顶部可滚动 */
     }
 
-    /* 移动端装饰：全屏柔和渐变背景 + 顶部插画 + 漂浮气泡，表单卡片居中显示 */
+    /* 移动端装饰：全屏瀑布式渐变背景（上深下柔一体延伸）+ 漂浮气泡，表单卡片居中显示 */
     .mobile-decoration {
         display: block;
         position: fixed;
@@ -561,14 +561,14 @@ body.lock-screen-page {
         height: auto;
         z-index: 0;
         overflow: hidden;
-        background: linear-gradient(160deg, #34d399 0%, #6ee7b7 40%, #a7f3d0 70%, #ecfdf5 100%);
+        background: linear-gradient(180deg, #60a5fa 0%, #34d399 28%, #6ee7b7 55%, #a7f3d0 80%, #ecfdf5 100%);
     }
 
-    /* 各页面主题色柔和延伸：上方衔接插画区深色，向下平滑过渡到浅色，消除 180px 以下空区生硬感 */
-    .login-page .mobile-decoration { background: linear-gradient(160deg, #34d399 0%, #6ee7b7 40%, #a7f3d0 70%, #ecfdf5 100%); }
-    .register-page .mobile-decoration { background: linear-gradient(160deg, #fbbf24 0%, #fcd34d 40%, #fde68a 70%, #fffbeb 100%); }
-    .forgot-password-page .mobile-decoration { background: linear-gradient(160deg, #6ee7b7 0%, #86efac 40%, #bbf7d0 70%, #f0fdf4 100%); }
-    .lock-screen-page .mobile-decoration { background: linear-gradient(160deg, #22d3ee 0%, #67e8f9 40%, #a5f3fc 70%, #ecfeff 100%); }
+    /* 各页面主题色瀑布渐变：顶部插画区深色，自上而下平滑变淡变柔和，无分段感 */
+    .login-page .mobile-decoration { background: linear-gradient(180deg, #60a5fa 0%, #34d399 28%, #6ee7b7 55%, #a7f3d0 80%, #ecfdf5 100%); }
+    .register-page .mobile-decoration { background: linear-gradient(180deg, #f472b6 0%, #fbbf24 28%, #fcd34d 55%, #fde68a 80%, #fffbeb 100%); }
+    .forgot-password-page .mobile-decoration { background: linear-gradient(180deg, #a78bfa 0%, #6ee7b7 28%, #86efac 55%, #bbf7d0 80%, #f0fdf4 100%); }
+    .lock-screen-page .mobile-decoration { background: linear-gradient(180deg, #6366f1 0%, #22d3ee 28%, #67e8f9 55%, #a5f3fc 80%, #ecfeff 100%); }
 
     /* 漂浮气泡（对齐风格2/3 的 auth-float 呼吸感） */
     .mobile-decoration::before,

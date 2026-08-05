@@ -59,21 +59,24 @@
 
 ### 风格1移动端背景动态特效与配色协调
 - **问题**：移动端背景"全是死的"——login/register 插画无任何动画，forgot 仅 3 个小圆点微动；且配色割裂——顶部 180px 插画区有图案、下方纯色渐变空无一物，上下"断档"，与风格2/3 的动态粒子+气泡呼吸感差距明显
-- **修复**（经用户确认方案：CSS气泡+插画动画 + 柔和延伸渐变）：
-  - **配色**：全屏渐变由硬朗 135° 双色改为 160° 四段**柔和延伸**（login 绿系 / register 橙系 / forgot 绿系 / lock 青系），上方衔接插画区深色、向下平滑过渡到浅色，消除 180px 以下空区生硬感
-  - **动态气泡**：`.mobile-decoration` 新增 `::before`/`::after` 两个半透明白色气泡（150px/84px），`auth-mobile-float` 10s 呼吸浮动（位移+缩放），对齐风格2/3 的 auth-float 观感
-  - **插画动画**：4 个页面移动端 SVG 补 SMIL 动画——白色圆点 opacity 呼吸 + cy 上下漂浮、波浪线 opacity 呼吸 + 水平漂移、彩虹呼吸；lock-screen 月亮 r 呼吸脉动 + 星星闪烁（原流星/萤火虫保留）
-- **验证**：Edge 无头 CDP 实测 4 页面——渐变背景四段柔和渐变生效、气泡伪元素渲染（150px + auth-mobile-float 动画）、SVG animate 元素 login 7 / register 6 / forgot 8 / lock 6 个，卡片仍居中布局不变
+- **演进过程**：
+  - 第一版方案：160° 四段柔和延伸渐变 + CSS 气泡 + SVG 插画 SMIL 动画，但 SVG 自带对角渐变 rect 与容器渐变方向不一致，180px 处仍有"两部分"割裂感，用户反馈"割裂严重，别分两部分，直接一体瀑布式变淡变柔和"
+  - **最终方案**：**一体式瀑布渐变**——移除 4 个页面 SVG 内渐变 rect 与 defs，插画透明化直接叠在容器背景上；容器背景改 180° 五段瀑布渐变（login 蓝→绿→浅绿→白 / register 粉→橙→浅橙→白 / forgot 紫→绿→浅绿→白 / lock 靛→青→浅青→白），自上而下深到柔、无分段
+- **修复**（auth.css + 4 个 view/auth/*.html）：
+  - `.mobile-decoration` 背景改 `linear-gradient(180deg, 主题色 0%, 中色 28%, 浅色 55%, 更浅 80%, 白 100%)` 一体瀑布渐变
+  - 删除 login/register/forgot/lock 移动端 SVG 的 `<defs><linearGradient>` 与 `<rect>` 背景，插画元素（圆/波浪/彩虹/月亮/星星）透明叠在渐变上
+  - 保留漂浮气泡（::before/::after，auth-mobile-float）与全部插画 SMIL 动画
+- **验证**：Edge 无头 CDP 实测 4 页面——180deg 五段瀑布渐变生效（无 SVG rect 干扰）、气泡 150px + auth-mobile-float、SVG animate login 7 / register 6 / forgot 8 / lock 6 个、卡片仍居中
 
 ### 文件变更
 | 文件 | 说明 |
 |------|------|
 | `config/menu.json` | 外部链接新增 Gitee/GitHub 仓库地址 |
 | `admin/css/view/auth.css` | 移动端装饰改全屏渐变背景 + 表单卡片视口居中 + 移除多余 padding 特例 |
-| `view/auth/login.html` | 移动端插画补 SMIL 动画（圆点呼吸漂浮、波浪漂移） |
-| `view/auth/register.html` | 移动端插画补 SMIL 动画 |
-| `view/auth/forgot-password.html` | 移动端插画补 SMIL 动画（白圆/彩虹呼吸漂浮） |
-| `view/auth/lock-screen.html` | 移动端插画补月亮呼吸脉动 + 星星闪烁 |
+| `view/auth/login.html` | 移动端插画补 SMIL 动画（圆点呼吸漂浮、波浪漂移）+ 移除 SVG 渐变 rect 一体瀑布渐变 |
+| `view/auth/register.html` | 移动端插画补 SMIL 动画 + 移除 SVG 渐变 rect 一体瀑布渐变 |
+| `view/auth/forgot-password.html` | 移动端插画补 SMIL 动画（白圆/彩虹呼吸漂浮）+ 移除 SVG 渐变 rect 一体瀑布渐变 |
+| `view/auth/lock-screen.html` | 移动端插画补月亮呼吸脉动 + 星星闪烁 + 移除 SVG 渐变 rect 一体瀑布渐变 |
 | `admin/css/extends/resetForm.css` | 移动端 input-block 改 block 弹性占满（排除按钮区），date-range 弹性平分 |
 | `admin/css/admin.css` | 主框架/侧边栏/子菜单/主内容 4 处 100vh → 100dvh |
 | `admin/css/theme.css` | 主题配置面板 100vh → 100dvh（修复移动端底部按钮被地址栏遮挡） |

@@ -54,11 +54,10 @@
 - **验证**：Edge 无头 CDP 实测 375/560/800/1280 四档视口 × 4 页面，装饰全屏渐变覆盖、卡片视口居中（login top 60 / register 29 / forgot 119 / lock 127px，375×667），桌面端不受影响 ✓
 
 #### 7. 风格1移动端背景动态特效与配色协调
-- **用户反馈**：风格一背景全是死的，没有动态特效；移动端配色割裂
-- **分析**：login/register 移动端插画零动画，forgot 仅 3 个微动圆点；配色上 180px 插画区有图案、下方纯渐变空区"断档"，与风格2/3 粒子+气泡动态差距明显
-- **方案确认**：用户选择 CSS气泡+插画动画 + 柔和延伸渐变
-- **实现**：渐变改 160° 四段柔和延伸（各页主题色系）；`.mobile-decoration` 新增 ::before/::after 气泡（150/84px）auth-mobile-float 10s 呼吸；4 页面移动端 SVG 补 SMIL 动画（圆点 opacity/cy、波浪 translate、彩虹/月亮/星星呼吸闪烁）
-- **验证**：Edge 无头 CDP 实测 4 页面——渐变生效、气泡伪元素渲染（150px + auth-mobile-float）、SVG animate login 7 / register 6 / forgot 8 / lock 6 个，卡片居中布局不变 ✓
+- **用户反馈**：风格一背景全是死的，没有动态特效；移动端配色割裂严重，要求"别把背景分成两部分，直接一体，瀑布式自上而下变淡变柔和，该动画动画"
+- **分析**：login/register 移动端插画零动画，forgot 仅 3 个微动圆点；配色上 SVG 自带对角渐变 rect 与容器 160° 渐变方向不一致，180px 处视觉"两部分"断档
+- **最终方案**：一体式瀑布渐变——移除 4 页面 SVG 内渐变 rect 与 defs（插画透明化），容器背景改 180° 五段瀑布渐变（各页主题色自上而下深→柔→白，无分段）；保留气泡呼吸 + SVG 插画 SMIL 动画
+- **验证**：Edge 无头 CDP 实测 4 页面——180deg 五段瀑布渐变生效、气泡 150px + auth-mobile-float、SVG animate login 7 / register 6 / forgot 8 / lock 6 个、卡片居中布局不变 ✓
 
 ### 修改文件清单
 - config/menu.json
