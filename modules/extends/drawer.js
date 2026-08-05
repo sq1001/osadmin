@@ -605,10 +605,11 @@ layui.define(['jquery', 'layer'], function (exports) {
 
     /**
      * 计算并更新最小化堆叠位置
+     * 桌面端：条带在右下角横向堆叠（向右延伸）
+     * 移动端：窄屏横向堆叠会超出屏幕左边界导致"丢失"，改为纵向堆叠（向上延伸）
      */
     updateMinimizedStackPosition: function () {
       // 统计当前最小化的抽屉数量（按最小化顺序）
-      var stackCount = 0;
       var minStack = []; // 最小化堆栈顺序
       instanceStack.forEach(function (item) {
         var inst = instances[item.index];
@@ -616,18 +617,26 @@ layui.define(['jquery', 'layer'], function (exports) {
           minStack.push(inst);
         }
       });
-      stackCount = minStack.length;
+      var stackCount = minStack.length;
 
       // 当前实例在堆栈中的位置
       var myIndex = minStack.indexOf(this);
       if (myIndex === -1) myIndex = stackCount - 1;
 
-      // 每个最小化条带宽 220px + 间距 10px
+      var isMobile = window.innerWidth <= 768;
       var barWidth = 220;
+      var barHeight = 40;
       var gap = 10;
-      var rightOffset = 10 + myIndex * (barWidth + gap);
 
-      this.$content.css('right', rightOffset + 'px');
+      if (isMobile) {
+        // 移动端纵向堆叠：右下角向上排列，条带始终在屏内
+        var bottomOffset = 10 + myIndex * (barHeight + gap);
+        this.$content.css({ 'right': '10px', 'bottom': bottomOffset + 'px' });
+      } else {
+        // 桌面端横向堆叠：每个最小化条带宽 220px + 间距 10px
+        var rightOffset = 10 + myIndex * (barWidth + gap);
+        this.$content.css('right', rightOffset + 'px');
+      }
     },
 
     /**
