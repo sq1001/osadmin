@@ -25,6 +25,19 @@
   - 登录/错误页（8 处）：auth.css / auth2.css（body + .auth-split）/ auth3.css（body + .auth-split）/ error.css / error2.css / error3.css
 - **验证**：Edge 无头 CDP 实测桌面 1280×800 与移动 375×667，主题面板 header/footer 滚动前后位置不变、footer 底边 = 视口底边（100dvh = 视口高度），布局正常
 
+### 风格1认证页移动端层级覆盖修复
+- **问题**：移动端登录/注册页面顶部装饰插画（渐变画面）覆盖在白色表单卡片之上，表单内容被遮挡
+- **根因**（三处叠加）：
+  1. `.auth-container` 有 `backdrop-filter: blur(18px)` —— 该属性创建 stacking context，容器内 `.auth-right` 的 `z-index: 2` 被困在容器内部层叠上下文，对外容器整体 `z-index: auto(0)`；而 `.mobile-decoration`（body 子元素，绝对定位于视口顶部 0-180px）`z-index: 1` 在根上下文，1 > 0 → 装饰盖住整个卡片容器
+  2. `@media (max-width: 560px)` 的 `.auth-right { padding: 28px 20px }` 覆盖了 980px 断点的 `padding-top: 160px`（实测 28px），表单内容顶到卡片顶部，与顶部装饰重叠区更严重
+  3. login.html / lock-screen.html 存在多余的 `</div>`（代码规范问题，不改变渲染）
+- **修复**：
+  - `.auth-container` 增加 `position: relative; z-index: 2`，容器（含表单卡片）整体盖过装饰 `z-index: 1`，表单/头像可覆盖装饰正常显示（lock-screen 头像负 margin 叠装饰效果恢复）
+  - 560px 断点 `.auth-right` 补回 `padding-top: 160px`（lock-screen 的 140px 因 `.lock-screen-page` 特异性更高不受影响）
+  - 移除 login.html / lock-screen.html 多余的 `</div>`
+- **排查范围**：register.html / forgot-password.html 的 `.mobile-decoration` 同样位于容器外（body 子元素、视口定位）属设计意图，容器 z-index 提升后统一受益；auth2/auth3 风格无 mobile-decoration、无 backdrop-filter，`.auth-split` z-index 10 > canvas z-index 0 层级正常；其他 backdrop-filter（sidebar 遮罩 / toast / drawer 遮罩 / tinymce）均为独立顶层无内部 z-index 竞争，无需处理
+- **验证**：Edge 无头 CDP 移动端 375px 实测 4 个页面（login/register/forgot-password/lock-screen）容器顶部区域 elementFromPoint 均返回 auth-right（修复前被装饰覆盖），padding-top 分别为 160/160/160/140px 正确
+
 ### 文件变更
 | 文件 | 说明 |
 |------|------|
@@ -37,6 +50,9 @@
 | `admin/css/view/error.css` | body min-height 100vh → 100dvh |
 | `admin/css/view/error2.css` | body 100vh → 100dvh |
 | `admin/css/view/error3.css` | body 100vh → 100dvh |
+| `admin/css/view/auth.css` | 认证容器 z-index 提升修复移动端装饰覆盖 + 560px 断点补 padding-top |
+| `view/auth/login.html` | 移除多余 `</div>` |
+| `view/auth/lock-screen.html` | 移除多余 `</div>` |
 | `config/app.json` | 版本号 1.9.7 → 1.9.8 |
 | `admin/js/index.js` | App.version 1.9.7 → 1.9.8 |
 | `view/data/dashboard.json` | 系统版本、许可证版本、更新公告、时间线同步 v1.9.8 |

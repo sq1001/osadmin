@@ -50,6 +50,8 @@ body.lock-screen-page {
     background: rgba(255, 255, 255, 0.92);
     box-shadow: 0 30px 70px rgba(15, 23, 42, 0.12);
     backdrop-filter: blur(18px);
+    position: relative;
+    z-index: 2; /* 移动端盖过 .mobile-decoration(z-index:1)，backdrop-filter 创建 stacking context 后需显式提升 */
 }
 
 .auth-left {
@@ -683,6 +685,7 @@ body.lock-screen-page {
 
     .auth-right {
         padding: 28px 20px;
+        padding-top: 160px; /* 保留顶部装饰避让，避免被 560px 断点的 padding 覆盖 */
     }
 
     .auth-title {

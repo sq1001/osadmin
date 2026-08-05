@@ -27,7 +27,15 @@
 - **修复**：13 处统一 `100vh` → `100vh + 100dvh`（dvh 动态视口高度，地址栏收起/展开实时自适应，100vh 作旧浏览器回退）
 - **验证**：Edge 无头 CDP 桌面 1280×800 / 移动 375×667 主题面板 header/footer 固定、footer 底边 = 视口底边，布局正常 ✓
 
-#### 3. 版本同步
+#### 3. 风格1认证页移动端层级覆盖修复
+- **用户反馈**：风格1模板移动端登录/注册容器卡片层级比顶部画面低，被覆盖
+- **排查**：Edge 无头 CDP 实测 login.html 375px——`.mobile-decoration`（装饰）为 body 子元素绝对定位于视口 0-180px，z-index 1；`.auth-container` 有 backdrop-filter 创建 stacking context，对外 z-index auto(0)，装饰 1 > 0 盖住整个容器；容器顶部 elementFromPoint 返回空（被装饰遮）；`.auth-right` paddingTop 实测 28px（560px 断点 padding 覆盖了 980px 断点的 160px）
+- **根因**：①backdrop-filter 创建 stacking context 使容器内 z-index 2 失效，容器整体低于装饰 ②560px 断点 `padding: 28px 20px` 覆盖 padding-top 160px ③login/lock-screen 多余 `</div>` 代码不规范
+- **修复**：`.auth-container` 加 `position: relative; z-index: 2` 盖过装饰；560px 断点补回 `padding-top: 160px`；移除两处多余 `</div>`
+- **全面排查**：register/forgot-password 装饰同为 body 子元素（视口定位）属设计意图，容器 z-index 提升后统一受益；auth2/auth3 无 mobile-decoration 无 backdrop-filter（auth-split z-index 10 > canvas 0）正常；error 页无绝对定位装饰正常；其他 backdrop-filter（sidebar 遮罩/toast/drawer 遮罩/tinymce）为独立顶层无内部 z-index 竞争，无需处理
+- **验证**：375px 实测 4 页面容器顶部 elementFromPoint 均返回 auth-right（修复前空/被覆盖），padding-top 160/160/160/140px ✓
+
+#### 4. 版本同步
 - 版本号 1.9.7 → 1.9.8，同步至 config/app.json、admin/js/index.js、view/data/dashboard.json、docs/README.md
 - dashboard.json 更新公告与时间线新增 v1.9.8 记录
 - CHANGELOG.md 与 worklog.md 新增 v1.9.8 条目
@@ -42,6 +50,8 @@
 - admin/css/view/error.css
 - admin/css/view/error2.css
 - admin/css/view/error3.css
+- view/auth/login.html
+- view/auth/lock-screen.html
 - config/app.json
 - admin/js/index.js
 - view/data/dashboard.json
