@@ -46,23 +46,22 @@
 - **验证**：菜单渲染走 sidebar.js 现有 external + openType 分支，_blank 新窗口打开，无新增逻辑
 
 ### 风格1认证页移动端布局协调修复
-- **问题**：移动端登录/注册/忘记密码/锁屏页面表单卡片顶部空出大片白色区域（登录页表单标题距装饰底部 106px），且顶部装饰插画可见高度变低（180px 被容器遮挡只剩 126px/53px/101px）
-- **根因**（两处叠加）：
-  1. `.auth-container`（z-index: 2）从 126px 处开始，而 `.mobile-decoration` 绝对定位于视口顶部 0-180px，容器白色背景盖住装饰底部约 54px，装饰"变矮"
-  2. `.auth-right` 移动端 `padding-top: 160px` 是上轮为避让装饰临时补的，装饰被容器盖住后该避让高度与实际可见装饰不匹配，在卡片内空出 160px 白色区
-  3. `body.auth-page` 移动端 `flex align-items: center`，内容较矮的 forgot/lock 页面容器被居中下推（容器顶 201/223px），与装饰底部错位
-- **修复**：
-  - 移动端容器改为 `margin-top` 精确对齐装饰底部：980px 断点 `160px`（body padding 20px）、560px 断点 `164px`（body padding 16px），容器顶恒等于装饰底 180px，装饰完整显示
-  - `body.auth-page` 移动端由 flex 垂直居中改 `display: block`，避免内容较矮时容器被居中下推错位
-  - `.auth-right` 移除 `padding-top: 160px`（login/register/forgot 恢复 32px/28px 正常内边距）
-  - lock-screen `padding-top` 由 140px 调整为 60px，配合头像 `margin-top: -60px` 保持头像骑跨装饰底部边缘效果
-- **验证**：Edge 无头 CDP 实测 375/560/800/1280 四档视口 4 个页面——装饰可见高度全部恢复 180px 完整，表单标题距装饰底部 28px（560 以下）/32px（980 以下），容器顶恒等于装饰底，桌面端布局不受影响
+- **问题**：移动端登录/注册/忘记密码/锁屏页面表单卡片与顶部装饰贴紧（无间距），装饰被卡片遮挡"变矮"，且表单未居中显示，与风格2/3（全屏背景 + 卡片视口居中）不一致
+- **演进过程**：
+  - 第一版方案：容器 `margin-top` 对齐装饰底部（装饰完整显示），但卡片与装饰仍贴紧、forgot/lock 因 flex 居中错位，用户反馈"表单卡片跟顶部背景贴着，应添加合理距离或居中"
+  - **最终方案（对齐风格2/3）**：装饰改为**全屏固定渐变背景**（含顶部插画），表单卡片**视口双轴居中**
+- **修复**（auth.css）：
+  - `.mobile-decoration` 移动端由 180px 顶部色块改为 `position: fixed; inset: 0` 全屏渐变背景（各页面主题色：login 蓝绿 / register 粉橙 / forgot 紫绿 / lock 靛青），SVG 插画保留在顶部 180px，下方渐变延伸至视口底
+  - `body.auth-page` 恢复 flex 垂直水平居中，`.auth-container` 用 `margin: auto` 双轴居中（内容超高时自动对齐顶部可滚动）
+  - `.auth-right` 移除 `padding-top: 160px` 避让残留，恢复 32px/28px 正常内边距
+  - lock-screen 移除头像 `margin-top: -60px` 骑跨与 `padding-top: 60px` 特例，头像按居中卡片内正常显示
+- **验证**：Edge 无头 CDP 实测 375/560/800/1280 四档视口 4 个页面——装饰全屏渐变完整覆盖，卡片在视口内垂直水平居中（375×667 下 login 容器 top 60px、register 29px、forgot 119px、lock 127px），桌面端分栏布局不受影响
 
 ### 文件变更
 | 文件 | 说明 |
 |------|------|
 | `config/menu.json` | 外部链接新增 Gitee/GitHub 仓库地址 |
-| `admin/css/view/auth.css` | 移动端容器 margin-top 对齐装饰底 + body 取消 flex 居中 + auth-right 移除多余 padding-top + lock-screen padding 调整 |
+| `admin/css/view/auth.css` | 移动端装饰改全屏渐变背景 + 表单卡片视口居中 + 移除多余 padding 特例 |
 | `admin/css/extends/resetForm.css` | 移动端 input-block 改 block 弹性占满（排除按钮区），date-range 弹性平分 |
 | `admin/css/admin.css` | 主框架/侧边栏/子菜单/主内容 4 处 100vh → 100dvh |
 | `admin/css/theme.css` | 主题配置面板 100vh → 100dvh（修复移动端底部按钮被地址栏遮挡） |

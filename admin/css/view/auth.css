@@ -535,7 +535,6 @@ body.lock-screen-page {
 
 @media (max-width: 980px) {
     body.auth-page {
-        display: block; /* 移动端取消 flex 垂直居中，容器靠 margin-top 对齐装饰底部，避免内容较矮时被居中下推 */
         padding: 20px;
     }
 
@@ -546,24 +545,36 @@ body.lock-screen-page {
         border-radius: 16px;
         flex-direction: column;
         position: relative;
+        z-index: 2;
         overflow: hidden;
-        margin-top: 160px; /* 容器顶部对齐移动端装饰底部(180px - body padding 20px)，保证装饰完整显示 */
+        margin: auto; /* flex 双轴居中，内容超高时自动对齐顶部可滚动 */
     }
 
+    /* 移动端装饰：全屏渐变背景 + 顶部插画，表单卡片居中显示 */
     .mobile-decoration {
         display: block;
-        position: absolute;
+        position: fixed;
         top: 0;
         left: 0;
         right: 0;
-        height: 180px;
-        z-index: 1;
+        bottom: 0;
+        height: auto;
+        z-index: 0;
         overflow: hidden;
+        background: linear-gradient(135deg, #60a5fa 0%, #34d399 100%);
     }
 
+    .login-page .mobile-decoration { background: linear-gradient(135deg, #60a5fa 0%, #34d399 100%); }
+    .register-page .mobile-decoration { background: linear-gradient(135deg, #f472b6 0%, #fbbf24 100%); }
+    .forgot-password-page .mobile-decoration { background: linear-gradient(135deg, #a78bfa 0%, #6ee7b7 100%); }
+    .lock-screen-page .mobile-decoration { background: linear-gradient(135deg, #6366f1 0%, #22d3ee 100%); }
+
     .mobile-decoration svg {
+        position: absolute;
+        top: 0;
+        left: 0;
         width: 100%;
-        height: 100%;
+        height: 180px;
         display: block;
     }
 
@@ -652,13 +663,8 @@ body.lock-screen-page {
         width: 88px;
         height: 88px;
         margin-bottom: 20px;
-        margin-top: -60px;
         border: 4px solid white;
         box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
-    }
-
-    .lock-screen-page .auth-right {
-        padding-top: 60px; /* 容器顶对齐装饰底后，配合头像 margin-top:-60px 保持头像骑跨装饰底部边缘 */
     }
 
     .lock-screen-page .auth-title {
@@ -674,7 +680,6 @@ body.lock-screen-page {
     .auth-container {
         max-width: 100%;
         border-radius: 12px;
-        margin-top: 164px; /* 560 断点 body padding 16px，容器顶部仍对齐装饰底部 180px */
     }
 
     .auth-right {
