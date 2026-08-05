@@ -59,8 +59,15 @@
 - **最终方案**：一体式瀑布渐变——移除 4 页面 SVG 内渐变 rect 与 defs（插画透明化），容器背景改 180° 五段瀑布渐变（各页主题色自上而下深→柔→白，无分段）；保留气泡呼吸 + SVG 插画 SMIL 动画
 - **验证**：Edge 无头 CDP 实测 4 页面——180deg 五段瀑布渐变生效、气泡 150px + auth-mobile-float、SVG animate login 7 / register 6 / forgot 8 / lock 6 个、卡片居中布局不变 ✓
 
+#### 8. 标签栏下拉菜单新增"关闭左侧/关闭右侧"
+- **用户反馈**：标签栏右侧下拉菜单缺少关闭左侧、关闭右侧，应在关闭当前后接入
+- **实现**：index.html 下拉菜单关闭当前后新增两项（layui-icon-left / layui-icon-right）；tabs.js 新增 closeLeftTabs/closeRightTabs（以激活标签为基准关闭左侧/右侧可关闭标签，不可关闭标签保留），handleDropdownAction 接入
+- **验证**：Edge 无头 CDP 实测——5 标签 active=140 关闭左侧剩控制台+140；active=130 关闭右侧删 140；active=110 关闭左侧无变化 ✓
+
 ### 修改文件清单
 - config/menu.json
+- index.html
+- modules/components/tabs.js
 - admin/css/view/auth.css
 - view/auth/login.html
 - view/auth/register.html

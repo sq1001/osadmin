@@ -377,6 +377,38 @@ layui.define(['jquery', 'themeModule', 'routerModule'], function(exports) {
       this.closeDropdown();
     },
 
+    closeLeftTabs: function() {
+      var self = this;
+      var activeIndex = self.tabs.findIndex(function(t) { return t.id === self.activeTabId; });
+      if (activeIndex <= 0) {
+        this.closeDropdown();
+        return;
+      }
+      // 保留激活标签及其右侧，以及不可关闭标签（如控制台）
+      this.tabs = this.tabs.filter(function(t, index) {
+        return index >= activeIndex || !t.closable;
+      });
+      this.saveTabsState();
+      this.render();
+      this.closeDropdown();
+    },
+
+    closeRightTabs: function() {
+      var self = this;
+      var activeIndex = self.tabs.findIndex(function(t) { return t.id === self.activeTabId; });
+      if (activeIndex === -1 || activeIndex === this.tabs.length - 1) {
+        this.closeDropdown();
+        return;
+      }
+      // 保留激活标签及其左侧，以及不可关闭标签
+      this.tabs = this.tabs.filter(function(t, index) {
+        return index <= activeIndex || !t.closable;
+      });
+      this.saveTabsState();
+      this.render();
+      this.closeDropdown();
+    },
+
     closeAllTabs: function() {
       this.tabs = this.tabs.filter(function(t) { return !t.closable; });
 
@@ -398,6 +430,12 @@ layui.define(['jquery', 'themeModule', 'routerModule'], function(exports) {
           break;
         case 'closeCurrent':
           this.closeCurrentTab();
+          break;
+        case 'closeLeft':
+          this.closeLeftTabs();
+          break;
+        case 'closeRight':
+          this.closeRightTabs();
           break;
         case 'closeOther':
           this.closeOtherTabs();

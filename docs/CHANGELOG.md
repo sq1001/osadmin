@@ -68,6 +68,14 @@
   - 保留漂浮气泡（::before/::after，auth-mobile-float）与全部插画 SMIL 动画
 - **验证**：Edge 无头 CDP 实测 4 页面——180deg 五段瀑布渐变生效（无 SVG rect 干扰）、气泡 150px + auth-mobile-float、SVG animate login 7 / register 6 / forgot 8 / lock 6 个、卡片仍居中
 
+### 标签栏下拉菜单新增"关闭左侧/关闭右侧"
+- **需求**：标签栏右侧下拉菜单缺少关闭左侧、关闭右侧功能
+- **实现**：
+  - `index.html`：下拉菜单"关闭当前"后新增"关闭左侧"（layui-icon-left）与"关闭右侧"（layui-icon-right）两项
+  - `tabs.js`：新增 `closeLeftTabs` / `closeRightTabs` 方法——以激活标签为基准，关闭其左侧/右侧所有可关闭标签，不可关闭标签（如控制台）始终保留；`handleDropdownAction` 接入 closeLeft/closeRight 分支
+  - 边界处理：激活标签为第一个（或最后一个）可关闭标签时点击对应项不关闭任何标签，仅关闭下拉
+- **验证**：Edge 无头 CDP 实测——打开 5 个标签（控制台+商品列表/添加商品/分类管理/库存管理），active=140 关闭左侧后仅剩控制台+140（110/120/130 被关）；active=130 关闭右侧后 140 被关；active=110 关闭左侧无变化（左侧仅不可关闭控制台）
+
 ### 文件变更
 | 文件 | 说明 |
 |------|------|
@@ -77,6 +85,8 @@
 | `view/auth/register.html` | 移动端插画补 SMIL 动画 + 移除 SVG 渐变 rect 一体瀑布渐变 |
 | `view/auth/forgot-password.html` | 移动端插画补 SMIL 动画（白圆/彩虹呼吸漂浮）+ 移除 SVG 渐变 rect 一体瀑布渐变 |
 | `view/auth/lock-screen.html` | 移动端插画补月亮呼吸脉动 + 星星闪烁 + 移除 SVG 渐变 rect 一体瀑布渐变 |
+| `index.html` | 标签栏下拉菜单新增"关闭左侧/关闭右侧" |
+| `modules/components/tabs.js` | 新增 closeLeftTabs/closeRightTabs 方法 + handleDropdownAction 接入 |
 | `admin/css/extends/resetForm.css` | 移动端 input-block 改 block 弹性占满（排除按钮区），date-range 弹性平分 |
 | `admin/css/admin.css` | 主框架/侧边栏/子菜单/主内容 4 处 100vh → 100dvh |
 | `admin/css/theme.css` | 主题配置面板 100vh → 100dvh（修复移动端底部按钮被地址栏遮挡） |
