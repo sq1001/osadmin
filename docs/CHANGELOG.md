@@ -38,9 +38,17 @@
 - **排查范围**：register.html / forgot-password.html 的 `.mobile-decoration` 同样位于容器外（body 子元素、视口定位）属设计意图，容器 z-index 提升后统一受益；auth2/auth3 风格无 mobile-decoration、无 backdrop-filter，`.auth-split` z-index 10 > canvas z-index 0 层级正常；其他 backdrop-filter（sidebar 遮罩 / toast / drawer 遮罩 / tinymce）均为独立顶层无内部 z-index 竞争，无需处理
 - **验证**：Edge 无头 CDP 移动端 375px 实测 4 个页面（login/register/forgot-password/lock-screen）容器顶部区域 elementFromPoint 均返回 auth-right（修复前被装饰覆盖），padding-top 分别为 160/160/160/140px 正确
 
+### 侧边栏外部链接新增仓库地址
+- **需求**：侧边栏"外部链接"菜单补充项目代码仓库地址，便于查看与访问源码
+- **实现**：`config/menu.json` 外部链接 children 追加两项（`openType: _blank` 新窗口打开）：
+  - Gitee仓库：`https://gitee.com/lc1001/osadmin`（id 550）
+  - GitHub仓库：`https://github.com/sq1001/osadmin`（id 560）
+- **验证**：菜单渲染走 sidebar.js 现有 external + openType 分支，_blank 新窗口打开，无新增逻辑
+
 ### 文件变更
 | 文件 | 说明 |
 |------|------|
+| `config/menu.json` | 外部链接新增 Gitee/GitHub 仓库地址 |
 | `admin/css/extends/resetForm.css` | 移动端 input-block 改 block 弹性占满（排除按钮区），date-range 弹性平分 |
 | `admin/css/admin.css` | 主框架/侧边栏/子菜单/主内容 4 处 100vh → 100dvh |
 | `admin/css/theme.css` | 主题配置面板 100vh → 100dvh（修复移动端底部按钮被地址栏遮挡） |

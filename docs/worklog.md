@@ -40,7 +40,15 @@
 - dashboard.json 更新公告与时间线新增 v1.9.8 记录
 - CHANGELOG.md 与 worklog.md 新增 v1.9.8 条目
 
+#### 5. 侧边栏外部链接新增仓库地址
+- **需求**：侧边栏"外部链接"菜单额外添加项目仓库地址（Gitee + GitHub），便于访问源码
+- **实现**：config/menu.json 外部链接 children 追加两项，`openType: _blank` 新窗口打开，图标 layui-icon-log（已确认存在于 layui 图标库）
+  - Gitee仓库 id 550：`https://gitee.com/lc1001/osadmin`
+  - GitHub仓库 id 560：`https://github.com/sq1001/osadmin`
+- **验证**：外部链接渲染复用 sidebar.js 现有 external + openType 分支（data-external / data-open-type），handleSubmenuItemClick 对 `_blank` 走 window.open 新窗口，无新增逻辑 ✓
+
 ### 修改文件清单
+- config/menu.json
 - admin/css/extends/resetForm.css
 - admin/css/admin.css
 - admin/css/theme.css

@@ -140,7 +140,9 @@
       { "id": 510, "type": 1, "code": "external/baidu", "title": "百度搜索", "icon": "layui-icon-search", "href": "https://www.baidu.com", "openType": "_blank" },
       { "id": 520, "type": 1, "code": "external/deepseek-blank", "title": "DeepSeek(blank)", "icon": "layui-icon-read", "href": "https://www.deepseek.com/", "openType": "_blank" },
       { "id": 530, "type": 1, "code": "external/deepseek-dialog", "title": "DeepSeek(dialog)", "icon": "layui-icon-read", "href": "https://www.deepseek.com/", "openType": "_dialog" },
-      { "id": 540, "type": 1, "code": "external/deepseek-iframe", "title": "DeepSeek(iframe)", "icon": "layui-icon-chart-screen", "href": "https://www.deepseek.com/", "openType": "_iframe" }
+      { "id": 540, "type": 1, "code": "external/deepseek-iframe", "title": "DeepSeek(iframe)", "icon": "layui-icon-chart-screen", "href": "https://www.deepseek.com/", "openType": "_iframe" },
+      { "id": 550, "type": 1, "code": "external/gitee", "title": "Gitee仓库", "icon": "layui-icon-log", "href": "https://gitee.com/lc1001/osadmin", "openType": "_blank" },
+      { "id": 560, "type": 1, "code": "external/github", "title": "GitHub仓库", "icon": "layui-icon-log", "href": "https://github.com/sq1001/osadmin", "openType": "_blank" }
     ]
   },
   {
