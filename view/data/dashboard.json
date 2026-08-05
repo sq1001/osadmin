@@ -95,7 +95,7 @@
       { "user": "王五", "initial": "王", "type": "user", "action": "更新了个人资料信息", "module": "用户管理", "time": "2小时前" }
     ],
     "notices": [
-      { "type": "update", "typeLabel": "更新", "title": "OSAdmin v1.9.8 版本发布", "desc": "修复移动端搜索栏输入框宽度参差不齐，全部弹性占满对齐，日期范围双框自动平分", "time": "08-05" },
+      { "type": "update", "typeLabel": "更新", "title": "OSAdmin v1.9.8 版本发布", "desc": "移动端搜索栏输入框全部弹性占满对齐，日期范围双框自动平分；全项目100vh统一改100dvh，修复移动端地址栏遮挡主题面板底部按钮", "time": "08-05" },
       { "type": "update", "typeLabel": "更新", "title": "OSAdmin v1.9.7 版本发布", "desc": "搜索栏 label 宽度统一 90px 支持四字完整显示，修复抽屉最小化移动端多抽屉堆叠超出屏幕丢失问题", "time": "08-05" },
       { "type": "update", "typeLabel": "更新", "title": "OSAdmin v1.9.6 版本发布", "desc": "优化标签栏拖拽插入指示线，根据鼠标位置单侧显示插入方向，移除整体高亮避免视觉干扰", "time": "08-04" },
       { "type": "update", "typeLabel": "更新", "title": "OSAdmin v1.9.5 版本发布", "desc": "新增顶部栏布局溢出滚动、混合布局子面板宽度配置、抽屉组件最小化堆叠拖动、主题切换动画优化等", "time": "08-01" },

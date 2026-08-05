@@ -409,6 +409,7 @@
   right: 0;
   width: 360px;
   height: 100vh;
+  height: 100dvh; /* 移动端非全屏时 100vh 含地址栏高度，改用动态视口高度保证底部按钮可见 */
   background: var(--card-bg);
   border-left: 1px solid var(--border);
   box-shadow: -4px 0 24px rgba(0, 0, 0, 0.1);

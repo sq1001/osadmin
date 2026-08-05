@@ -19,13 +19,29 @@
   - select/textarea 同步 `width: 100%`
 - **验证**：移动端 375px 8 字段全部 225px 占满、按钮区右对齐正常；桌面端 1280px 保持固定 270px 不变 ✓
 
-#### 2. 版本同步
+#### 2. 移动端 100vh → 100dvh 视口优化
+- **用户反馈**：主题配置面板底部"重置/保存"按钮移动端非全屏打开时不显示，全屏打开才显示
+- **排查**：实测桌面/移动端主题面板 header/footer 均固定（flex 三段式），滚动前后位置不变——固定逻辑没问题
+- **根因**：`.layui-theme-config-panel { position: fixed; top: 0; height: 100vh }`。移动端 `100vh` = 含地址栏的窗口总高（layout viewport），面板底边超出可见视口，footer 被地址栏遮挡；全屏时可见视口 ≈ 100vh → 正常
+- **评估**：全项目 13 处 100vh（主框架 4 + 主题面板 1 + 登录/错误页 8）均受同类问题影响，统一优化价值高、成本低（追加一行回退）
+- **修复**：13 处统一 `100vh` → `100vh + 100dvh`（dvh 动态视口高度，地址栏收起/展开实时自适应，100vh 作旧浏览器回退）
+- **验证**：Edge 无头 CDP 桌面 1280×800 / 移动 375×667 主题面板 header/footer 固定、footer 底边 = 视口底边，布局正常 ✓
+
+#### 3. 版本同步
 - 版本号 1.9.7 → 1.9.8，同步至 config/app.json、admin/js/index.js、view/data/dashboard.json、docs/README.md
 - dashboard.json 更新公告与时间线新增 v1.9.8 记录
 - CHANGELOG.md 与 worklog.md 新增 v1.9.8 条目
 
 ### 修改文件清单
 - admin/css/extends/resetForm.css
+- admin/css/admin.css
+- admin/css/theme.css
+- admin/css/view/auth.css
+- admin/css/view/auth2.css
+- admin/css/view/auth3.css
+- admin/css/view/error.css
+- admin/css/view/error2.css
+- admin/css/view/error3.css
 - config/app.json
 - admin/js/index.js
 - view/data/dashboard.json

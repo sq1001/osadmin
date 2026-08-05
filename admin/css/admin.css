@@ -140,7 +140,8 @@ body {
 
 .layui-admin-wrapper {
   display: flex;
-  height: 100vh;
+  height: 100vh;  /* 兼容不支持 dvh 的旧浏览器 */
+  height: 100dvh; /* 移动端随地址栏显示/收起自适应，避免底部裁切 */
   width: 100vw;
   overflow: hidden;
 }
@@ -166,6 +167,7 @@ body {
   width: var(--sidebar-width);
   background: var(--bg-sidebar);
   height: 100vh;
+  height: 100dvh; /* 移动端动态视口高度，与主框架容器保持一致 */
   z-index: 1001;
   transition: width 0.25s ease;
   display: flex;
@@ -474,6 +476,7 @@ body {
 .layui-submenu-panel {
   width: 0;
   height: 100vh;
+  height: 100dvh; /* 移动端动态视口高度，与侧边栏保持一致 */
   background: var(--bg-sidebar);
   border-right: 1px solid var(--border);
   z-index: 1000;
@@ -782,6 +785,7 @@ body {
   flex-direction: column;
   min-width: 0;
   height: 100vh;
+  height: 100dvh; /* 移动端动态视口高度，避免内容底部被浏览器工具栏裁切 */
   overflow: hidden;
 }
 

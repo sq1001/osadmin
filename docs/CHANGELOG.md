@@ -16,10 +16,27 @@
   - `.layui-select`、`.layui-textarea` 同步加入 `width: 100%` 弹性化
 - **验证**：Edge 无头 CDP 实测移动端 375px 视口——8 个字段 input-block 全部统一 225px，date-range 双框 98px 平分，按钮区右对齐不受影响；桌面端 1280px input-block 保持固定 270px 不变
 
+### 移动端 100vh → 100dvh 视口优化
+- **问题**：移动端浏览器非全屏打开（地址栏/工具栏可见）时，主题配置面板底部"重置/保存"按钮一直不显示，全屏打开才显示
+- **根因**：面板 `.layui-theme-config-panel` 使用 `position: fixed; top: 0; height: 100vh`。移动端 `100vh` 等于整个浏览器窗口高度（**含地址栏的 layout viewport**），而非用户可见视口高度。面板底边落在可见区域之外，底部 flex 固定的 footer（重置/保存）恰好位于地址栏遮挡区 → 不可见；地址栏收起/全屏时可见视口 ≈ 100vh → 正常
+- **修复**：全项目 **13 处 `100vh` 统一改为 `100dvh`**（dynamic viewport height，随地址栏显示/收起实时自适应），每处保留 `100vh` 作旧浏览器回退
+  - 主框架布局（admin.css）：`.layui-admin-wrapper` 根容器、`.layui-sidebar` 侧边栏、`.layui-submenu-panel` 子菜单面板、`.layui-main-wrapper` 主内容容器（4 处）
+  - 主题配置面板（theme.css）：`.layui-theme-config-panel`（本次问题根因，1 处）
+  - 登录/错误页（8 处）：auth.css / auth2.css（body + .auth-split）/ auth3.css（body + .auth-split）/ error.css / error2.css / error3.css
+- **验证**：Edge 无头 CDP 实测桌面 1280×800 与移动 375×667，主题面板 header/footer 滚动前后位置不变、footer 底边 = 视口底边（100dvh = 视口高度），布局正常
+
 ### 文件变更
 | 文件 | 说明 |
 |------|------|
 | `admin/css/extends/resetForm.css` | 移动端 input-block 改 block 弹性占满（排除按钮区），date-range 弹性平分 |
+| `admin/css/admin.css` | 主框架/侧边栏/子菜单/主内容 4 处 100vh → 100dvh |
+| `admin/css/theme.css` | 主题配置面板 100vh → 100dvh（修复移动端底部按钮被地址栏遮挡） |
+| `admin/css/view/auth.css` | body min-height 100vh → 100dvh |
+| `admin/css/view/auth2.css` | body + .auth-split 100vh → 100dvh |
+| `admin/css/view/auth3.css` | body + .auth-split 100vh → 100dvh |
+| `admin/css/view/error.css` | body min-height 100vh → 100dvh |
+| `admin/css/view/error2.css` | body 100vh → 100dvh |
+| `admin/css/view/error3.css` | body 100vh → 100dvh |
 | `config/app.json` | 版本号 1.9.7 → 1.9.8 |
 | `admin/js/index.js` | App.version 1.9.7 → 1.9.8 |
 | `view/data/dashboard.json` | 系统版本、许可证版本、更新公告、时间线同步 v1.9.8 |
