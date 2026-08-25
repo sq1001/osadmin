@@ -308,5 +308,5 @@ layui.define(['jquery'], function(exports) {
     }
   };
 
-  exports('routerModule', Router);
+  exports('routerMod', Router);
 });

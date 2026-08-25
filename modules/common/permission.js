@@ -94,5 +94,5 @@ layui.define(['jquery'], function(exports) {
     }
   };
 
-  exports('permissionModule', Permission);
+  exports('permissionMod', Permission);
 });

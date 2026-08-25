@@ -38,9 +38,9 @@
   // ========== LayUI 模块配置 ==========
   // 核心模块（启动必需）
   var coreModules = {
-    routerModule: 'modules/common/router',
-    themeModule: 'modules/common/theme',
-    permissionModule: 'modules/common/permission',
+    routerMod: 'modules/common/router',
+    themeMod: 'modules/common/theme',
+    permissionMod: 'modules/common/permission',
     resourceLoader: 'modules/common/resource-loader',
     componentRenderer: 'modules/common/component-renderer',
     sidebarComp: 'modules/components/sidebar',
@@ -92,7 +92,6 @@
 
   // 独立页面：只配置 LayUI，不初始化应用
   if (isStandalonePage) {
-    console.log('[OSLAY] 独立页面模式，baseUrl:', baseUrl);
     return;
   }
 
@@ -101,7 +100,7 @@
   var isReady = false;
 
   var App = {
-    version: '1.9.9',
+    version: '1.9.10',
     name: 'OS Admin',
     debug: false,
     baseUrl: baseUrl,
@@ -209,7 +208,7 @@
 
       layui.use(Object.keys(coreModules), function() {
         var app = layui.appMain;
-        var permission = layui.permissionModule;
+        var permission = layui.permissionMod;
         var componentRenderer = layui.componentRenderer;
         
         componentRenderer.init();

@@ -11,313 +11,313 @@
  * - 性能优化：批量读取布局属性，减少强制重排
  */
 layui.define(['jquery', 'element'], function(exports) {
-	"use strict";
+    "use strict";
 
-	var MOD_NAME = 'watermarkMod';
-	var $ = layui.$;
+    var MOD_NAME = 'watermarkMod';
+    var $ = layui.$;
 
-	var _cache = {};
+    var _cache = {};
 
-	window.addEventListener('beforeunload', function() {
-		_cache = {};
-	});
+    window.addEventListener('beforeunload', function() {
+        _cache = {};
+    });
 
-	var defaultOptions = {
-		content: '水印',
-		appendTo: 'body',
-		width: 150,
-		height: 20,
-		rowSpacing: 60,
-		colSpacing: 30,
-		rotate: -15,
-		opacity: 0.1,
-		fontSize: 14,
-		fontFamily: 'Microsoft YaHei, sans-serif',
-		fontColor: '#000000',
-		zIndex: 999999
-	};
+    var defaultOptions = {
+        content: '水印',
+        appendTo: 'body',
+        width: 150,
+        height: 20,
+        rowSpacing: 60,
+        colSpacing: 30,
+        rotate: -15,
+        opacity: 0.1,
+        fontSize: 14,
+        fontFamily: 'Microsoft YaHei, sans-serif',
+        fontColor: '#000000',
+        zIndex: 999999
+    };
 
-	function getCacheKey(options) {
-		return [
-			options.content,
-			options.fontSize,
-			options.fontColor,
-			options.opacity,
-			options.rotate,
-			options.colSpacing,
-			options.rowSpacing,
-			options.width,
-			options.height,
-			options.fontFamily
-		].join('|');
-	}
+    function getCacheKey(options) {
+        return [
+            options.content,
+            options.fontSize,
+            options.fontColor,
+            options.opacity,
+            options.rotate,
+            options.colSpacing,
+            options.rowSpacing,
+            options.width,
+            options.height,
+            options.fontFamily
+        ].join('|');
+    }
 
-	function Watermark(options) {
-		this._options = Object.assign({}, defaultOptions, options || {});
-		this._container = null;
-		this._parentEle = null;
-		this._wmObserver = null;
-		this._wmParentObserver = null;
-		this._resizeHandler = null;
-		this._canvas = null;
-		this._windowsWidth = 0;
-		this._windowsHeight = 0;
-		this._cacheKey = null;
-		this._rafId = null; // requestAnimationFrame ID
+    function Watermark(options) {
+        this._options = Object.assign({}, defaultOptions, options || {});
+        this._container = null;
+        this._parentEle = null;
+        this._wmObserver = null;
+        this._wmParentObserver = null;
+        this._resizeHandler = null;
+        this._canvas = null;
+        this._windowsWidth = 0;
+        this._windowsHeight = 0;
+        this._cacheKey = null;
+        this._rafId = null; // requestAnimationFrame ID
 
-		this._init();
-	}
+        this._init();
+    }
 
-	Watermark.prototype = {
-		constructor: Watermark,
+    Watermark.prototype = {
+        constructor: Watermark,
 
-		_init: function() {
-			this._createContainer();
-			this._createWatermark();
-			this._addObserve();
-			this._addResizeListener();
-		},
+        _init: function() {
+            this._createContainer();
+            this._createWatermark();
+            this._addObserve();
+            this._addResizeListener();
+        },
 
-		_createContainer: function() {
-			this._container = document.createElement('div');
-			this._container.classList.add('cell-watermark-container');
-			this._container.style.cssText = 'display: block; pointer-events: none; position: absolute; top: 0; left: 0; width: 100%; height: 100%; overflow: hidden;';
-			this._container.setAttribute('aria-hidden', 'true');
+        _createContainer: function() {
+            this._container = document.createElement('div');
+            this._container.classList.add('cell-watermark-container');
+            this._container.style.cssText = 'display: block; pointer-events: none; position: absolute; top: 0; left: 0; width: 100%; height: 100%; overflow: hidden;';
+            this._container.setAttribute('aria-hidden', 'true');
 
-			var appendTo = this._options.appendTo;
-			if (typeof appendTo === 'string') {
-				this._parentEle = document.querySelector(appendTo) || document.body;
-			} else if (appendTo && appendTo.nodeType === 1) {
-				this._parentEle = appendTo;
-			} else {
-				this._parentEle = document.body;
-			}
+            var appendTo = this._options.appendTo;
+            if (typeof appendTo === 'string') {
+                this._parentEle = document.querySelector(appendTo) || document.body;
+            } else if (appendTo && appendTo.nodeType === 1) {
+                this._parentEle = appendTo;
+            } else {
+                this._parentEle = document.body;
+            }
 
-			if (getComputedStyle(this._parentEle).position === 'static') {
-				this._parentEle.style.position = 'relative';
-			}
+            if (getComputedStyle(this._parentEle).position === 'static') {
+                this._parentEle.style.position = 'relative';
+            }
 
-			this._updateDimensions();
-			this._parentEle.appendChild(this._container);
-		},
+            this._updateDimensions();
+            this._parentEle.appendChild(this._container);
+        },
 
-		_updateDimensions: function() {
-			var parent = this._parentEle;
-			if (!parent) return;
-			
-			// 批量读取所有布局属性（一次性强制重排）
-			var scrollWidth = parent.scrollWidth;
-			var clientWidth = parent.clientWidth;
-			var scrollHeight = parent.scrollHeight;
-			var clientHeight = parent.clientHeight;
+        _updateDimensions: function() {
+            var parent = this._parentEle;
+            if (!parent) return;
+            
+            // 批量读取所有布局属性（一次性强制重排）
+            var scrollWidth = parent.scrollWidth;
+            var clientWidth = parent.clientWidth;
+            var scrollHeight = parent.scrollHeight;
+            var clientHeight = parent.clientHeight;
 
-			this._windowsWidth = Math.max(scrollWidth, clientWidth);
-			this._windowsHeight = Math.max(scrollHeight, clientHeight);
-		},
+            this._windowsWidth = Math.max(scrollWidth, clientWidth);
+            this._windowsHeight = Math.max(scrollHeight, clientHeight);
+        },
 
-		_updateDimensionsAsync: function() {
-			var self = this;
-			if (self._rafId) {
-				cancelAnimationFrame(self._rafId);
-			}
-			self._rafId = requestAnimationFrame(function() {
-				self._rafId = null;
-				self._updateDimensions();
-				
-				if (self._container) {
-					self._container.style.width = self._windowsWidth + 'px';
-					self._container.style.height = self._windowsHeight + 'px';
-				}
-			});
-		},
+        _updateDimensionsAsync: function() {
+            var self = this;
+            if (self._rafId) {
+                cancelAnimationFrame(self._rafId);
+            }
+            self._rafId = requestAnimationFrame(function() {
+                self._rafId = null;
+                self._updateDimensions();
+                
+                if (self._container) {
+                    self._container.style.width = self._windowsWidth + 'px';
+                    self._container.style.height = self._windowsHeight + 'px';
+                }
+            });
+        },
 
-		_createWatermark: function() {
-			var options = this._options;
-			var cacheKey = getCacheKey(options);
-			this._cacheKey = cacheKey;
+        _createWatermark: function() {
+            var options = this._options;
+            var cacheKey = getCacheKey(options);
+            this._cacheKey = cacheKey;
 
-			if (_cache[cacheKey]) {
-				this._container.style.backgroundImage = 'url(' + _cache[cacheKey] + ')';
-				this._container.style.backgroundRepeat = 'repeat';
-				this._container.style.zIndex = options.zIndex;
-				return;
-			}
+            if (_cache[cacheKey]) {
+                this._container.style.backgroundImage = 'url(' + _cache[cacheKey] + ')';
+                this._container.style.backgroundRepeat = 'repeat';
+                this._container.style.zIndex = options.zIndex;
+                return;
+            }
 
-			var canvas = document.createElement('canvas');
-			var ctx = canvas.getContext('2d');
+            var canvas = document.createElement('canvas');
+            var ctx = canvas.getContext('2d');
 
-			var angle = options.rotate * Math.PI / 180;
-			var absAngle = Math.abs(angle);
-			var sinA = Math.sin(absAngle);
-			var cosA = Math.cos(absAngle);
+            var angle = options.rotate * Math.PI / 180;
+            var absAngle = Math.abs(angle);
+            var sinA = Math.sin(absAngle);
+            var cosA = Math.cos(absAngle);
 
-			var singleWidth = options.width + options.colSpacing;
-			var singleHeight = options.height + options.rowSpacing;
+            var singleWidth = options.width + options.colSpacing;
+            var singleHeight = options.height + options.rowSpacing;
 
-			var rotatedWidth = singleWidth * cosA + singleHeight * sinA;
-			var rotatedHeight = singleWidth * sinA + singleHeight * cosA;
+            var rotatedWidth = singleWidth * cosA + singleHeight * sinA;
+            var rotatedHeight = singleWidth * sinA + singleHeight * cosA;
 
-			canvas.width = Math.ceil(rotatedWidth * 2);
-			canvas.height = Math.ceil(rotatedHeight * 2);
+            canvas.width = Math.ceil(rotatedWidth * 2);
+            canvas.height = Math.ceil(rotatedHeight * 2);
 
-			ctx.font = options.fontSize + 'px ' + options.fontFamily;
-			ctx.textAlign = 'center';
-			ctx.textBaseline = 'middle';
+            ctx.font = options.fontSize + 'px ' + options.fontFamily;
+            ctx.textAlign = 'center';
+            ctx.textBaseline = 'middle';
 
-			var isRgbaOrHsla = /^(rgba|hsla)\s*\(/i.test(options.fontColor);
-			if (isRgbaOrHsla) {
-				ctx.fillStyle = options.fontColor;
-			} else {
-				ctx.fillStyle = options.fontColor;
-				ctx.globalAlpha = options.opacity;
-			}
+            var isRgbaOrHsla = /^(rgba|hsla)\s*\(/i.test(options.fontColor);
+            if (isRgbaOrHsla) {
+                ctx.fillStyle = options.fontColor;
+            } else {
+                ctx.fillStyle = options.fontColor;
+                ctx.globalAlpha = options.opacity;
+            }
 
-			ctx.translate(canvas.width / 2, canvas.height / 2);
-			ctx.rotate(angle);
+            ctx.translate(canvas.width / 2, canvas.height / 2);
+            ctx.rotate(angle);
 
-			ctx.fillText(options.content, 0, 0);
+            ctx.fillText(options.content, 0, 0);
 
-			this._canvas = canvas;
+            this._canvas = canvas;
 
-			var dataUrl = canvas.toDataURL('image/png');
-			_cache[cacheKey] = dataUrl;
+            var dataUrl = canvas.toDataURL('image/png');
+            _cache[cacheKey] = dataUrl;
 
-			this._container.style.backgroundImage = 'url(' + dataUrl + ')';
-			this._container.style.backgroundRepeat = 'repeat';
-			this._container.style.zIndex = options.zIndex;
-		},
+            this._container.style.backgroundImage = 'url(' + dataUrl + ')';
+            this._container.style.backgroundRepeat = 'repeat';
+            this._container.style.zIndex = options.zIndex;
+        },
 
-		_addObserve: function() {
-			var self = this;
+        _addObserve: function() {
+            var self = this;
 
-			this._wmObserver = new MutationObserver(function(mutations) {
-				if (!self._container) return;
-				self._wmObserver.disconnect();
-				self._createWatermark();
-				self._wmObserver.observe(self._container, {
-					attributes: true,
-					attributeFilter: ['style', 'class']
-				});
-			});
+            this._wmObserver = new MutationObserver(function(mutations) {
+                if (!self._container) return;
+                self._wmObserver.disconnect();
+                self._createWatermark();
+                self._wmObserver.observe(self._container, {
+                    attributes: true,
+                    attributeFilter: ['style', 'class']
+                });
+            });
 
-			this._wmObserver.observe(this._container, {
-				attributes: true,
-				attributeFilter: ['style', 'class']
-			});
+            this._wmObserver.observe(this._container, {
+                attributes: true,
+                attributeFilter: ['style', 'class']
+            });
 
-			this._wmParentObserver = new MutationObserver(function(mutations) {
-				if (!self._container || !self._parentEle) return;
-				for (var i = 0; i < mutations.length; i++) {
-					var m = mutations[i];
-					if (
-						m.type === 'childList' &&
-						m.removedNodes.length > 0
-					) {
-						for (var j = 0; j < m.removedNodes.length; j++) {
-							if (m.removedNodes[j] === self._container) {
-								self._parentEle.appendChild(self._container);
-								break;
-							}
-						}
-					}
-				}
-			});
+            this._wmParentObserver = new MutationObserver(function(mutations) {
+                if (!self._container || !self._parentEle) return;
+                for (var i = 0; i < mutations.length; i++) {
+                    var m = mutations[i];
+                    if (
+                        m.type === 'childList' &&
+                        m.removedNodes.length > 0
+                    ) {
+                        for (var j = 0; j < m.removedNodes.length; j++) {
+                            if (m.removedNodes[j] === self._container) {
+                                self._parentEle.appendChild(self._container);
+                                break;
+                            }
+                        }
+                    }
+                }
+            });
 
-			this._wmParentObserver.observe(this._parentEle, {
-				childList: true,
-				subtree: false
-			});
-		},
+            this._wmParentObserver.observe(this._parentEle, {
+                childList: true,
+                subtree: false
+            });
+        },
 
-		_addResizeListener: function() {
-			var self = this;
+        _addResizeListener: function() {
+            var self = this;
 
-			this._resizeHandler = function() {
-				self._updateDimensionsAsync();
-			};
+            this._resizeHandler = function() {
+                self._updateDimensionsAsync();
+            };
 
-			window.addEventListener('resize', this._resizeHandler);
-		},
+            window.addEventListener('resize', this._resizeHandler);
+        },
 
-		_render: function() {
-			if (!this._container) return;
-			this._wmObserver.disconnect();
-			this._createWatermark();
-			this._wmObserver.observe(this._container, {
-				attributes: true,
-				attributeFilter: ['style', 'class']
-			});
-		},
+        _render: function() {
+            if (!this._container) return;
+            this._wmObserver.disconnect();
+            this._createWatermark();
+            this._wmObserver.observe(this._container, {
+                attributes: true,
+                attributeFilter: ['style', 'class']
+            });
+        },
 
-		upload: function(content) {
-			if (!content || typeof content !== 'string') {
-				return this;
-			}
-			this._options.content = content;
-			this._render();
-			return this;
-		},
+        upload: function(content) {
+            if (!content || typeof content !== 'string') {
+                return this;
+            }
+            this._options.content = content;
+            this._render();
+            return this;
+        },
 
-		render: function(options) {
-			if (options && typeof options === 'object') {
-				this._options = Object.assign({}, this._options, options);
-			}
-			this._render();
-			return this;
-		},
+        render: function(options) {
+            if (options && typeof options === 'object') {
+                this._options = Object.assign({}, this._options, options);
+            }
+            this._render();
+            return this;
+        },
 
-		destroy: function() {
-			if (this._rafId) {
-				cancelAnimationFrame(this._rafId);
-				this._rafId = null;
-			}
-			if (this._wmObserver) {
-				this._wmObserver.disconnect();
-				this._wmObserver = null;
-			}
-			if (this._wmParentObserver) {
-				this._wmParentObserver.disconnect();
-				this._wmParentObserver = null;
-			}
-			if (this._resizeHandler) {
-				window.removeEventListener('resize', this._resizeHandler);
-				this._resizeHandler = null;
-			}
-			if (this._container && this._container.parentNode) {
-				this._container.parentNode.removeChild(this._container);
-			}
-			this._container = null;
-			this._canvas = null;
-			this._parentEle = null;
-			return this;
-		},
+        destroy: function() {
+            if (this._rafId) {
+                cancelAnimationFrame(this._rafId);
+                this._rafId = null;
+            }
+            if (this._wmObserver) {
+                this._wmObserver.disconnect();
+                this._wmObserver = null;
+            }
+            if (this._wmParentObserver) {
+                this._wmParentObserver.disconnect();
+                this._wmParentObserver = null;
+            }
+            if (this._resizeHandler) {
+                window.removeEventListener('resize', this._resizeHandler);
+                this._resizeHandler = null;
+            }
+            if (this._container && this._container.parentNode) {
+                this._container.parentNode.removeChild(this._container);
+            }
+            this._container = null;
+            this._canvas = null;
+            this._parentEle = null;
+            return this;
+        },
 
-		getOptions: function() {
-			return Object.assign({}, this._options);
-		},
+        getOptions: function() {
+            return Object.assign({}, this._options);
+        },
 
-		setOptions: function(key, value) {
-			if (typeof key === 'string') {
-				this._options[key] = value;
-			} else if (typeof key === 'object') {
-				Object.assign(this._options, key);
-			}
-			return this;
-		},
+        setOptions: function(key, value) {
+            if (typeof key === 'string') {
+                this._options[key] = value;
+            } else if (typeof key === 'object') {
+                Object.assign(this._options, key);
+            }
+            return this;
+        },
 
-		clearCache: function() {
-			_cache = {};
-			return this;
-		}
-	};
+        clearCache: function() {
+            _cache = {};
+            return this;
+        }
+    };
 
-	Watermark.clearCache = function() {
-		_cache = {};
-	};
+    Watermark.clearCache = function() {
+        _cache = {};
+    };
 
-	Watermark.getCacheSize = function() {
-		return Object.keys(_cache).length;
-	};
+    Watermark.getCacheSize = function() {
+        return Object.keys(_cache).length;
+    };
 
-	exports(MOD_NAME, Watermark);
+    exports(MOD_NAME, Watermark);
 });

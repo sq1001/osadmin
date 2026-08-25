@@ -103,8 +103,8 @@ OSLAY.ready(function(modules) {
 #### 直接使用 LayUI
 
 ```javascript
-layui.use(['permissionModule'], function() {
-  var permission = layui.permissionModule;
+layui.use(['permissionMod'], function() {
+  var permission = layui.permissionMod;
   
   // 自定义配置初始化（可选）
   permission.init({

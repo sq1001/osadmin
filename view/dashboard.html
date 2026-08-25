@@ -347,7 +347,7 @@ layui.use(['echartsMod', 'layer'], function() {
       var idx = $(this).index();
       var item = nav[idx];
       if (item && item.href) {
-        layui.routerModule.navigateByCode(item.href);
+        layui.routerMod.navigateByCode(item.href);
       } else {
         layer.msg('正在跳转 ' + item.label + '...', { icon: 1, time: 1500 });
       }

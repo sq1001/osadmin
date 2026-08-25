@@ -13,12 +13,12 @@
  *   _dialog - 弹窗打开
  *   无      - 默认内部页面加载
  */
-layui.define(['jquery', 'layer', 'themeModule', 'routerModule', 'commonMod'], function(exports) {
+layui.define(['jquery', 'layer', 'themeMod', 'routerMod', 'commonMod'], function(exports) {
   'use strict';
 
   var $ = layui.jquery;
-  var theme = layui.themeModule;
-  var router = layui.routerModule;
+  var theme = layui.themeMod;
+  var router = layui.routerMod;
   var layer = layui.layer;
   var common = layui.commonMod;
   var menuData = null;
@@ -1179,8 +1179,8 @@ layui.define(['jquery', 'layer', 'themeModule', 'routerModule', 'commonMod'], fu
 
     updateTopbarActiveState: function() {
       var currentId = null;
-      if (window.layui && window.layui.routerModule) {
-        currentId = window.layui.routerModule.getCurrentId();
+      if (window.layui && window.layui.routerMod) {
+        currentId = window.layui.routerMod.getCurrentId();
       }
       if (currentId === null || currentId === undefined) return;
       
@@ -1249,8 +1249,8 @@ layui.define(['jquery', 'layer', 'themeModule', 'routerModule', 'commonMod'], fu
         return;
       }
 
-      if (window.layui && window.layui.routerModule) {
-        window.layui.routerModule.navigateById(itemId);
+      if (window.layui && window.layui.routerMod) {
+        window.layui.routerMod.navigateById(itemId);
       }
     },
 
@@ -1409,8 +1409,8 @@ layui.define(['jquery', 'layer', 'themeModule', 'routerModule', 'commonMod'], fu
           return;
         }
 
-        if (window.layui && window.layui.routerModule) {
-          window.layui.routerModule.navigateById(pageId);
+        if (window.layui && window.layui.routerMod) {
+          window.layui.routerMod.navigateById(pageId);
         }
       });
       
@@ -1440,8 +1440,8 @@ layui.define(['jquery', 'layer', 'themeModule', 'routerModule', 'commonMod'], fu
 
       var currentId = currentIdOverride !== undefined ? currentIdOverride : null;
       if (currentId === null || currentId === undefined) {
-        if (window.layui && window.layui.routerModule) {
-          currentId = window.layui.routerModule.getCurrentId();
+        if (window.layui && window.layui.routerMod) {
+          currentId = window.layui.routerMod.getCurrentId();
         }
       }
       if (currentId === null || currentId === undefined) {
@@ -1480,8 +1480,8 @@ layui.define(['jquery', 'layer', 'themeModule', 'routerModule', 'commonMod'], fu
         e.preventDefault();
         e.stopPropagation();
         var id = $(this).data('id');
-        if (window.layui && window.layui.routerModule) {
-          window.layui.routerModule.navigateById(id);
+        if (window.layui && window.layui.routerMod) {
+          window.layui.routerMod.navigateById(id);
         }
       });
 
@@ -1588,8 +1588,8 @@ layui.define(['jquery', 'layer', 'themeModule', 'routerModule', 'commonMod'], fu
         var id = $(this).data('id');
         $dropdown.removeClass('show');
         $input.val('');
-        if (window.layui && window.layui.routerModule) {
-          window.layui.routerModule.navigateById(id);
+        if (window.layui && window.layui.routerMod) {
+          window.layui.routerMod.navigateById(id);
         }
       });
 

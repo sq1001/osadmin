@@ -35,9 +35,9 @@
       base: baseUrl,
       version: true
     }).extend({
-      routerModule: 'modules/common/router',
-      themeModule: 'modules/common/theme',
-      permissionModule: 'modules/common/permission',
+      routerMod: 'modules/common/router',
+      themeMod: 'modules/common/theme',
+      permissionMod: 'modules/common/permission',
       resourceLoader: 'modules/common/resource-loader',
       componentRenderer: 'modules/common/component-renderer',
       sidebarComp: 'modules/components/sidebar',

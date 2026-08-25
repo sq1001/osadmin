@@ -608,13 +608,13 @@
 
       form.on('submit(saveBasic)', function(data) {
         layer.msg('基本信息保存成功', { icon: 1, time: 1500 });
-        console.log('保存基本信息:', data.field);
+
         return false;
       });
 
       form.on('submit(savePassword)', function(data) {
         layer.msg('密码修改成功', { icon: 1, time: 1500 });
-        console.log('修改密码:', data.field);
+
         data.field.oldPassword = '';
         data.field.newPassword = '';
         data.field.confirmPassword = '';
@@ -623,7 +623,6 @@
 
       form.on('submit(saveMobile)', function(data) {
         layer.msg('手机绑定成功', { icon: 1, time: 1500 });
-        console.log('绑定手机:', data.field);
         return false;
       });
 

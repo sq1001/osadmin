@@ -4,6 +4,26 @@
 
 ---
 
+## v1.9.10 (2026-08-25)
+
+### 工作内容
+
+#### 1. 框架缩进规范统一（TAB → 4空格）
+- 排查 `modules/extends/` 下 `common.js`、`count.js`、`iconPicker.js`、`watermark.js` 存在 TAB 缩进，与项目"4空格缩进"规范不一致
+- 处理：使用脚本将 3384 处 TAB 统一替换为 4 空格，回归验证模块功能无异常
+- 验证：页面模块加载、组件初始化正常，无语法/行为变化 ✓
+
+#### 2. 核心模块命名统一（Module → Mod 后缀）
+- 排查 `routerModule`/`themeModule`/`permissionModule` 导出名与项目模块命名规范（Mod 后缀）不一致
+- 处理：`modules/common/router.js`、`theme.js`、`permission.js` 统一重命名导出名为 `routerMod`/`themeMod`/`permissionMod`，同步全局引用依赖（layui-init.js、app.js、drawer.js、permission-demo.html、docs/permission-guide.md 等）
+- 验证：全局检索确认无旧模块名残留（docs 历史变更记录除外），模块按需加载正常 ✓
+
+#### 3. 清理调试日志残留
+- 排查并移除登录/注册/找回密码/锁屏/个人资料/系统设置/账号设置等页面表单提交的 `console.log` 调试语句，以及 index.js 独立页面模式启动日志
+- 验证：页面表单提交正常，无控制台残留日志 ✓
+
+---
+
 ## v1.9.9 (2026-08-25)
 
 ### 工作内容

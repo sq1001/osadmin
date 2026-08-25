@@ -4,6 +4,17 @@
 
 ---
 
+## v1.9.10 (2026-08-25)
+
+### 框架规范统一优化
+统一框架源码与命名规范，确保无遗漏残留错误冗余，不造成功能破坏。
+
+- **缩进统一 TAB → 4空格**：`modules/extends/` 下 `common.js`、`count.js`、`iconPicker.js`、`watermark.js` 等共 3384 处 TAB 缩进统一替换为 4 空格
+- **核心模块命名统一 Mod 后缀**：`routerModule`/`themeModule`/`permissionModule` 统一重命名为 `routerMod`/`themeMod`/`permissionMod`，同步全局引用依赖（layui-init、app.js、drawer.js、permission-guide、permission-demo 等）
+- **清理调试 console 残留**：移除登录/注册/找回密码/锁屏/个人资料/系统设置/账号设置等页面的表单提交 `console.log` 调试语句
+
+---
+
 ## v1.9.9 (2026-08-25)
 
 ### 混合布局侧边栏未实时跟随顶栏菜单项

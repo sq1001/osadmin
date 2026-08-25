@@ -3,7 +3,7 @@
 ## 📋 项目概述
 
 **项目名称**: OSADMIN\
-**版本**: 1.9.9\
+**版本**: 1.9.10\
 **描述**: 基于 LayUI 的轻量化原生管理后台系统\
 **技术栈**: LayUI + jQuery + 原生 JavaScript\
 **架构模式**: 模块化架构 + 配置驱动\
@@ -1032,15 +1032,15 @@ router.on('change', function(route) {
 
 ```javascript
 // 获取所有查询参数（对象形式）
-var params = layui.routerModule.getQueryParams();
+var params = layui.routerMod.getQueryParams();
 // 输出: { id: "123", keyword: "test" }
 
 // 获取单个参数
-var keyword = layui.routerModule.getQueryParam('keyword');
+var keyword = layui.routerMod.getQueryParam('keyword');
 // 输出: "test"
 
 // 获取原始查询字符串
-var queryString = layui.routerModule.getQueryString();
+var queryString = layui.routerMod.getQueryString();
 // 输出: "id=123&keyword=test"
 ```
 
@@ -2225,4 +2225,4 @@ chore: 构建/工具相关
 ***
 
 **最后更新时间**: 2026-08-25\
-**文档版本**: 1.9.9
+**文档版本**: 1.9.10

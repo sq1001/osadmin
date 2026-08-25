@@ -12,13 +12,13 @@
  *   _dialog - 弹窗打开
  *   无      - 默认内部页面加载
  */
-layui.define(['jquery', 'util', 'routerModule', 'themeModule', 'sidebarComp', 'tabsComp', 'resourceLoader', 'toastMod'], function(exports) {
+layui.define(['jquery', 'util', 'routerMod', 'themeMod', 'sidebarComp', 'tabsComp', 'resourceLoader', 'toastMod'], function(exports) {
   'use strict';
 
   var $ = layui.jquery;
   var util = layui.util;
-  var router = layui.routerModule;
-  var theme = layui.themeModule;
+  var router = layui.routerMod;
+  var theme = layui.themeMod;
   var sidebar = layui.sidebarComp;
   var tabs = layui.tabsComp;
   var resourceLoader = layui.resourceLoader;

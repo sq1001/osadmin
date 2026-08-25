@@ -60,7 +60,7 @@
       "bandwidth": 58
     },
     "sysInfo": {
-      "systemVersion": "OSAdmin v1.9.9",
+      "systemVersion": "OSAdmin v1.9.10",
       "framework": "Layui 2.13.8",
       "runtime": "Node.js 20.x",
       "server": "Nginx 1.24.0",
@@ -71,8 +71,8 @@
       "status": "authorized",
       "type": "商业版",
       "domain": "*.osadmin.com",
-      "currentVersion": "v1.9.9",
-      "latestVersion": "v1.9.9",
+      "currentVersion": "v1.9.10",
+      "latestVersion": "v1.9.10",
       "expiry": "2027-06-20",
       "support": "专属技术支持"
     },
@@ -95,6 +95,7 @@
       { "user": "王五", "initial": "王", "type": "user", "action": "更新了个人资料信息", "module": "用户管理", "time": "2小时前" }
     ],
     "notices": [
+      { "type": "update", "typeLabel": "更新", "title": "OSAdmin v1.9.10 版本发布", "desc": "统一框架源码规范：TAB缩进统一为4空格、核心模块命名统一 Mod 后缀、清理全部表单提交调试日志残留", "time": "08-25" },
       { "type": "update", "typeLabel": "更新", "title": "OSAdmin v1.9.9 版本发布", "desc": "修复混合布局下侧边栏子面板未跟随顶栏菜单实时变化（无子菜单的顶栏项应置空面板）；标签栏下拉菜单关闭左侧/右侧按对应侧是否有可关闭标签自动置灰禁用", "time": "08-25" },
       { "type": "update", "typeLabel": "更新", "title": "OSAdmin v1.9.8 版本发布", "desc": "移动端搜索栏输入框全部弹性占满对齐；全项目100vh统一改100dvh；修复风格1认证页移动端装饰覆盖表单卡片的层级问题；侧边栏外部链接新增 Gitee/GitHub 仓库地址；README 新增开源演示站点 osadmin.pages.dev", "time": "08-05" },
       { "type": "update", "typeLabel": "更新", "title": "OSAdmin v1.9.7 版本发布", "desc": "搜索栏 label 宽度统一 90px 支持四字完整显示，修复抽屉最小化移动端多抽屉堆叠超出屏幕丢失问题", "time": "08-05" },
@@ -128,6 +129,7 @@
       { "user": "李四", "action": "提交了退款申请 #2048", "time": "1小时前", "dotColor": "orange" },
       { "user": "管理员", "action": "修改了上传配置", "time": "2小时前", "dotColor": "purple" },
       { "user": "王五", "action": "导出了月度报表", "time": "3小时前", "dotColor": "accent" },
+      { "user": "系统", "action": "v1.9.10 版本更新完成", "time": "今天 11:30", "dotColor": "green" },
       { "user": "系统", "action": "v1.9.9 版本更新完成", "time": "今天 11:00", "dotColor": "green" },
       { "user": "系统", "action": "v1.9.8 版本更新完成", "time": "今天 10:30", "dotColor": "green" },
       { "user": "系统", "action": "v1.9.7 版本更新完成", "time": "今天 09:30", "dotColor": "green" },

@@ -762,14 +762,14 @@ layui.define(['jquery', 'layer', 'form', 'colorpicker', 'watermarkMod'], functio
       this._updateWidthConfigVisibility(layout);
 
       var sidebarComp = window.layui && window.layui.sidebarComp;
-      var routerModule = window.layui && window.layui.routerModule;
-      if (!sidebarComp || !routerModule) return;
+      var routerMod = window.layui && window.layui.routerMod;
+      if (!sidebarComp || !routerMod) return;
 
       sidebarComp.hideSubmenuPanel();
       sidebarComp.hideDropdownMenu();
       sidebarComp.updateTopbarMenu();
 
-      var currentId = routerModule.getCurrentId();
+      var currentId = routerMod.getCurrentId();
       if (currentId !== null && currentId !== undefined) {
         sidebarComp.setActive(currentId, { layout: layout });
       }
@@ -874,12 +874,12 @@ layui.define(['jquery', 'layer', 'form', 'colorpicker', 'watermarkMod'], functio
 
       // 恢复侧边栏菜单状态
       var sidebarComp = window.layui && window.layui.sidebarComp;
-      var routerModule = window.layui && window.layui.routerModule;
-      if (sidebarComp && routerModule) {
+      var routerMod = window.layui && window.layui.routerMod;
+      if (sidebarComp && routerMod) {
         sidebarComp.hideSubmenuPanel();
         sidebarComp.hideDropdownMenu();
         sidebarComp.updateTopbarMenu();
-        var currentId = routerModule.getCurrentId();
+        var currentId = routerMod.getCurrentId();
         if (currentId !== null && currentId !== undefined) {
           sidebarComp.setActive(currentId);
         }
@@ -1252,5 +1252,5 @@ layui.define(['jquery', 'layer', 'form', 'colorpicker', 'watermarkMod'], functio
     }
   };
 
-  exports('themeModule', Theme);
+  exports('themeMod', Theme);
 });

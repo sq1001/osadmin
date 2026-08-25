@@ -12,12 +12,12 @@
  *   _dialog - 弹窗打开
  *   无      - 默认内部页面加载
  */
-layui.define(['jquery', 'themeModule', 'routerModule'], function(exports) {
+layui.define(['jquery', 'themeMod', 'routerMod'], function(exports) {
   'use strict';
 
   var $ = layui.jquery;
-  var theme = layui.themeModule;
-  var router = layui.routerModule;
+  var theme = layui.themeMod;
+  var router = layui.routerMod;
   var appConfig = null;
   var menuData = [];
   var pageNames = {};

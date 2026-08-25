@@ -520,7 +520,7 @@ layui.define(['jquery', 'layer'], function (exports) {
     setupRouteChangeListener: function () {
       if (routeChangeListenerAdded) return;
       try {
-        var router = layui.routerModule || layui.router;
+        var router = layui.routerMod || layui.router;
         if (router && typeof router.on === 'function') {
           router.on('routeChange', function () {
             // 关闭所有抽屉
