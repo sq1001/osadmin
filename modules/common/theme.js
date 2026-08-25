@@ -3,7 +3,7 @@
  * 管理主题模式、配色方案、布局、水印、语言等配置
  * v2.0 - 支持框架配色方案(Framework Scheme) + 经典模式(Classic) + 自定义颜色器
  */
-layui.define(['jquery', 'layer', 'form', 'colorpicker', 'watermarkMod'], function (exports) {
+layui.define(['jquery', 'layer', 'form', 'colorpicker', 'watermarkMod'], function(exports) {
   'use strict';
 
   var $ = layui.jquery;
@@ -22,7 +22,7 @@ layui.define(['jquery', 'layer', 'form', 'colorpicker', 'watermarkMod'], functio
     _colorPickerInstances: {},
     _currentRole: 'admin',
 
-    init: function (config) {
+    init: function(config) {
       appConfig = config || {};
       var themeConfig = appConfig.theme || {};
       var watermarkConfig = appConfig.watermark || {};
@@ -64,7 +64,7 @@ layui.define(['jquery', 'layer', 'form', 'colorpicker', 'watermarkMod'], functio
       return this;
     },
 
-    loadState: function () {
+    loadState: function() {
       var storageKey = this._getStorageKey(appConfig.storage ? appConfig.storage.themeKey : 'themeConfig');
       var saved = localStorage.getItem(storageKey);
 
@@ -110,7 +110,7 @@ layui.define(['jquery', 'layer', 'form', 'colorpicker', 'watermarkMod'], functio
       this.tempState = $.extend(true, {}, this.state);
     },
 
-    saveState: function () {
+    saveState: function() {
       var storageKey = this._getStorageKey(appConfig.storage ? appConfig.storage.themeKey : 'themeConfig');
       try {
         localStorage.setItem(storageKey, JSON.stringify(this.state));
@@ -121,7 +121,7 @@ layui.define(['jquery', 'layer', 'form', 'colorpicker', 'watermarkMod'], functio
       }
     },
 
-    applyTheme: function (state) {
+    applyTheme: function(state) {
       this.applyMode(state.mode);
 
       if (state.colorMode === 'scheme' && state.scheme) {
@@ -145,7 +145,7 @@ layui.define(['jquery', 'layer', 'form', 'colorpicker', 'watermarkMod'], functio
       this.emit('themeChange', state);
     },
 
-    applyMode: function (mode) {
+    applyMode: function(mode) {
       if (mode === 'dark') {
         $('html').attr('data-theme', 'dark');
         var root = document.documentElement;
@@ -155,13 +155,13 @@ layui.define(['jquery', 'layer', 'form', 'colorpicker', 'watermarkMod'], functio
           '--text-primary', '--text-secondary', '--text-muted',
           '--accent-light'
         ];
-        varsToRemove.forEach(function (v) { root.style.removeProperty(v); });
+        varsToRemove.forEach(function(v) { root.style.removeProperty(v); });
       } else {
         $('html').removeAttr('data-theme');
       }
     },
 
-    applyModeWithTransition: function (mode, event, extraCallback) {
+    applyModeWithTransition: function(mode, event, extraCallback) {
       var self = this;
       var x = event ? event.clientX : window.innerWidth / 2;
       var y = event ? event.clientY : window.innerHeight / 2;
@@ -176,12 +176,12 @@ layui.define(['jquery', 'layer', 'form', 'colorpicker', 'watermarkMod'], functio
         return;
       }
 
-      var transition = document.startViewTransition(function () {
+      var transition = document.startViewTransition(function() {
         self.applyMode(mode);
         if (typeof extraCallback === 'function') extraCallback();
       });
 
-      transition.ready.then(function () {
+      transition.ready.then(function() {
         var clipPath = [
           'circle(0px at ' + x + 'px ' + y + 'px)',
           'circle(' + endRadius + 'px at ' + x + 'px ' + y + 'px)'
@@ -196,7 +196,7 @@ layui.define(['jquery', 'layer', 'form', 'colorpicker', 'watermarkMod'], functio
       });
     },
 
-    applyScheme: function (schemeId) {
+    applyScheme: function(schemeId) {
       if (!this.isSchemeAllowed(schemeId)) {
         console.warn('[Theme] Scheme not allowed by profile:', schemeId);
         return;
@@ -229,7 +229,7 @@ layui.define(['jquery', 'layer', 'form', 'colorpicker', 'watermarkMod'], functio
       }
     },
 
-    applyCustomColors: function (customColors) {
+    applyCustomColors: function(customColors) {
       if (!customColors) return;
 
       var root = document.documentElement;
@@ -265,7 +265,7 @@ layui.define(['jquery', 'layer', 'form', 'colorpicker', 'watermarkMod'], functio
       }
     },
 
-    applyColor: function (color) {
+    applyColor: function(color) {
       var colors = appConfig.colors || {};
       var colorData = colors[color] || colors['#16baaa'];
       if (colorData) {
@@ -276,7 +276,7 @@ layui.define(['jquery', 'layer', 'form', 'colorpicker', 'watermarkMod'], functio
       }
     },
 
-    applyLayout: function (layout) {
+    applyLayout: function(layout) {
       if (!this.isLayoutAllowed(layout)) {
         console.warn('[Theme] Layout not allowed by profile:', layout, ', using default');
         layout = this._getAllowedDefaultLayout();
@@ -287,7 +287,7 @@ layui.define(['jquery', 'layer', 'form', 'colorpicker', 'watermarkMod'], functio
       $('body').addClass('layout-' + layout);
     },
 
-    applyTabsVisible: function (visible) {
+    applyTabsVisible: function(visible) {
       if (visible) {
         $('#tabsContainer').removeClass('hidden');
       } else {
@@ -295,7 +295,7 @@ layui.define(['jquery', 'layer', 'form', 'colorpicker', 'watermarkMod'], functio
       }
     },
 
-    applyBreadcrumbVisible: function (visible) {
+    applyBreadcrumbVisible: function(visible) {
       if (visible) {
         $('#breadcrumbContainer').removeClass('hidden');
       } else {
@@ -303,7 +303,7 @@ layui.define(['jquery', 'layer', 'form', 'colorpicker', 'watermarkMod'], functio
       }
     },
 
-    applyWatermark: function (enabled, text) {
+    applyWatermark: function(enabled, text) {
       if (this._watermarkInstance) {
         this._watermarkInstance.destroy();
         this._watermarkInstance = null;
@@ -342,7 +342,7 @@ layui.define(['jquery', 'layer', 'form', 'colorpicker', 'watermarkMod'], functio
       });
     },
 
-    applyDensity: function (density) {
+    applyDensity: function(density) {
       var root = document.documentElement;
       if (density === 'compact') {
         root.setAttribute('data-density', 'compact');
@@ -351,42 +351,42 @@ layui.define(['jquery', 'layer', 'form', 'colorpicker', 'watermarkMod'], functio
       }
     },
 
-    applySidebarWidth: function (width) {
+    applySidebarWidth: function(width) {
       var w = parseInt(width, 10);
       if (isNaN(w) || w < 160) { w = 160; }
       if (w > 320) { w = 320; }
       document.documentElement.style.setProperty('--sidebar-width', w + 'px');
     },
 
-    applySubmenuWidth: function (width) {
+    applySubmenuWidth: function(width) {
       var w = parseInt(width, 10);
       if (isNaN(w) || w < 140) { w = 140; }
       if (w > 240) { w = 240; }
       document.documentElement.style.setProperty('--submenu-width', w + 'px');
     },
 
-    applySubmenuFixedWidth: function (width) {
+    applySubmenuFixedWidth: function(width) {
       var w = parseInt(width, 10);
       if (isNaN(w) || w < 140) { w = 140; }
       if (w > 240) { w = 240; }
       document.documentElement.style.setProperty('--submenu-fixed-width', w + 'px');
     },
 
-    applyFontSize: function (size) {
+    applyFontSize: function(size) {
       var s = parseInt(size, 10);
       if (isNaN(s) || s < 12) { s = 12; }
       if (s > 20) { s = 20; }
       document.documentElement.style.setProperty('--font-size-base', s + 'px');
     },
 
-    applyBorderRadius: function (radius) {
+    applyBorderRadius: function(radius) {
       var r = parseInt(radius, 10);
       if (isNaN(r) || r < 4) { r = 4; }
       if (r > 20) { r = 20; }
       document.documentElement.style.setProperty('--border-radius-base', r + 'px');
     },
 
-    getWatermarkText: function () {
+    getWatermarkText: function() {
       var watermarkConfig = appConfig.watermark || {};
       var dynamicTextKey = watermarkConfig.dynamicTextKey || 'username';
       try {
@@ -416,7 +416,7 @@ layui.define(['jquery', 'layer', 'form', 'colorpicker', 'watermarkMod'], functio
       return '';
     },
 
-    getNestedValue: function (obj, path) {
+    getNestedValue: function(obj, path) {
       if (!obj || !path) return null;
       if (path.indexOf('.') === -1) {
         return obj[path];
@@ -432,17 +432,17 @@ layui.define(['jquery', 'layer', 'form', 'colorpicker', 'watermarkMod'], functio
       return current;
     },
 
-    setWatermarkText: function (text) {
+    setWatermarkText: function(text) {
       this.state.watermarkText = text;
       this.applyWatermark(this.state.watermarkEnabled, text);
     },
 
-    toggleWatermark: function (enabled) {
+    toggleWatermark: function(enabled) {
       this.state.watermarkEnabled = enabled;
       this.applyWatermark(enabled, this.state.watermarkText);
     },
 
-    toggleConfigPanel: function () {
+    toggleConfigPanel: function() {
       var $panel = $('#themeConfigPanel');
       var $overlay = $('#themePanelOverlay');
       if ($panel.hasClass('show')) {
@@ -457,12 +457,12 @@ layui.define(['jquery', 'layer', 'form', 'colorpicker', 'watermarkMod'], functio
       }
     },
 
-    hideConfigPanel: function () {
+    hideConfigPanel: function() {
       $('#themeConfigPanel').removeClass('show');
       $('#themePanelOverlay').removeClass('show');
     },
 
-    updateConfigPanel: function () {
+    updateConfigPanel: function() {
       var state = this.tempState;
       $('.layui-theme-mode-btn').removeClass('active');
       $('.layui-theme-mode-btn[data-mode="' + state.mode + '"]').addClass('active');
@@ -528,7 +528,7 @@ layui.define(['jquery', 'layer', 'form', 'colorpicker', 'watermarkMod'], functio
       this._updateWidthConfigVisibility(state.layout);
     },
 
-    syncColorPickerUI: function () {
+    syncColorPickerUI: function() {
       var self = this;
       var cc = this.tempState.customColors || {};
 
@@ -541,7 +541,7 @@ layui.define(['jquery', 'layer', 'form', 'colorpicker', 'watermarkMod'], functio
         { id: 'pickerTabsBg', field: 'tabsBg', defaultVal: '#ffffff' }
       ];
 
-      pickerConfigs.forEach(function (cfg) {
+      pickerConfigs.forEach(function(cfg) {
         var val = cc[cfg.field] || cfg.defaultVal;
 
         if (self._colorPickerInstances[cfg.id]) {
@@ -552,7 +552,7 @@ layui.define(['jquery', 'layer', 'form', 'colorpicker', 'watermarkMod'], functio
           elem: '#' + cfg.id,
           color: val,
           size: 'sm',
-          done: function (color) {
+          done: function(color) {
             if (!self.tempState.customColors) {
               self.tempState.customColors = {};
             }
@@ -563,31 +563,31 @@ layui.define(['jquery', 'layer', 'form', 'colorpicker', 'watermarkMod'], functio
       });
     },
 
-    bindConfigPanelEvents: function () {
+    bindConfigPanelEvents: function() {
       var self = this;
 
-      $(document).on('click', '.layui-theme-mode-btn', function (e) {
+      $(document).on('click', '.layui-theme-mode-btn', function(e) {
         var mode = $(this).data('mode');
         self.previewMode(mode, e);
         $('.layui-theme-mode-btn').removeClass('active');
         $(this).addClass('active');
       });
 
-      $(document).on('click', '.scheme-option', function () {
+      $(document).on('click', '.scheme-option', function() {
         var scheme = $(this).data('scheme');
         self.previewScheme(scheme);
         $('.scheme-option').removeClass('active');
         $(this).addClass('active');
       });
 
-      $(document).on('click', '.color-option', function () {
+      $(document).on('click', '.color-option', function() {
         var color = $(this).data('color');
         self.previewColor(color);
         $('.color-option').removeClass('active');
         $(this).addClass('active');
       });
 
-      $(document).on('click', '.config-tab-btn', function () {
+      $(document).on('click', '.config-tab-btn', function() {
         var tab = $(this).data('tab');
         self.tempState.colorMode = tab;
         $('.config-tab-btn').removeClass('active');
@@ -604,57 +604,57 @@ layui.define(['jquery', 'layer', 'form', 'colorpicker', 'watermarkMod'], functio
         }
       });
 
-      $(document).on('click', '.layout-option', function () {
+      $(document).on('click', '.layout-option', function() {
         var layout = $(this).data('layout');
         self.previewLayout(layout);
         $('.layout-option').removeClass('active');
         $(this).addClass('active');
       });
 
-      $(document).on('change', '#tabsToggle', function () {
+      $(document).on('change', '#tabsToggle', function() {
         self.previewTabsVisible($(this).prop('checked'));
       });
 
-      $(document).on('change', '#breadcrumbToggle', function () {
+      $(document).on('change', '#breadcrumbToggle', function() {
         self.previewBreadcrumbVisible($(this).prop('checked'));
       });
 
-      $(document).on('change', '#rememberTabsToggle', function () {
+      $(document).on('change', '#rememberTabsToggle', function() {
         self.previewRememberTabs($(this).prop('checked'));
       });
 
-      $(document).on('change', '#accordionToggle', function () {
+      $(document).on('change', '#accordionToggle', function() {
         self.previewAccordion($(this).prop('checked'));
       });
 
-      $(document).on('change', '#watermarkToggle', function () {
+      $(document).on('change', '#watermarkToggle', function() {
         self.previewWatermark($(this).prop('checked'));
       });
 
-      form.on('select(pageAnimation)', function (data) {
+      form.on('select(pageAnimation)', function(data) {
         self.previewPageAnimation(data.value);
       });
 
-      $(document).on('change', '#densityToggle', function () {
+      $(document).on('change', '#densityToggle', function() {
         self.previewDensity($(this).prop('checked') ? 'compact' : 'comfortable');
       });
 
-      $(document).on('input', '#sidebarWidthInput', function () {
+      $(document).on('input', '#sidebarWidthInput', function() {
         var val = parseInt($(this).val(), 10) || 210;
         self.previewSidebarWidth(val);
       });
 
-      $(document).on('input', '#submenuWidthInput', function () {
+      $(document).on('input', '#submenuWidthInput', function() {
         var val = parseInt($(this).val(), 10) || 180;
         self.previewSubmenuWidth(val);
       });
 
-      $(document).on('input', '#submenuFixedWidthInput', function () {
+      $(document).on('input', '#submenuFixedWidthInput', function() {
         var val = parseInt($(this).val(), 10) || 180;
         self.previewSubmenuFixedWidth(val);
       });
 
-      $(document).on('click', '.sidebar-width-preset', function () {
+      $(document).on('click', '.sidebar-width-preset', function() {
         var width = parseInt($(this).data('width'), 10);
         var $input = $(this).closest('.sidebar-width-controls').find('input[type="number"]');
         $input.val(width);
@@ -668,7 +668,7 @@ layui.define(['jquery', 'layer', 'form', 'colorpicker', 'watermarkMod'], functio
       });
 
       // 字体大小
-      $(document).on('input', '#fontSizeInput', function () {
+      $(document).on('input', '#fontSizeInput', function() {
         var val = parseInt($(this).val(), 10) || 14;
         if (val < 12) val = 12;
         if (val > 20) val = 20;
@@ -680,7 +680,7 @@ layui.define(['jquery', 'layer', 'form', 'colorpicker', 'watermarkMod'], functio
       });
 
       // 字体大小预设按钮
-      $(document).on('click', '.sidebar-width-preset[data-size]', function () {
+      $(document).on('click', '.sidebar-width-preset[data-size]', function() {
         var size = parseInt($(this).data('size'), 10);
         $('#fontSizeInput').val(size);
         self.previewFontSize(size);
@@ -689,7 +689,7 @@ layui.define(['jquery', 'layer', 'form', 'colorpicker', 'watermarkMod'], functio
       });
 
       // 圆角大小
-      $(document).on('input', '#borderRadiusInput', function () {
+      $(document).on('input', '#borderRadiusInput', function() {
         var val = parseInt($(this).val(), 10) || 8;
         if (val < 4) val = 4;
         if (val > 20) val = 20;
@@ -701,7 +701,7 @@ layui.define(['jquery', 'layer', 'form', 'colorpicker', 'watermarkMod'], functio
       });
 
       // 圆角大小预设按钮
-      $(document).on('click', '.sidebar-width-preset[data-radius]', function () {
+      $(document).on('click', '.sidebar-width-preset[data-radius]', function() {
         var radius = parseInt($(this).data('radius'), 10);
         $('#borderRadiusInput').val(radius);
         self.previewBorderRadius(radius);
@@ -710,15 +710,15 @@ layui.define(['jquery', 'layer', 'form', 'colorpicker', 'watermarkMod'], functio
       });
     },
 
-    saveConfig: function () {
+    saveConfig: function() {
       this.save();
       this.hideConfigPanel();
-      layer.msg('主题配置已保存，正在刷新页面...', { icon: 1, time: 1000 }, function () {
+      layer.msg('主题配置已保存，正在刷新页面...', { icon: 1, time: 1000 }, function() {
         location.reload();
       });
     },
 
-    resetConfig: function () {
+    resetConfig: function() {
       this.reset();
       var profile = this.getProfile();
       if (profile.defaultConfig) {
@@ -726,12 +726,12 @@ layui.define(['jquery', 'layer', 'form', 'colorpicker', 'watermarkMod'], functio
         this.saveState();
       }
       this.hideConfigPanel();
-      layer.msg('主题已重置，正在刷新页面...', { icon: 1, time: 1000 }, function () {
+      layer.msg('主题已重置，正在刷新页面...', { icon: 1, time: 1000 }, function() {
         location.reload();
       });
     },
 
-    previewMode: function (mode, event) {
+    previewMode: function(mode, event) {
       this.tempState.mode = mode;
       this.applyModeWithTransition(mode, event);
       if (this.tempState.watermarkEnabled) {
@@ -739,24 +739,24 @@ layui.define(['jquery', 'layer', 'form', 'colorpicker', 'watermarkMod'], functio
       }
     },
 
-    previewScheme: function (schemeId) {
+    previewScheme: function(schemeId) {
       this.tempState.scheme = schemeId;
       this.tempState.colorMode = 'scheme';
       this.applyScheme(schemeId);
     },
 
-    previewColor: function (color) {
+    previewColor: function(color) {
       this.tempState.color = color;
       this.tempState.colorMode = 'classic';
       this.applyColor(color);
     },
 
-    previewCustomColors: function () {
+    previewCustomColors: function() {
       this.tempState.colorMode = 'custom';
       this.applyCustomColors(this.tempState.customColors);
     },
 
-    previewLayout: function (layout) {
+    previewLayout: function(layout) {
       this.tempState.layout = layout;
       this.applyLayout(layout);
       this._updateWidthConfigVisibility(layout);
@@ -775,8 +775,8 @@ layui.define(['jquery', 'layer', 'form', 'colorpicker', 'watermarkMod'], functio
       }
     },
 
-    _updateWidthConfigVisibility: function (layout) {
-      $('.layout-config-item').each(function () {
+    _updateWidthConfigVisibility: function(layout) {
+      $('.layout-config-item').each(function() {
         var layouts = $(this).data('layouts') || '';
         var allowed = layouts.split(',');
         $(this).toggle(allowed.indexOf(layout) !== -1);
@@ -786,12 +786,12 @@ layui.define(['jquery', 'layer', 'form', 'colorpicker', 'watermarkMod'], functio
       $('#fontSizeConfigItem, #borderRadiusConfigItem').show();
     },
 
-    previewTabsVisible: function (visible) {
+    previewTabsVisible: function(visible) {
       this.tempState.tabsVisible = visible;
       this.applyTabsVisible(visible);
     },
 
-    previewBreadcrumbVisible: function (visible) {
+    previewBreadcrumbVisible: function(visible) {
       this.tempState.breadcrumbVisible = visible;
       this.applyBreadcrumbVisible(visible);
       if (visible && window.layui && window.layui.sidebarComp) {
@@ -799,54 +799,54 @@ layui.define(['jquery', 'layer', 'form', 'colorpicker', 'watermarkMod'], functio
       }
     },
 
-    previewRememberTabs: function (enabled) {
+    previewRememberTabs: function(enabled) {
       this.tempState.rememberTabs = enabled;
     },
 
-    previewAccordion: function (enabled) {
+    previewAccordion: function(enabled) {
       this.tempState.accordion = enabled;
     },
 
-    previewWatermark: function (enabled) {
+    previewWatermark: function(enabled) {
       this.tempState.watermarkEnabled = enabled;
       this.applyWatermark(enabled, this.tempState.watermarkText);
     },
 
-    previewDensity: function (density) {
+    previewDensity: function(density) {
       this.tempState.density = density;
       this.applyDensity(density);
     },
 
-    previewSidebarWidth: function (width) {
+    previewSidebarWidth: function(width) {
       this.tempState.sidebarWidth = width;
       this.applySidebarWidth(width);
     },
 
-    previewSubmenuWidth: function (width) {
+    previewSubmenuWidth: function(width) {
       this.tempState.submenuWidth = width;
       this.applySubmenuWidth(width);
     },
 
-    previewSubmenuFixedWidth: function (width) {
+    previewSubmenuFixedWidth: function(width) {
       this.tempState.submenuFixedWidth = width;
       this.applySubmenuFixedWidth(width);
     },
 
-    previewFontSize: function (size) {
+    previewFontSize: function(size) {
       this.tempState.fontSize = size;
       this.applyFontSize(size);
     },
 
-    previewBorderRadius: function (radius) {
+    previewBorderRadius: function(radius) {
       this.tempState.borderRadius = radius;
       this.applyBorderRadius(radius);
     },
 
-    previewPageAnimation: function (animation) {
+    previewPageAnimation: function(animation) {
       this.tempState.pageAnimation = animation;
     },
 
-    save: function () {
+    save: function() {
       var wasRememberTabsEnabled = this.state.rememberTabs;
       this.state = $.extend(true, {}, this.tempState);
       if (this.saveState()) {
@@ -859,7 +859,7 @@ layui.define(['jquery', 'layer', 'form', 'colorpicker', 'watermarkMod'], functio
       return false;
     },
 
-    reset: function () {
+    reset: function() {
       this.clearTabsState();
       this.state = $.extend(true, {}, this.defaultState);
       this.tempState = $.extend(true, {}, this.defaultState);
@@ -868,7 +868,7 @@ layui.define(['jquery', 'layer', 'form', 'colorpicker', 'watermarkMod'], functio
       this.emit('themeReset', this.state);
     },
 
-    cancelPreview: function () {
+    cancelPreview: function() {
       this.tempState = $.extend(true, {}, this.state);
       this.applyTheme(this.state);
 
@@ -886,7 +886,7 @@ layui.define(['jquery', 'layer', 'form', 'colorpicker', 'watermarkMod'], functio
       }
     },
 
-    clearTabsState: function () {
+    clearTabsState: function() {
       var storageKey = this._getStorageKey(appConfig.storage ? appConfig.storage.tabsKey : 'tabsState');
       try {
         localStorage.removeItem(storageKey);
@@ -895,19 +895,19 @@ layui.define(['jquery', 'layer', 'form', 'colorpicker', 'watermarkMod'], functio
       }
     },
 
-    getState: function () {
+    getState: function() {
       return $.extend(true, {}, this.state);
     },
 
-    getTempState: function () {
+    getTempState: function() {
       return $.extend(true, {}, this.tempState);
     },
 
-    getPageAnimation: function () {
+    getPageAnimation: function() {
       return this.state.pageAnimation || 'fadeIn';
     },
 
-    hexToRgb: function (hex) {
+    hexToRgb: function(hex) {
       hex = hex.replace('#', '');
       if (hex.length === 3) {
         hex = hex[0] + hex[0] + hex[1] + hex[1] + hex[2] + hex[2];
@@ -918,7 +918,7 @@ layui.define(['jquery', 'layer', 'form', 'colorpicker', 'watermarkMod'], functio
       return r + ',' + g + ',' + b;
     },
 
-    _isColorTooDark: function (hex) {
+    _isColorTooDark: function(hex) {
       hex = (hex || '').replace('#', '');
       if (hex.length === 3) {
         hex = hex[0] + hex[0] + hex[1] + hex[1] + hex[2] + hex[2];
@@ -931,7 +931,7 @@ layui.define(['jquery', 'layer', 'form', 'colorpicker', 'watermarkMod'], functio
       return luminance < 0.15;
     },
 
-    darken: function (hex, percent) {
+    darken: function(hex, percent) {
       hex = hex.replace('#', '');
       if (hex.length === 3) {
         hex = hex[0] + hex[0] + hex[1] + hex[1] + hex[2] + hex[2];
@@ -945,7 +945,7 @@ layui.define(['jquery', 'layer', 'form', 'colorpicker', 'watermarkMod'], functio
       return '#' + ((1 << 24) + (r << 16) + (g << 8) + b).toString(16).slice(1);
     },
 
-    lightenOrDarken: function (hex, amount) {
+    lightenOrDarken: function(hex, amount) {
       hex = hex.replace('#', '');
       if (hex.length === 3) {
         hex = hex[0] + hex[0] + hex[1] + hex[1] + hex[2] + hex[2];
@@ -959,18 +959,18 @@ layui.define(['jquery', 'layer', 'form', 'colorpicker', 'watermarkMod'], functio
       return '#' + ((1 << 24) + (r << 16) + (g << 8) + b).toString(16).slice(1);
     },
 
-    getProfile: function () {
+    getProfile: function() {
       var role = this._currentRole || 'admin';
       var rolesTheme = (window.OSLAY && window.OSLAY.rolesTheme) || null;
       var profiles = (rolesTheme && rolesTheme.roles) || null;
       return (profiles && profiles[role]) || this._getDefaultProfile();
     },
 
-    shouldShowPanel: function () {
+    shouldShowPanel: function() {
       return this.getProfile().showPanel !== false;
     },
 
-    hasPermission: function (action) {
+    hasPermission: function(action) {
       var p = this.getProfile();
       switch (action) {
         case 'changeMode': return p.canChangeMode !== false;
@@ -990,14 +990,14 @@ layui.define(['jquery', 'layer', 'form', 'colorpicker', 'watermarkMod'], functio
       }
     },
 
-    isSchemeAllowed: function (schemeId) {
+    isSchemeAllowed: function(schemeId) {
       var p = this.getProfile();
       var allowed = p.allowedSchemes || [];
       if (allowed.indexOf('*') !== -1) return true;
       return allowed.indexOf(schemeId) !== -1;
     },
 
-    isLayoutAllowed: function (layout) {
+    isLayoutAllowed: function(layout) {
       var p = this.getProfile();
       var allowed = p.allowedLayouts || [];
       if (allowed.indexOf('*') !== -1) return true;
@@ -1005,7 +1005,7 @@ layui.define(['jquery', 'layer', 'form', 'colorpicker', 'watermarkMod'], functio
       return allowed.indexOf(layout) !== -1;
     },
 
-    _getAllowedDefaultLayout: function () {
+    _getAllowedDefaultLayout: function() {
       var p = this.getProfile();
       var allowed = p.allowedLayouts || ['*'];
       if (allowed.indexOf('*') !== -1) {
@@ -1017,7 +1017,7 @@ layui.define(['jquery', 'layer', 'form', 'colorpicker', 'watermarkMod'], functio
       return 'double';
     },
 
-    setRole: function (role) {
+    setRole: function(role) {
       this._currentRole = role;
 
       try { localStorage.setItem('osadmin_global_role', role); } catch (e) { }
@@ -1044,17 +1044,17 @@ layui.define(['jquery', 'layer', 'form', 'colorpicker', 'watermarkMod'], functio
       this._updateThemeButtonUI();
     },
 
-    toggleMode: function (event) {
+    toggleMode: function(event) {
       if (!this.hasPermission('changeMode')) return;
       var current = this.state.mode;
       var newMode = current === 'dark' ? 'light' : 'dark';
       this.state.mode = newMode;
-      this.applyModeWithTransition(newMode, event, function () { Theme.applyTheme(Theme.state); });
+      this.applyModeWithTransition(newMode, event, function() { Theme.applyTheme(Theme.state); });
       this.saveState();
       this._updateThemeButtonUI();
     },
 
-    _getDefaultProfile: function () {
+    _getDefaultProfile: function() {
       return {
         label: '默认',
         showPanel: true,
@@ -1078,11 +1078,11 @@ layui.define(['jquery', 'layer', 'form', 'colorpicker', 'watermarkMod'], functio
       };
     },
 
-    _getStorageKey: function (baseKey) {
+    _getStorageKey: function(baseKey) {
       return 'osadmin_' + (this._currentRole || 'default') + '_' + baseKey;
     },
 
-    _restoreFromIsolatedStorage: function () {
+    _restoreFromIsolatedStorage: function() {
       var storageKey = this._getStorageKey(appConfig.storage ? appConfig.storage.themeKey : 'themeConfig');
       var raw;
       try { raw = localStorage.getItem(storageKey); } catch (e) { }
@@ -1097,7 +1097,7 @@ layui.define(['jquery', 'layer', 'form', 'colorpicker', 'watermarkMod'], functio
       } catch (e) { }
     },
 
-    _applyDefaultConfig: function (config) {
+    _applyDefaultConfig: function(config) {
       if (!config) return;
 
       if (config.scheme) {
@@ -1137,10 +1137,10 @@ layui.define(['jquery', 'layer', 'form', 'colorpicker', 'watermarkMod'], functio
       this.applyTheme(this.state);
     },
 
-    _applyPermissionsToPanel: function () {
+    _applyPermissionsToPanel: function() {
       var self = this;
 
-      $('.config-section[data-permission]').each(function () {
+      $('.config-section[data-permission]').each(function() {
         var permissions = ($(this).attr('data-permission') || '').split(/\s+/);
         var allowed = false;
         for (var i = 0; i < permissions.length; i++) {
@@ -1149,7 +1149,7 @@ layui.define(['jquery', 'layer', 'form', 'colorpicker', 'watermarkMod'], functio
         $(this).toggle(allowed);
       });
 
-      $('.config-item[data-permission]').each(function () {
+      $('.config-item[data-permission]').each(function() {
         var permission = $(this).attr('data-permission');
         $(this).toggle(self.hasPermission(permission));
       });
@@ -1160,27 +1160,27 @@ layui.define(['jquery', 'layer', 'form', 'colorpicker', 'watermarkMod'], functio
       var profile = this.getProfile();
       var allowedSchemes = profile.allowedSchemes || [];
       if (allowedSchemes.indexOf('*') === -1) {
-        $('.scheme-option').each(function () {
+        $('.scheme-option').each(function() {
           $(this).toggle(allowedSchemes.indexOf($(this).data('scheme')) !== -1);
         });
       }
 
       var allowedLayouts = profile.allowedLayouts || [];
       if (allowedLayouts.indexOf('*') === -1) {
-        $('.layout-option').each(function () {
+        $('.layout-option').each(function() {
           $(this).toggle(allowedLayouts.indexOf($(this).data('layout')) !== -1);
         });
       }
 
       var allowedColors = profile.allowedColors || [];
       if (allowedColors.indexOf('*') === -1) {
-        $('.color-option').each(function () {
+        $('.color-option').each(function() {
           $(this).toggle(allowedColors.indexOf($(this).data('color')) !== -1);
         });
       }
     },
 
-    _updateThemeButtonUI: function () {
+    _updateThemeButtonUI: function() {
       var btn = document.getElementById('themeBtn');
       if (!btn) return;
 
@@ -1200,7 +1200,7 @@ layui.define(['jquery', 'layer', 'form', 'colorpicker', 'watermarkMod'], functio
         btn.style.cursor = '';
         btn.style.opacity = '';
 
-        var handler = function (e) { e.stopPropagation(); Theme.toggleConfigPanel(); };
+        var handler = function(e) { e.stopPropagation(); Theme.toggleConfigPanel(); };
         btn._themeClickHandler = handler;
         btn.addEventListener('click', handler);
       } else {
@@ -1222,7 +1222,7 @@ layui.define(['jquery', 'layer', 'form', 'colorpicker', 'watermarkMod'], functio
         if (enabled) {
           btn.style.cursor = '';
           btn.style.opacity = '';
-          var handler = function (e) {
+          var handler = function(e) {
             e.stopPropagation();
             Theme.toggleMode(e);
           };
@@ -1236,16 +1236,16 @@ layui.define(['jquery', 'layer', 'form', 'colorpicker', 'watermarkMod'], functio
       }
     },
 
-    on: function (event, callback) {
+    on: function(event, callback) {
       this._events[event] = this._events[event] || [];
       this._events[event].push(callback);
     },
 
-    emit: function (event) {
+    emit: function(event) {
       var args = Array.prototype.slice.call(arguments, 1);
       var callbacks = this._events[event];
       if (callbacks) {
-        callbacks.forEach(function (callback) {
+        callbacks.forEach(function(callback) {
           callback.apply(null, args);
         });
       }

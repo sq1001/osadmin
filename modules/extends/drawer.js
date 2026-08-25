@@ -17,7 +17,7 @@
  *   - beforeClose 拦截
  *   - 多层 z-index 自动栈管理
  */
-layui.define(['jquery', 'layer'], function (exports) {
+layui.define(['jquery', 'layer'], function(exports) {
   'use strict';
 
   var MOD_NAME = 'drawerMod';
@@ -42,16 +42,16 @@ layui.define(['jquery', 'layer'], function (exports) {
   function interceptLayerClose() {
     if (layer.close !== _originalLayerClose) return; // 已拦截过
 
-    layer.close = function (index) {
+    layer.close = function(index) {
       if (instances[index]) {
         return instances[index].close();
       }
       return _originalLayerClose.apply(layer, arguments);
     };
 
-    layer.closeAll = function () {
+    layer.closeAll = function() {
       // 关闭所有抽屉
-      Object.keys(instances).forEach(function (key) {
+      Object.keys(instances).forEach(function(key) {
         if (instances[key]) {
           instances[key].close();
         }
@@ -176,7 +176,7 @@ layui.define(['jquery', 'layer'], function (exports) {
   DrawerInstance.prototype = {
     constructor: DrawerInstance,
 
-    init: function () {
+    init: function() {
       var opts = this.opts;
       var $container = $(opts.container);
       if (!$container.length) $container = $('body');
@@ -218,13 +218,13 @@ layui.define(['jquery', 'layer'], function (exports) {
 
       // 触发打开动画
       var self = this;
-      requestAnimationFrame(function () {
-        requestAnimationFrame(function () {
+      requestAnimationFrame(function() {
+        requestAnimationFrame(function() {
           self.$root.addClass('os-drawer--open');
           self.state = 'opening';
 
           // 监听打开动画结束
-          self.$content.one('transitionend', function (e) {
+          self.$content.one('transitionend', function(e) {
             // 只处理 transform 的 transitionend
             if (e.originalEvent && e.originalEvent.propertyName !== 'transform') return;
             if (self.state === 'opening') {
@@ -255,7 +255,7 @@ layui.define(['jquery', 'layer'], function (exports) {
     /**
      * 构建 DOM 结构
      */
-    buildDOM: function () {
+    buildDOM: function() {
       var opts = this.opts;
       var placement = opts.placement;
 
@@ -316,9 +316,9 @@ layui.define(['jquery', 'layer'], function (exports) {
       if (opts.btn && Array.isArray(opts.btn) && opts.btn.length > 0) {
         this.$footer = $('<div class="os-drawer__footer"></div>');
         var self = this;
-        opts.btn.forEach(function (label, i) {
+        opts.btn.forEach(function(label, i) {
           var $btn = $('<button class="layui-btn' + (i === 0 ? '' : ' layui-btn-primary') + '" type="button">' + label + '</button>');
-          $btn.on('click', function () {
+          $btn.on('click', function() {
             if (i === 0 && typeof opts.yes === 'function') {
               opts.yes.call(self, self.index);
             } else if (i === 1 && typeof opts.btn2 === 'function') {
@@ -351,7 +351,7 @@ layui.define(['jquery', 'layer'], function (exports) {
     /**
      * 填充内容（字符串或 iframe）
      */
-    fillContent: function () {
+    fillContent: function() {
       var opts = this.opts;
       var content = opts.content;
 
@@ -371,19 +371,19 @@ layui.define(['jquery', 'layer'], function (exports) {
     /**
      * 绑定事件
      */
-    bindEvents: function () {
+    bindEvents: function() {
       var self = this;
       var opts = this.opts;
 
       // 关闭按钮
-      this.$root.on('click.os-drawer', '.os-drawer__close-btn', function (e) {
+      this.$root.on('click.os-drawer', '.os-drawer__close-btn', function(e) {
         e.preventDefault();
         e.stopPropagation();
         self.close();
       });
 
       // 最大化按钮（最小化状态下作为恢复按钮）
-      this.$root.on('click.os-drawer', '.os-drawer__max-btn', function (e) {
+      this.$root.on('click.os-drawer', '.os-drawer__max-btn', function(e) {
         e.preventDefault();
         e.stopPropagation();
         if (self.state === 'mined') {
@@ -394,7 +394,7 @@ layui.define(['jquery', 'layer'], function (exports) {
       });
 
       // 最小化按钮
-      this.$root.on('click.os-drawer', '.os-drawer__min-btn', function (e) {
+      this.$root.on('click.os-drawer', '.os-drawer__min-btn', function(e) {
         e.preventDefault();
         e.stopPropagation();
         self.toggleMin();
@@ -402,7 +402,7 @@ layui.define(['jquery', 'layer'], function (exports) {
 
       // 遮罩点击关闭
       if (opts.shadeClose !== false) {
-        this.$mask.on('click.os-drawer', function () {
+        this.$mask.on('click.os-drawer', function() {
           self.close();
         });
       }
@@ -413,7 +413,7 @@ layui.define(['jquery', 'layer'], function (exports) {
       }
 
       // resize 同步（body 模式需要监听窗口 resize）
-      this._resizeHandler = function () {
+      this._resizeHandler = function() {
         self.handleResize();
       };
       $(window).on('resize.os-drawer-' + this.id, this._resizeHandler);
@@ -422,12 +422,12 @@ layui.define(['jquery', 'layer'], function (exports) {
     /**
      * 拖拽边缘调整尺寸
      */
-    bindResize: function () {
+    bindResize: function() {
       var self = this;
       var opts = this.opts;
       var placement = opts.placement;
 
-      this.$resize.on('mousedown.os-drawer', function (e) {
+      this.$resize.on('mousedown.os-drawer', function(e) {
         e.preventDefault();
         e.stopPropagation();
 
@@ -437,7 +437,7 @@ layui.define(['jquery', 'layer'], function (exports) {
         var startH = self.$content.outerHeight();
         var isHorizontal = (placement === 'right' || placement === 'left');
 
-        $(document).on('mousemove.os-drawer-resize', function (e) {
+        $(document).on('mousemove.os-drawer-resize', function(e) {
           var delta;
           if (isHorizontal) {
             if (placement === 'right') {
@@ -462,7 +462,7 @@ layui.define(['jquery', 'layer'], function (exports) {
           }
         });
 
-        $(document).on('mouseup.os-drawer-resize', function () {
+        $(document).on('mouseup.os-drawer-resize', function() {
           $(document).off('.os-drawer-resize');
         });
       });
@@ -471,7 +471,7 @@ layui.define(['jquery', 'layer'], function (exports) {
     /**
      * 处理窗口 resize（body 模式下同步尺寸限制）
      */
-    handleResize: function () {
+    handleResize: function() {
       if (this.state === 'maxed' || this.state === 'mined') return;
       if (!this.isBodyContainer) return;
 
@@ -496,9 +496,9 @@ layui.define(['jquery', 'layer'], function (exports) {
     /**
      * ESC 键监听
      */
-    setupEscListener: function () {
+    setupEscListener: function() {
       var self = this;
-      this._escHandler = function (e) {
+      this._escHandler = function(e) {
         if (e.keyCode !== 27) return; // ESC
         // 只响应栈顶实例
         var top = instanceStack[instanceStack.length - 1];
@@ -517,14 +517,14 @@ layui.define(['jquery', 'layer'], function (exports) {
     /**
      * 路由切换监听
      */
-    setupRouteChangeListener: function () {
+    setupRouteChangeListener: function() {
       if (routeChangeListenerAdded) return;
       try {
         var router = layui.routerMod || layui.router;
         if (router && typeof router.on === 'function') {
-          router.on('routeChange', function () {
+          router.on('routeChange', function() {
             // 关闭所有抽屉
-            Object.keys(instances).forEach(function (key) {
+            Object.keys(instances).forEach(function(key) {
               if (instances[key]) {
                 instances[key].close();
               }
@@ -538,7 +538,7 @@ layui.define(['jquery', 'layer'], function (exports) {
     /**
      * 最大化/还原切换
      */
-    toggleMax: function () {
+    toggleMax: function() {
       if (this.state === 'maxed') {
         this.restore();
       } else {
@@ -549,7 +549,7 @@ layui.define(['jquery', 'layer'], function (exports) {
     /**
      * 最大化
      */
-    maximize: function () {
+    maximize: function() {
       if (this.state === 'maxed') return;
       // 先保存当前尺寸
       if (!this.originalSize) {
@@ -568,7 +568,7 @@ layui.define(['jquery', 'layer'], function (exports) {
     /**
      * 最小化/还原切换
      */
-    toggleMin: function () {
+    toggleMin: function() {
       if (this.state === 'mined') {
         this.restore();
       } else {
@@ -579,7 +579,7 @@ layui.define(['jquery', 'layer'], function (exports) {
     /**
      * 最小化（折叠为底部条带，堆叠排列）
      */
-    minimize: function () {
+    minimize: function() {
       if (this.state === 'mined') return;
       if (!this.originalSize) {
         this.originalSize = {
@@ -608,10 +608,10 @@ layui.define(['jquery', 'layer'], function (exports) {
      * 桌面端：条带在右下角横向堆叠（向右延伸）
      * 移动端：窄屏横向堆叠会超出屏幕左边界导致"丢失"，改为纵向堆叠（向上延伸）
      */
-    updateMinimizedStackPosition: function () {
+    updateMinimizedStackPosition: function() {
       // 统计当前最小化的抽屉数量（按最小化顺序）
       var minStack = []; // 最小化堆栈顺序
-      instanceStack.forEach(function (item) {
+      instanceStack.forEach(function(item) {
         var inst = instances[item.index];
         if (inst && inst.state === 'mined') {
           minStack.push(inst);
@@ -642,8 +642,8 @@ layui.define(['jquery', 'layer'], function (exports) {
     /**
      * 重新计算所有最小化抽屉的位置（用于关闭某个最小化抽屉后重排）
      */
-    refreshAllMinimizedPositions: function () {
-      Object.keys(instances).forEach(function (key) {
+    refreshAllMinimizedPositions: function() {
+      Object.keys(instances).forEach(function(key) {
         var inst = instances[key];
         if (inst && inst.state === 'mined') {
           inst.updateMinimizedStackPosition();
@@ -654,12 +654,12 @@ layui.define(['jquery', 'layer'], function (exports) {
     /**
      * 绑定最小化条带拖动（水平方向改变 right，垂直方向改变 bottom）
      */
-    bindMinimizedDrag: function () {
+    bindMinimizedDrag: function() {
       var self = this;
       if (this._minDragBound) return;
       this._minDragBound = true;
 
-      this.$header.on('mousedown.os-drawer-min-drag', function (e) {
+      this.$header.on('mousedown.os-drawer-min-drag', function(e) {
         if (self.state !== 'mined') return;
         // 点击关闭按钮、还原区域不触发拖动
         if ($(e.target).closest('.os-drawer__header-actions').length) return;
@@ -670,7 +670,7 @@ layui.define(['jquery', 'layer'], function (exports) {
         var startRight = parseInt(self.$content.css('right'), 10) || 10;
         var startBottom = parseInt(self.$content.css('bottom'), 10) || 10;
 
-        $(document).on('mousemove.os-drawer-min-drag-' + self.id, function (e) {
+        $(document).on('mousemove.os-drawer-min-drag-' + self.id, function(e) {
           var deltaX = startX - e.clientX;
           var deltaY = startY - e.clientY;
           // 水平拖动改变 right，垂直拖动改变 bottom（互不干扰）
@@ -680,7 +680,7 @@ layui.define(['jquery', 'layer'], function (exports) {
           });
         });
 
-        $(document).on('mouseup.os-drawer-min-drag-' + self.id, function () {
+        $(document).on('mouseup.os-drawer-min-drag-' + self.id, function() {
           $(document).off('.os-drawer-min-drag-' + self.id);
         });
       });
@@ -689,7 +689,7 @@ layui.define(['jquery', 'layer'], function (exports) {
     /**
      * 还原（从最大化或最小化恢复）
      */
-    restore: function () {
+    restore: function() {
       if (this.state !== 'maxed' && this.state !== 'mined') return;
       var wasMined = this.state === 'mined';
 
@@ -719,7 +719,7 @@ layui.define(['jquery', 'layer'], function (exports) {
       // 如果从最小化恢复，重新排列其他最小化抽屉
       if (wasMined) {
         var self = this;
-        setTimeout(function () {
+        setTimeout(function() {
           self.refreshAllMinimizedPositions();
         }, 50);
       }
@@ -728,7 +728,7 @@ layui.define(['jquery', 'layer'], function (exports) {
     /**
      * 关闭（带反向滑出动画）
      */
-    close: function () {
+    close: function() {
       var self = this;
 
       // 已在关闭中或已关闭
@@ -736,7 +736,7 @@ layui.define(['jquery', 'layer'], function (exports) {
 
       // beforeClose 拦截
       if (typeof this.opts.beforeClose === 'function') {
-        var result = this.opts.beforeClose(function () {
+        var result = this.opts.beforeClose(function() {
           self._doClose();
         });
         // 如果返回 false 则阻止关闭
@@ -748,7 +748,7 @@ layui.define(['jquery', 'layer'], function (exports) {
       this._doClose();
     },
 
-    _doClose: function () {
+    _doClose: function() {
       var self = this;
       this.state = 'closing';
 
@@ -786,7 +786,7 @@ layui.define(['jquery', 'layer'], function (exports) {
       }
 
       // 使用 transitionend 监听
-      this.$content.one('transitionend', function (e) {
+      this.$content.one('transitionend', function(e) {
         if (e.originalEvent && e.originalEvent.propertyName !== 'transform') return;
         cleanup();
       });
@@ -799,7 +799,7 @@ layui.define(['jquery', 'layer'], function (exports) {
      * 销毁 DOM 和事件
      * @param {boolean} wasMined 是否从最小化状态关闭（用于触发其他最小化抽屉重排）
      */
-    destroy: function (wasMined) {
+    destroy: function(wasMined) {
       if (this._destroyed) return;
       this._destroyed = true;
 
@@ -819,7 +819,7 @@ layui.define(['jquery', 'layer'], function (exports) {
       if (!this.isBodyContainer && this.$mountTarget) {
         var hasOtherDrawer = false;
         var self = this;
-        Object.keys(instances).forEach(function (key) {
+        Object.keys(instances).forEach(function(key) {
           if (key !== self.index && instances[key] && instances[key].$mountTarget && instances[key].$mountTarget[0] === self.$mountTarget[0]) {
             hasOtherDrawer = true;
           }
@@ -847,8 +847,8 @@ layui.define(['jquery', 'layer'], function (exports) {
       // 如果是从最小化状态关闭，重新排列其他最小化抽屉
       if (wasMined) {
         var self2 = this;
-        setTimeout(function () {
-          Object.keys(instances).forEach(function (key) {
+        setTimeout(function() {
+          Object.keys(instances).forEach(function(key) {
             var inst = instances[key];
             if (inst && inst.state === 'mined') {
               inst.updateMinimizedStackPosition();
@@ -863,7 +863,7 @@ layui.define(['jquery', 'layer'], function (exports) {
     /**
      * 设置标题
      */
-    setTitle: function (title) {
+    setTitle: function(title) {
       this.$title.text(title);
       if (title) {
         this.$root.removeClass('os-drawer--no-header');
@@ -875,7 +875,7 @@ layui.define(['jquery', 'layer'], function (exports) {
     /**
      * 获取根元素 jQuery 对象（兼容 layer 的 layero）
      */
-    getLayero: function () {
+    getLayero: function() {
       return this.$root;
     }
   };
@@ -891,18 +891,18 @@ layui.define(['jquery', 'layer'], function (exports) {
      * @param {Object} options 配置项
      * @returns {Object} 实例对象，包含 close/setTitle/maximize/minimize/restore 方法
      */
-    open: function (options) {
+    open: function(options) {
       interceptLayerClose();
       var instance = new DrawerInstance(options);
       // 返回兼容 layer 的接口
       var inst = {
         index: instance.index,
-        close: function () { instance.close(); },
-        maximize: function () { instance.maximize(); },
-        minimize: function () { instance.minimize(); },
-        restore: function () { instance.restore(); },
-        setTitle: function (t) { instance.setTitle(t); },
-        $layero: function () { return instance.$root; },
+        close: function() { instance.close(); },
+        maximize: function() { instance.maximize(); },
+        minimize: function() { instance.minimize(); },
+        restore: function() { instance.restore(); },
+        setTitle: function(t) { instance.setTitle(t); },
+        $layero: function() { return instance.$root; },
         _instance: instance
       };
       instance._publicInst = inst;
@@ -913,7 +913,7 @@ layui.define(['jquery', 'layer'], function (exports) {
      * 关闭抽屉
      * @param {Object|number|string} instance 实例对象或 index
      */
-    close: function (instance) {
+    close: function(instance) {
       if (!instance) {
         // 关闭栈顶
         var top = instanceStack[instanceStack.length - 1];
@@ -941,8 +941,8 @@ layui.define(['jquery', 'layer'], function (exports) {
     /**
      * 关闭所有抽屉
      */
-    closeAll: function () {
-      Object.keys(instances).forEach(function (key) {
+    closeAll: function() {
+      Object.keys(instances).forEach(function(key) {
         if (instances[key]) {
           instances[key].close();
         }
@@ -952,16 +952,16 @@ layui.define(['jquery', 'layer'], function (exports) {
     /**
      * 便捷方法
      */
-    right: function (options) {
+    right: function(options) {
       return this.open($.extend({ placement: 'right' }, options));
     },
-    left: function (options) {
+    left: function(options) {
       return this.open($.extend({ placement: 'left' }, options));
     },
-    top: function (options) {
+    top: function(options) {
       return this.open($.extend({ placement: 'top' }, options));
     },
-    bottom: function (options) {
+    bottom: function(options) {
       return this.open($.extend({ placement: 'bottom' }, options));
     }
   };

@@ -1,7 +1,7 @@
 /**
  * Common 常用工具模块
  */
-layui.define(['jquery', 'layer', 'table', 'xlsxMod'], function (exports) {
+layui.define(['jquery', 'layer', 'table', 'xlsxMod'], function(exports) {
     'use strict';
 
     var MOD_NAME = 'commonMod';
@@ -13,7 +13,7 @@ layui.define(['jquery', 'layer', 'table', 'xlsxMod'], function (exports) {
     var common = {
         version: '1.0.2',
 
-        parseExportCols: function (tableOptions) {
+        parseExportCols: function(tableOptions) {
             var cols = (tableOptions && tableOptions.cols && tableOptions.cols[0]) || [];
             var headers = [];
             var fields = [];
@@ -28,7 +28,7 @@ layui.define(['jquery', 'layer', 'table', 'xlsxMod'], function (exports) {
             return { headers: headers, fields: fields };
         },
 
-        exportXlsx: function (data, tableOptions, fileName) {
+        exportXlsx: function(data, tableOptions, fileName) {
             if (!XLSX) {
                 layer.msg('SheetJS 未加载，无法导出 Excel', { icon: 2 });
                 return;
@@ -45,8 +45,8 @@ layui.define(['jquery', 'layer', 'table', 'xlsxMod'], function (exports) {
             }
 
             var wsData = [colInfo.headers];
-            data.forEach(function (row) {
-                wsData.push(colInfo.fields.map(function (field) {
+            data.forEach(function(row) {
+                wsData.push(colInfo.fields.map(function(field) {
                     return row[field] != null ? row[field] : '';
                 }));
             });
@@ -54,7 +54,7 @@ layui.define(['jquery', 'layer', 'table', 'xlsxMod'], function (exports) {
             var wb = XLSX.utils.book_new();
             var ws = XLSX.utils.aoa_to_sheet(wsData);
 
-            ws['!cols'] = colInfo.headers.map(function (h) {
+            ws['!cols'] = colInfo.headers.map(function(h) {
                 var wch = 0;
                 for (var j = 0; j < h.length; j++) {
                     wch += h.charCodeAt(j) > 127 ? 2 : 1;
@@ -67,7 +67,7 @@ layui.define(['jquery', 'layer', 'table', 'xlsxMod'], function (exports) {
             layer.msg('Excel 导出成功', { icon: 1 });
         },
 
-        exportTxt: function (data, tableOptions, fileName) {
+        exportTxt: function(data, tableOptions, fileName) {
             if (!data || data.length === 0) {
                 layer.msg('没有数据可导出', { icon: 2 });
                 return;
@@ -80,8 +80,8 @@ layui.define(['jquery', 'layer', 'table', 'xlsxMod'], function (exports) {
             }
 
             var lines = [colInfo.headers.join('\t')];
-            data.forEach(function (item) {
-                lines.push(colInfo.fields.map(function (k) {
+            data.forEach(function(item) {
+                lines.push(colInfo.fields.map(function(k) {
                     return item[k] != null ? String(item[k]) : '';
                 }).join('\t'));
             });
@@ -95,7 +95,7 @@ layui.define(['jquery', 'layer', 'table', 'xlsxMod'], function (exports) {
             layer.msg('TXT 导出成功', { icon: 1 });
         },
 
-        checkField: function (obj, field) {
+        checkField: function(obj, field) {
             var data = table.checkStatus(obj.config.id).data;
             if (data.length === 0) {
                 return '';
@@ -107,11 +107,11 @@ layui.define(['jquery', 'layer', 'table', 'xlsxMod'], function (exports) {
             return ids.join(',');
         },
 
-        isMobile: function () {
+        isMobile: function() {
             return $(window).width() <= 768;
         },
 
-        submit: function (options) {
+        submit: function(options) {
             var opts = $.extend({
                 url: '',
                 data: null,
@@ -134,7 +134,7 @@ layui.define(['jquery', 'layer', 'table', 'xlsxMod'], function (exports) {
                 url: opts.url,
                 type: opts.method.toUpperCase(),
                 dataType: 'json',
-                success: function (result) {
+                success: function(result) {
                     if (loadIndex !== null) {
                         layer.close(loadIndex);
                         loadIndex = null;
@@ -147,7 +147,7 @@ layui.define(['jquery', 'layer', 'table', 'xlsxMod'], function (exports) {
 
                     if (result.code === 0 || result.success) {
                         var msg = result.msg || result.message || '操作成功';
-                        layer.msg(msg, { icon: 1, time: 1000 }, function () {
+                        layer.msg(msg, { icon: 1, time: 1000 }, function() {
                             if (opts.table && opts.reloadTable) {
                                 if (isIframe && window.parent && window.parent.layui) {
                                     window.parent.layui.table.reload(opts.table);
@@ -169,7 +169,7 @@ layui.define(['jquery', 'layer', 'table', 'xlsxMod'], function (exports) {
                         layer.msg(errMsg, { icon: 2, time: 2000 });
                     }
                 },
-                error: function (xhr, status, error) {
+                error: function(xhr, status, error) {
                     if (loadIndex !== null) {
                         layer.close(loadIndex);
                         loadIndex = null;

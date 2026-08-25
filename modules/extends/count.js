@@ -2,17 +2,17 @@
  * Count 数字动画模块
  * 性能优化：调整定时器频率，减少 DOM 更新次数
  */
-layui.define(['jquery', 'element'], function (exports) {
+layui.define(['jquery', 'element'], function(exports) {
     "use strict";
 
     var MOD_NAME = 'countMod';
     var $ = layui.jquery,
         element = layui.element;
 
-    var count = new function () {
+    var count = new function() {
         this.version = '1.1.0';
 
-        this.up = function (targetEle, options) {
+        this.up = function(targetEle, options) {
 
             options = options || {};
 
@@ -24,7 +24,7 @@ layui.define(['jquery', 'element'], function (exports) {
                 count = 0.00,
                 initial = 0;
 
-            var timer = setInterval(function () {
+            var timer = setInterval(function() {
                 count = count + step;
                 if (count >= finalNum) {
                     clearInterval(timer);

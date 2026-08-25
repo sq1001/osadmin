@@ -27,7 +27,7 @@ function toggleSearchFormShow(flip)
     if (!toggle.bound) {
         toggle.bound = true;
         toggle.hide = true;
-        btns.on('click', function () {
+        btns.on('click', function() {
             toggle(true); // 用户点击时翻转状态
         });
     }
@@ -64,7 +64,7 @@ function toggleSearchFormShow(flip)
     if (toggle.hide) {
         // 收起状态：仅显示第一行字段，隐藏超出部分
         // 显示"展开"按钮（提示下一步操作）
-        items.each(function (index) {
+        items.each(function(index) {
             if (index < countPerRow) {
                 $(this).show();
             } else {
@@ -84,14 +84,14 @@ function toggleSearchFormShow(flip)
 
 layui.use(['jquery'], function() {
     var $ = layui.$;
-    $(function () {
+    $(function() {
         toggleSearchFormShow();
 
         // 窗口尺寸变化时重新计算（不重置用户当前展开/收起状态）
         var resizeTimer = null;
-        $(window).on('resize', function () {
+        $(window).on('resize', function() {
             clearTimeout(resizeTimer);
-            resizeTimer = setTimeout(function () {
+            resizeTimer = setTimeout(function() {
                 toggleSearchFormShow();
             }, 200);
         });
