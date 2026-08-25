@@ -297,6 +297,7 @@ layui.define(['jquery', 'themeModule', 'routerModule'], function(exports) {
       });
 
       $('#tabsActionsBtn').on('click', function() {
+        self.updateDropdownDisabledState();
         $('#tabsDropdown').toggleClass('show');
       });
 
@@ -457,6 +458,37 @@ layui.define(['jquery', 'themeModule', 'routerModule'], function(exports) {
 
     closeDropdown: function() {
       $('#tabsDropdown').removeClass('show');
+    },
+
+    // 下拉打开时更新"关闭左侧/关闭右侧"禁用态：对应侧无可关闭标签则禁止点击
+    updateDropdownDisabledState: function() {
+      var activeIndex = -1;
+      for (var i = 0; i < this.tabs.length; i++) {
+        if (this.tabs[i].id === this.activeTabId) {
+          activeIndex = i;
+          break;
+        }
+      }
+
+      var hasClosableLeft = false;
+      var hasClosableRight = false;
+      if (activeIndex >= 0) {
+        for (var i = 0; i < activeIndex; i++) {
+          if (this.tabs[i].closable) {
+            hasClosableLeft = true;
+            break;
+          }
+        }
+        for (var i = activeIndex + 1; i < this.tabs.length; i++) {
+          if (this.tabs[i].closable) {
+            hasClosableRight = true;
+            break;
+          }
+        }
+      }
+
+      $('#tabsDropdown .tabs-dropdown-item[data-action="closeLeft"]').prop('disabled', !hasClosableLeft);
+      $('#tabsDropdown .tabs-dropdown-item[data-action="closeRight"]').prop('disabled', !hasClosableRight);
     },
 
     scrollTabs: function(distance) {

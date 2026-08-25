@@ -4,6 +4,32 @@
 
 ---
 
+## v1.9.9 (2026-08-25)
+
+### 工作内容
+
+#### 1. 混合布局侧边栏实时跟随顶栏菜单项
+- **用户反馈**：混合模式下侧边栏似乎没有实时跟随顶栏菜单项变化，切换到只有一级菜单的项时，侧边栏没对应变成空白
+- **复现**：Edge 无头 CDP 桌面 1280px 混合布局，先点击有子菜单的"商品管理"（面板展示子菜单），再点击"控制台"等叶子菜单，面板仍残留商品管理的子菜单内容
+- **根因**：
+  - `handleTopbarMenuItemClick` 对叶子菜单未做混合布局特判，直接进入导航逻辑，未清空常驻子菜单面板
+  - 后续 `setActive` 虽展示/刷新面板，但混合布局下叶子顶级菜单没有 `$triggerItem`（.menu-item），走不到 `showSubmenuPanel`，面板沿用旧内容
+- **修复**（sidebar.js）：
+  - `showSubmenuPanel` 加叶子守卫：目标菜单 `!children` 或 `children.length===0` 时 `hideSubmenuPanel()` 置空并 return
+  - `setActive` 混合布局且当前顶级菜单为叶子时 `hideSubmenuPanel()`
+  - `handleTopbarMenuItemClick` 混合布局桌面端（innerWidth>768）切到叶子项时 `hideSubmenuPanel()` + 移除全部顶栏 active + 当前项 `addClass('active')`
+- **验证**：Edge 无头 CDP 1280px——init 面板空白 → 点"订单管理"目录展示 4 子菜单 → 点"控制台"空白且顶栏激活 → 点"商品管理"展示 4 → 再点"控制台"空白，往返无残留 ✓
+
+#### 2. 标签栏下拉"关闭左侧/关闭右侧"按钮禁用态
+- **用户反馈**：标签栏右边下拉菜单的"关闭左侧/关闭右侧"没有对应检查，没有左侧或右侧时应该是禁止点击状态
+- **复现**：Edge 无头 CDP——激活最右侧标签，右侧无可关闭标签，但"关闭右侧"仍可点击
+- **修复**（tabs.js + admin.css）：
+  - 新增 `updateDropdownDisabledState`：下拉打开时按激活标签左右侧是否存在可关闭标签设置按钮 `disabled`
+  - `.tabs-dropdown-item:disabled { opacity:.45; cursor:not-allowed; pointer-events:none }` 视觉置灰禁止
+- **验证**：Edge 无头 CDP——最右激活"关闭右侧"禁用、中间两侧可用、最左可关闭标签激活"关闭左侧"禁用 ✓
+
+---
+
 ## v1.9.8 (2026-08-05)
 
 ### 工作内容

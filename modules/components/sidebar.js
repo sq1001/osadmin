@@ -523,7 +523,13 @@ layui.define(['jquery', 'layer', 'themeModule', 'routerModule', 'commonMod'], fu
 
     showSubmenuPanel: function(menuId, $triggerEl, targetPageId) {
       var menu = this.findMenu(menuId);
-      if (!menu || !menu.children) return;
+      if (!menu) return;
+
+      // 顶栏项为叶子菜单（如控制台，无子菜单）时，侧边栏面板应置空，避免残留上一目录内容
+      if (!menu.children || menu.children.length === 0) {
+        this.hideSubmenuPanel();
+        return;
+      }
 
       // 获取保存的展开状态
       var expandedStates = this.submenuPanelExpandedStates[menuId] || {};
@@ -1009,6 +1015,14 @@ layui.define(['jquery', 'layer', 'themeModule', 'routerModule', 'commonMod'], fu
         });
       }
 
+      // 混合布局：当前顶级菜单为叶子（仅一级，无子菜单）时，侧边栏面板应置空，避免残留上一目录内容
+      if (state.layout === 'mixed' && topItemId !== null) {
+        var topMenu = this.findMenu(topItemId);
+        if (topMenu && (!topMenu.children || topMenu.children.length === 0)) {
+          this.hideSubmenuPanel();
+        }
+      }
+
       if (isMobile) {
         this.setActiveItems(pageId, menuPath, state);
       }
@@ -1200,7 +1214,14 @@ layui.define(['jquery', 'layer', 'themeModule', 'routerModule', 'commonMod'], fu
         }
         return;
       }
-      
+
+      // 混合布局：顶栏切换到叶子菜单（仅一级，无子菜单）时，实时置空侧边栏面板并同步激活态
+      if (state.layout === 'mixed' && window.innerWidth > 768) {
+        this.hideSubmenuPanel();
+        $('.topbar-menu-item').removeClass('active');
+        $el.addClass('active');
+      }
+
       // 菜单类型：直接导航
       var href = item.href;
       var openType = item.openType;

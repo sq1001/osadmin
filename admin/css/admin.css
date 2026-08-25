@@ -1307,6 +1307,17 @@ body {
   color: var(--danger);
 }
 
+.tabs-dropdown-item:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+  pointer-events: none;
+}
+
+.tabs-dropdown-item:disabled:hover {
+  background: transparent;
+  color: var(--text-secondary);
+}
+
 .layui-tabs-dropdown-divider {
   height: 1px;
   background: var(--border);
