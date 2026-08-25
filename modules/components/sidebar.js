@@ -26,11 +26,11 @@ layui.define(['jquery', 'layer', 'themeMod', 'routerMod', 'commonMod'], function
 
   var Sidebar = {
     collapsed: false,
-  currentSubmenuPanel: null,
-  currentDropdownMenu: null,
-  currentTopbarDropdown: null,
-  // 保存每个顶级菜单对应的子菜单展开状态
-  submenuPanelExpandedStates: {},
+    currentSubmenuPanel: null,
+    currentDropdownMenu: null,
+    currentTopbarDropdown: null,
+    // 保存每个顶级菜单对应的子菜单展开状态
+    submenuPanelExpandedStates: {},
 
     init: function(config) {
       menuData = config ? (config.data || []) : [];
