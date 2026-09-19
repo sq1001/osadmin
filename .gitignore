@@ -87,3 +87,6 @@ admin/css/layui-override/modules官方样式/
 
 # 脚本临时文件目录（禁止推送）
 scripts/
+
+# AGENTS.md 项目最高约束规范 (仅本地生效, 不入库; 含明文令牌登记, 防泄漏)
+AGENTS.md

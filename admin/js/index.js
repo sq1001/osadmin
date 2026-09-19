@@ -100,7 +100,7 @@
   var isReady = false;
 
   var App = {
-    version: '1.9.10',
+    version: '1.9.11',
     name: 'OS Admin',
     debug: false,
     baseUrl: baseUrl,

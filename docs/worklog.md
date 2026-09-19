@@ -4,6 +4,19 @@
 
 ---
 
+## v1.9.11 (2026-09-19)
+
+### 工作内容
+
+#### 1. 标签栏下拉"关闭当前"禁用态缺失修复
+- 排查：用户反馈"关闭当前"未像"关闭左侧/关闭右侧"一样检测禁用。核对 `modules/components/tabs.js` 的 `updateDropdownDisabledState`，确认其仅对 `closeLeft`/`closeRight` 设置了 `disabled`，遗漏 `closeCurrent`
+- 发现：`closeCurrentTab` 仅转发 `closeTab(activeTabId)`，而 `closeTab` 内部有 `if (!tab.closable) return` 兜底，因此点击不会误关，但按钮无禁用反馈（不变灰、光标非 not-allowed）；且默认进入的控制台标签（`menu.selectId=0`）本身 `closable: false`，问题极易复现
+- 实现：`updateDropdownDisabledState` 抽取 `activeTab = activeIndex >= 0 ? this.tabs[activeIndex] : null` 复用，新增 `closeCurrent` 的 `disabled` 判定（`!(activeTab && activeTab.closable)`）；复用已有 `.tabs-dropdown-item:disabled` 样式，前端 HTML 为原生 `<button>` 原生支持 `disabled`，无需改动 CSS
+- 边界：`closeOther`/`closeAll` 保持可点——即使当前标签不可关闭，二者仍能关闭其他可关闭标签，属有意义操作，不纳入禁用
+- 验证：默认控制台标签激活时"关闭当前"置灰不可点；打开可关闭标签后可点，与左/右按钮表现一致 ✓
+
+---
+
 ## v1.9.10 (2026-08-25)
 
 ### 工作内容

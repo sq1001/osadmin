@@ -4,6 +4,16 @@
 
 ---
 
+## v1.9.11 (2026-09-19)
+
+### 标签栏下拉"关闭当前"按钮未正确禁用
+- **问题**：标签栏右侧下拉菜单的"关闭当前"在激活标签不可关闭时未置为禁止点击状态，与"关闭左侧/关闭右侧"的禁用态表现不一致
+- **根因**：`updateDropdownDisabledState` 仅处理了 `closeLeft`/`closeRight`，遗漏 `closeCurrent`；虽 `closeTab` 内有 `closable` 兜底不会误关，但按钮无变灰/禁用反馈
+- **修复**（tabs.js）：`updateDropdownDisabledState` 抽取 `activeTab` 复用，补全 `closeCurrent` 的 `disabled` 判定（激活标签 `closable` 为 false 时禁用）
+- **验证**：默认进入控制台（不可关闭标签）时"关闭当前"置灰不可点；切换到可关闭标签后可点 ✓
+
+---
+
 ## v1.9.10 (2026-08-25)
 
 ### 框架规范统一优化
