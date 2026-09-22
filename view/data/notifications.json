@@ -2,7 +2,7 @@
   { "id": 1, "title": "新订单: ORD-2024-0001，测试长度测试长度测试长度测试长度测试长度测试长度测试长度测试长度测试长度测试长度", "time": "刚刚", "type": "order", "read": false, "href": "view/order-list" },
   { "id": 2, "title": "库存预警: iPhone 15 Pro 库存不足", "time": "1分钟前", "type": "warning", "read": false, "href": "view/product-stock" },
   { "id": 3, "title": "用户反馈: 商品详情页加载缓慢", "time": "2分钟前", "type": "feedback", "read": false, "href": "view/user-feedback" },
-  { "id": 4, "title": "系统更新: v1.2.0 版本已发布", "time": "5分钟前", "type": "system", "read": false, "href": "view/dashboard" },
+  { "id": 4, "title": "系统更新: v1.9.12 版本已发布", "time": "5分钟前", "type": "system", "read": false, "href": "view/dashboard" },
   { "id": 5, "title": "新订单: ORD-2024-0002", "time": "8分钟前", "type": "order", "read": false, "href": "view/order-list" },
   { "id": 6, "title": "退款申请: ORD-2024-0098 申请退款", "time": "10分钟前", "type": "order", "read": false, "href": "view/order-refund" },
   { "id": 7, "title": "新用户注册: user_13800138000", "time": "12分钟前", "type": "user", "read": false, "href": "view/user-list" },

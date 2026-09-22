@@ -4,8 +4,8 @@
  * 注意：仅在 HTTPS 或 localhost 环境下生效
  */
 
-// 缓存名称（版本号更新会清除旧缓存）
-const CACHE_NAME = 'osadmin-cache-v3';
+// 缓存名称（与系统版本号绑定，版本更新会自动清除旧缓存）
+const CACHE_NAME = 'osadmin-cache-v1.9.12';
 
 // 预缓存核心资源
 const PRECACHE_CORE = [

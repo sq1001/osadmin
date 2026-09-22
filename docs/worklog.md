@@ -4,6 +4,20 @@
 
 ---
 
+## v1.9.12 (2026-09-22)
+
+### 工作内容
+
+#### 1. 版本号同步审计与历史遗留修补
+- 排查：全仓库（排除 `lib/`）检索版本号，确认标准发布面 6 文件（app.json / index.js / README.md / dashboard.json / CHANGELOG.md / worklog.md）已到 v1.9.11；另发现两类未同步项
+- 发现：① `view/data/notifications.json` 第 5 条系统更新通知为「系统更新: v1.2.0 版本已发布」，长期未随发版更新；② `admin/js/service-worker.js` 的 `CACHE_NAME` 使用独立计数器 `osadmin-cache-v3`（v1.9.6 时由 v2 升 v3 后未再动），与系统版本号割裂，后续发版不会触发缓存刷新，老用户易命中旧缓存
+- 实现：`CACHE_NAME` 改为 `osadmin-cache-v1.9.12`，直接绑定系统版本号（后续发版只需随版本号同步改动此字符串即可自动换缓存键），注释同步说明；通知同步为 v1.9.12
+- 文档：启动命令统一为 `py -m http.server 8080`（`docs/testData.md` / `docs/README.md` / `AGENTS.md` §9）——实测本机 `python` 指向微软商店占位程序（`WindowsApps\python.exe`，执行无输出、不可用），`py` 指向真实 Python 3.14.4；`docs/testData.md` 另补测试要点第 13 条「标签栏下拉菜单关闭当前在激活标签不可关闭时置灰禁用」回归项，修复记录补齐至最新
+- 边界：`docs/README.md` 中 `"version": "1.0.0"` 为配置示例占位，经确认保留不改
+- 验证：8080 启动，通知中心与系统信息显示 v1.9.12；Service Worker 缓存键为 `osadmin-cache-v1.9.12` ✓
+
+---
+
 ## v1.9.11 (2026-09-19)
 
 ### 工作内容

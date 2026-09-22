@@ -3,7 +3,7 @@
 ## 📋 项目概述
 
 **项目名称**: OSADMIN\
-**版本**: 1.9.11\
+**版本**: 1.9.12\
 **描述**: 基于 LayUI 的轻量化原生管理后台系统\
 **技术栈**: LayUI + jQuery + 原生 JavaScript\
 **架构模式**: 模块化架构 + 配置驱动\
@@ -204,10 +204,10 @@ cd osadmin
 
 ```bash
 # Python 3
-python -m http.server 8080
+py -m http.server 8080
 
 # Python 2
-python -m SimpleHTTPServer 8080
+py -2 -m SimpleHTTPServer 8080
 ```
 
 方式2: 使用 Node.js
@@ -2224,5 +2224,5 @@ chore: 构建/工具相关
 
 ***
 
-**最后更新时间**: 2026-09-19\
-**文档版本**: 1.9.11
+**最后更新时间**: 2026-09-22\
+**文档版本**: 1.9.12

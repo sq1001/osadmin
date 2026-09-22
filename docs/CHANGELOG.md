@@ -4,6 +4,16 @@
 
 ---
 
+## v1.9.12 (2026-09-22)
+
+### 版本号同步修补（历史遗留）
+- **问题**：多处版本相关标识未随发版同步——① 通知数据 `view/data/notifications.json` 的系统更新消息长期停留在 v1.2.0；② `admin/js/service-worker.js` 的 `CACHE_NAME` 使用独立计数器 `osadmin-cache-v3`（v1.9.6 由 v2 升 v3 后未再变动），与系统版本号割裂，发版不会触发缓存刷新
+- **修复**（service-worker.js / notifications.json）：`CACHE_NAME` 由 `osadmin-cache-v3` 改为与系统版本绑定 `osadmin-cache-v1.9.12`，发版即更换缓存键强制刷新核心资源；系统更新通知同步为 v1.9.12
+- **文档**（testData.md / README.md / AGENTS.md）：启动命令统一为 `py -m http.server 8080`（实测本机 `python` 指向微软商店占位程序、不可用）；测试要点补充「标签栏下拉菜单关闭当前禁用态」回归项
+- **验证**：固定端口 8080 启动，通知中心与系统信息均显示 v1.9.12，Service Worker 缓存键为 `osadmin-cache-v1.9.12` ✓
+
+---
+
 ## v1.9.11 (2026-09-19)
 
 ### 标签栏下拉"关闭当前"按钮未正确禁用
